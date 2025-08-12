@@ -1,7 +1,14 @@
+import { createClient } from "@supabase/supabase-js";
 import { headers } from "next/headers"
 import { type NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
-import { createServerSupabaseClient } from "@/lib/supabase"
+
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
+
+export const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-07-30.basil",
@@ -21,8 +28,6 @@ export async function POST(req: NextRequest) {
     console.error(`Webhook signature verification failed.`, err.message)
     return NextResponse.json({ error: "Webhook signature verification failed" }, { status: 400 })
   }
-
-  const supabase = createServerSupabaseClient()
 
   try {
     switch (event.type) {

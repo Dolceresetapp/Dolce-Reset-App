@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 const isPublicRoute = createRouteMatcher(["/", "/sign-in(.*)", "/sign-up(.*)", "/api/webhooks(.*)"])
 
 const isOnboardingRoute = createRouteMatcher(["/onboarding"])
+
 const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
   "/profile(.*)",
@@ -13,43 +14,42 @@ const isProtectedRoute = createRouteMatcher([
   "/community(.*)",
   "/premium(.*)",
   "/exercise(.*)",
-  "/pricing(.*)",
   "/checkout(.*)",
+  "/pricing(.*)",
 ])
 
 export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth()
   const url = req.nextUrl.clone()
 
-  // Allow public routes
+  // Allow public routes for everyone
   if (isPublicRoute(req)) {
     return NextResponse.next()
   }
 
-  // Redirect to sign-in if not authenticated and trying to access ANY protected route
-  if (!userId && (isProtectedRoute(req) || isOnboardingRoute(req))) {
+  // Block all protected routes if not authenticated
+  if (!userId && isProtectedRoute(req)) {
     url.pathname = "/sign-in"
     return NextResponse.redirect(url)
   }
 
-  // Handle onboarding route restrictions (only for authenticated users)
-  if (isOnboardingRoute(req) && userId) {
-    // Check if user has already completed onboarding
-    const onboardingCompleted = req.cookies.get("onboarding-completed")?.value
-    if (onboardingCompleted === "true") {
-      // Already completed onboarding, redirect to dashboard
-      url.pathname = "/dashboard"
+  // Handle onboarding route - only for authenticated users
+  if (isOnboardingRoute(req)) {
+    if (!userId) {
+      url.pathname = "/sign-in"
       return NextResponse.redirect(url)
     }
+    // Allow access to onboarding for authenticated users
+    return NextResponse.next()
   }
 
-  // If user is authenticated but trying to access root, redirect based on onboarding status
-  if (userId && url.pathname === "/") {
+  // For authenticated users accessing protected routes
+  if (userId && isProtectedRoute(req)) {
+    // Check if user has completed onboarding (except for onboarding route itself)
     const onboardingCompleted = req.cookies.get("onboarding-completed")?.value
-    if (onboardingCompleted === "true") {
-      url.pathname = "/dashboard"
-      return NextResponse.redirect(url)
-    } else {
+
+    if (onboardingCompleted !== "true") {
+      // User hasn't completed onboarding, redirect to onboarding
       url.pathname = "/onboarding"
       return NextResponse.redirect(url)
     }
@@ -60,9 +60,7 @@ export default clerkMiddleware(async (auth, req) => {
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
     "/(api|trpc)(.*)",
   ],
 }

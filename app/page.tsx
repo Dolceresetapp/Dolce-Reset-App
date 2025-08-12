@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Heart, Play } from "lucide-react"
+import Image from "next/image"
 
 export default function StartScreen() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -12,20 +13,24 @@ export default function StartScreen() {
   const { isSignedIn, isLoaded: userLoaded } = useUser()
 
   useEffect(() => {
-    if (userLoaded && isSignedIn) {
-      // Check if user has completed onboarding
+    if (!userLoaded) return
+
+    if (isSignedIn) {
+      // User is signed in, check onboarding status
       const hasCompletedOnboarding = localStorage.getItem("onboarding-completed")
-      if (hasCompletedOnboarding) {
+      if (hasCompletedOnboarding === "true") {
         router.push("/dashboard")
       } else {
         router.push("/onboarding")
       }
       return
     }
+
+    // User is not signed in, show start screen
     setIsLoaded(true)
   }, [router, isSignedIn, userLoaded])
 
-  const handleLogin = () => {
+  const handleStartJourney = () => {
     router.push("/sign-in")
   }
 
@@ -41,8 +46,15 @@ export default function StartScreen() {
     <div className="app-container relative overflow-hidden">
       {/* Hero Background Image */}
       <div className="absolute inset-0">
-        <img src="/sexy-fitness-woman-hero.png" alt="Fitness inspiration" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+        <Image
+          src="/main.png"
+          alt="Fitness inspiration"
+          width={500}
+          height={500}
+          className="w-full h-full object-cover"
+        />
+        {/* Brand-colored bottom-heavy gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black to-rose-500/60 mix-blend-multiply" />
       </div>
 
       {/* Content Overlay */}
@@ -58,10 +70,10 @@ export default function StartScreen() {
           </p>
         </div>
 
-        {/* Action Button - Only Login */}
+        {/* Action Button */}
         <div className="w-full space-y-4 animate-slide-up">
           <Button
-            onClick={handleLogin}
+            onClick={handleStartJourney}
             className="w-full h-16 senior-text-lg bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm"
           >
             <Play className="w-6 h-6 mr-3" />
