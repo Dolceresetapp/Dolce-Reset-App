@@ -2,39 +2,34 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Heart, Play } from "lucide-react"
-import Image from "next/image"
 
 export default function StartScreen() {
   const [isLoaded, setIsLoaded] = useState(false)
   const router = useRouter()
+  const { isSignedIn, isLoaded: userLoaded } = useUser()
 
   useEffect(() => {
-    // Check if user has previously selected an option
-    const userChoice = localStorage.getItem("seniorfit-user-choice")
-    if (userChoice === "guest") {
-      router.push("/dashboard")
-      return
-    } else if (userChoice === "member") {
-      router.push("/dashboard")
+    if (userLoaded && isSignedIn) {
+      // Check if user has completed onboarding
+      const hasCompletedOnboarding = localStorage.getItem("onboarding-completed")
+      if (hasCompletedOnboarding) {
+        router.push("/dashboard")
+      } else {
+        router.push("/onboarding")
+      }
       return
     }
-
     setIsLoaded(true)
-  }, [router])
-
-  const handleGuestContinue = () => {
-    localStorage.setItem("seniorfit-user-choice", "guest")
-    router.push("/dashboard")
-  }
+  }, [router, isSignedIn, userLoaded])
 
   const handleLogin = () => {
-    localStorage.setItem("seniorfit-user-choice", "member")
     router.push("/sign-in")
   }
 
-  if (!isLoaded) {
+  if (!isLoaded || !userLoaded) {
     return (
       <div className="app-container gradient-bg flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
@@ -46,18 +41,9 @@ export default function StartScreen() {
     <div className="app-container relative overflow-hidden">
       {/* Hero Background Image */}
       <div className="absolute inset-0">
-        <Image 
-          src="/main.png" 
-          alt="Fitness inspiration" 
-          width={500} 
-          height={500} 
-          className="w-full h-full object-cover" 
-        />
-        {/* Brand-colored bottom-heavy gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black to-rose-500/60 mix-blend-multiply" />
+        <img src="/sexy-fitness-woman-hero.png" alt="Fitness inspiration" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
       </div>
-
-
 
       {/* Content Overlay */}
       <div className="relative z-10 flex flex-col justify-end min-h-screen p-6 text-white">
@@ -72,22 +58,14 @@ export default function StartScreen() {
           </p>
         </div>
 
-        {/* Action Buttons */}
+        {/* Action Button - Only Login */}
         <div className="w-full space-y-4 animate-slide-up">
           <Button
-            onClick={handleGuestContinue}
-            className="w-full h-16 senior-text-lg bg-gradient-to-r from-pink-500 to-rose-500 cursor-pointer hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+            onClick={handleLogin}
+            className="w-full h-16 senior-text-lg bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm"
           >
             <Play className="w-6 h-6 mr-3" />
-            Start Your Journey
-          </Button>
-
-          <Button
-            onClick={handleLogin}
-            variant="outline"
-            className="w-full h-16 senior-text-lg border-2 border-white/30 text-white cursor-pointer font-bold rounded-2xl transition-all duration-300 hover:scale-105 bg-white/5 backdrop-blur-sm"
-          >
-            Sign In to Continue
+            Start Your Transformation
           </Button>
         </div>
 

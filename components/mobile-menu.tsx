@@ -31,6 +31,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
   const [showInstallPrompt, setShowInstallPrompt] = useState(false)
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
   const [isInstallable, setIsInstallable] = useState(false)
+  const [isPremium] = useState(false) // This should come from your user data
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -113,7 +114,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         <div className="absolute inset-0 bg-gradient-to-br from-rose-50 via-pink-50 to-orange-50 transform transition-all duration-500 ease-out animate-slide-in-right">
           <div className="flex flex-col h-full">
             {/* Header */}
-            <div className="flex items-center justify-between p-6 bg-white/80 backdrop-blur-sm border-b border-pink-100">
+            <div className="flex items-center justify-between p-6 bg-white/80 backdrop-blur-sm border-b border-pink-100 rounded-b-3xl">
               <div>
                 <h2 className="senior-text-xl font-bold text-gray-800 flex items-center">
                   <Heart className="w-6 h-6 text-pink-500 mr-2" />
@@ -127,7 +128,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                 variant="ghost"
                 size="icon"
                 onClick={onClose}
-                className="h-12 w-12 rounded-full hover:bg-pink-100 transition-all duration-200"
+                className="h-12 w-12 rounded-2xl hover:bg-pink-100 transition-all duration-200"
               >
                 <X className="h-6 w-6 text-gray-600" />
               </Button>
@@ -139,7 +140,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
               {!isSignedIn ? (
                 <div className="mb-8">
                   <Button
-                    className="w-full h-16 senior-text-lg bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-105"
+                    className="w-full h-16 senior-text-lg bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-3xl shadow-lg transition-all duration-300 hover:scale-105"
                     onClick={() => {
                       window.location.href = "/sign-in"
                       onClose()
@@ -152,7 +153,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
               ) : (
                 <div className="mb-8">
                   <Button
-                    className="w-full h-16 senior-text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-105"
+                    className="w-full h-16 senior-text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-lg transition-all duration-300 hover:scale-105"
                     onClick={handleProfileClick}
                   >
                     <User className="w-6 h-6 mr-3" />
@@ -161,9 +162,32 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                 </div>
               )}
 
+              {/* Upgrade Section for Free Users */}
+              {!isPremium && isSignedIn && (
+                <div className="mb-8">
+                  <Card className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-xl rounded-3xl">
+                    <CardContent className="p-6 text-center">
+                      <Crown className="w-12 h-12 mx-auto mb-4 text-white" />
+                      <h3 className="senior-text-lg font-bold mb-2">Upgrade to Premium</h3>
+                      <p className="senior-text-base opacity-90 mb-4">Unlock all features and transform faster</p>
+                      <Button
+                        onClick={() => {
+                          window.location.href = "/pricing"
+                          onClose()
+                        }}
+                        className="bg-white text-amber-600 hover:bg-gray-50 font-bold rounded-2xl h-12 senior-text-base px-8 transition-all duration-300 hover:scale-105"
+                      >
+                        <Sparkles className="w-5 h-5 mr-2" />
+                        Upgrade Now
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
               {/* Install App Section */}
               <div className="mb-8">
-                <Card className="card-hover border-0 shadow-md bg-gradient-to-r from-indigo-50 to-purple-50 backdrop-blur-sm">
+                <Card className="card-hover border-0 shadow-md bg-gradient-to-r from-indigo-50 to-purple-50 backdrop-blur-sm rounded-3xl">
                   <CardContent className="p-4">
                     <Button
                       variant="ghost"
@@ -171,7 +195,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                       onClick={handleInstallApp}
                     >
                       <div className="flex items-center space-x-4 w-full">
-                        <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
                           <Download className="w-6 h-6 text-white" />
                         </div>
                         <div className="text-left flex-1">
@@ -196,7 +220,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                   {premiumFeatures.map((feature, index) => (
                     <Card
                       key={feature.label}
-                      className="card-hover border-0 shadow-md bg-white/80 backdrop-blur-sm animate-slide-up"
+                      className="card-hover border-0 shadow-md bg-white/80 backdrop-blur-sm animate-slide-up rounded-3xl"
                       style={{ animationDelay: `${index * 0.1}s` }}
                     >
                       <CardContent className="p-4">
@@ -210,7 +234,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                         >
                           <div className="flex items-center space-x-4 w-full">
                             <div
-                              className={`w-12 h-12 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center shadow-lg`}
+                              className={`w-12 h-12 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center shadow-lg`}
                             >
                               <feature.icon className="w-6 h-6 text-white" />
                             </div>
@@ -229,11 +253,11 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
 
             {/* Footer */}
             {isSignedIn && (
-              <div className="p-6 bg-white/80 backdrop-blur-sm border-t border-pink-100">
+              <div className="p-6 bg-white/80 backdrop-blur-sm border-t border-pink-100 rounded-t-3xl">
                 <Button
                   onClick={handleSignOut}
                   variant="outline"
-                  className="w-full h-14 senior-text-base border-red-200 text-red-600 hover:bg-red-50 bg-transparent rounded-xl"
+                  className="w-full h-14 senior-text-base border-red-200 text-red-600 hover:bg-red-50 bg-transparent rounded-2xl"
                 >
                   <LogOut className="w-5 h-5 mr-3" />
                   Sign Out

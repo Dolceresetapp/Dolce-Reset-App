@@ -1,8 +1,6 @@
 import { headers } from "next/headers"
 import { Webhook } from "svix"
-import { createClient } from "@supabase/supabase-js"
-
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
+import { createServerSupabaseClient } from "@/lib/supabase"
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET
@@ -46,6 +44,9 @@ export async function POST(req: Request) {
       status: 400,
     })
   }
+
+  // Create server Supabase client
+  const supabase = createServerSupabaseClient()
 
   // Handle the webhook
   const eventType = evt.type
