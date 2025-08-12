@@ -1,8 +1,9 @@
 "use client"
 
+import { useState, useEffect } from "react"
+import { useUser, useClerk } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import {
   X,
   LogIn,
@@ -10,14 +11,14 @@ import {
   ChefHat,
   Users,
   Crown,
-  Home,
   User,
-  Settings,
-  HelpCircle,
   LogOut,
   Sparkles,
   Heart,
+  Download,
+  Smartphone,
 } from "lucide-react"
+import { InstallPrompt } from "./install-prompt"
 
 interface MobileMenuProps {
   open: boolean
@@ -25,6 +26,24 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
+  const { user, isSignedIn } = useUser()
+  const { signOut, openUserProfile } = useClerk()
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false)
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
+  const [isInstallable, setIsInstallable] = useState(false)
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      e.preventDefault()
+      setDeferredPrompt(e)
+      setIsInstallable(true)
+    }
+
+    window.addEventListener("beforeinstallprompt", handler)
+
+    return () => window.removeEventListener("beforeinstallprompt", handler)
+  }, [])
+
   if (!open) return null
 
   const premiumFeatures = [
@@ -58,138 +77,175 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
     },
   ]
 
-  const regularMenuItems = [
-    { icon: Home, label: "Home", href: "/dashboard" },
-    { icon: User, label: "My Profile", href: "/profile" },
-    { icon: Settings, label: "Settings", href: "/settings" },
-    { icon: HelpCircle, label: "Help & Support", href: "/help" },
-  ]
+  const handleInstallApp = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt()
+      const { outcome } = await deferredPrompt.userChoice
+      if (outcome === "accepted") {
+        setDeferredPrompt(null)
+        setIsInstallable(false)
+      }
+    } else {
+      setShowInstallPrompt(true)
+    }
+  }
+
+  const handleProfileClick = () => {
+    openUserProfile()
+    onClose()
+  }
+
+  const handleSignOut = async () => {
+    await signOut()
+    onClose()
+  }
 
   return (
-    <div className="fixed inset-0 z-50">
-      {/* Backdrop with blur */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-md transition-all duration-500 ease-out"
-        onClick={onClose}
-      />
+    <>
+      <div className="fixed inset-0 z-50">
+        {/* Backdrop with blur */}
+        <div
+          className="absolute inset-0 bg-black/60 backdrop-blur-md transition-all duration-500 ease-out"
+          onClick={onClose}
+        />
 
-      {/* Menu Panel - Full Screen */}
-      <div className="absolute inset-0 bg-gradient-to-br from-rose-50 via-pink-50 to-orange-50 transform transition-all duration-500 ease-out animate-slide-in-right">
-        <div className="flex flex-col h-full">
-          {/* Header */}
-          <div className="flex items-center justify-between p-6 bg-white/80 backdrop-blur-sm border-b border-pink-100">
-            <div>
-              <h2 className="senior-text-xl font-bold text-gray-800 flex items-center">
-                Menu
-              </h2>
-              {/* <p className="senior-text-sm text-gray-600">Everything you need for your wellness journey</p> */}
-            </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onClose}
-              className="h-12 w-12 rounded-full hover:bg-pink-100 transition-all duration-200"
-            >
-              <X className="h-6 w-6 text-gray-600" />
-            </Button>
-          </div>
-
-          {/* Content */}
-          <div className="flex-1 overflow-y-auto p-6">
-            {/* Login Section */}
-            <div className="mb-8">
+        {/* Menu Panel - Full Screen */}
+        <div className="absolute inset-0 bg-gradient-to-br from-rose-50 via-pink-50 to-orange-50 transform transition-all duration-500 ease-out animate-slide-in-right">
+          <div className="flex flex-col h-full">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 bg-white/80 backdrop-blur-sm border-b border-pink-100">
+              <div>
+                <h2 className="senior-text-xl font-bold text-gray-800 flex items-center">
+                  <Heart className="w-6 h-6 text-pink-500 mr-2" />
+                  Menu
+                </h2>
+                {isSignedIn && (
+                  <p className="senior-text-sm text-gray-600">Welcome back, {user?.firstName || "Beautiful"}!</p>
+                )}
+              </div>
               <Button
-                className="w-full h-16 senior-text-lg bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-105"
-                onClick={() => {
-                  window.location.href = "/sign-in"
-                  onClose()
-                }}
+                variant="ghost"
+                size="icon"
+                onClick={onClose}
+                className="h-12 w-12 rounded-full hover:bg-pink-100 transition-all duration-200"
               >
-                <LogIn className="w-6 h-6 mr-3" />
-                Sign In / Create Account
+                <X className="h-6 w-6 text-gray-600" />
               </Button>
             </div>
 
-            {/* Premium Features */}
-            <div className="mb-8">
-              <div className="flex items-center mb-4">
-                <Sparkles className="w-5 h-5 text-pink-500 mr-2" />
-                <h3 className="senior-text-lg font-bold text-gray-800">Premium Features</h3>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4">
-                {premiumFeatures.map((feature, index) => (
-                  <Card
-                    key={feature.label}
-                    className="card-hover border-0 shadow-md bg-white/80 backdrop-blur-sm animate-slide-up"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <CardContent className="p-4">
-                      <Button
-                        variant="ghost"
-                        className="w-full h-auto p-0 justify-start hover:bg-transparent"
-                        onClick={() => {
-                          window.location.href = feature.href
-                          onClose()
-                        }}
-                      >
-                        <div className="flex items-center space-x-4 w-full">
-                          <div
-                            className={`w-12 h-12 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center shadow-lg`}
-                          >
-                            <feature.icon className="w-6 h-6 text-white" />
-                          </div>
-                          <div className="text-left flex-1">
-                            <h4 className="senior-text-base font-bold text-gray-800">{feature.label}</h4>
-                            <p className="senior-text-sm text-gray-600">{feature.description}</p>
-                          </div>
-                          {/* {feature.label === "Premium Exercises" && (
-                            <Badge className="bg-gradient-to-r from-amber-400 to-orange-400 text-white border-0 senior-text-sm">
-                              NEW
-                            </Badge>
-                          )} */}
-                        </div>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* Regular Menu Items */}
-            <div className="mb-8">
-              <h3 className="senior-text-lg font-bold text-gray-800 mb-4">Quick Access</h3>
-              <div className="space-y-2">
-                {regularMenuItems.map((item, index) => (
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-6">
+              {/* Authentication Section */}
+              {!isSignedIn ? (
+                <div className="mb-8">
                   <Button
-                    key={item.label}
-                    variant="ghost"
-                    className="w-full justify-start h-14 senior-text-base hover:bg-pink-50 hover:text-pink-700 transition-all duration-200 rounded-xl"
+                    className="w-full h-16 senior-text-lg bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-105"
                     onClick={() => {
-                      window.location.href = item.href
+                      window.location.href = "/sign-in"
                       onClose()
                     }}
                   >
-                    <item.icon className="w-5 h-5 mr-4" />
-                    {item.label}
+                    <LogIn className="w-6 h-6 mr-3" />
+                    Sign In / Create Account
                   </Button>
-                ))}
+                </div>
+              ) : (
+                <div className="mb-8">
+                  <Button
+                    className="w-full h-16 senior-text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-105"
+                    onClick={handleProfileClick}
+                  >
+                    <User className="w-6 h-6 mr-3" />
+                    My Profile
+                  </Button>
+                </div>
+              )}
+
+              {/* Install App Section */}
+              <div className="mb-8">
+                <Card className="card-hover border-0 shadow-md bg-gradient-to-r from-indigo-50 to-purple-50 backdrop-blur-sm">
+                  <CardContent className="p-4">
+                    <Button
+                      variant="ghost"
+                      className="w-full h-auto p-0 justify-start hover:bg-transparent"
+                      onClick={handleInstallApp}
+                    >
+                      <div className="flex items-center space-x-4 w-full">
+                        <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                          <Download className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="text-left flex-1">
+                          <h4 className="senior-text-base font-bold text-gray-800">Install App</h4>
+                          <p className="senior-text-sm text-gray-600">Add to your home screen</p>
+                        </div>
+                        <Smartphone className="w-5 h-5 text-indigo-500" />
+                      </div>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Premium Features */}
+              <div className="mb-8">
+                <div className="flex items-center mb-4">
+                  <Sparkles className="w-5 h-5 text-pink-500 mr-2" />
+                  <h3 className="senior-text-lg font-bold text-gray-800">Premium Features</h3>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  {premiumFeatures.map((feature, index) => (
+                    <Card
+                      key={feature.label}
+                      className="card-hover border-0 shadow-md bg-white/80 backdrop-blur-sm animate-slide-up"
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <CardContent className="p-4">
+                        <Button
+                          variant="ghost"
+                          className="w-full h-auto p-0 justify-start hover:bg-transparent"
+                          onClick={() => {
+                            window.location.href = feature.href
+                            onClose()
+                          }}
+                        >
+                          <div className="flex items-center space-x-4 w-full">
+                            <div
+                              className={`w-12 h-12 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center shadow-lg`}
+                            >
+                              <feature.icon className="w-6 h-6 text-white" />
+                            </div>
+                            <div className="text-left flex-1">
+                              <h4 className="senior-text-base font-bold text-gray-800">{feature.label}</h4>
+                              <p className="senior-text-sm text-gray-600">{feature.description}</p>
+                            </div>
+                          </div>
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Footer */}
-          <div className="p-6 bg-white/80 backdrop-blur-sm border-t border-pink-100">
-            <Button
-              variant="outline"
-              className="w-full h-14 senior-text-base border-red-200 text-red-600 hover:bg-red-50 bg-transparent rounded-xl"
-            >
-              <LogOut className="w-5 h-5 mr-3" />
-              Sign Out
-            </Button>
+            {/* Footer */}
+            {isSignedIn && (
+              <div className="p-6 bg-white/80 backdrop-blur-sm border-t border-pink-100">
+                <Button
+                  onClick={handleSignOut}
+                  variant="outline"
+                  className="w-full h-14 senior-text-base border-red-200 text-red-600 hover:bg-red-50 bg-transparent rounded-xl"
+                >
+                  <LogOut className="w-5 h-5 mr-3" />
+                  Sign Out
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Install Prompt Modal */}
+      <InstallPrompt open={showInstallPrompt} onClose={() => setShowInstallPrompt(false)} />
+    </>
   )
 }

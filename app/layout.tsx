@@ -21,9 +21,9 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider
-      appearance={{
-        cssLayerName: 'clerk',
-      }}
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      afterSignInUrl="/dashboard"
+      afterSignUpUrl="/dashboard"
     >
       <html lang="en">
         <body className={`${inter.className} bg-gradient-to-br from-rose-50 to-pink-50 min-h-screen`}>{children}</body>
