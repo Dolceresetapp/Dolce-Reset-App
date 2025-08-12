@@ -95,7 +95,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
+        {/* <div className="grid grid-cols-2 gap-4 mb-6">
           <Card className="bg-white/80 border-pink-200 animate-slide-up rounded-3xl">
             <CardContent className="p-4 text-center">
               <TrendingUp className="w-8 h-8 text-pink-500 mx-auto mb-2" />
@@ -127,7 +127,7 @@ export default function ProfilePage() {
               <p className="senior-text-sm text-gray-600">Favorites</p>
             </CardContent>
           </Card>
-        </div>
+        </div> */}
 
         {/* Upgrade Section for Free Users */}
         {!isPremium && (
