@@ -3,86 +3,17 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useUser } from "@clerk/nextjs"
-import { OnboardingQuestion } from "@/components/onboarding-question"
+import { OnboardingIntro } from "@/components/onboarding-intro"
+import { EmotionalQuestion } from "@/components/emotional-question"
 import { PersonalizedPlan } from "@/components/personalized-plan"
 import { PricingPlans } from "@/components/pricing-plans"
 import { useSupabaseClient } from "@/lib/supabase"
-import { Heart } from "lucide-react"
 
-const questions = [
-  {
-    id: "age",
-    title: "What's your age?",
-    subtitle: "This helps us create the perfect plan for you",
-    type: "age-selector",
-    options: ["40-50", "51-60", "61-70", "71+"],
-  },
-  {
-    id: "fitness_level",
-    title: "How would you describe your current fitness level?",
-    subtitle: "Be honest - we'll meet you where you are",
-    type: "single-choice",
-    options: ["Complete Beginner", "Some Experience", "Fairly Active", "Very Active"],
-  },
-  {
-    id: "primary_goal",
-    title: "What's your main goal?",
-    subtitle: "Choose what matters most to you right now",
-    type: "single-choice",
-    options: ["Lose Weight", "Reduce Pain", "Feel Younger", "Build Strength", "Improve Balance", "Boost Energy"],
-  },
-  {
-    id: "health_conditions",
-    title: "Do you have any health concerns?",
-    subtitle: "We'll customize exercises to keep you safe",
-    type: "multiple-choice",
-    options: ["Back Pain", "Knee Problems", "Arthritis", "High Blood Pressure", "Diabetes", "None of the above"],
-  },
-  {
-    id: "workout_time",
-    title: "How much time can you dedicate daily?",
-    subtitle: "Even 10 minutes can make a difference",
-    type: "single-choice",
-    options: ["10-15 minutes", "15-20 minutes", "20-30 minutes", "30+ minutes"],
-  },
-  {
-    id: "preferred_time",
-    title: "When do you prefer to exercise?",
-    subtitle: "Let's fit this into your routine",
-    type: "single-choice",
-    options: ["Early Morning", "Mid Morning", "Afternoon", "Evening", "Flexible"],
-  },
-  {
-    id: "motivation",
-    title: "What motivates you most?",
-    subtitle: "We'll use this to keep you inspired",
-    type: "single-choice",
-    options: ["Looking Great", "Feeling Strong", "Being Independent", "Having Energy", "Reducing Pain"],
-  },
-  {
-    id: "exercise_preference",
-    title: "What type of exercises appeal to you?",
-    subtitle: "Choose what sounds most enjoyable",
-    type: "multiple-choice",
-    options: ["Gentle Stretching", "Light Cardio", "Strength Training", "Balance Work", "Yoga-style", "Dance-inspired"],
-  },
-  {
-    id: "current_activity",
-    title: "How active are you currently?",
-    subtitle: "This helps us start at the right level",
-    type: "single-choice",
-    options: ["Mostly Sedentary", "Light Walking", "Some Exercise", "Regular Exercise"],
-  },
-  {
-    id: "biggest_challenge",
-    title: "What's your biggest fitness challenge?",
-    subtitle: "We'll help you overcome this",
-    type: "single-choice",
-    options: ["Lack of Time", "Low Energy", "Physical Limitations", "Don't Know Where to Start", "Staying Motivated"],
-  },
-]
+import { Heart } from "lucide-react"
+import { emotionalQuestions } from "@/lib/onboarding-questions"
 
 export default function OnboardingPage() {
+  const [showIntro, setShowIntro] = useState(true)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<Record<string, any>>({})
   const [showPlan, setShowPlan] = useState(false)
@@ -92,12 +23,16 @@ export default function OnboardingPage() {
   const { user } = useUser()
   const { getSupabaseClient } = useSupabaseClient()
 
+  const handleIntroComplete = () => {
+    setShowIntro(false)
+  }
+
   const handleAnswer = (questionId: string, answer: any) => {
     setAnswers((prev) => ({ ...prev, [questionId]: answer }))
   }
 
   const handleNext = () => {
-    if (currentQuestion < questions.length - 1) {
+    if (currentQuestion < emotionalQuestions.length - 1) {
       setCurrentQuestion((prev) => prev + 1)
     } else {
       generatePersonalizedPlan()
@@ -145,25 +80,40 @@ export default function OnboardingPage() {
       router.push("/dashboard")
     } else {
       // Handle premium plan with Stripe
-      router.push("/checkout")
+      router.push("/pricing")
     }
+  }
+
+  const canGoNext = () => {
+    const currentQ = emotionalQuestions[currentQuestion]
+    const answer = answers[currentQ.id]
+
+    if (currentQ.type === "input") {
+      return answer && answer.toString().trim() !== ""
+    }
+
+    if (currentQ.type === "multiple-choice") {
+      return answer && answer.length > 0
+    }
+
+    return !!answer
   }
 
   if (isLoading) {
     return (
-      <div className="app-container bg-gradient-to-br from-rose-50 to-pink-50 flex items-center justify-center">
+      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 flex items-center justify-center">
         <div className="text-center animate-fade-in">
-          <div className="w-24 h-24 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center mb-6 mx-auto animate-pulse">
+          <div className="w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mb-6 mx-auto animate-pulse">
             <Heart className="w-12 h-12 text-white" />
           </div>
           <h2 className="senior-text-xl font-bold text-gray-800 mb-4">Creating Your Personalized Plan</h2>
           <p className="senior-text-base text-gray-600 mb-6">
-            Analyzing your answers to design the perfect fitness journey...
+            Analyzing your answers to design the perfect transformation journey...
           </p>
           <div className="flex justify-center space-x-2">
-            <div className="w-3 h-3 bg-pink-500 rounded-full animate-bounce"></div>
-            <div className="w-3 h-3 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
-            <div className="w-3 h-3 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
+            <div className="w-3 h-3 bg-purple-500 rounded-full animate-bounce"></div>
+            <div className="w-3 h-3 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
+            <div className="w-3 h-3 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
           </div>
         </div>
       </div>
@@ -178,16 +128,20 @@ export default function OnboardingPage() {
     return <PersonalizedPlan answers={answers} onGetPlan={handleGetPlan} />
   }
 
+  if (showIntro) {
+    return <OnboardingIntro onContinue={handleIntroComplete} />
+  }
+
   return (
-    <OnboardingQuestion
-      question={questions[currentQuestion]}
+    <EmotionalQuestion
+      question={emotionalQuestions[currentQuestion]}
       currentStep={currentQuestion + 1}
-      totalSteps={questions.length}
-      answer={answers[questions[currentQuestion].id]}
+      totalSteps={emotionalQuestions.length}
+      answer={answers[emotionalQuestions[currentQuestion].id]}
       onAnswer={handleAnswer}
       onNext={handleNext}
       onPrevious={handlePrevious}
-      canGoNext={!!answers[questions[currentQuestion].id]}
+      canGoNext={canGoNext()}
     />
   )
 }
