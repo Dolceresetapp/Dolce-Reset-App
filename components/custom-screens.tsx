@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Gift, Stethoscope, CheckCircle, ArrowRight, Star } from "lucide-react"
+import { CheckCircle, ArrowRight, Star } from "lucide-react"
 import Image from "next/image"
 
 interface CustomScreenProps {
@@ -15,18 +15,20 @@ interface CustomScreenProps {
 export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
   const generateCustomOutput = () => {
     // Safety check for answers object
-    if (!answers) return "With SeniorFit, transform your body and feel amazing in just 30 days!"
+    if (!answers) return "Jane just changed her body in 30 days!"
 
-    const urgentGoals = answers.urgent_improvement || []
-    const bodyArea = answers.body_part_focus || "full body"
+    const urgentGoal = answers.urgent_improvement || "weight_loss"
+    const bodyArea = answers.body_part_focus || "full_body"
+    const currentBody = answers.current_body_type || "average"
+    const dreamBody = answers.dream_body || "toned"
 
-    const goalText = Array.isArray(urgentGoals)
-      ? urgentGoals.join(" and ").replace(/_/g, " ")
-      : urgentGoals.replace(/_/g, " ")
-
+    // Convert IDs to readable text
+    const goalText = urgentGoal.replace(/_/g, " ")
     const areaText = bodyArea.replace(/_/g, " ")
+    const currentBodyText = currentBody.replace(/_/g, " ")
+    const dreamBodyText = dreamBody.replace(/_/g, " ")
 
-    return `With SeniorFit, in just a few weeks you can improve ${goalText} and see visible changes in your ${areaText}!`
+    return `Jane just changed her ${goalText} and ${areaText} from ${currentBodyText} to ${dreamBodyText} in 30 days!`
   }
 
   const calculateBMI = () => {
@@ -58,44 +60,19 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
             <h1 className="text-lg font-bold text-gray-800 mb-4 leading-tight">{generateCustomOutput()}</h1>
           </div>
 
-          {/* Before/After Image */}
-          <Card className="mb-6 bg-white/90 border-purple-200 shadow-xl animate-slide-up rounded-3xl overflow-hidden">
-            <CardContent className="p-0">
-              <div className="relative">
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Refhj3o5S2aKqesBCwE1mZzTfrIEnZ.png"
-                  alt="Before and after transformation"
-                  width={400}
-                  height={300}
-                  className="w-full h-64 object-cover"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                  <div className="flex justify-between text-white">
-                    <div className="text-center">
-                      <p className="text-sm font-bold">GIORNO 1</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-sm font-bold">GIORNO 34</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Success Message */}
-          <Card className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 animate-slide-up">
-            <CardContent className="p-6 text-center">
-              <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
-              <h3 className="text-lg font-bold text-gray-800 mb-2">Your Transformation Awaits!</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Based on your goals, this personalized plan will help you achieve visible results in just 30 days!
-              </p>
-            </CardContent>
-          </Card>
+          {/* Before/After Image - Full size without overlay */}
+          <div className="mb-6 animate-slide-up rounded-3xl overflow-hidden">
+            <Image
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Refhj3o5S2aKqesBCwE1mZzTfrIEnZ.png"
+              alt="Before and after transformation"
+              width={400}
+              height={300}
+              className="w-full h-80 object-cover rounded-3xl"
+            />
+          </div>
         </div>
 
-        {/* Continue Button - Only for custom screens showing information */}
+        {/* Continue Button */}
         <div className="p-4">
           <Button
             onClick={onContinue}
@@ -111,31 +88,29 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
 
   if (type === "gift-box") {
     return (
-      <div className="app-container bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen flex flex-col">
+      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col">
         <div className="flex-1 flex items-center justify-center p-6">
-          <Card className="bg-gradient-to-r from-amber-400 to-orange-500 text-white border-0 shadow-2xl animate-fade-in rounded-3xl">
-            <CardContent className="p-8 text-center">
-              <div className="text-6xl mb-6 animate-bounce">🎁</div>
-              <h1 className="text-2xl font-bold mb-4">Special Gift for You!</h1>
-              <p className="text-lg opacity-90 mb-6 leading-relaxed">
-                You're about to unlock exclusive content designed just for your transformation journey!
-              </p>
-              <div className="bg-white/20 rounded-2xl p-4 mb-6">
-                <p className="text-sm font-medium">🎉 Personalized workout plan</p>
-                <p className="text-sm font-medium">🎉 Custom nutrition guide</p>
-                <p className="text-sm font-medium">🎉 Progress tracking tools</p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="text-center">
+            <h1 className="text-xl font-bold text-gray-800 mb-8">Wait until end there is some gift for you</h1>
+            <div className="flex justify-center">
+              <Image
+                src="/custom/gift.png"
+                alt="Special Gift"
+                width={300}
+                height={300}
+                className="w-80 h-80 object-contain"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="p-4">
           <Button
             onClick={onContinue}
-            className="w-full h-14 text-lg bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
+            className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
           >
-            <Gift className="w-6 h-6 mr-2" />
             Continue
+            <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
         </div>
       </div>
@@ -143,45 +118,29 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
   }
 
   if (type === "bmi-analysis") {
-    const bmi = calculateBMI()
-    const bmiData = bmi ? getBMICategory(Number.parseFloat(bmi)) : null
-
     return (
-      <div className="app-container bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 min-h-screen flex flex-col">
-        <div className="flex-1 p-4 pt-8">
-          <div className="text-center mb-6 animate-fade-in">
-            <h1 className="text-xl font-bold text-gray-800 mb-2">Your BMI Analysis</h1>
-            <p className="text-sm text-gray-600">Based on your height and weight</p>
+      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col">
+        <div className="flex-1 flex items-center justify-center p-6">
+          <div className="text-center">
+            <h1 className="text-xl font-bold text-gray-800 mb-8">
+              Hai Un Ottimo Potenziale Per Spaccare Ogni Traguardo
+            </h1>
+            <div className="flex justify-center">
+              <Image
+                src="/custom/graph.png"
+                alt="BMI Graph"
+                width={300}
+                height={300}
+                className="w-full h-auto object-contain"
+              />
+            </div>
           </div>
-
-          {bmi && bmiData && (
-            <Card className="mb-6 bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 shadow-xl animate-slide-up rounded-3xl">
-              <CardContent className="p-6 text-center">
-                <div className="text-4xl font-bold mb-2">{bmi}</div>
-                <p className="text-lg opacity-90 mb-4">{bmiData.category}</p>
-                <div className="bg-white/20 rounded-2xl p-4">
-                  <p className="text-sm font-medium">{bmiData.message}</p>
-                  <p className="text-xs opacity-90 mt-2">9% of people have your BMI - Perfect for transformation!</p>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          <Card className="bg-white/90 border-green-200 shadow-lg animate-slide-up">
-            <CardContent className="p-6 text-center">
-              <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
-              <h3 className="text-lg font-bold text-gray-800 mb-2">Excellent Starting Point!</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Your body metrics show great potential for achieving your fitness goals. Let's create your perfect plan!
-              </p>
-            </CardContent>
-          </Card>
         </div>
 
         <div className="p-4">
           <Button
             onClick={onContinue}
-            className="w-full h-14 text-lg bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
+            className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
           >
             Continue
             <ArrowRight className="w-5 h-5 ml-2" />
@@ -193,54 +152,26 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
 
   if (type === "doctor-screen") {
     return (
-      <div className="app-container bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50 min-h-screen flex flex-col">
-        <div className="flex-1 p-4 pt-8">
-          <div className="text-center mb-6 animate-fade-in">
-            <Stethoscope className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-            <h1 className="text-xl font-bold text-gray-800 mb-2">Doctor Recommended</h1>
-            <p className="text-sm text-gray-600">Trusted by healthcare professionals</p>
+      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col">
+        <div className="flex-1 flex items-center justify-center p-6">
+          <div className="text-center">
+            {/* <h1 className="text-xl font-bold text-gray-800 mb-8">Doctor Recommended</h1> */}
+            <div className="flex justify-center">
+              <Image
+                src="/custom/doctor.png"
+                alt="Doctor Recommendation"
+                width={300}
+                height={300}
+                className="w-full h-auto object-contain"
+              />
+            </div>
           </div>
-
-          <Card className="mb-6 bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0 shadow-xl animate-slide-up rounded-3xl">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                  <Stethoscope className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold">Dr. Sarah Johnson</h3>
-                  <p className="text-sm opacity-90">Sports Medicine Specialist</p>
-                </div>
-              </div>
-              <div className="bg-white/20 rounded-2xl p-4">
-                <p className="text-sm leading-relaxed">
-                  "This app provides safe, effective exercises specifically designed for women. The personalized
-                  approach ensures optimal results while minimizing injury risk."
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/90 border-blue-200 shadow-lg animate-slide-up">
-            <CardContent className="p-6">
-              <div className="grid grid-cols-2 gap-4 text-center">
-                <div>
-                  <div className="text-2xl font-bold text-blue-600">95%</div>
-                  <p className="text-xs text-gray-600">Doctor Approval</p>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-blue-600">Safe</div>
-                  <p className="text-xs text-gray-600">For All Ages</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         <div className="p-4">
           <Button
             onClick={onContinue}
-            className="w-full h-14 text-lg bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
+            className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
           >
             Continue
             <ArrowRight className="w-5 h-5 ml-2" />

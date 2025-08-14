@@ -22,8 +22,8 @@ export const emotionalQuestions: EmotionalQuestion[] = [
   {
     id: "urgent_improvement",
     title: "What do you feel most urgently needs to improve in your body right now?",
-    subtitle: "Multiple options can be selected 💕",
-    type: "multiple-choice",
+    subtitle: "Choose one option 💕",
+    type: "single-choice",
     options: [
       {
         id: "weight_loss",
@@ -140,7 +140,7 @@ export const emotionalQuestions: EmotionalQuestion[] = [
   },
   {
     id: "gift_screen",
-    title: "Special Gift for You!",
+    title: "Wait until end there is some gift for you",
     type: "custom-screen",
     customScreenType: "gift-box",
     options: [],
@@ -169,21 +169,14 @@ export const emotionalQuestions: EmotionalQuestion[] = [
   },
   {
     id: "bmi_result",
-    title: "Your BMI Analysis",
+    title: "Hai Un Ottimo Potenziale Per Spaccare Ogni Traguardo",
     type: "custom-screen",
     customScreenType: "bmi-analysis",
     options: [],
   },
   {
-    id: "doctor_recommendation",
-    title: "Doctor Recommended",
-    type: "custom-screen",
-    customScreenType: "doctor-screen",
-    options: [],
-  },
-  {
     id: "trying_duration",
-    title: "Have you tried to solve these problems?",
+    title: "Have you already tried solutions to solve these problems?",
     subtitle: "Select one answer 👎",
     type: "single-choice",
     options: [
@@ -208,15 +201,8 @@ export const emotionalQuestions: EmotionalQuestion[] = [
     ],
   },
   {
-    id: "comparison_screen",
-    title: "Why Choose Our Method",
-    type: "custom-screen",
-    customScreenType: "comparison",
-    options: [],
-  },
-  {
     id: "celebration_plan",
-    title: "How will you celebrate when you change? How will you feel?",
+    title: "HOW WILL YOU CELEBRATE WHEN YOU REACH YOUR GOALS?",
     subtitle: "Visualize your victory! 🎉",
     type: "single-choice",
     options: [
@@ -241,6 +227,20 @@ export const emotionalQuestions: EmotionalQuestion[] = [
         emoji: "😊",
       },
     ],
+  },
+  {
+    id: "doctor_recommendation",
+    title: "Doctor Recommended",
+    type: "custom-screen",
+    customScreenType: "doctor-screen",
+    options: [],
+  },
+  {
+    id: "comparison_screen",
+    title: "Why Choose Our Method",
+    type: "custom-screen",
+    customScreenType: "comparison",
+    options: [],
   },
   {
     id: "body_satisfaction",
