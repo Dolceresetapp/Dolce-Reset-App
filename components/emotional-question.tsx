@@ -132,7 +132,7 @@ export function EmotionalQuestion({
 
         {/* Input Type - Left Aligned */}
         {question.type === "input" && (
-          <div className="flex-1 flex flex-col">
+          <div className="flex-0 flex flex-col">
             <div className="mb-6">
               <input
                 type={question.inputType || "text"}
