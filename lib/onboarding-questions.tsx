@@ -38,23 +38,23 @@ export const emotionalQuestions: EmotionalQuestion[] = [
       {
         id: "better_sleep",
         label: "BETTER SLEEP / ENERGY",
-        image: "/improvedbody/7.png",
+        image: "/improvedbody/4.png",
       },
       {
         id: "improve_aches",
         label: "IMPROVE Aches / Stiffness",
         image: "/improvedbody/5.png",
       },
-      {
-        id: "get_healthier",
-        label: "GET HEALTHIER",
-        image: "/improvedbody/6.png",
-      },
-      {
-        id: "everything",
-        label: "Everything",
-        image: "/improvedbody/20.png",
-      },
+      // {
+      //   id: "get_healthier",
+      //   label: "GET HEALTHIER",
+      //   image: "/improvedbody/6.png",
+      // },
+      // {
+      //   id: "everything",
+      //   label: "Everything",
+      //   image: "/improvedbody/20.png",
+      // },
     ],
   },
   {
@@ -123,18 +123,18 @@ export const emotionalQuestions: EmotionalQuestion[] = [
     options: [
       {
         id: "toned",
-        label: "Toned & Athletic",
-        image: "/sizes/18.png",
+        label: "Healthy and Fit",
+        image: "/improvedbody/2.png",
       },
       {
         id: "curvy",
         label: "Curvy & Confident",
-        image: "/sizes/15.png",
+        image: "/improvedbody/13.png",
       },
       {
         id: "strong",
         label: "Strong & Healthy",
-        image: "/sizes/16.png",
+        image: "/bodyparts/12.png",
       },
     ],
   },

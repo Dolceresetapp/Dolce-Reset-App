@@ -236,12 +236,12 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
   }
 
   return (
-    <div className="app-container bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50 min-h-screen">
+    <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen">
       <div className="p-4 pt-8">
         {/* Header */}
         <div className="text-center mb-6 animate-fade-in">
-          <h1 className="text-xl font-bold text-gray-800 mb-2">Creating your</h1>
-          <h2 className="text-2xl font-bold text-blue-600 mb-4">personalized plan...</h2>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Creating your</h1>
+          <h2 className="text-2xl font-bold text-purple-600 mb-4">Personalized plan...</h2>
         </div>
 
         {/* Progress Steps */}
@@ -253,9 +253,9 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
                   {step.label}
                 </span>
                 <div className="flex items-center space-x-2">
-                  {index < currentStep && <CheckCircle className="w-4 h-4 text-blue-500" />}
+                  {index < currentStep && <CheckCircle className="w-4 h-4 text-purple-500" />}
                   {index === currentStep && (
-                    <span className="text-sm font-medium text-blue-600">{step.percentage}%</span>
+                    <span className="text-sm font-medium text-purple-600">{step.percentage}%</span>
                   )}
                 </div>
               </div>
@@ -263,9 +263,9 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
                 <div
                   className={`h-2 rounded-full transition-all duration-1000 ${
                     index < currentStep
-                      ? "bg-blue-500 w-full"
+                      ? "bg-purple-500 w-full"
                       : index === currentStep
-                        ? "bg-blue-500"
+                        ? "bg-purple-500"
                         : "bg-gray-200 w-0"
                   }`}
                   style={{
@@ -283,12 +283,12 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
             {[1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
-                className="w-8 h-8 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-full border-2 border-white flex items-center justify-center"
+                className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full border-2 border-white flex items-center justify-center"
               >
                 <Users className="w-4 h-4 text-white" />
               </div>
             ))}
-            <div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center">
+            <div className="w-8 h-8 bg-purple-500 rounded-full border-2 border-white flex items-center justify-center">
               <Star className="w-4 h-4 text-white" />
             </div>
           </div>
@@ -303,7 +303,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
 
         {/* Testimonial Card */}
         <Card
-          className="mb-6 bg-white/90 border-blue-200 shadow-lg animate-slide-up"
+          className="mb-6 bg-white/90 border-purple-200 shadow-lg animate-slide-up"
           style={{ animationDelay: "0.6s" }}
         >
           <CardContent className="p-6">
@@ -323,7 +323,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
               {/* Author */}
               <div className="flex items-center justify-center space-x-2">
                 <p className="text-sm font-bold text-gray-800">{testimonials[currentTestimonial].name}</p>
-                <Badge className="bg-blue-100 text-blue-700 text-xs">{testimonials[currentTestimonial].age}</Badge>
+                <Badge className="bg-purple-100 text-purple-700 text-xs">{testimonials[currentTestimonial].age}</Badge>
               </div>
             </div>
           </CardContent>
@@ -335,7 +335,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
             <div
               key={index}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentTestimonial ? "bg-blue-500" : "bg-blue-200"
+                index === currentTestimonial ? "bg-purple-500" : "bg-purple-200"
               }`}
             />
           ))}

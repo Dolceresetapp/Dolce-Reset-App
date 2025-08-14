@@ -56,18 +56,18 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
         <div className="flex-1 p-4 pt-8">
           {/* Header */}
           <div className="text-center mb-6 animate-fade-in">
-            <Badge className="bg-purple-100 text-purple-700 text-sm mb-4 px-4 py-2 rounded-full">OUTPUT CUSTOM</Badge>
+            {/* <Badge className="bg-purple-100 text-purple-700 text-sm mb-4 px-4 py-2 rounded-full">OUTPUT CUSTOM</Badge> */}
             <h1 className="text-lg font-bold text-gray-800 mb-4 leading-tight">{generateCustomOutput()}</h1>
           </div>
 
           {/* Before/After Image - Full size without overlay */}
           <div className="mb-6 animate-slide-up rounded-3xl overflow-hidden">
             <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Refhj3o5S2aKqesBCwE1mZzTfrIEnZ.png"
+              src="/custom/beforeafter.png"
               alt="Before and after transformation"
               width={400}
               height={300}
-              className="w-full h-80 object-cover rounded-3xl"
+              className="w-full h-auto object-cover rounded-3xl"
             />
           </div>
         </div>
@@ -185,72 +185,9 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
     return (
       <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col">
         <div className="flex-1 p-4 pt-8">
-          <div className="text-center mb-6 animate-fade-in">
-            <Badge className="bg-purple-100 text-purple-700 text-sm mb-4 px-4 py-2 rounded-full">OUTPUT CUSTOM</Badge>
-            <h1 className="text-lg font-bold text-gray-800 mb-2">Why Choose Our Method</h1>
-          </div>
+         <Image src={'/custom/why.png'} alt="Why Choose Our Method" width={400} height={300} className="w-full h-auto object-contain" />
 
-          <div className="grid grid-cols-2 gap-3 animate-slide-up">
-            {/* Other Solutions */}
-            <Card className="bg-red-50 border-red-200 rounded-2xl">
-              <CardContent className="p-4">
-                <h3 className="text-sm font-bold text-red-700 mb-3 text-center">OTHER SOLUTIONS</h3>
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <p className="text-xs text-gray-700">Expensive gym memberships</p>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <p className="text-xs text-gray-700">Strict diets</p>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <p className="text-xs text-gray-700">No support</p>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <p className="text-xs text-gray-700">Generic methods</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Our Solution */}
-            <Card className="bg-green-50 border-green-200 rounded-2xl">
-              <CardContent className="p-4">
-                <h3 className="text-sm font-bold text-green-700 mb-3 text-center">SENIORFIT</h3>
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <CheckCircle className="w-3 h-3 text-green-500" />
-                    <p className="text-xs text-gray-700">Home workouts</p>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <CheckCircle className="w-3 h-3 text-green-500" />
-                    <p className="text-xs text-gray-700">No strict diet</p>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <CheckCircle className="w-3 h-3 text-green-500" />
-                    <p className="text-xs text-gray-700">24/7 support</p>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <CheckCircle className="w-3 h-3 text-green-500" />
-                    <p className="text-xs text-gray-700">Personalized plan</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card className="mt-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 animate-slide-up">
-            <CardContent className="p-6 text-center">
-              <Star className="w-12 h-12 text-green-500 mx-auto mb-4" />
-              <h3 className="text-lg font-bold text-gray-800 mb-2">The Smart Choice</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Join thousands who chose the effective, sustainable path to transformation!
-              </p>
-            </CardContent>
-          </Card>
+          
         </div>
 
         <div className="p-4">

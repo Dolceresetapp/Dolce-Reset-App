@@ -23,8 +23,8 @@ export function OnboardingIntro({ onContinue }: OnboardingIntroProps) {
   // First Screen (existing)
   if (currentScreen === 1) {
     return (
-      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen">
-        <div className="p-6 pt-12 pb-24">
+      <div className="app-container flex flex-col place-items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen">
+        <div className="p-6 pt-12 pb-24 flex-1 flex flex-col items-center justify-center">
           {/* Success Stats */}
           <div className="text-center mb-8 animate-fade-in">
             <h1 className="senior-text-xl font-bold text-gray-800 mb-4 leading-tight">
@@ -33,13 +33,22 @@ export function OnboardingIntro({ onContinue }: OnboardingIntroProps) {
               <span className="text-purple-600">WITHOUT SACRIFICES</span>
             </h1>
           </div>
-
+  
           {/* Rating Card */}
-          <Image src={"/first.png"} width={500} height={500} alt="first" />
-
+          <div className="flex justify-center items-center w-full">
+            <Image
+              src="/first.png"
+              width={500}
+              height={500}
+              alt="first"
+              className="object-contain"
+            />
+          </div>
+  
           {/* Benefits Preview */}
           <br />
         </div>
+  
         {/* Fixed Bottom Button */}
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
           <div className="max-w-md mx-auto">
@@ -53,8 +62,9 @@ export function OnboardingIntro({ onContinue }: OnboardingIntroProps) {
           </div>
         </div>
       </div>
-    )
+    );
   }
+  
 
   // Second Screen (new)
   return (

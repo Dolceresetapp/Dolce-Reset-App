@@ -141,11 +141,11 @@ export function EmotionalQuestion({
         )}
 
         {(question.type === "single-choice" || question.type === "multiple-choice") && (
-          <div className="grid grid-cols-1 gap-3 animate-slide-up">
+          <div className="space-y-3 animate-slide-up">
             {question.options.map((option, index) => (
               <Card
                 key={option.id}
-                className={`cursor-pointer transition-all duration-300 hover:scale-105 border-2 ${
+                className={`cursor-pointer -py-3 transition-all duration-300 hover:scale-105 border-2 ${
                   question.type === "single-choice"
                     ? answer === option.id
                       ? "border-purple-400 bg-purple-50 shadow-lg"
@@ -161,10 +161,10 @@ export function EmotionalQuestion({
                   animationDelay: `${index * 100}ms`,
                 }}
               >
-                <CardContent className="p-0 flex items-center">
-                  <div>
+                <CardContent className="p-4 flex items-center space-x-4">
+                  {/* Image or Emoji on the left */}
                   {option.image && (
-                    <div className="aspect-square relative">
+                    <div className="w-16 h-16 relative flex-shrink-0 rounded-xl overflow-hidden">
                       <Image
                         src={option.image || "/placeholder.svg"}
                         alt={option.label}
@@ -173,13 +173,16 @@ export function EmotionalQuestion({
                       />
                     </div>
                   )}
-                  </div>
-                  <div className="p-3 text-center">
-                    <div className="flex items-center justify-center space-x-2">
-                      {option.emoji && <span className="text-lg">{option.emoji}</span>}
-                      <p className="text-sm font-medium text-gray-800 leading-tight">{option.label}</p>
+                  {option.emoji && !option.image && (
+                    <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl">
+                      <span className="text-2xl">{option.emoji}</span>
                     </div>
-                    {option.description && <p className="text-xs text-gray-600 mt-1">{option.description}</p>}
+                  )}
+
+                  {/* Text content on the right */}
+                  <div className="flex-1 text-left">
+                    <p className="text-base font-medium text-gray-800 leading-tight">{option.label}</p>
+                    {option.description && <p className="text-sm text-gray-600 mt-1">{option.description}</p>}
                   </div>
                 </CardContent>
               </Card>
