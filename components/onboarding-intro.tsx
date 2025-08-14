@@ -33,22 +33,16 @@ export function OnboardingIntro({ onContinue }: OnboardingIntroProps) {
               <span className="text-purple-600">WITHOUT SACRIFICES</span>
             </h1>
           </div>
-  
+
           {/* Rating Card */}
           <div className="flex justify-center items-center w-full">
-            <Image
-              src="/first.png"
-              width={500}
-              height={500}
-              alt="first"
-              className="object-contain"
-            />
+            <Image src="/first.png" width={500} height={500} alt="first" className="object-contain" />
           </div>
-  
+
           {/* Benefits Preview */}
           <br />
         </div>
-  
+
         {/* Fixed Bottom Button */}
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
           <div className="max-w-md mx-auto">
@@ -62,9 +56,8 @@ export function OnboardingIntro({ onContinue }: OnboardingIntroProps) {
           </div>
         </div>
       </div>
-    );
+    )
   }
-  
 
   // Second Screen (new)
   return (

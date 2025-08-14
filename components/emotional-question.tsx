@@ -78,33 +78,35 @@ export function EmotionalQuestion({
 
   return (
     <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col">
-      {/* Progress Bar */}
-      <div className="w-full bg-white/50 h-2">
-        <div
-          className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-500 ease-out"
-          style={{ width: `${(currentStep / totalSteps) * 100}%` }}
-        />
+      {/* Fixed Progress Bar at Top */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm">
+        <div className="w-full bg-white/50 h-2">
+          <div
+            className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-500 ease-out"
+            style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+          />
+        </div>
+
+        {/* Header */}
+        <div className="flex items-center justify-between p-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onPrevious}
+            className="text-gray-600 hover:text-gray-800"
+            disabled={currentStep === 1}
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <Badge variant="secondary" className="bg-white/80 text-gray-700">
+            {currentStep} / {totalSteps}
+          </Badge>
+          <div className="w-10" />
+        </div>
       </div>
 
-      {/* Header */}
-      <div className="flex items-center justify-between p-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onPrevious}
-          className="text-gray-600 hover:text-gray-800"
-          disabled={currentStep === 1}
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </Button>
-        <Badge variant="secondary" className="bg-white/80 text-gray-700">
-          {currentStep} / {totalSteps}
-        </Badge>
-        <div className="w-10" />
-      </div>
-
-      {/* Content */}
-      <div className="flex-1 p-4">
+      {/* Content with top padding to account for fixed header */}
+      <div className="flex-1 pt-20 pb-24 p-4 overflow-y-auto">
         <div className="text-left mb-8 animate-fade-in">
           <h1 className="text-xl font-bold text-gray-800 mb-2 leading-tight">{question.title}</h1>
           {question.subtitle && <p className="text-sm text-gray-600">{question.subtitle}</p>}
@@ -128,15 +130,6 @@ export function EmotionalQuestion({
                 }}
               />
             </div>
-            {inputValue && (
-              <Button
-                onClick={handleInputSubmit}
-                className="w-full h-12 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-105"
-              >
-                Continue
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-            )}
           </div>
         )}
 
@@ -189,19 +182,21 @@ export function EmotionalQuestion({
             ))}
           </div>
         )}
-
-        {question.type === "multiple-choice" && selectedOptions.length > 0 && (
-          <div className="mt-6">
-            <Button
-              onClick={onNext}
-              className="w-full h-12 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-105"
-            >
-              Continue
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </div>
-        )}
       </div>
+
+      {/* Fixed Bottom Button */}
+      {((question.type === "input" && inputValue) ||
+        (question.type === "multiple-choice" && selectedOptions.length > 0)) && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
+          <Button
+            onClick={question.type === "input" ? handleInputSubmit : onNext}
+            className="w-full h-12 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-105"
+          >
+            Continue
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

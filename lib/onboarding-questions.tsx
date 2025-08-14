@@ -45,16 +45,6 @@ export const emotionalQuestions: EmotionalQuestion[] = [
         label: "IMPROVE Aches / Stiffness",
         image: "/improvedbody/5.png",
       },
-      // {
-      //   id: "get_healthier",
-      //   label: "GET HEALTHIER",
-      //   image: "/improvedbody/6.png",
-      // },
-      // {
-      //   id: "everything",
-      //   label: "Everything",
-      //   image: "/improvedbody/20.png",
-      // },
     ],
   },
   {
