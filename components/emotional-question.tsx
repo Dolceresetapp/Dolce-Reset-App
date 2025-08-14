@@ -5,12 +5,13 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Heart, ArrowRight } from "lucide-react"
 import Image from "next/image"
+import { CustomScreen } from "./custom-screens"
 
 interface EmotionalQuestion {
   id: string
   title: string
   subtitle?: string
-  type: "single-choice" | "input"
+  type: "single-choice" | "multiple-choice" | "input" | "custom-screen"
   options: Array<{
     id: string
     label: string
@@ -23,6 +24,7 @@ interface EmotionalQuestion {
   placeholder?: string
   min?: number
   max?: number
+  customScreenType?: string
 }
 
 interface EmotionalQuestionProps {
@@ -30,6 +32,7 @@ interface EmotionalQuestionProps {
   currentStep: number
   totalSteps: number
   answer: any
+  answers: Record<string, any>
   onAnswer: (questionId: string, answer: any) => void
   onNext: () => void
   onPrevious: () => void
@@ -41,6 +44,7 @@ export function EmotionalQuestion({
   currentStep,
   totalSteps,
   answer,
+  answers,
   onAnswer,
   onNext,
   onPrevious,
@@ -53,12 +57,25 @@ export function EmotionalQuestion({
     setInputValue("")
   }, [question.id])
 
+  // Handle custom screens
+  if (question.type === "custom-screen") {
+    return <CustomScreen type={question.customScreenType || ""} answers={answers} onContinue={onNext} />
+  }
+
   const handleOptionSelect = (optionId: string) => {
-    onAnswer(question.id, optionId)
-    // Auto-advance for single-choice questions
-    setTimeout(() => {
-      onNext()
-    }, 400)
+    if (question.type === "multiple-choice") {
+      const currentAnswers = answer || []
+      const newAnswers = currentAnswers.includes(optionId)
+        ? currentAnswers.filter((a: string) => a !== optionId)
+        : [...currentAnswers, optionId]
+      onAnswer(question.id, newAnswers)
+    } else {
+      onAnswer(question.id, optionId)
+      // Auto-advance for single-choice questions
+      setTimeout(() => {
+        onNext()
+      }, 400)
+    }
   }
 
   const handleInputChange = (value: string) => {
@@ -67,25 +84,11 @@ export function EmotionalQuestion({
   }
 
   const isSelected = (optionId: string) => {
+    if (question.type === "multiple-choice") {
+      return answer?.includes(optionId) || false
+    }
     return answer === optionId
   }
-
-  // Calculate BMI for target weight input
-  const calculateBMI = () => {
-    if (question.id === "target_weight" && inputValue) {
-      // This is a simplified calculation - in real app you'd get height from previous answers
-      const targetWeight = Number.parseFloat(inputValue) || 0
-      const height = 165 // Default height for demo
-      if (targetWeight > 0 && height > 0) {
-        const heightInM = height / 100
-        const bmi = (targetWeight / (heightInM * heightInM)).toFixed(1)
-        return bmi
-      }
-    }
-    return null
-  }
-
-  const bmi = calculateBMI()
 
   return (
     <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col">
@@ -132,7 +135,7 @@ export function EmotionalQuestion({
 
         {/* Input Type - Left Aligned */}
         {question.type === "input" && (
-          <div className="flex-0 flex flex-col">
+          <div className="flex-1 flex flex-col">
             <div className="mb-6">
               <input
                 type={question.inputType || "text"}
@@ -141,44 +144,9 @@ export function EmotionalQuestion({
                 onChange={(e) => handleInputChange(e.target.value)}
                 min={question.min}
                 max={question.max}
-                className="w-full h-16 text-xl px-6 rounded-3xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none bg-white/80 text-left font-bold shadow-lg"
+                className="w-full h-12 text-lg px-4 rounded-2xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none bg-white/80 text-left font-bold shadow-lg"
                 autoFocus
               />
-
-              {/* BMI Display for target weight */}
-              {bmi && (
-                <div className="mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-200">
-                  <div className="text-left">
-                    <p className="text-sm font-medium text-gray-700 mb-1">Your Target BMI</p>
-                    <p className="text-2xl font-bold text-green-600">{bmi}</p>
-                    <p className="text-xs text-gray-600">
-                      {Number.parseFloat(bmi) < 18.5
-                        ? "Underweight"
-                        : Number.parseFloat(bmi) < 25
-                          ? "Normal"
-                          : Number.parseFloat(bmi) < 30
-                            ? "Overweight"
-                            : "Obese"}
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Age-specific encouragement */}
-              {question.id === "age" && inputValue && Number.parseFloat(inputValue) >= 18 && (
-                <div className="mt-4 p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl border border-pink-200">
-                  <div className="text-left">
-                    <p className="text-sm font-medium text-gray-700 mb-1">Perfect Age for Transformation! 💪</p>
-                    <p className="text-sm text-gray-600">
-                      {Number.parseFloat(inputValue) < 30
-                        ? "You're in your prime - perfect time to build healthy habits!"
-                        : Number.parseFloat(inputValue) < 50
-                          ? "This is your decade to prioritize your health and feel amazing!"
-                          : "Age is just a number - you're never too young to feel your best!"}
-                    </p>
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Continue Button for Input - Fixed at bottom */}
@@ -195,10 +163,10 @@ export function EmotionalQuestion({
           </div>
         )}
 
-        {/* Single Choice Options - Left Aligned */}
-        {question.type === "single-choice" && (
+        {/* Choice Options - Left Aligned */}
+        {(question.type === "single-choice" || question.type === "multiple-choice") && (
           <div className="flex-1 flex flex-col justify-start">
-            <div className="space-y-3">
+            <div className="space-y-3 mb-6">
               {question.options.map((option, index) => (
                 <Card
                   key={option.id}
@@ -248,6 +216,20 @@ export function EmotionalQuestion({
                 </Card>
               ))}
             </div>
+
+            {/* Continue Button ONLY for Multiple Choice - NOT for single choice */}
+            {question.type === "multiple-choice" && (
+              <div className="mt-auto">
+                <Button
+                  onClick={onNext}
+                  disabled={!canGoNext}
+                  className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105 disabled:opacity-50"
+                >
+                  Continue
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>

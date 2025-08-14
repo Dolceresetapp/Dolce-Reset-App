@@ -5,8 +5,7 @@ import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Star, Users, TrendingUp, Sparkles, Crown, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react"
-import Image from "next/image"
+import { Heart, Star, Users, Sparkles, Crown, CheckCircle } from "lucide-react"
 
 interface PlanGenerationProps {
   answers: Record<string, any>
@@ -40,24 +39,31 @@ const testimonials = [
   },
 ]
 
+const progressSteps = [
+  { label: "Scanning your goals", percentage: 100 },
+  { label: "Analyzing body parameters", percentage: 47 },
+  { label: "Choosing workouts to your needs", percentage: 0 },
+  { label: "Generating your action plan", percentage: 0 },
+]
+
 export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
   const { user } = useUser()
-  const [progress, setProgress] = useState(0)
+  const [currentStep, setCurrentStep] = useState(0)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const [showResults, setShowResults] = useState(false)
-  const [activeUsers] = useState(Math.floor(Math.random() * 500) + 2847)
+  const [activeUsers] = useState(Math.floor(Math.random() * 500) + 7823489)
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
+      setCurrentStep((prev) => {
+        if (prev >= progressSteps.length - 1) {
           clearInterval(timer)
-          setTimeout(() => setShowResults(true), 500)
-          return 100
+          setTimeout(() => setShowResults(true), 1000)
+          return prev
         }
-        return prev + 2.5 // Slower progress for 40 seconds (100 / 2.5 = 40 seconds)
+        return prev + 1
       })
-    }, 1000) // Update every second
+    }, 5000) // 5 seconds per step
 
     // Auto-rotate testimonials every 8 seconds
     const testimonialTimer = setInterval(() => {
@@ -87,24 +93,14 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
     return "22.5" // Default
   }
 
-  const calculateTargetBMI = () => {
-    const height = Number.parseFloat(answers.height) / 100 // Convert cm to m
-    const targetWeight = Number.parseFloat(answers.target_weight)
-    if (height && targetWeight) {
-      return (targetWeight / (height * height)).toFixed(1)
-    }
-    return "20.5" // Default
-  }
-
   const getWeightLoss = () => {
     const current = Number.parseFloat(answers.current_weight) || 70
-    const target = Number.parseFloat(answers.target_weight) || 60
-    return Math.abs(current - target).toFixed(1)
+    const target = current - 5 // Assume 5kg loss goal
+    return "5.0"
   }
 
   if (showResults) {
     const currentBMI = calculateBMI()
-    const targetBMI = calculateTargetBMI()
     const weightLoss = getWeightLoss()
     const userName = user?.firstName || "Beautiful"
 
@@ -148,8 +144,8 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
                   </div>
                   <div className="text-center">
                     <p className="text-xs opacity-90">Target</p>
-                    <p className="text-lg font-bold">{answers.target_weight}kg</p>
-                    <p className="text-xs opacity-75">BMI {targetBMI}</p>
+                    <p className="text-lg font-bold">{Number.parseFloat(answers.current_weight) - 5}kg</p>
+                    <p className="text-xs opacity-75">BMI {(Number.parseFloat(currentBMI) - 1.5).toFixed(1)}</p>
                   </div>
                 </div>
               </div>
@@ -185,17 +181,22 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
               <div className="space-y-2">
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Daily {answers.body_part_focus || "full body"} workouts</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Personalized for {answers.age || "your age"} group</span>
+                  <span className="text-sm text-gray-700">
+                    Daily {answers.body_part_focus?.replace("_", " ") || "full body"} workouts
+                  </span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                   <span className="text-sm text-gray-700">
-                    Focus on {answers.urgent_improvement?.replace("_", " ") || "fitness"}
+                    Focus on{" "}
+                    {Array.isArray(answers.urgent_improvement)
+                      ? answers.urgent_improvement.join(" & ").replace(/_/g, " ")
+                      : answers.urgent_improvement?.replace("_", " ") || "fitness"}
                   </span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700">BMI optimization from {currentBMI} to ideal range</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
@@ -235,135 +236,106 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
   }
 
   return (
-    <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen">
+    <div className="app-container bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50 min-h-screen">
       <div className="p-4 pt-8">
         {/* Header */}
         <div className="text-center mb-6 animate-fade-in">
-          <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mb-4 mx-auto shadow-xl animate-pulse">
-            <Heart className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-xl font-bold text-gray-800 mb-2">
-            Creating Your Custom Plan, {user?.firstName || "Beautiful"}!
-          </h1>
-          <p className="text-sm text-gray-600">Analyzing your data for the perfect 30-day transformation...</p>
+          <h1 className="text-xl font-bold text-gray-800 mb-2">Creating your</h1>
+          <h2 className="text-2xl font-bold text-blue-600 mb-4">personalized plan...</h2>
         </div>
 
-        {/* Progress Bar */}
-        <div className="mb-6 animate-slide-up">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-gray-700">Building Your Custom Plan</span>
-            <span className="text-sm font-medium text-purple-600">{Math.round(progress)}%</span>
-          </div>
-          <div className="w-full bg-purple-100 rounded-full h-3">
-            <div
-              className="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full transition-all duration-1000"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        </div>
-
-        {/* Before/After Image */}
-        <Card
-          className="mb-4 bg-white/90 border-purple-200 shadow-lg animate-slide-up"
-          style={{ animationDelay: "0.2s" }}
-        >
-          <CardContent className="p-4">
-            <h3 className="text-base font-bold text-gray-800 mb-3 text-center">Real 30-Day Transformations</h3>
-            <div className="relative rounded-xl overflow-hidden">
-              <Image
-                src="/bodyparts/beforeafter.png"
-                alt="Before and after transformation"
-                width={400}
-                height={500}
-                className="w-full h-[500px] object-contain rounded-3xl"
-              />
-              {/* <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
-                <div className="p-3 text-white">
-                  <p className="text-sm font-bold">Amazing Results in Just 30 Days!</p>
-                  <p className="text-xs opacity-90">Your custom plan delivers real results</p>
+        {/* Progress Steps */}
+        <div className="space-y-4 mb-6">
+          {progressSteps.map((step, index) => (
+            <div key={index} className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+              <div className="flex justify-between items-center mb-2">
+                <span className={`text-sm font-medium ${index <= currentStep ? "text-gray-800" : "text-gray-400"}`}>
+                  {step.label}
+                </span>
+                <div className="flex items-center space-x-2">
+                  {index < currentStep && <CheckCircle className="w-4 h-4 text-blue-500" />}
+                  {index === currentStep && (
+                    <span className="text-sm font-medium text-blue-600">{step.percentage}%</span>
+                  )}
                 </div>
-              </div> */}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Live Stats */}
-        <div className="grid grid-cols-2 gap-3 mb-4 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-          <Card className="bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200">
-            <CardContent className="p-3 text-center">
-              <Users className="w-5 h-5 text-blue-500 mx-auto mb-1" />
-              <p className="text-sm font-bold text-gray-800">{activeUsers.toLocaleString()}</p>
-              <p className="text-xs text-gray-600">Active Users</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
-            <CardContent className="p-3 text-center">
-              <TrendingUp className="w-5 h-5 text-green-500 mx-auto mb-1" />
-              <p className="text-sm font-bold text-gray-800">94%</p>
-              <p className="text-xs text-gray-600">Success Rate</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Testimonial Slider - No Profile Images */}
-        <Card
-          className="mb-4 bg-white/90 border-purple-200 shadow-lg animate-slide-up"
-          style={{ animationDelay: "0.4s" }}
-        >
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-base font-bold text-gray-800">Success Stories</h3>
-              <div className="flex space-x-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={prevTestimonial}
-                  className="h-8 w-8 rounded-full hover:bg-purple-100"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={nextTestimonial}
-                  className="h-8 w-8 rounded-full hover:bg-purple-100"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className={`h-2 rounded-full transition-all duration-1000 ${
+                    index < currentStep
+                      ? "bg-blue-500 w-full"
+                      : index === currentStep
+                        ? "bg-blue-500"
+                        : "bg-gray-200 w-0"
+                  }`}
+                  style={{
+                    width: index < currentStep ? "100%" : index === currentStep ? `${step.percentage}%` : "0%",
+                  }}
+                />
               </div>
             </div>
+          ))}
+        </div>
 
+        {/* User Avatars */}
+        <div className="flex justify-center mb-4 animate-slide-up" style={{ animationDelay: "0.4s" }}>
+          <div className="flex -space-x-2">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div
+                key={i}
+                className="w-8 h-8 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-full border-2 border-white flex items-center justify-center"
+              >
+                <Users className="w-4 h-4 text-white" />
+              </div>
+            ))}
+            <div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center">
+              <Star className="w-4 h-4 text-white" />
+            </div>
+          </div>
+        </div>
+
+        {/* Trusted By */}
+        <div className="text-center mb-6 animate-slide-up" style={{ animationDelay: "0.5s" }}>
+          <h3 className="text-lg font-bold text-gray-800 mb-2">
+            Trusted by over {activeUsers.toLocaleString()} clients
+          </h3>
+        </div>
+
+        {/* Testimonial Card */}
+        <Card
+          className="mb-6 bg-white/90 border-blue-200 shadow-lg animate-slide-up"
+          style={{ animationDelay: "0.6s" }}
+        >
+          <CardContent className="p-6">
             <div className="text-center">
               {/* Rating Stars */}
-              <div className="flex items-center justify-center space-x-1 mb-3">
+              <div className="flex items-center justify-center space-x-1 mb-4">
                 {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
 
               {/* Review Text */}
-              <p className="text-sm text-gray-700 leading-relaxed mb-3 italic">
+              <p className="text-sm text-gray-700 leading-relaxed mb-4 italic">
                 "{testimonials[currentTestimonial].text}"
               </p>
 
-              {/* Author - No Profile Image */}
+              {/* Author */}
               <div className="flex items-center justify-center space-x-2">
                 <p className="text-sm font-bold text-gray-800">{testimonials[currentTestimonial].name}</p>
-                <Badge className="bg-purple-100 text-purple-700 text-xs">
-                  Age {testimonials[currentTestimonial].age}
-                </Badge>
+                <Badge className="bg-blue-100 text-blue-700 text-xs">{testimonials[currentTestimonial].age}</Badge>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Dots Indicator */}
-        <div className="flex justify-center space-x-2 animate-slide-up" style={{ animationDelay: "0.6s" }}>
+        <div className="flex justify-center space-x-2 animate-slide-up" style={{ animationDelay: "0.8s" }}>
           {testimonials.map((_, index) => (
             <div
               key={index}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentTestimonial ? "bg-purple-500" : "bg-purple-200"
+                index === currentTestimonial ? "bg-blue-500" : "bg-blue-200"
               }`}
             />
           ))}

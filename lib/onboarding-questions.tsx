@@ -2,7 +2,7 @@ export interface EmotionalQuestion {
   id: string
   title: string
   subtitle?: string
-  type: "single-choice" | "input"
+  type: "single-choice" | "multiple-choice" | "input" | "custom-screen"
   options: Array<{
     id: string
     label: string
@@ -15,14 +15,15 @@ export interface EmotionalQuestion {
   placeholder?: string
   min?: number
   max?: number
+  customScreenType?: string
 }
 
 export const emotionalQuestions: EmotionalQuestion[] = [
   {
     id: "urgent_improvement",
-    title: "What needs to improve most urgently?",
-    subtitle: "Select your main priority 💕",
-    type: "single-choice",
+    title: "What do you feel most urgently needs to improve in your body right now?",
+    subtitle: "Multiple options can be selected 💕",
+    type: "multiple-choice",
     options: [
       {
         id: "weight_loss",
@@ -31,47 +32,69 @@ export const emotionalQuestions: EmotionalQuestion[] = [
       },
       {
         id: "get_fit",
-        label: "Get Fit & Strong",
+        label: "GET FIT",
         image: "/improvedbody/13.png",
       },
       {
-        id: "reduce_pain",
-        label: "Reduce Pain",
+        id: "better_sleep",
+        label: "BETTER SLEEP / ENERGY",
+        image: "/improvedbody/7.png",
+      },
+      {
+        id: "improve_aches",
+        label: "IMPROVE Aches / Stiffness",
         image: "/improvedbody/5.png",
       },
       {
-        id: "feel_younger",
-        label: "Feel Younger",
-        image: "/improvedbody/7.png",
+        id: "get_healthier",
+        label: "GET HEALTHIER",
+        image: "/improvedbody/6.png",
+      },
+      {
+        id: "everything",
+        label: "Everything",
+        image: "/improvedbody/20.png",
       },
     ],
   },
   {
     id: "body_part_focus",
-    title: "Which area to change in 30 days?",
+    title: "Which body part would you like to see a change in as early as 30 days?",
     subtitle: "Choose your focus area",
     type: "single-choice",
     options: [
       {
-        id: "stomach",
-        label: "Stomach",
+        id: "belly_face",
+        label: "Belly and Face",
         image: "/bodyparts/8.png",
+      },
+      {
+        id: "legs",
+        label: "Legs and Legs",
+        image: "/bodyparts/11.png",
+      },
+      {
+        id: "back_posture",
+        label: "Back/Posture",
+        image: "/bodyparts/9.png",
       },
       {
         id: "full_body",
         label: "Full Body",
         image: "/improvedbody/13.png",
       },
-      {
-        id: "legs_buttocks",
-        label: "Legs & Buttocks",
-        image: "/bodyparts/11.png",
-      },
     ],
   },
   {
+    id: "custom_output",
+    title: "Your Custom Plan Preview",
+    type: "custom-screen",
+    customScreenType: "custom-output",
+    options: [],
+  },
+  {
     id: "current_body_type",
-    title: "Your current body type?",
+    title: "Which describes your best body?",
     subtitle: "Be honest for best results",
     type: "single-choice",
     options: [
@@ -93,26 +116,34 @@ export const emotionalQuestions: EmotionalQuestion[] = [
     ],
   },
   {
-    id: "age",
-    title: "What's your age?",
-    subtitle: "Enter your current age",
-    type: "input",
-    inputType: "number",
-    placeholder: "e.g. 45",
-    min: 18,
-    max: 100,
-    options: [], // Required but empty for input type
+    id: "dream_body",
+    title: "What is your dream body?",
+    subtitle: "Your ideal body type",
+    type: "single-choice",
+    options: [
+      {
+        id: "toned",
+        label: "Toned & Athletic",
+        image: "/sizes/18.png",
+      },
+      {
+        id: "curvy",
+        label: "Curvy & Confident",
+        image: "/sizes/15.png",
+      },
+      {
+        id: "strong",
+        label: "Strong & Healthy",
+        image: "/sizes/16.png",
+      },
+    ],
   },
   {
-    id: "current_weight",
-    title: "What's your current weight?",
-    subtitle: "Enter in kilograms (kg)",
-    type: "input",
-    inputType: "number",
-    placeholder: "e.g. 65",
-    min: 30,
-    max: 200,
-    options: [], // Required but empty for input type
+    id: "gift_screen",
+    title: "Special Gift for You!",
+    type: "custom-screen",
+    customScreenType: "gift-box",
+    options: [],
   },
   {
     id: "height",
@@ -123,22 +154,36 @@ export const emotionalQuestions: EmotionalQuestion[] = [
     placeholder: "e.g. 165",
     min: 120,
     max: 220,
-    options: [], // Required but empty for input type
+    options: [],
   },
   {
-    id: "target_weight",
-    title: "What's your target weight?",
-    subtitle: "Your goal weight in kilograms (kg)",
+    id: "current_weight",
+    title: "What's your current weight?",
+    subtitle: "Enter in kilograms (kg)",
     type: "input",
     inputType: "number",
-    placeholder: "e.g. 58",
+    placeholder: "e.g. 65",
     min: 30,
     max: 200,
-    options: [], // Required but empty for input type
+    options: [],
+  },
+  {
+    id: "bmi_result",
+    title: "Your BMI Analysis",
+    type: "custom-screen",
+    customScreenType: "bmi-analysis",
+    options: [],
+  },
+  {
+    id: "doctor_recommendation",
+    title: "Doctor Recommended",
+    type: "custom-screen",
+    customScreenType: "doctor-screen",
+    options: [],
   },
   {
     id: "trying_duration",
-    title: "How long trying without results?",
+    title: "Have you tried to solve these problems?",
     subtitle: "Select one answer 👎",
     type: "single-choice",
     options: [
@@ -163,25 +208,65 @@ export const emotionalQuestions: EmotionalQuestion[] = [
     ],
   },
   {
+    id: "comparison_screen",
+    title: "Why Choose Our Method",
+    type: "custom-screen",
+    customScreenType: "comparison",
+    options: [],
+  },
+  {
     id: "celebration_plan",
-    title: "How will you celebrate success?",
+    title: "How will you celebrate when you change? How will you feel?",
     subtitle: "Visualize your victory! 🎉",
     type: "single-choice",
     options: [
       {
-        id: "new_dress",
-        label: "Buy new dress",
-        emoji: "👗",
+        id: "confident",
+        label: "More Confident",
+        emoji: "👑",
       },
       {
-        id: "photo_session",
-        label: "Photo session",
-        emoji: "📸",
+        id: "energetic",
+        label: "Full of Energy",
+        emoji: "⚡",
       },
       {
-        id: "spa_day",
-        label: "Spa day",
-        emoji: "💆‍♀️",
+        id: "proud",
+        label: "Proud of Myself",
+        emoji: "🌟",
+      },
+      {
+        id: "happy",
+        label: "Truly Happy",
+        emoji: "😊",
+      },
+    ],
+  },
+  {
+    id: "body_satisfaction",
+    title: "Over the past 6 months, how satisfied have you been with your body?",
+    subtitle: "Be honest about your feelings",
+    type: "single-choice",
+    options: [
+      {
+        id: "very",
+        label: "Very satisfied",
+        emoji: "😍",
+      },
+      {
+        id: "somewhat",
+        label: "Somewhat satisfied",
+        emoji: "🙂",
+      },
+      {
+        id: "little",
+        label: "A little satisfied",
+        emoji: "😐",
+      },
+      {
+        id: "not_at_all",
+        label: "Not at all satisfied",
+        emoji: "😔",
       },
     ],
   },
