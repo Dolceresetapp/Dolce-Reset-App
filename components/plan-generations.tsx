@@ -76,6 +76,14 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
     }
   }, [])
 
+  const nextTestimonial = () => {
+    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
+  }
+
+  const prevTestimonial = () => {
+    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)
+  }
+
   const calculateBMI = () => {
     const height = Number.parseFloat(answers.height) / 100 // Convert cm to m
     const weight = Number.parseFloat(answers.current_weight)
@@ -97,8 +105,8 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
     const userName = user?.firstName || "Beautiful"
 
     return (
-      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col">
-        <div className="flex-1 p-4 pt-6 pb-24 overflow-y-auto">
+      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen">
+        <div className="p-4 pt-6">
           {/* Success Header */}
           <div className="text-center mb-6 animate-fade-in">
             <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mb-4 mx-auto shadow-xl">
@@ -212,13 +220,12 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
               </p>
             </CardContent>
           </Card>
-        </div>
 
-        {/* Fixed Bottom CTA Button */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
+          {/* CTA Button */}
           <Button
             onClick={onComplete}
-            className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-2xl shadow-xl transition-all duration-300 hover:scale-105"
+            className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up"
+            style={{ animationDelay: "0.6s" }}
           >
             <Crown className="w-6 h-6 mr-2" />
             Get My Custom Plan Now

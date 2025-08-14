@@ -91,3 +91,4 @@ export function OnboardingIntro({ onContinue }: OnboardingIntroProps) {
     </div>
   )
 }
+
