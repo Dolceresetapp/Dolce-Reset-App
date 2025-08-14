@@ -1,143 +1,205 @@
-"use client"
-
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, ArrowRight, Heart } from "lucide-react"
-
-interface Question {
+export interface EmotionalQuestion {
   id: string
   title: string
-  subtitle: string
-  type: string
-  options: string[]
+  subtitle?: string
+  type: "single-choice" | "input"
+  options: Array<{
+    id: string
+    label: string
+    emoji?: string
+    image?: string
+    description?: string
+  }>
+  image?: string
+  inputType?: "text" | "number"
+  placeholder?: string
+  min?: number
+  max?: number
 }
 
-interface OnboardingQuestionProps {
-  question: Question
-  currentStep: number
-  totalSteps: number
-  answer: any
-  onAnswer: (questionId: string, answer: any) => void
-  onNext: () => void
-  onPrevious: () => void
-  canGoNext: boolean
-}
-
-export function OnboardingQuestion({
-  question,
-  currentStep,
-  totalSteps,
-  answer,
-  onAnswer,
-  onNext,
-  onPrevious,
-  canGoNext,
-}: OnboardingQuestionProps) {
-  const handleOptionSelect = (option: string) => {
-    if (question.type === "multiple-choice") {
-      const currentAnswers = answer || []
-      const newAnswers = currentAnswers.includes(option)
-        ? currentAnswers.filter((a: string) => a !== option)
-        : [...currentAnswers, option]
-      onAnswer(question.id, newAnswers)
-    } else {
-      onAnswer(question.id, option)
-    }
-  }
-
-  const isSelected = (option: string) => {
-    if (question.type === "multiple-choice") {
-      return answer?.includes(option) || false
-    }
-    return answer === option
-  }
-
-  return (
-    <div className="app-container bg-gradient-to-br from-rose-50 to-pink-50 min-h-screen">
-      {/* Header */}
-      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-pink-100">
-        <div className="flex items-center justify-between p-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onPrevious}
-            disabled={currentStep === 1}
-            className="h-12 w-12 rounded-full hover:bg-pink-100"
-          >
-            <ArrowLeft className="h-6 w-6 text-gray-600" />
-          </Button>
-
-          <div className="flex items-center space-x-2">
-            <Heart className="w-5 h-5 text-pink-500" />
-            <Badge className="bg-pink-100 text-pink-700 senior-text-sm">
-              {currentStep} of {totalSteps}
-            </Badge>
-          </div>
-
-          <div className="w-12" />
-        </div>
-
-        {/* Progress Bar */}
-        <div className="px-4 pb-4">
-          <div className="w-full bg-pink-100 rounded-full h-2">
-            <div
-              className="bg-gradient-to-r from-pink-500 to-rose-500 h-2 rounded-full transition-all duration-500"
-              style={{ width: `${(currentStep / totalSteps) * 100}%` }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-6 pb-24">
-        <div className="animate-fade-in">
-          <h1 className="senior-text-xl font-bold text-gray-800 mb-3 leading-tight">{question.title}</h1>
-          <p className="senior-text-base text-gray-600 mb-8 leading-relaxed">{question.subtitle}</p>
-
-          <div className="space-y-4">
-            {question.options.map((option, index) => (
-              <Card
-                key={option}
-                className={`card-hover cursor-pointer transition-all duration-300 animate-slide-up ${
-                  isSelected(option)
-                    ? "border-pink-500 bg-gradient-to-r from-pink-50 to-rose-50 shadow-lg"
-                    : "border-pink-200 bg-white/80 hover:border-pink-300"
-                }`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-                onClick={() => handleOptionSelect(option)}
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <span className="senior-text-base font-medium text-gray-800">{option}</span>
-                    <div
-                      className={`w-6 h-6 rounded-full border-2 transition-all duration-200 ${
-                        isSelected(option) ? "border-pink-500 bg-pink-500" : "border-gray-300"
-                      }`}
-                    >
-                      {isSelected(option) && <div className="w-full h-full rounded-full bg-white scale-50"></div>}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Fixed Bottom Button */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-pink-100 p-4">
-        <div className="max-w-md mx-auto">
-          <Button
-            onClick={onNext}
-            disabled={!canGoNext}
-            className="w-full h-14 senior-text-lg bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
-          >
-            {currentStep === totalSteps ? "Create My Plan" : "Next"}
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
-        </div>
-      </div>
-    </div>
-  )
-}
+export const emotionalQuestions: EmotionalQuestion[] = [
+  {
+    id: "urgent_improvement",
+    title: "What needs to improve most urgently?",
+    subtitle: "Select your main priority 💕",
+    type: "single-choice",
+    options: [
+      {
+        id: "weight_loss",
+        label: "Weight Loss",
+        image: "/improvedbody/2.png",
+      },
+      {
+        id: "get_fit",
+        label: "Get Fit & Strong",
+        image: "/improvedbody/13.png",
+      },
+      {
+        id: "reduce_pain",
+        label: "Reduce Pain",
+        image: "/improvedbody/5.png",
+      },
+      {
+        id: "feel_younger",
+        label: "Feel Younger",
+        image: "/improvedbody/7.png",
+      },
+    ],
+  },
+  {
+    id: "body_part_focus",
+    title: "Which area to change in 30 days?",
+    subtitle: "Choose your focus area",
+    type: "single-choice",
+    options: [
+      {
+        id: "stomach",
+        label: "Stomach",
+        image: "/bodyparts/8.png",
+      },
+      {
+        id: "full_body",
+        label: "Full Body",
+        image: "/improvedbody/13.png",
+      },
+      {
+        id: "legs_buttocks",
+        label: "Legs & Buttocks",
+        image: "/bodyparts/11.png",
+      },
+    ],
+  },
+  {
+    id: "current_body_type",
+    title: "Your current body type?",
+    subtitle: "Be honest for best results",
+    type: "single-choice",
+    options: [
+      {
+        id: "slim",
+        label: "Slim",
+        image: "/sizes/18.png",
+      },
+      {
+        id: "average",
+        label: "Average",
+        image: "/sizes/15.png",
+      },
+      {
+        id: "plus_sized",
+        label: "Plus-sized",
+        image: "/sizes/14.png",
+      },
+    ],
+  },
+  {
+    id: "age",
+    title: "What's your age range?",
+    subtitle: "For personalized planning",
+    type: "single-choice",
+    options: [
+      {
+        id: "25-35",
+        label: "25-35 years",
+        emoji: "🌸",
+      },
+      {
+        id: "36-45",
+        label: "36-45 years",
+        emoji: "🌺",
+      },
+      {
+        id: "46-55",
+        label: "46-55 years",
+        emoji: "🌹",
+      },
+      {
+        id: "56+",
+        label: "56+ years",
+        emoji: "👑",
+      },
+    ],
+  },
+  {
+    id: "current_weight",
+    title: "What's your current weight?",
+    subtitle: "Enter in kilograms (kg)",
+    type: "input",
+    inputType: "number",
+    placeholder: "e.g. 65",
+    min: 30,
+    max: 200,
+    options: [], // Required but empty for input type
+  },
+  {
+    id: "height",
+    title: "What's your height?",
+    subtitle: "Enter in centimeters (cm)",
+    type: "input",
+    inputType: "number",
+    placeholder: "e.g. 165",
+    min: 120,
+    max: 220,
+    options: [], // Required but empty for input type
+  },
+  {
+    id: "target_weight",
+    title: "What's your target weight?",
+    subtitle: "Your goal weight in kilograms (kg)",
+    type: "input",
+    inputType: "number",
+    placeholder: "e.g. 58",
+    min: 30,
+    max: 200,
+    options: [], // Required but empty for input type
+  },
+  {
+    id: "trying_duration",
+    title: "How long trying without results?",
+    subtitle: "Select one answer 👎",
+    type: "single-choice",
+    options: [
+      {
+        id: "never",
+        label: "Never tried",
+        emoji: "❌",
+        description: "This is my first attempt",
+      },
+      {
+        id: "few_months",
+        label: "A few months",
+        emoji: "⏳",
+        description: "Recently started trying",
+      },
+      {
+        id: "years",
+        label: "Years",
+        emoji: "🕰️",
+        description: "Been struggling for years",
+      },
+    ],
+  },
+  {
+    id: "celebration_plan",
+    title: "How will you celebrate success?",
+    subtitle: "Visualize your victory! 🎉",
+    type: "single-choice",
+    options: [
+      {
+        id: "new_dress",
+        label: "Buy new dress",
+        emoji: "👗",
+      },
+      {
+        id: "photo_session",
+        label: "Photo session",
+        emoji: "📸",
+      },
+      {
+        id: "spa_day",
+        label: "Spa day",
+        emoji: "💆‍♀️",
+      },
+    ],
+  },
+]
