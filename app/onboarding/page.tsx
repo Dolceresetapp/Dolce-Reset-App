@@ -9,11 +9,13 @@ import { PricingPlans } from "@/components/pricing-plans"
 import { useSupabaseClient } from "@/lib/supabase"
 import { emotionalQuestions } from "@/lib/onboarding-questions"
 import { PlanGeneration } from "@/components/plan-generations"
+import { ConfirmationScreens } from "@/components/confirmation-screen"
 
 export default function OnboardingPage() {
   const [showIntro, setShowIntro] = useState(true)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<Record<string, any>>({})
+  const [showConfirmation, setShowConfirmation] = useState(false)
   const [showPlanGeneration, setShowPlanGeneration] = useState(false)
   const [showPricing, setShowPricing] = useState(false)
   const router = useRouter()
@@ -32,7 +34,8 @@ export default function OnboardingPage() {
     if (currentQuestion < emotionalQuestions.length - 1) {
       setCurrentQuestion((prev) => prev + 1)
     } else {
-      generatePersonalizedPlan()
+      // All questions completed, show confirmation screens
+      setShowConfirmation(true)
     }
   }
 
@@ -42,7 +45,7 @@ export default function OnboardingPage() {
     }
   }
 
-  const generatePersonalizedPlan = async () => {
+  const handleConfirmationComplete = async () => {
     // Calculate BMI if we have height and weight
     if (answers.height && answers.current_weight) {
       const height = Number.parseFloat(answers.height) / 100 // Convert cm to m
@@ -63,7 +66,18 @@ export default function OnboardingPage() {
       console.error("Error saving onboarding data:", error)
     }
 
+    setShowConfirmation(false)
     setShowPlanGeneration(true)
+  }
+
+  const handleConfirmationRestart = () => {
+    // Reset everything and start onboarding from beginning
+    setShowConfirmation(false)
+    setShowPlanGeneration(false)
+    setShowPricing(false)
+    setCurrentQuestion(0)
+    setAnswers({})
+    setShowIntro(true)
   }
 
   const handlePlanComplete = () => {
@@ -86,8 +100,16 @@ export default function OnboardingPage() {
     const currentQ = emotionalQuestions[currentQuestion]
     const answer = answers[currentQ.id]
 
+    if (currentQ.type === "custom-screen") {
+      return true
+    }
+
     if (currentQ.type === "input") {
       return answer && answer.toString().trim() !== ""
+    }
+
+    if (currentQ.type === "multiple-choice") {
+      return answer && Array.isArray(answer) && answer.length > 0
     }
 
     return !!answer
@@ -101,6 +123,10 @@ export default function OnboardingPage() {
     return <PlanGeneration answers={answers} onComplete={handlePlanComplete} />
   }
 
+  if (showConfirmation) {
+    return <ConfirmationScreens onComplete={handleConfirmationComplete} onRestart={handleConfirmationRestart} />
+  }
+
   if (showIntro) {
     return <OnboardingIntro onContinue={handleIntroComplete} />
   }
@@ -111,6 +137,7 @@ export default function OnboardingPage() {
       currentStep={currentQuestion + 1}
       totalSteps={emotionalQuestions.length}
       answer={answers[emotionalQuestions[currentQuestion].id]}
+      answers={answers}
       onAnswer={handleAnswer}
       onNext={handleNext}
       onPrevious={handlePrevious}
@@ -118,4 +145,3 @@ export default function OnboardingPage() {
     />
   )
 }
-
