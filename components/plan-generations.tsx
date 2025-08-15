@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Heart, Star, Users, Sparkles, Crown, CheckCircle } from "lucide-react"
+import Link from "next/link"
 
 interface PlanGenerationProps {
   answers: Record<string, any>
@@ -238,14 +239,16 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
 
         {/* Fixed Bottom CTA Button */}
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
+          <Link href="https://dolceresetmenopausa.org/salespage">
           <Button
-            onClick={onComplete}
+            // onClick={onComplete}
             className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up"
             style={{ animationDelay: "0.6s" }}
           >
             <Crown className="w-6 h-6 mr-2" />
             Get My Custom Plan Now
           </Button>
+          </Link>
         </div>
       </div>
     )
