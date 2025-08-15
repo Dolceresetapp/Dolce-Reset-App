@@ -5,7 +5,7 @@ import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Star, Users, Sparkles, Crown, CheckCircle } from "lucide-react"
+import { Heart, Star, Users, Sparkles, Crown, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
 
 interface PlanGenerationProps {
@@ -66,16 +66,23 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
       })
     }, 1250) // 1.25 seconds per step = 5 seconds total
 
-    // Auto-rotate testimonials every 3 seconds
-    const testimonialTimer = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 3000)
-
     return () => {
       clearInterval(timer)
-      clearInterval(testimonialTimer)
     }
   }, [])
+
+  // Manual testimonial navigation functions
+  const nextTestimonial = () => {
+    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
+  }
+
+  const prevTestimonial = () => {
+    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)
+  }
+
+  const goToTestimonial = (index: number) => {
+    setCurrentTestimonial(index)
+  }
 
   const calculateBMI = () => {
     // Get from localStorage as fallback
@@ -123,7 +130,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
     const targetWeight = getStoredValue("target_weight") || "60"
 
     return (
-      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen pb-20">
+      <div className="app-container bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 min-h-screen pb-20">
         <div className="p-4 pt-6">
           {/* Success Header */}
           <div className="text-center mb-6 animate-fade-in">
@@ -135,7 +142,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
           </div>
 
           {/* Custom Plan Chart */}
-          <Card className="mb-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 shadow-xl animate-slide-up">
+          <Card className="mb-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0 shadow-xl animate-slide-up">
             <CardContent className="p-6">
               <div className="text-center mb-4">
                 <h2 className="text-lg font-bold mb-2">Your 30-Day Custom Plan</h2>
@@ -188,7 +195,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
 
           {/* Custom Plan Features */}
           <Card
-            className="mb-4 bg-white/90 border-purple-200 shadow-lg animate-slide-up"
+            className="mb-4 bg-white/90 border-pink-200 shadow-lg animate-slide-up"
             style={{ animationDelay: "0.2s" }}
           >
             <CardContent className="p-4">
@@ -198,23 +205,23 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
               </h3>
               <div className="space-y-2">
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
                   <span className="text-sm text-gray-700">
                     Daily {bodyFocus?.replace("_", " ") || "full body"} workouts
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
                   <span className="text-sm text-gray-700">
                     Focus on {urgentGoal?.replace("_", " ") || "fitness goals"}
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
                   <span className="text-sm text-gray-700">BMI optimization from {currentBMI} to ideal range</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
                   <span className="text-sm text-gray-700">Progress tracking & motivation</span>
                 </div>
               </div>
@@ -238,16 +245,15 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
         </div>
 
         {/* Fixed Bottom CTA Button */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-pink-100 p-4 shadow-lg">
           <Link href="https://dolceresetmenopausa.org/salespage">
-          <Button
-            // onClick={onComplete}
-            className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up"
-            style={{ animationDelay: "0.6s" }}
-          >
-            <Crown className="w-6 h-6 mr-2" />
-            Get My Custom Plan Now
-          </Button>
+            <Button
+              className="w-full h-14 text-lg bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up"
+              style={{ animationDelay: "0.6s" }}
+            >
+              <Crown className="w-6 h-6 mr-2" />
+              Get My Custom Plan Now
+            </Button>
           </Link>
         </div>
       </div>
@@ -255,12 +261,12 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
   }
 
   return (
-    <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen">
+    <div className="app-container bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 min-h-screen">
       <div className="p-4 pt-8">
         {/* Header */}
         <div className="text-center mb-6 animate-fade-in">
           <h1 className="text-2xl font-bold text-gray-800 mb-2">Creating your</h1>
-          <h2 className="text-2xl font-bold text-purple-600 mb-4">Personalized plan...</h2>
+          <h2 className="text-2xl font-bold text-pink-600 mb-4">Personalized plan...</h2>
         </div>
 
         {/* Progress Steps */}
@@ -272,9 +278,9 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
                   {step.label}
                 </span>
                 <div className="flex items-center space-x-2">
-                  {index < currentStep && <CheckCircle className="w-4 h-4 text-purple-500" />}
+                  {index < currentStep && <CheckCircle className="w-4 h-4 text-pink-500" />}
                   {index === currentStep && (
-                    <span className="text-sm font-medium text-purple-600">{step.percentage}%</span>
+                    <span className="text-sm font-medium text-pink-600">{step.percentage}%</span>
                   )}
                 </div>
               </div>
@@ -282,9 +288,9 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
                 <div
                   className={`h-2 rounded-full transition-all duration-1000 ${
                     index < currentStep
-                      ? "bg-purple-500 w-full"
+                      ? "bg-pink-500 w-full"
                       : index === currentStep
-                        ? "bg-purple-500"
+                        ? "bg-pink-500"
                         : "bg-gray-200 w-0"
                   }`}
                   style={{
@@ -302,12 +308,12 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
             {[1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
-                className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full border-2 border-white flex items-center justify-center"
+                className="w-8 h-8 bg-gradient-to-br from-pink-400 to-rose-400 rounded-full border-2 border-white flex items-center justify-center"
               >
                 <Users className="w-4 h-4 text-white" />
               </div>
             ))}
-            <div className="w-8 h-8 bg-purple-500 rounded-full border-2 border-white flex items-center justify-center">
+            <div className="w-8 h-8 bg-pink-500 rounded-full border-2 border-white flex items-center justify-center">
               <Star className="w-4 h-4 text-white" />
             </div>
           </div>
@@ -320,41 +326,60 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
           </h3>
         </div>
 
-        {/* Testimonial Card */}
-        <Card
-          className="mb-6 bg-white/90 border-purple-200 shadow-lg animate-slide-up"
-          style={{ animationDelay: "0.6s" }}
-        >
-          <CardContent className="p-6">
-            <div className="text-center">
-              {/* Rating Stars */}
-              <div className="flex items-center justify-center space-x-1 mb-4">
-                {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                ))}
+        {/* Manual Testimonial Card with Navigation */}
+        <div className="relative mb-6 animate-slide-up" style={{ animationDelay: "0.6s" }}>
+          <Card className="bg-white/90 border-pink-200 shadow-lg">
+            <CardContent className="p-6">
+              <div className="text-center">
+                {/* Rating Stars */}
+                <div className="flex items-center justify-center space-x-1 mb-4">
+                  {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+
+                {/* Review Text */}
+                <p className="text-sm text-gray-700 leading-relaxed mb-4 italic">
+                  "{testimonials[currentTestimonial].text}"
+                </p>
+
+                {/* Author */}
+                <div className="flex items-center justify-center space-x-2">
+                  <p className="text-sm font-bold text-gray-800">{testimonials[currentTestimonial].name}</p>
+                  <Badge className="bg-pink-100 text-pink-700 text-xs">{testimonials[currentTestimonial].age}</Badge>
+                </div>
               </div>
+            </CardContent>
+          </Card>
 
-              {/* Review Text */}
-              <p className="text-sm text-gray-700 leading-relaxed mb-4 italic">
-                "{testimonials[currentTestimonial].text}"
-              </p>
+          {/* Navigation Arrows */}
+          <Button
+            onClick={prevTestimonial}
+            variant="outline"
+            size="icon"
+            className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 border-pink-200 hover:bg-pink-50 hover:border-pink-300 shadow-lg"
+          >
+            <ChevronLeft className="w-5 h-5 text-pink-600" />
+          </Button>
 
-              {/* Author */}
-              <div className="flex items-center justify-center space-x-2">
-                <p className="text-sm font-bold text-gray-800">{testimonials[currentTestimonial].name}</p>
-                <Badge className="bg-purple-100 text-purple-700 text-xs">{testimonials[currentTestimonial].age}</Badge>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+          <Button
+            onClick={nextTestimonial}
+            variant="outline"
+            size="icon"
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 border-pink-200 hover:bg-pink-50 hover:border-pink-300 shadow-lg"
+          >
+            <ChevronRight className="w-5 h-5 text-pink-600" />
+          </Button>
+        </div>
 
-        {/* Dots Indicator */}
+        {/* Clickable Dots Indicator */}
         <div className="flex justify-center space-x-2 animate-slide-up" style={{ animationDelay: "0.8s" }}>
           {testimonials.map((_, index) => (
-            <div
+            <button
               key={index}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentTestimonial ? "bg-purple-500" : "bg-purple-200"
+              onClick={() => goToTestimonial(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentTestimonial ? "bg-pink-500 scale-110" : "bg-pink-200 hover:bg-pink-300"
               }`}
             />
           ))}

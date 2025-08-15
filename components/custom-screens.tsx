@@ -85,7 +85,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
 
   if (type === "custom-output") {
     return (
-      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col">
+      <div className="app-container min-h-screen flex flex-col">
         
         {/* Centered Content */}
         <div className="flex-1 flex flex-col items-center justify-center px-4 text-center">
@@ -120,85 +120,85 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
   }
   
 
-  if (type === "current-bmi") {
-    // Get values with proper validation - try localStorage as fallback
-    const getStoredValue = (key: string) => {
-      const fromAnswers = answers?.[key] ? Number.parseFloat(answers[key]) : null
-      const fromLocalStorage =
-        typeof window !== "undefined" ? Number.parseFloat(localStorage.getItem(`onboarding_${key}`) || "") : null
-      return fromAnswers || fromLocalStorage
-    }
+  // if (type === "current-bmi") {
+  //   // Get values with proper validation - try localStorage as fallback
+  //   const getStoredValue = (key: string) => {
+  //     const fromAnswers = answers?.[key] ? Number.parseFloat(answers[key]) : null
+  //     const fromLocalStorage =
+  //       typeof window !== "undefined" ? Number.parseFloat(localStorage.getItem(`onboarding_${key}`) || "") : null
+  //     return fromAnswers || fromLocalStorage
+  //   }
 
-    const height = getStoredValue("height")
-    const weight = getStoredValue("current_weight")
+  //   const height = getStoredValue("height")
+  //   const weight = getStoredValue("current_weight")
 
-    // Safety checks for answers
-    if (!height || !weight || height <= 0 || weight <= 0) {
-      return (
-        <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col overflow-hidden">
-          <div className="flex-1 flex items-center justify-center p-6" style={{ height: "80vh" }}>
-            <div className="text-center">
-              <p className="text-gray-600">Loading BMI analysis...</p>
-              <p className="text-sm text-gray-500 mt-2">
-                Height: {height || "Not set"}, Weight: {weight || "Not set"}
-              </p>
-            </div>
-          </div>
-          <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
-            <Button
-              onClick={onContinue}
-              className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
-            >
-              Continue <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </div>
-        </div>
-      )
-    }
+  //   // Safety checks for answers
+  //   if (!height || !weight || height <= 0 || weight <= 0) {
+  //     return (
+  //       <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col overflow-hidden">
+  //         <div className="flex-1 flex items-center justify-center p-6" style={{ height: "80vh" }}>
+  //           <div className="text-center">
+  //             <p className="text-gray-600">Loading BMI analysis...</p>
+  //             <p className="text-sm text-gray-500 mt-2">
+  //               Height: {height || "Not set"}, Weight: {weight || "Not set"}
+  //             </p>
+  //           </div>
+  //         </div>
+  //         <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
+  //           <Button
+  //             onClick={onContinue}
+  //             className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
+  //           >
+  //             Continue <ArrowRight className="w-5 h-5 ml-2" />
+  //           </Button>
+  //         </div>
+  //       </div>
+  //     )
+  //   }
 
-    const bmi = Number.parseFloat(calculateBMI(height, weight))
-    const bmiInfo = getBMICategory(bmi)
+  //   const bmi = Number.parseFloat(calculateBMI(height, weight))
+  //   const bmiInfo = getBMICategory(bmi)
 
-    return (
-      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col overflow-hidden">
-        <div className="flex-1 flex items-center justify-center p-6" style={{ height: "80vh" }}>
-          <div className="text-center max-w-md">
-            <h1 className="text-xl font-bold text-gray-800 mb-6">Your Current BMI Analysis</h1>
+  //   return (
+  //     <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col overflow-hidden">
+  //       <div className="flex-1 flex items-center justify-center p-6" style={{ height: "80vh" }}>
+  //         <div className="text-center max-w-md">
+  //           <h1 className="text-xl font-bold text-gray-800 mb-6">Your Current BMI Analysis</h1>
 
-            <Card className="mb-6 bg-white/90 shadow-lg">
-              <CardContent className="p-6">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-purple-600 mb-2">{bmi}</div>
-                  <div className={`text-lg font-semibold mb-3 ${bmiInfo.color}`}>{bmiInfo.category}</div>
-                  <div className="text-sm text-gray-600 mb-4">Formula: BMI = Weight (kg) ÷ Height² (m²)</div>
-                  <div className="text-sm text-gray-600 mb-4">
-                    {weight}kg ÷ ({(height / 100).toFixed(2)}m)² = {bmi}
-                  </div>
-                  <div
-                    className={`text-sm font-medium p-3 rounded-lg ${
-                      bmiInfo.status === "good" ? "bg-green-50 text-green-700" : "bg-orange-50 text-orange-700"
-                    }`}
-                  >
-                    {bmiInfo.message}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+  //           <Card className="mb-6 bg-white/90 shadow-lg">
+  //             <CardContent className="p-6">
+  //               <div className="text-center">
+  //                 <div className="text-4xl font-bold text-purple-600 mb-2">{bmi}</div>
+  //                 <div className={`text-lg font-semibold mb-3 ${bmiInfo.color}`}>{bmiInfo.category}</div>
+  //                 <div className="text-sm text-gray-600 mb-4">Formula: BMI = Weight (kg) ÷ Height² (m²)</div>
+  //                 <div className="text-sm text-gray-600 mb-4">
+  //                   {weight}kg ÷ ({(height / 100).toFixed(2)}m)² = {bmi}
+  //                 </div>
+  //                 <div
+  //                   className={`text-sm font-medium p-3 rounded-lg ${
+  //                     bmiInfo.status === "good" ? "bg-green-50 text-green-700" : "bg-orange-50 text-orange-700"
+  //                   }`}
+  //                 >
+  //                   {bmiInfo.message}
+  //                 </div>
+  //               </div>
+  //             </CardContent>
+  //           </Card>
+  //         </div>
+  //       </div>
 
-        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
-          <Button
-            onClick={onContinue}
-            className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
-          >
-            Continue
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
-        </div>
-      </div>
-    )
-  }
+  //       <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
+  //         <Button
+  //           onClick={onContinue}
+  //           className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
+  //         >
+  //           Continue
+  //           <ArrowRight className="w-5 h-5 ml-2" />
+  //         </Button>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   if (type === "target-bmi") {
     // Get values with proper validation - try localStorage as fallback
@@ -309,7 +309,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
 
   if (type === "gift-box") {
     return (
-      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col">
+      <div className="app-container min-h-screen flex flex-col">
         
         {/* Centered Text + Image */}
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
@@ -344,7 +344,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
 
   if (type === "bmi-analysis") {
     return (
-      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col">
+      <div className="app-container min-h-screen flex flex-col">
         
         {/* Centered Text + Image */}
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
@@ -379,7 +379,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
 
   if (type === "doctor-screen") {
     return (
-      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col overflow-hidden">
+      <div className="app-container min-h-screen flex flex-col overflow-hidden">
         <div className="flex-1 flex flex-col items-center justify-center p-6" style={{ height: "80vh" }}>
           <div className="flex-1 flex items-center justify-center">
             <Image
