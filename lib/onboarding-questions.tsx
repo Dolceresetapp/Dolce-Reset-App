@@ -262,13 +262,6 @@ export const emotionalQuestions: EmotionalQuestion[] = [
     options: [],
   },
   {
-    id: "comparison_screen",
-    title: "Why Choose Our Method",
-    type: "custom-screen",
-    customScreenType: "comparison",
-    options: [],
-  },
-  {
     id: "body_satisfaction",
     title: "Over the past 6 months, how satisfied have you been with your body?",
     subtitle: "Be honest about your feelings",

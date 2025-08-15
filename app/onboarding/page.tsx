@@ -35,6 +35,7 @@ export default function OnboardingPage() {
       setCurrentQuestion((prev) => prev + 1)
     } else {
       // All questions completed, show confirmation screens
+      console.log("All questions completed, showing confirmation screens")
       setShowConfirmation(true)
     }
   }
@@ -46,12 +47,41 @@ export default function OnboardingPage() {
   }
 
   const handleConfirmationComplete = async () => {
+    console.log("Confirmation complete, starting plan generation")
+
+    // Get all data from localStorage as well
+    const getAllStoredData = () => {
+      const storedData: Record<string, any> = {}
+      if (typeof window !== "undefined") {
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i)
+          if (key?.startsWith("onboarding_")) {
+            const cleanKey = key.replace("onboarding_", "")
+            const value = localStorage.getItem(key)
+            if (value) {
+              try {
+                // Try to parse JSON for arrays
+                storedData[cleanKey] = JSON.parse(value)
+              } catch {
+                // If not JSON, store as string
+                storedData[cleanKey] = value
+              }
+            }
+          }
+        }
+      }
+      return storedData
+    }
+
+    const storedData = getAllStoredData()
+    const finalAnswers = { ...answers, ...storedData }
+
     // Calculate BMI if we have height and weight
-    if (answers.height && answers.current_weight) {
-      const height = Number.parseFloat(answers.height) / 100 // Convert cm to m
-      const weight = Number.parseFloat(answers.current_weight)
+    if (finalAnswers.height && finalAnswers.current_weight) {
+      const height = Number.parseFloat(finalAnswers.height) / 100 // Convert cm to m
+      const weight = Number.parseFloat(finalAnswers.current_weight)
       const bmi = (weight / (height * height)).toFixed(1)
-      setAnswers((prev) => ({ ...prev, bmi }))
+      finalAnswers.bmi = bmi
     }
 
     // Save answers to database
@@ -59,18 +89,30 @@ export default function OnboardingPage() {
       const supabase = await getSupabaseClient()
       await supabase.from("user_onboarding").insert({
         user_id: user?.id,
-        answers: { ...answers, bmi: answers.bmi },
+        answers: finalAnswers,
         completed_at: new Date().toISOString(),
       })
     } catch (error) {
       console.error("Error saving onboarding data:", error)
     }
 
+    setAnswers(finalAnswers)
     setShowConfirmation(false)
     setShowPlanGeneration(true)
   }
 
   const handleConfirmationRestart = () => {
+    console.log("Restarting onboarding")
+    // Clear localStorage
+    if (typeof window !== "undefined") {
+      const keys = Object.keys(localStorage)
+      keys.forEach((key) => {
+        if (key.startsWith("onboarding_")) {
+          localStorage.removeItem(key)
+        }
+      })
+    }
+
     // Reset everything and start onboarding from beginning
     setShowConfirmation(false)
     setShowPlanGeneration(false)

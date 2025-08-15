@@ -41,9 +41,9 @@ const testimonials = [
 
 const progressSteps = [
   { label: "Scanning your goals", percentage: 100 },
-  { label: "Analyzing body parameters", percentage: 47 },
-  { label: "Choosing workouts to your needs", percentage: 0 },
-  { label: "Generating your action plan", percentage: 0 },
+  { label: "Analyzing body parameters", percentage: 100 },
+  { label: "Choosing workouts to your needs", percentage: 100 },
+  { label: "Generating your action plan", percentage: 100 },
 ]
 
 export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
@@ -58,17 +58,17 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
       setCurrentStep((prev) => {
         if (prev >= progressSteps.length - 1) {
           clearInterval(timer)
-          setTimeout(() => setShowResults(true), 1000)
+          setTimeout(() => setShowResults(true), 500)
           return prev
         }
         return prev + 1
       })
-    }, 5000) // 5 seconds per step
+    }, 1250) // 1.25 seconds per step = 5 seconds total
 
-    // Auto-rotate testimonials every 8 seconds
+    // Auto-rotate testimonials every 3 seconds
     const testimonialTimer = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 8000)
+    }, 3000)
 
     return () => {
       clearInterval(timer)
@@ -76,17 +76,16 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
     }
   }, [])
 
-  const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-  }
-
-  const prevTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)
-  }
-
   const calculateBMI = () => {
-    const height = Number.parseFloat(answers.height) / 100 // Convert cm to m
-    const weight = Number.parseFloat(answers.current_weight)
+    // Get from localStorage as fallback
+    const getStoredValue = (key: string) => {
+      const fromAnswers = answers[key]
+      const fromLocalStorage = typeof window !== "undefined" ? localStorage.getItem(`onboarding_${key}`) : null
+      return fromAnswers || fromLocalStorage
+    }
+
+    const height = Number.parseFloat(getStoredValue("height")) / 100 // Convert cm to m
+    const weight = Number.parseFloat(getStoredValue("current_weight"))
     if (height && weight) {
       return (weight / (height * height)).toFixed(1)
     }
@@ -94,9 +93,15 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
   }
 
   const getWeightLoss = () => {
-    const current = Number.parseFloat(answers.current_weight) || 70
-    const target = current - 5 // Assume 5kg loss goal
-    return "5.0"
+    const getStoredValue = (key: string) => {
+      const fromAnswers = answers[key]
+      const fromLocalStorage = typeof window !== "undefined" ? localStorage.getItem(`onboarding_${key}`) : null
+      return fromAnswers || fromLocalStorage
+    }
+
+    const current = Number.parseFloat(getStoredValue("current_weight")) || 70
+    const target = Number.parseFloat(getStoredValue("target_weight")) || current - 5
+    return Math.abs(current - target).toFixed(1)
   }
 
   if (showResults) {
@@ -104,8 +109,20 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
     const weightLoss = getWeightLoss()
     const userName = user?.firstName || "Beautiful"
 
+    // Get user's actual goals from localStorage
+    const getStoredValue = (key: string) => {
+      const fromAnswers = answers[key]
+      const fromLocalStorage = typeof window !== "undefined" ? localStorage.getItem(`onboarding_${key}`) : null
+      return fromAnswers || fromLocalStorage
+    }
+
+    const urgentGoal = getStoredValue("urgent_improvement") || "weight_loss"
+    const bodyFocus = getStoredValue("body_part_focus") || "full_body"
+    const currentWeight = getStoredValue("current_weight") || "65"
+    const targetWeight = getStoredValue("target_weight") || "60"
+
     return (
-      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen">
+      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen pb-20">
         <div className="p-4 pt-6">
           {/* Success Header */}
           <div className="text-center mb-6 animate-fade-in">
@@ -129,7 +146,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
                 <div className="flex justify-between items-center mb-3">
                   <div className="text-center">
                     <p className="text-xs opacity-90">Current</p>
-                    <p className="text-lg font-bold">{answers.current_weight}kg</p>
+                    <p className="text-lg font-bold">{currentWeight}kg</p>
                     <p className="text-xs opacity-75">BMI {currentBMI}</p>
                   </div>
                   <div className="flex-1 mx-4">
@@ -144,7 +161,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
                   </div>
                   <div className="text-center">
                     <p className="text-xs opacity-90">Target</p>
-                    <p className="text-lg font-bold">{Number.parseFloat(answers.current_weight) - 5}kg</p>
+                    <p className="text-lg font-bold">{targetWeight}kg</p>
                     <p className="text-xs opacity-75">BMI {(Number.parseFloat(currentBMI) - 1.5).toFixed(1)}</p>
                   </div>
                 </div>
@@ -182,16 +199,13 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                   <span className="text-sm text-gray-700">
-                    Daily {answers.body_part_focus?.replace("_", " ") || "full body"} workouts
+                    Daily {bodyFocus?.replace("_", " ") || "full body"} workouts
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                   <span className="text-sm text-gray-700">
-                    Focus on{" "}
-                    {Array.isArray(answers.urgent_improvement)
-                      ? answers.urgent_improvement.join(" & ").replace(/_/g, " ")
-                      : answers.urgent_improvement?.replace("_", " ") || "fitness"}
+                    Focus on {urgentGoal?.replace("_", " ") || "fitness goals"}
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
@@ -220,8 +234,10 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
               </p>
             </CardContent>
           </Card>
+        </div>
 
-          {/* CTA Button */}
+        {/* Fixed Bottom CTA Button */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
           <Button
             onClick={onComplete}
             className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up"

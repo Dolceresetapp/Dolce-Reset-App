@@ -143,6 +143,9 @@ export function EmotionalQuestion({
     if (question.id === "target_weight" && value) {
       saveToLocalStorage("target_weight", value)
     }
+    if (question.id === "age" && value) {
+      saveToLocalStorage("age", value)
+    }
 
     // Age validation
     if (question.id === "age") {
@@ -157,6 +160,8 @@ export function EmotionalQuestion({
 
   const handleSingleChoice = (optionId: string) => {
     onAnswer(question.id, optionId)
+    // Save to localStorage
+    saveToLocalStorage(question.id, optionId)
     // Auto-advance for single choice questions after a short delay
     setTimeout(() => {
       onNext()
@@ -170,6 +175,8 @@ export function EmotionalQuestion({
 
     setSelectedOptions(newSelection)
     onAnswer(question.id, newSelection)
+    // Save to localStorage
+    saveToLocalStorage(question.id, JSON.stringify(newSelection))
   }
 
   const handleInputSubmit = () => {

@@ -31,16 +31,19 @@ export function ConfirmationScreens({ onComplete, onRestart }: ConfirmationScree
   const [currentScreen, setCurrentScreen] = useState(0)
 
   const handleYes = () => {
+    console.log(`Confirmation screen ${currentScreen + 1}: YES clicked`)
     if (currentScreen < confirmationScreens.length - 1) {
       // Move to next confirmation screen
       setCurrentScreen((prev) => prev + 1)
     } else {
       // All confirmations complete, start plan generation
+      console.log("All confirmations complete, calling onComplete")
       onComplete()
     }
   }
 
   const handleNo = () => {
+    console.log("NO clicked, restarting onboarding")
     // Restart onboarding from beginning
     onRestart()
   }
@@ -57,7 +60,7 @@ export function ConfirmationScreens({ onComplete, onRestart }: ConfirmationScree
             width={400}
             height={600}
             alt={currentScreenData.alt}
-            className="w-full h-full rounded-3xl object-cover -mt-[200px]"
+            className="w-full h-auto object-contain rounded-3xl -mt-[200px]"
             priority
           />
         </div>
@@ -71,7 +74,7 @@ export function ConfirmationScreens({ onComplete, onRestart }: ConfirmationScree
             <Button
               onClick={handleNo}
               variant="outline"
-              className="h-16 senior-text-lg border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-bold rounded-3xl transition-all duration-300 hover:scale-105 bg-transparent"
+              className="h-16 text-lg border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-bold rounded-3xl transition-all duration-300 hover:scale-105 bg-transparent"
             >
               No
             </Button>
@@ -79,7 +82,7 @@ export function ConfirmationScreens({ onComplete, onRestart }: ConfirmationScree
             {/* Yes Button */}
             <Button
               onClick={handleYes}
-              className="h-16 senior-text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
+              className="h-16 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
             >
               Yes
             </Button>

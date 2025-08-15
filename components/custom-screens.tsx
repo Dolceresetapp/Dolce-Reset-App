@@ -13,13 +13,18 @@ interface CustomScreenProps {
 
 export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
   const generateCustomOutput = () => {
-    // Safety check for answers object
-    if (!answers) return "Jane just changed her body in 30 days!"
+    // Get data from localStorage as fallback
+    const getStoredAnswer = (key: string) => {
+      if (typeof window !== "undefined") {
+        return localStorage.getItem(`onboarding_${key}`) || answers[key]
+      }
+      return answers[key]
+    }
 
-    const urgentGoal = answers.urgent_improvement || "weight_loss"
-    const bodyArea = answers.body_part_focus || "full_body"
-    const currentBody = answers.current_body_type || "average"
-    const dreamBody = answers.dream_body || "toned"
+    const urgentGoal = getStoredAnswer("urgent_improvement") || "weight_loss"
+    const bodyArea = getStoredAnswer("body_part_focus") || "full_body"
+    const currentBody = getStoredAnswer("current_body_type") || "average"
+    const dreamBody = getStoredAnswer("dream_body") || "toned"
 
     // Convert IDs to readable text
     const goalText = urgentGoal.replace(/_/g, " ")
@@ -114,9 +119,16 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
   }
 
   if (type === "current-bmi") {
-    // Get values with proper validation
-    const height = answers?.height ? Number.parseFloat(answers.height) : null
-    const weight = answers?.current_weight ? Number.parseFloat(answers.current_weight) : null
+    // Get values with proper validation - try localStorage as fallback
+    const getStoredValue = (key: string) => {
+      const fromAnswers = answers?.[key] ? Number.parseFloat(answers[key]) : null
+      const fromLocalStorage =
+        typeof window !== "undefined" ? Number.parseFloat(localStorage.getItem(`onboarding_${key}`) || "") : null
+      return fromAnswers || fromLocalStorage
+    }
+
+    const height = getStoredValue("height")
+    const weight = getStoredValue("current_weight")
 
     // Safety checks for answers
     if (!height || !weight || height <= 0 || weight <= 0) {
@@ -187,10 +199,17 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
   }
 
   if (type === "target-bmi") {
-    // Get values with proper validation
-    const height = answers?.height ? Number.parseFloat(answers.height) : null
-    const currentWeight = answers?.current_weight ? Number.parseFloat(answers.current_weight) : null
-    const targetWeight = answers?.target_weight ? Number.parseFloat(answers.target_weight) : null
+    // Get values with proper validation - try localStorage as fallback
+    const getStoredValue = (key: string) => {
+      const fromAnswers = answers?.[key] ? Number.parseFloat(answers[key]) : null
+      const fromLocalStorage =
+        typeof window !== "undefined" ? Number.parseFloat(localStorage.getItem(`onboarding_${key}`) || "") : null
+      return fromAnswers || fromLocalStorage
+    }
+
+    const height = getStoredValue("height")
+    const currentWeight = getStoredValue("current_weight")
+    const targetWeight = getStoredValue("target_weight")
 
     // Safety checks for answers
     if (!height || !currentWeight || !targetWeight || height <= 0 || currentWeight <= 0 || targetWeight <= 0) {
@@ -378,34 +397,5 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
     )
   }
 
-  if (type === "comparison") {
-    return (
-      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col overflow-hidden">
-        <div className="flex-1 flex flex-col items-center justify-center p-4" style={{ height: "80vh" }}>
-          <div className="flex-1 flex items-center justify-center">
-            <Image
-              src={"/custom/why.png"}
-              alt="Why Choose Our Method"
-              width={400}
-              height={300}
-              className="w-full h-auto object-contain max-w-md"
-            />
-          </div>
-        </div>
-
-        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
-          <Button
-            onClick={onContinue}
-            className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
-          >
-            Continue
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
-        </div>
-      </div>
-    )
-  }
-
   return null
 }
-
