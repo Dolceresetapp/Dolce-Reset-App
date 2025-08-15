@@ -27,7 +27,7 @@ export function OnboardingIntro({ onContinue }: OnboardingIntroProps) {
         <div className="p-6 pt-12 pb-24 flex-1 flex flex-col items-center justify-center">
           {/* Success Stats */}
           <div className="text-center mb-8 animate-fade-in">
-            <h1 className="senior-text-xl font-bold text-gray-800 mb-4 leading-tight">
+            <h1 className="text-xl font-bold text-gray-800 mb-4 leading-tight">
               GET BACK IN SHAPE
               <br />
               <span className="text-purple-600">WITHOUT SACRIFICES</span>

@@ -85,15 +85,16 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
 
   if (type === "custom-output") {
     return (
-      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col overflow-hidden">
-        <div className="flex-1 flex flex-col items-center justify-center p-4" style={{ height: "80vh" }}>
-          {/* Header */}
-          <div className="text-center mb-6 animate-fade-in">
-            <h1 className="text-lg font-bold text-gray-800 mb-4 leading-tight">{generateCustomOutput()}</h1>
-          </div>
-
-          {/* Before/After Image - Full size without overlay */}
-          <div className="flex-1 flex items-center justify-center w-full max-w-md">
+      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col">
+        
+        {/* Centered Content */}
+        <div className="flex-1 flex flex-col items-center justify-center px-4 text-center">
+          
+          {/* Text + Image as One Block */}
+          <div className="flex flex-col items-center gap-4 max-w-md">
+            <h1 className="text-lg font-bold text-gray-800 leading-tight animate-fade-in">
+              {generateCustomOutput()}
+            </h1>
             <Image
               src="/custom/beforeafter.png"
               alt="Before and after transformation"
@@ -103,7 +104,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
             />
           </div>
         </div>
-
+  
         {/* Fixed Bottom Button */}
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
           <Button
@@ -117,6 +118,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
       </div>
     )
   }
+  
 
   if (type === "current-bmi") {
     // Get values with proper validation - try localStorage as fallback
@@ -307,22 +309,25 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
 
   if (type === "gift-box") {
     return (
-      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col overflow-hidden">
-        <div className="flex-1 flex flex-col items-center justify-center p-6" style={{ height: "80vh" }}>
-          <div className="text-center mb-8">
-            <h1 className="text-xl font-bold text-gray-800 mb-8">Wait until end there is some gift for you</h1>
-          </div>
-          <div className="flex-1 flex items-center justify-center">
+      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col">
+        
+        {/* Centered Text + Image */}
+        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+          <div className="flex flex-col items-center gap-6 max-w-md">
+            <h1 className="text-xl font-bold text-gray-800">
+              Wait until the end — there’s a special gift for you 🎁
+            </h1>
             <Image
               src="/custom/gift.png"
               alt="Special Gift"
               width={300}
               height={300}
-              className="w-80 h-80 object-contain"
+              className="w-72 h-72 object-contain"
             />
           </div>
         </div>
-
+  
+        {/* Fixed Bottom Button */}
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
           <Button
             onClick={onContinue}
@@ -335,17 +340,18 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
       </div>
     )
   }
+  
 
   if (type === "bmi-analysis") {
     return (
-      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col overflow-hidden">
-        <div className="flex-1 flex flex-col items-center justify-center p-6" style={{ height: "80vh" }}>
-          <div className="text-center mb-8">
-            <h1 className="text-xl font-bold text-gray-800 mb-8">
+      <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col">
+        
+        {/* Centered Text + Image */}
+        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+          <div className="flex flex-col items-center gap-6 max-w-md">
+            <h1 className="text-xl font-bold text-gray-800">
               Hai Un Ottimo Potenziale Per Spaccare Ogni Traguardo
             </h1>
-          </div>
-          <div className="flex-1 flex items-center justify-center">
             <Image
               src="/custom/graph.png"
               alt="BMI Graph"
@@ -355,7 +361,8 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
             />
           </div>
         </div>
-
+  
+        {/* Fixed Bottom Button */}
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
           <Button
             onClick={onContinue}
@@ -368,6 +375,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
       </div>
     )
   }
+  
 
   if (type === "doctor-screen") {
     return (
