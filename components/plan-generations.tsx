@@ -246,7 +246,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
 
         {/* Fixed Bottom CTA Button */}
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-pink-100 p-4 shadow-lg">
-          <Link href="https://dolceresetmenopausa.org/salespage">
+          <Link href="/sales">
             <Button
               className="w-full h-14 text-lg bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up"
               style={{ animationDelay: "0.6s" }}

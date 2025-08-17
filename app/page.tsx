@@ -12,35 +12,35 @@ export default function StartScreen() {
   const router = useRouter()
   const { isSignedIn, isLoaded: userLoaded } = useUser()
 
-  useEffect(() => {
-    if (!userLoaded) return
+  // useEffect(() => {
+  //   if (!userLoaded) return
 
-    if (isSignedIn) {
-      // User is signed in, check onboarding status
-      const hasCompletedOnboarding = localStorage.getItem("onboarding-completed")
-      if (hasCompletedOnboarding === "true") {
-        router.push("/dashboard")
-      } else {
-        router.push("/onboarding")
-      }
-      return
-    }
+  //   if (isSignedIn) {
+  //     // User is signed in, check onboarding status
+  //     const hasCompletedOnboarding = localStorage.getItem("onboarding-completed")
+  //     if (hasCompletedOnboarding === "true") {
+  //       router.push("/dashboard")
+  //     } else {
+  //       router.push("/onboarding")
+  //     }
+  //     return
+  //   }
 
-    // User is not signed in, show start screen
-    setIsLoaded(true)
-  }, [router, isSignedIn, userLoaded])
+  //   // User is not signed in, show start screen
+  //   setIsLoaded(true)
+  // }, [router, isSignedIn, userLoaded])
 
   const handleStartJourney = () => {
-    router.push("/sign-in")
+    router.push("/onboarding")
   }
 
-  if (!isLoaded || !userLoaded) {
-    return (
-      <div className="app-container gradient-bg flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
-      </div>
-    )
-  }
+  // if (!isLoaded || !userLoaded) {
+  //   return (
+  //     <div className="app-container gradient-bg flex items-center justify-center">
+  //       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
+  //     </div>
+  //   )
+  // }
 
   return (
     <div className="app-container relative overflow-hidden">
