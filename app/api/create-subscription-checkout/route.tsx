@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
   try {
     console.log("Received request to create checkout session")
 
-    const { email, priceId=process.env.NEXT_PUBLIC_STRIPE_PRICE_ID } = await req.json()
+    const { email, priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID } = await req.json()
 
     console.log("Email:", email)
     console.log("Price ID:", priceId)
@@ -16,9 +16,6 @@ export async function POST(req: NextRequest) {
       console.error("Email and price ID are required")
       return NextResponse.json({ error: "Email and price ID are required" }, { status: 400 })
     }
-
-    console.log("Email:", email)
-    console.log("Price ID:", priceId)
 
     // Create Stripe checkout session with trial
     const session = await stripe.checkout.sessions.create({

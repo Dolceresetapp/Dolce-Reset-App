@@ -1,14 +1,11 @@
 import { headers } from "next/headers"
 import { Webhook } from "svix"
+import { createClient } from "@supabase/supabase-js"
 
-import { createClient } from "@supabase/supabase-js";
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
-
-export const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
+export const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET
@@ -58,22 +55,72 @@ export async function POST(req: Request) {
 
   if (eventType === "user.created") {
     const { id, email_addresses, first_name, last_name, image_url } = evt.data
+    const email = email_addresses[0]?.email_address
 
     try {
-      const { error } = await supabase.from("users").insert({
+      // Create user in database
+      const { error: userError } = await supabase.from("users").insert({
         clerk_user_id: id,
-        email: email_addresses[0]?.email_address,
+        email: email,
         first_name: first_name,
         last_name: last_name,
         profile_image_url: image_url,
       })
 
-      if (error) {
-        console.error("Error creating user in Supabase:", error)
+      if (userError) {
+        console.error("Error creating user in Supabase:", userError)
         return new Response("Error creating user", { status: 500 })
       }
 
       console.log("User created successfully in Supabase")
+
+      // Check if user has existing subscription and link it
+      if (email) {
+        const { data: subscription, error: subError } = await supabase
+          .from("subscriptions")
+          .select("*")
+          .eq("email", email)
+          .is("user_id", null)
+          .single()
+
+        if (subscription && !subError) {
+          // Link subscription to user
+          const { error: linkError } = await supabase
+            .from("subscriptions")
+            .update({ user_id: id, updated_at: new Date().toISOString() })
+            .eq("id", subscription.id)
+
+          if (linkError) {
+            console.error("Error linking subscription to user:", linkError)
+          } else {
+            console.log("Successfully linked subscription to user:", id)
+
+            // Update user with subscription status
+            const hasActiveSubscription =
+              (subscription.status === "active" || subscription.status === "trialing") &&
+              new Date(subscription.current_period_end) > new Date()
+
+            if (hasActiveSubscription) {
+              const { error: updateError } = await supabase
+                .from("users")
+                .update({
+                  subscription_status: subscription.status,
+                  subscription_end_date: subscription.current_period_end,
+                  updated_at: new Date().toISOString(),
+                })
+                .eq("clerk_user_id", id)
+
+              if (updateError) {
+                console.error("Error updating user subscription status:", updateError)
+              } else {
+                console.log("User subscription status updated successfully")
+              }
+            }
+          }
+        } else {
+          console.log("No existing subscription found for email:", email)
+        }
+      }
     } catch (error) {
       console.error("Error in user creation:", error)
       return new Response("Error creating user", { status: 500 })

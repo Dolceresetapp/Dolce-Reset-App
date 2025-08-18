@@ -5,9 +5,9 @@ import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Star, Users, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react"
+import { Heart, Star, Users, Sparkles, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react"
 import { PricingDialog } from "./pricing-dialog"
-import Sales from "./sales"
+import SalesPage from "./sales"
 
 interface PlanGenerationProps {
   answers: Record<string, any>
@@ -84,10 +84,6 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
 
   const goToTestimonial = (index: number) => {
     setCurrentTestimonial(index)
-  }
-
-  const handleGetPlanClick = () => {
-    setShowPricingDialog(true)
   }
 
   const calculateBMI = () => {
@@ -235,13 +231,27 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
               </CardContent>
             </Card>
 
-            <Sales />
+            {/* Success Promise */}
+            {/* <Card
+              className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 shadow-lg animate-slide-up"
+              style={{ animationDelay: "0.4s" }}
+            >
+              <CardContent className="p-4 text-center">
+                <Sparkles className="w-8 h-8 text-green-500 mx-auto mb-2" />
+                <h4 className="text-base font-bold text-gray-800 mb-2">Your Success is Guaranteed!</h4>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  This custom plan is designed specifically for your body type, goals, and lifestyle. Join{" "}
+                  {activeUsers.toLocaleString()}+ women already transforming!
+                </p>
+              </CardContent>
+            </Card> */}
+            <SalesPage />
           </div>
 
           {/* Fixed Bottom CTA Button */}
           <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-pink-100 p-4 shadow-lg">
             <Button
-              onClick={handleGetPlanClick}
+              onClick={() => setShowPricingDialog(true)}
               className="w-full h-18 text-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-light rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up"
               style={{ animationDelay: "0.6s" }}
             >
@@ -254,7 +264,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
         </div>
 
         {/* Pricing Dialog */}
-        <PricingDialog open={showPricingDialog} onOpenChange={setShowPricingDialog} onComplete={onComplete} />
+        <PricingDialog open={showPricingDialog} onOpenChange={setShowPricingDialog} />
       </>
     )
   }
