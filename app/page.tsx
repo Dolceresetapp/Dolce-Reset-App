@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Heart, Play } from "lucide-react"
 import Image from "next/image"
 
-export default function StartScreen() {
+export default function Sales() {
   const [isLoaded, setIsLoaded] = useState(false)
   const router = useRouter()
   const { isSignedIn, isLoaded: userLoaded } = useUser()

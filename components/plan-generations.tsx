@@ -5,8 +5,9 @@ import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Star, Users, Sparkles, Crown, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react"
-import Link from "next/link"
+import { Heart, Star, Users, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react"
+import { PricingDialog } from "./pricing-dialog"
+import Sales from "./sales"
 
 interface PlanGenerationProps {
   answers: Record<string, any>
@@ -52,6 +53,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
   const [currentStep, setCurrentStep] = useState(0)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const [showResults, setShowResults] = useState(false)
+  const [showPricingDialog, setShowPricingDialog] = useState(false)
   const [activeUsers] = useState(Math.floor(Math.random() * 500) + 7823489)
 
   useEffect(() => {
@@ -82,6 +84,10 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
 
   const goToTestimonial = (index: number) => {
     setCurrentTestimonial(index)
+  }
+
+  const handleGetPlanClick = () => {
+    setShowPricingDialog(true)
   }
 
   const calculateBMI = () => {
@@ -130,133 +136,126 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
     const targetWeight = getStoredValue("target_weight") || "60"
 
     return (
-      <div className="app-container bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 min-h-screen pb-20">
-        <div className="p-4 pt-6">
-          {/* Success Header */}
-          <div className="text-center mb-6 animate-fade-in">
-            <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mb-4 mx-auto shadow-xl">
-              <CheckCircle className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-xl font-bold text-gray-800 mb-2">🎉 {userName}, Your Custom Plan is Ready!</h1>
-            <p className="text-sm text-gray-600">Your personalized 30-day transformation journey</p>
-          </div>
-
-          {/* Custom Plan Chart */}
-          <Card className="mb-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0 shadow-xl animate-slide-up">
-            <CardContent className="p-6">
-              <div className="text-center mb-4">
-                <h2 className="text-lg font-bold mb-2">Your 30-Day Custom Plan</h2>
-                <p className="text-sm opacity-90">Scientifically designed for your goals</p>
+      <>
+        <div className="app-container bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 min-h-screen pb-20">
+          <div className="p-4 pt-6">
+            {/* Success Header */}
+            <div className="text-center mb-6 animate-fade-in">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mb-4 mx-auto shadow-xl">
+                <CheckCircle className="w-8 h-8 text-white" />
               </div>
+              <h1 className="text-xl font-bold text-gray-800 mb-2">🎉 {userName}, Your Custom Plan is Ready!</h1>
+              <p className="text-sm text-gray-600">Your personalized 30-day transformation journey</p>
+            </div>
 
-              {/* Progress Chart Visualization */}
-              <div className="bg-white/20 rounded-2xl p-4 mb-4">
-                <div className="flex justify-between items-center mb-3">
-                  <div className="text-center">
-                    <p className="text-xs opacity-90">Current</p>
-                    <p className="text-lg font-bold">{currentWeight}kg</p>
-                    <p className="text-xs opacity-75">BMI {currentBMI}</p>
-                  </div>
-                  <div className="flex-1 mx-4">
-                    <div className="relative">
-                      <div className="w-full bg-white/30 rounded-full h-3">
-                        <div className="bg-gradient-to-r from-yellow-400 to-green-400 h-3 rounded-full w-full animate-pulse"></div>
-                      </div>
-                      <div className="text-center mt-2">
-                        <p className="text-xs font-bold">30 Days Transformation</p>
+            {/* Custom Plan Chart */}
+            <Card className="mb-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0 shadow-xl animate-slide-up">
+              <CardContent className="p-6">
+                <div className="text-center mb-4">
+                  <h2 className="text-lg font-bold mb-2">Your 30-Day Custom Plan</h2>
+                  <p className="text-sm opacity-90">Scientifically designed for your goals</p>
+                </div>
+
+                {/* Progress Chart Visualization */}
+                <div className="bg-white/20 rounded-2xl p-4 mb-4">
+                  <div className="flex justify-between items-center mb-3">
+                    <div className="text-center">
+                      <p className="text-xs opacity-90">Current</p>
+                      <p className="text-lg font-bold">{currentWeight}kg</p>
+                      <p className="text-xs opacity-75">BMI {currentBMI}</p>
+                    </div>
+                    <div className="flex-1 mx-4">
+                      <div className="relative">
+                        <div className="w-full bg-white/30 rounded-full h-3">
+                          <div className="bg-gradient-to-r from-yellow-400 to-green-400 h-3 rounded-full w-full animate-pulse"></div>
+                        </div>
+                        <div className="text-center mt-2">
+                          <p className="text-xs font-bold">30 Days Transformation</p>
+                        </div>
                       </div>
                     </div>
+                    <div className="text-center">
+                      <p className="text-xs opacity-90">Target</p>
+                      <p className="text-lg font-bold">{targetWeight}kg</p>
+                      <p className="text-xs opacity-75">BMI {(Number.parseFloat(currentBMI) - 1.5).toFixed(1)}</p>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <p className="text-xs opacity-90">Target</p>
-                    <p className="text-lg font-bold">{targetWeight}kg</p>
-                    <p className="text-xs opacity-75">BMI {(Number.parseFloat(currentBMI) - 1.5).toFixed(1)}</p>
+                </div>
+
+                {/* Key Metrics */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-white/20 rounded-xl p-3 text-center">
+                    <p className="text-lg font-bold">{weightLoss}kg</p>
+                    <p className="text-xs opacity-90">Weight Loss</p>
+                  </div>
+                  <div className="bg-white/20 rounded-xl p-3 text-center">
+                    <p className="text-lg font-bold">30</p>
+                    <p className="text-xs opacity-90">Days</p>
+                  </div>
+                  <div className="bg-white/20 rounded-xl p-3 text-center">
+                    <p className="text-lg font-bold">15min</p>
+                    <p className="text-xs opacity-90">Daily</p>
                   </div>
                 </div>
-              </div>
+              </CardContent>
+            </Card>
 
-              {/* Key Metrics */}
-              <div className="grid grid-cols-3 gap-3">
-                <div className="bg-white/20 rounded-xl p-3 text-center">
-                  <p className="text-lg font-bold">{weightLoss}kg</p>
-                  <p className="text-xs opacity-90">Weight Loss</p>
+            {/* Custom Plan Features */}
+            <Card
+              className="mb-4 bg-white/90 border-pink-200 shadow-lg animate-slide-up"
+              style={{ animationDelay: "0.2s" }}
+            >
+              <CardContent className="p-4">
+                <h3 className="text-base font-bold text-gray-800 mb-3 flex items-center">
+                  <Heart className="w-4 h-4 text-pink-500 mr-2" />
+                  Your Custom Plan Includes
+                </h3>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
+                    <span className="text-sm text-gray-700">
+                      Daily {bodyFocus?.replace("_", " ") || "full body"} workouts
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
+                    <span className="text-sm text-gray-700">
+                      Focus on {urgentGoal?.replace("_", " ") || "fitness goals"}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
+                    <span className="text-sm text-gray-700">BMI optimization from {currentBMI} to ideal range</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
+                    <span className="text-sm text-gray-700">Progress tracking & motivation</span>
+                  </div>
                 </div>
-                <div className="bg-white/20 rounded-xl p-3 text-center">
-                  <p className="text-lg font-bold">30</p>
-                  <p className="text-xs opacity-90">Days</p>
-                </div>
-                <div className="bg-white/20 rounded-xl p-3 text-center">
-                  <p className="text-lg font-bold">15min</p>
-                  <p className="text-xs opacity-90">Daily</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          {/* Custom Plan Features */}
-          <Card
-            className="mb-4 bg-white/90 border-pink-200 shadow-lg animate-slide-up"
-            style={{ animationDelay: "0.2s" }}
-          >
-            <CardContent className="p-4">
-              <h3 className="text-base font-bold text-gray-800 mb-3 flex items-center">
-                <Heart className="w-4 h-4 text-pink-500 mr-2" />
-                Your Custom Plan Includes
-              </h3>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">
-                    Daily {bodyFocus?.replace("_", " ") || "full body"} workouts
-                  </span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">
-                    Focus on {urgentGoal?.replace("_", " ") || "fitness goals"}
-                  </span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">BMI optimization from {currentBMI} to ideal range</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
-                  <span className="text-sm text-gray-700">Progress tracking & motivation</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+            <Sales />
+          </div>
 
-          {/* Success Promise */}
-          <Card
-            className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 shadow-lg animate-slide-up"
-            style={{ animationDelay: "0.4s" }}
-          >
-            <CardContent className="p-4 text-center">
-              <Sparkles className="w-8 h-8 text-green-500 mx-auto mb-2" />
-              <h4 className="text-base font-bold text-gray-800 mb-2">Your Success is Guaranteed!</h4>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                This custom plan is designed specifically for your body type, goals, and lifestyle. Join{" "}
-                {activeUsers.toLocaleString()}+ women already transforming!
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Fixed Bottom CTA Button */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-pink-100 p-4 shadow-lg">
-          <Link href="/sales">
+          {/* Fixed Bottom CTA Button */}
+          <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-pink-100 p-4 shadow-lg">
             <Button
-              className="w-full h-14 text-lg bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up"
+              onClick={handleGetPlanClick}
+              className="w-full h-18 text-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-light rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up"
               style={{ animationDelay: "0.6s" }}
             >
-              <Crown className="w-6 h-6 mr-2" />
-              Get My Custom Plan Now
+              <div className="flex flex-col items-center">
+                <span>Get My Custom Plan</span>
+                <span className="">Start now Free 3 Days</span>
+              </div>
             </Button>
-          </Link>
+          </div>
         </div>
-      </div>
+
+        {/* Pricing Dialog */}
+        <PricingDialog open={showPricingDialog} onOpenChange={setShowPricingDialog} onComplete={onComplete} />
+      </>
     )
   }
 
