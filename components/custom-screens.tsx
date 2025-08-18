@@ -92,9 +92,9 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
           
           {/* Text + Image as One Block */}
           <div className="flex flex-col items-center gap-4 max-w-md">
-            <h1 className="text-lg font-bold text-gray-800 leading-tight animate-fade-in">
+            {/* <h1 className="text-lg font-bold text-gray-800 leading-tight animate-fade-in">
               {generateCustomOutput()}
-            </h1>
+            </h1> */}
             <Image
               src="/custom/beforeafter.png"
               alt="Before and after transformation"

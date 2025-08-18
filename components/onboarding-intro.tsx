@@ -26,17 +26,17 @@ export function OnboardingIntro({ onContinue }: OnboardingIntroProps) {
       <div className="app-container flex flex-col place-items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen">
         <div className="p-6 pt-12 pb-24 flex-1 flex flex-col items-center justify-center">
           {/* Success Stats */}
-          <div className="text-center mb-8 animate-fade-in">
+          {/* <div className="text-center mb-8 animate-fade-in">
             <h1 className="text-xl font-bold text-gray-800 mb-4 leading-tight">
               GET BACK IN SHAPE
               <br />
               <span className="text-purple-600">WITHOUT SACRIFICES</span>
             </h1>
-          </div>
+          </div> */}
 
           {/* Rating Card */}
           <div className="flex justify-center items-center w-full">
-            <Image src="/first.png" width={500} height={500} alt="first" className="object-contain" />
+            <Image src="/custom/onboarding.png" width={500} height={500} alt="first" className="object-contain" />
           </div>
 
           {/* Benefits Preview */}

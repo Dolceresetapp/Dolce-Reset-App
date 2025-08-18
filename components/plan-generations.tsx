@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Heart, Star, Users, Sparkles, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react"
 import { PricingDialog } from "./pricing-dialog"
 import SalesPage from "./sales"
+import AutoSlider from "./testimonials"
 
 interface PlanGenerationProps {
   answers: Record<string, any>
@@ -136,19 +137,19 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
         <div className="app-container bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 min-h-screen pb-20">
           <div className="p-4 pt-6">
             {/* Success Header */}
-            <div className="text-center mb-6 animate-fade-in">
+            {/* <div className="text-center mb-6 animate-fade-in">
               <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mb-4 mx-auto shadow-xl">
                 <CheckCircle className="w-8 h-8 text-white" />
               </div>
               <h1 className="text-xl font-bold text-gray-800 mb-2">🎉 {userName}, Your Custom Plan is Ready!</h1>
               <p className="text-sm text-gray-600">Your personalized 30-day transformation journey</p>
-            </div>
+            </div> */}
 
             {/* Custom Plan Chart */}
-            <Card className="mb-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0 shadow-xl animate-slide-up">
+            <Card className="mb-4  border-0 shadow-xl animate-slide-up">
               <CardContent className="p-6">
                 <div className="text-center mb-4">
-                  <h2 className="text-lg font-bold mb-2">Your 30-Day Custom Plan</h2>
+                  <h2 className="text-4xl font-bold mb-2">Your 30-Day Custom Plan</h2>
                   <p className="text-sm opacity-90">Scientifically designed for your goals</p>
                 </div>
 
@@ -230,6 +231,8 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
                 </div>
               </CardContent>
             </Card>
+
+            <AutoSlider />
 
             {/* Success Promise */}
             {/* <Card

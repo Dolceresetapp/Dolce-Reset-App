@@ -13,9 +13,28 @@ interface PricingDialogProps {
   onOpenChange: (open: boolean) => void
 }
 
+const emailDomains = [
+  "@gmail.com",
+  "@icloud.com",
+  "@tiscali.it",
+  "@libero.it",
+  "@virgilio.it",
+  "@outlook.com",
+  "@yahoo.com",
+]
+
 export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
   const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [showSuggestions, setShowSuggestions] = useState(false)
+
+  // Only show dropdown if user typed '@' and suggestions exist
+  const suggestions =
+    email.includes("@") && showSuggestions
+      ? emailDomains.filter((domain) =>
+          domain.startsWith(email.substring(email.indexOf("@")))
+        )
+      : []
 
   const handleSubscribe = async () => {
     if (!email || !email.includes("@")) {
@@ -52,6 +71,12 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
     }
   }
 
+  const handleSuggestionClick = (domain: string) => {
+    const beforeAt = email.substring(0, email.indexOf("@"))
+    setEmail(beforeAt + domain)
+    setShowSuggestions(false) // 👈 close dropdown after selection
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[95vw] max-w-md mx-auto max-h-[90vh] overflow-y-auto p-0 gap-0">
@@ -81,30 +106,24 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
                 Billed yearly at €49 • <span className="text-green-600 font-semibold">Save 83%</span>
               </p>
 
-              {/* Features */}
               <div className="space-y-2 text-left">
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span className="text-sm text-gray-700">Personalized workout plans</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span className="text-sm text-gray-700">AI-powered meal planning</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span className="text-sm text-gray-700">Progress tracking & analytics</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span className="text-sm text-gray-700">24/7 AI health consultant</span>
-                </div>
+                {[
+                  "Personalized workout plans",
+                  "AI-powered meal planning",
+                  "Progress tracking & analytics",
+                  "24/7 AI health consultant",
+                ].map((feature, i) => (
+                  <div key={i} className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span className="text-sm text-gray-700">{feature}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
           {/* Email Input */}
-          <div className="space-y-2">
+          <div className="space-y-2 relative">
             <Label htmlFor="email" className="text-sm font-medium text-gray-700">
               Email Address
             </Label>
@@ -115,10 +134,29 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
                 type="email"
                 placeholder="Enter your email address"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                  setShowSuggestions(true) // 👈 open dropdown while typing
+                }}
                 className="pl-10 h-12 border-pink-200 focus:border-pink-400 focus:ring-pink-400"
               />
             </div>
+
+            {/* Suggestions dropdown */}
+            {suggestions.length > 0 && (
+              <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                {suggestions.map((domain) => (
+                  <div
+                    key={domain}
+                    className="px-3 py-2 text-sm text-gray-700 cursor-pointer hover:bg-pink-50"
+                    onClick={() => handleSuggestionClick(domain)}
+                  >
+                    {email.substring(0, email.indexOf("@"))}
+                    {domain}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Subscribe Button */}
@@ -152,7 +190,6 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
             <span>No Hidden Fees</span>
           </div>
 
-          {/* Terms */}
           <p className="text-xs text-gray-500 text-center leading-relaxed">
             Start your 3-day free trial today. After the trial, you'll be charged €49/year. You can cancel anytime
             during the trial period with no charges.
