@@ -11,7 +11,7 @@ export default function AutoSlider() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length)
-    }, 3000) // change every 3s
+    }, 5000) // change every 3s
     return () => clearInterval(interval)
   }, [])
 

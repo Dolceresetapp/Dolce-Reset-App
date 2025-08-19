@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import LogoMarquee from "./brands";
 
 export default function SalesPage() {
   // FAQ state
@@ -72,11 +73,11 @@ export default function SalesPage() {
   );
 
   return (
-    <div className="max-w-md mx-auto px-4 py-6">
+    <div className="max-w-md mx-auto px-4 py-0">
       {/* --- Top Images --- */}
       {renderImage(1)}
       {renderImage(2)}
-     
+      <LogoMarquee />
 
       {/* CTA */}
       {/* <CTA /> */}

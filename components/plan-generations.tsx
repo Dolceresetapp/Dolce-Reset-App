@@ -10,6 +10,7 @@ import { PricingDialog } from "./pricing-dialog"
 import SalesPage from "./sales"
 import AutoSlider from "./testimonials"
 import LogoMarquee from "./brands"
+import Image from "next/image"
 
 interface PlanGenerationProps {
   answers: Record<string, any>
@@ -199,7 +200,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
             </Card>
 
             {/* Custom Plan Features */}
-            <Card
+            {/* <Card
               className="mb-4 bg-white/90 border-pink-200 shadow-lg animate-slide-up"
               style={{ animationDelay: "0.2s" }}
             >
@@ -231,10 +232,10 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
             <AutoSlider />
-            <LogoMarquee />
+            <Image src="/custom/step.png" alt="sales" width={500} height={500} />
 
             {/* Success Promise */}
             {/* <Card
