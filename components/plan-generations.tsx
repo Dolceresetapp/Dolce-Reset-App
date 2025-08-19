@@ -238,7 +238,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
             </Card> */}
 
             <AutoSlider />
-            <Image src="/custom/step.png" alt="sales" width={500} height={500} />
+            {/* <Image src="/custom/step.png" alt="sales" width={500} height={500} /> */}
 
             {/* Success Promise */}
             {/* <Card
@@ -265,7 +265,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
               style={{ animationDelay: "0.6s" }}
             >
               <div className="flex flex-col items-center">
-                <span>Continue</span>
+                <span>Start Now For Free</span>
               </div>
             </Button>
           </div>
