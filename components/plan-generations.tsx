@@ -4,13 +4,11 @@ import { useState, useEffect } from "react"
 import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Heart, Star, Users, Sparkles, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react"
-import { PricingDialog } from "./pricing-dialog"
+import { Star, Users, CheckCircle } from "lucide-react"
 import SalesPage from "./sales"
 import AutoSlider from "./testimonials"
-import LogoMarquee from "./brands"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 interface PlanGenerationProps {
   answers: Record<string, any>
@@ -53,6 +51,7 @@ const progressSteps = [
 
 export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
   const { user } = useUser()
+  const router = useRouter()
   const [currentStep, setCurrentStep] = useState(0)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const [showResults, setShowResults] = useState(false)
@@ -115,6 +114,10 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
     const current = Number.parseFloat(getStoredValue("current_weight")) || 70
     const target = Number.parseFloat(getStoredValue("target_weight")) || current - 5
     return Math.abs(current - target).toFixed(1)
+  }
+
+  const handleContinue = () => {
+    router.push("/checkout")
   }
 
   if (showResults) {
@@ -251,26 +254,22 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
                 </p>
               </CardContent>
             </Card> */}
-            <SalesPage />
+            {/* <SalesPage /> */}
           </div>
 
           {/* Fixed Bottom CTA Button */}
           <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-pink-100 p-4 shadow-lg">
             <Button
-              onClick={() => setShowPricingDialog(true)}
+              onClick={handleContinue}
               className="w-full h-18 text-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-light rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up"
               style={{ animationDelay: "0.6s" }}
             >
               <div className="flex flex-col items-center">
-                <span>Start Your 3-Day Free Trial</span>
-                <span className="">Press here on to start</span>
+                <span>Continue</span>
               </div>
             </Button>
           </div>
         </div>
-
-        {/* Pricing Dialog */}
-        <PricingDialog open={showPricingDialog} onOpenChange={setShowPricingDialog} />
       </>
     )
   }
