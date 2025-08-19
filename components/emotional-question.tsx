@@ -150,8 +150,8 @@ export function EmotionalQuestion({
     // Age validation
     if (question.id === "age") {
       const age = Number.parseInt(value)
-      if (age && (age < 16 || age > 79)) {
-        setAgeError("Sorry, our program is designed for ages 16-79 only.")
+      if (age) {
+        setAgeError("At your age, small daily habits make a big impact ! don’t postpone")
       } else {
         setAgeError("")
       }
@@ -180,12 +180,12 @@ export function EmotionalQuestion({
   }
 
   const handleInputSubmit = () => {
-    if (question.id === "age") {
-      const age = Number.parseInt(inputValue)
-      if (age < 16 || age > 79) {
-        return // Don't proceed if age is invalid
-      }
-    }
+    // if (question.id === "age") {
+    //   const age = Number.parseInt(inputValue)
+    //   if (age < 16 || age > 79) {
+    //     return // Don't proceed if age is invalid
+    //   }
+    // }
 
     if (inputValue.trim()) {
       onNext()
@@ -343,8 +343,8 @@ export function EmotionalQuestion({
                 )}
 
               {ageError && (
-                <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-xl">
-                  <p className="text-sm text-red-600 font-medium">{ageError}</p>
+                <div className="mt-2 p-3 bg-orange-50 border border-orange-200 rounded-xl">
+                  <p className="text-sm text-orange-600 font-medium">{ageError}</p>
                 </div>
               )}
             </div>
@@ -403,7 +403,7 @@ export function EmotionalQuestion({
       </div>
 
       {/* Fixed Bottom Button */}
-      {((question.type === "input" && inputValue && !ageError) ||
+      {((question.type === "input" && inputValue) ||
         (question.type === "multiple-choice" && selectedOptions.length > 0)) && (
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
           <Button

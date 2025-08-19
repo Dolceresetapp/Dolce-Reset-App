@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Crown, Mail, CreditCard, Shield, CheckCircle } from "lucide-react"
+import Image from "next/image"
 
 interface PricingDialogProps {
   open: boolean
@@ -80,7 +81,7 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[95vw] max-w-md mx-auto max-h-[90vh] overflow-y-auto p-0 gap-0">
-        <div className="bg-gradient-to-br from-pink-500 to-rose-500 text-white p-6 rounded-t-lg">
+        {/* <div className="bg-gradient-to-br from-pink-500 to-rose-500 text-white p-6 rounded-t-lg">
           <DialogHeader className="text-center space-y-2">
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
               <Crown className="w-8 h-8 text-white" />
@@ -88,11 +89,11 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
             <DialogTitle className="text-2xl font-bold">Start Your Transformation</DialogTitle>
             <p className="text-pink-100 text-sm">Join thousands of women already transforming their lives</p>
           </DialogHeader>
-        </div>
+        </div> */}
 
         <div className="p-6 space-y-6">
           {/* Pricing Card */}
-          <div className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-4 border-2 border-pink-200 relative">
+          {/* <div className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-4 border-2 border-pink-200 relative">
             <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-500 text-white px-3 py-1">
               3 Days FREE Trial
             </Badge>
@@ -120,7 +121,26 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
                 ))}
               </div>
             </div>
-          </div>
+          </div> */}
+
+<Image src="/custom/steps.png" width={500} height={500} alt="" className="w-full" />
+
+{/* Yearly Pricing Card */}
+<div className="relative mt-6 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 border-2 border-pink-200 text-center">
+  <Badge className="absolute -top-3 left-0 left-5 bg-black text-white px-3 py-1 rounded-full">
+    3 DAYS FREE
+  </Badge>
+
+  <div className="flex flex-col items-center">
+    <div className="flex items-end space-x-2">
+      <span className="text-3xl font-bold text-gray-800">€2.91</span>
+      <span className="text-gray-600 text-lg">/mo</span>
+    </div>
+    <p className="text-sm text-gray-600 mt-1">
+      Billed yearly at €34.99
+    </p>
+  </div>
+</div>
 
           {/* Email Input */}
           <div className="space-y-2 relative">
@@ -179,7 +199,7 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
           </Button>
 
           {/* Trust Indicators */}
-          <div className="flex items-center justify-center space-x-4 text-xs text-gray-500">
+          {/* <div className="flex items-center justify-center space-x-4 text-xs text-gray-500">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3" />
               <span>Secure Payment</span>
@@ -188,7 +208,7 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
             <span>Cancel Anytime</span>
             <div className="w-1 h-1 bg-gray-300 rounded-full" />
             <span>No Hidden Fees</span>
-          </div>
+          </div> */}
 
           <p className="text-xs text-gray-500 text-center leading-relaxed">
             Start your 3-day free trial today. After the trial, you'll be charged €49/year. You can cancel anytime

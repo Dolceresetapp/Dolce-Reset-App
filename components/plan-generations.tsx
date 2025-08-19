@@ -9,6 +9,7 @@ import { Heart, Star, Users, Sparkles, CheckCircle, ChevronLeft, ChevronRight } 
 import { PricingDialog } from "./pricing-dialog"
 import SalesPage from "./sales"
 import AutoSlider from "./testimonials"
+import LogoMarquee from "./brands"
 
 interface PlanGenerationProps {
   answers: Record<string, any>
@@ -233,6 +234,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
             </Card>
 
             <AutoSlider />
+            <LogoMarquee />
 
             {/* Success Promise */}
             {/* <Card
@@ -259,8 +261,8 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
               style={{ animationDelay: "0.6s" }}
             >
               <div className="flex flex-col items-center">
-                <span>Get My Custom Plan</span>
-                <span className="">Start now Free 3 Days</span>
+                <span>Start Your 3-Day Free Trial</span>
+                <span className="">Press here on to start</span>
               </div>
             </Button>
           </div>
@@ -338,64 +340,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
           </h3>
         </div>
 
-        {/* Manual Testimonial Card with Navigation */}
-        <div className="relative mb-6 animate-slide-up" style={{ animationDelay: "0.6s" }}>
-          <Card className="bg-white/90 border-pink-200 shadow-lg">
-            <CardContent className="p-6">
-              <div className="text-center">
-                {/* Rating Stars */}
-                <div className="flex items-center justify-center space-x-1 mb-4">
-                  {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-
-                {/* Review Text */}
-                <p className="text-sm text-gray-700 leading-relaxed mb-4 italic">
-                  "{testimonials[currentTestimonial].text}"
-                </p>
-
-                {/* Author */}
-                <div className="flex items-center justify-center space-x-2">
-                  <p className="text-sm font-bold text-gray-800">{testimonials[currentTestimonial].name}</p>
-                  <Badge className="bg-pink-100 text-pink-700 text-xs">{testimonials[currentTestimonial].age}</Badge>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Navigation Arrows */}
-          <Button
-            onClick={prevTestimonial}
-            variant="outline"
-            size="icon"
-            className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 border-pink-200 hover:bg-pink-50 hover:border-pink-300 shadow-lg"
-          >
-            <ChevronLeft className="w-5 h-5 text-pink-600" />
-          </Button>
-
-          <Button
-            onClick={nextTestimonial}
-            variant="outline"
-            size="icon"
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 border-pink-200 hover:bg-pink-50 hover:border-pink-300 shadow-lg"
-          >
-            <ChevronRight className="w-5 h-5 text-pink-600" />
-          </Button>
-        </div>
-
-        {/* Clickable Dots Indicator */}
-        <div className="flex justify-center space-x-2 animate-slide-up" style={{ animationDelay: "0.8s" }}>
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToTestimonial(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentTestimonial ? "bg-pink-500 scale-110" : "bg-pink-200 hover:bg-pink-300"
-              }`}
-            />
-          ))}
-        </div>
+        <AutoSlider />
       </div>
     </div>
   )

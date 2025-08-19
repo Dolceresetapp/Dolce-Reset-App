@@ -314,15 +314,15 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
         {/* Centered Text + Image */}
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
           <div className="flex flex-col items-center gap-6 max-w-md">
-            <h1 className="text-xl font-bold text-gray-800">
+            {/* <h1 className="text-xl font-bold text-gray-800">
               Wait until the end — there’s a special gift for you 🎁
-            </h1>
+            </h1> */}
             <Image
               src="/custom/gift.png"
               alt="Special Gift"
               width={300}
               height={300}
-              className="w-72 h-72 object-contain"
+              className="w-full h-full object-contain"
             />
           </div>
         </div>

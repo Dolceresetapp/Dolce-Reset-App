@@ -233,23 +233,23 @@ export const emotionalQuestions: EmotionalQuestion[] = [
     type: "single-choice",
     options: [
       {
-        id: "confident",
-        label: "More Confident",
+        id: "party",
+        label: "Throw a Big Party",
         emoji: "👑",
       },
       {
-        id: "energetic",
-        label: "Full of Energy",
+        id: "trip",
+        label: "Take a Fun Trip",
         emoji: "⚡",
       },
       {
-        id: "proud",
-        label: "Proud of Myself",
+        id: "dinner",
+        label: "Go Out for a Special Dinner",
         emoji: "🌟",
       },
       {
-        id: "happy",
-        label: "Truly Happy",
+        id: "relax",
+        label: "Relax & Treat Myself",
         emoji: "😊",
       },
     ],
