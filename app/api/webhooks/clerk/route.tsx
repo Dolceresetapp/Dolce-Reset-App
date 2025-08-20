@@ -59,13 +59,13 @@ export async function POST(req: Request) {
 
     try {
       // Create user in database
-      const { error: userError } = await supabase.from("users").insert({
+      const { data: user, error: userError } = await supabase.from("users").insert({
         clerk_user_id: id,
         email: email,
         first_name: first_name,
         last_name: last_name,
         profile_image_url: image_url,
-      })
+      }).select("*").single()
 
       if (userError) {
         console.error("Error creating user in Supabase:", userError)
@@ -87,7 +87,7 @@ export async function POST(req: Request) {
           // Link subscription to user
           const { error: linkError } = await supabase
             .from("subscriptions")
-            .update({ user_id: id, updated_at: new Date().toISOString() })
+            .update({ user_id: user.id, updated_at: new Date().toISOString() })
             .eq("id", subscription.id)
 
           if (linkError) {
