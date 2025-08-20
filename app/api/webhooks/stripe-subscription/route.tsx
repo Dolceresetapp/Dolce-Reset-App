@@ -50,7 +50,6 @@ export async function POST(req: Request) {
               current_period_start: now.toISOString(),
               current_period_end: oneMonthLater.toISOString(),
               trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
-              metadata: session.metadata || {},
               updated_at: new Date().toISOString(),
             })
 
