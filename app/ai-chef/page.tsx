@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { ArrowLeft, Send, ChefHat, Sparkles, User, Bot } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
+import { useCheckPremium } from "@/components/hooks/check-package"
 
 const preBuiltQuestions = [
   "What's a healthy breakfast for weight loss?",
@@ -26,11 +27,13 @@ interface Message {
 
 export default function AIChefPage() {
   const router = useRouter()
+  const { isPremium } = useCheckPremium() // ✅ premium hook
   const messagesEndRef = useRef<HTMLDivElement>(null)
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      text: "Hello beautiful! 👋 I'm your AI Nutrition Chef, here to help you create delicious, healthy meals that support your fitness journey. I specialize in nutrition for active women and can help with meal planning, recipes, and dietary advice. What would you like to know about nutrition today?",
+      text: "Hello beautiful! 👋 I'm your AI Nutrition Chef, here to help you create delicious, healthy meals that support your fitness journey.",
       isUser: false,
       timestamp: new Date(),
     },
@@ -49,7 +52,6 @@ export default function AIChefPage() {
   const handleSendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return
 
-    // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       text: text.trim(),
@@ -62,7 +64,6 @@ export default function AIChefPage() {
     setIsLoading(true)
 
     try {
-      // Call OpenAI API
       const response = await fetch("/api/ai-chef", {
         method: "POST",
         headers: {
@@ -97,6 +98,25 @@ export default function AIChefPage() {
 
   const handleQuestionClick = (question: string) => {
     handleSendMessage(question)
+  }
+
+  // ✅ Premium check
+  if (!isPremium) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50">
+        <ChefHat className="w-12 h-12 text-green-500 mb-4" />
+        <h2 className="text-xl font-bold text-gray-800 mb-2">Premium Required</h2>
+        <p className="text-gray-600 mb-6">
+          Access to AI Chef is for premium members only. Upgrade to unlock personalized nutrition coaching 🍎✨
+        </p>
+        <Button
+          onClick={() => router.push("/pricing")}
+          className="bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl shadow-md px-6 py-3"
+        >
+          Upgrade to Premium
+        </Button>
+      </div>
+    )
   }
 
   return (

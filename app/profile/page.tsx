@@ -130,7 +130,7 @@ export default function ProfilePage() {
         </div> */}
 
         {/* Upgrade Section for Free Users */}
-        {!isPremium && (
+        {/* {!isPremium && (
           <Card
             className="mb-6 bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200 animate-slide-up rounded-3xl"
             style={{ animationDelay: "0.4s" }}
@@ -155,7 +155,7 @@ export default function ProfilePage() {
               </div>
             </CardContent>
           </Card>
-        )}
+        )} */}
 
         {/* Profile Actions */}
         <div className="space-y-4 animate-slide-up" style={{ animationDelay: "0.5s" }}>

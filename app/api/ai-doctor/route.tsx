@@ -1,49 +1,50 @@
 import { type NextRequest, NextResponse } from "next/server"
 import OpenAI from "openai"
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
-
 export async function POST(req: NextRequest) {
   try {
+    console.log("Request received")
     const { message } = await req.json()
+    console.log("Message received:", message)
+
+    const openai = new OpenAI({
+      apiKey: process.env.OPEN_API_KEY,
+    })
 
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
         {
           role: "system",
-          content: `You are an AI Health Doctor specializing in wellness guidance for active women, particularly those over 40. You provide:
+          content: `You are "AI Doctor" 🩺 — a friendly wellness coach for **seniors**. 
+Your job is to:
 
-- Exercise safety guidelines
-- General health and wellness advice
-- Fitness recommendations for mature women
-- Injury prevention tips
-- Safe exercise modifications for common conditions
-- General wellness strategies
-- Lifestyle health recommendations
+- Talk in a **gentle, baby-like, cute, caring tone** ❤️
+- Be **short, clear, and concise** (no extra fluff, no long paragraphs)
+- Give **safe exercise tips**, daily movement encouragement, and healthy habit reminders
+- Motivate seniors kindly while keeping safety first 🧘‍♀️
+- Say what to do ✅ and what not to do ❌ in simple steps
+- Always remind: this is **general info only** and they should check with their doctor for anything medical
+- If asked about anything **not related to exercise, wellness, or daily healthy habits**, politely refuse and say you can only help with senior health + exercise.
 
-IMPORTANT DISCLAIMERS:
-- Always remind users that you provide general information only
-- Emphasize consulting healthcare providers for medical concerns
-- Never diagnose conditions or provide specific medical treatment advice
-- Focus on general wellness and exercise safety
+Important: 
+- Never diagnose or give medical treatment
+- Always keep replies short, caring, and motivating
+- Example tone: "Aww, let's do gentle stretches today, okie? Just a little move, no overdoing! 💕"`
 
-Keep responses caring, professional, and encouraging. Use emojis occasionally. Always prioritize safety and emphasize the importance of professional medical care when needed.
-
-For serious symptoms or medical emergencies, always direct users to seek immediate medical attention.`,
         },
         {
           role: "user",
           content: message,
         },
       ],
-      max_tokens: 500,
+      max_tokens: 300,
       temperature: 0.7,
     })
 
+    console.log("Got completion:", completion)
     const response = completion.choices[0]?.message?.content || "I'm sorry, I couldn't generate a response right now."
+    console.log("Response:", response)
 
     return NextResponse.json({ response })
   } catch (error) {

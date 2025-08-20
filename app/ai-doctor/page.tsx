@@ -30,7 +30,7 @@ export default function AIDoctorPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      text: "Hello! 👩‍⚕️ I'm your AI Health Doctor, here to provide general wellness guidance and help you exercise safely. I specialize in health advice for active women and can help with exercise safety, general health questions, and wellness tips.\n\n⚠️ Important: I'm not a replacement for professional medical advice. For serious health concerns, please consult your healthcare provider.\n\nWhat health-related question can I help you with today?",
+      text: "Hello! 👩‍⚕️ I'm your AI Health Doctor, here to provide general wellness guidance and help you exercise safely.",
       isUser: false,
       timestamp: new Date(),
     },
@@ -124,7 +124,7 @@ export default function AIDoctorPage() {
       </div>
 
       {/* Disclaimer */}
-      <div className="p-4">
+      {/* <div className="p-4">
         <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200 rounded-2xl">
           <CardContent className="p-4">
             <div className="flex items-start space-x-3">
@@ -139,7 +139,7 @@ export default function AIDoctorPage() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
 
       {/* Chat Messages */}
       <div className="flex-1 p-4 pb-32 space-y-6">

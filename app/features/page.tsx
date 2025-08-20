@@ -1,13 +1,14 @@
 "use client"
 
-import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Crown, Stethoscope, ChefHat, Users, Heart, Lock } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
+import { useCheckPremium } from "@/components/hooks/check-package"
 
+// Feature definitions
 const features = [
   {
     id: "premium-exercises",
@@ -17,6 +18,7 @@ const features = [
     color: "from-amber-500 to-orange-500",
     path: "/premium",
     benefits: ["50+ premium workouts", "Celebrity trainers", "Advanced programs"],
+    isPremiumOnly: false, // free feature
   },
   {
     id: "ai-chef",
@@ -26,6 +28,7 @@ const features = [
     color: "from-green-500 to-emerald-500",
     path: "/ai-chef",
     benefits: ["Custom meal plans", "Healthy recipes", "Nutrition tracking"],
+    isPremiumOnly: true,
   },
   {
     id: "ai-doctor",
@@ -35,6 +38,7 @@ const features = [
     color: "from-blue-500 to-cyan-500",
     path: "/ai-doctor",
     benefits: ["24/7 health support", "Personalized advice", "Symptom checker"],
+    isPremiumOnly: true,
   },
   {
     id: "community",
@@ -44,16 +48,17 @@ const features = [
     color: "from-purple-500 to-pink-500",
     path: "/community",
     benefits: ["Exclusive groups", "Expert Q&A", "Success stories"],
+    isPremiumOnly: true,
   },
 ]
 
 export default function FeaturesPage() {
   const router = useRouter()
-  const [isPremium] = useState(false) // This should come from your user data
+  const { isPremium } = useCheckPremium()
 
   const handleFeatureClick = (feature: (typeof features)[0]) => {
-    if (!isPremium && feature.id !== "premium-exercises") {
-      // Show upgrade modal or redirect to pricing for non-premium features
+    if (!isPremium && feature.isPremiumOnly) {
+      // Free user clicking premium feature → upsell
       router.push("/pricing")
       return
     }
@@ -115,7 +120,7 @@ export default function FeaturesPage() {
                     className={`w-14 h-14 bg-gradient-to-br ${feature.color} rounded-3xl flex items-center justify-center shadow-lg relative`}
                   >
                     <feature.icon className="w-7 h-7 text-white" />
-                    {!isPremium && feature.id !== "premium-exercises" && (
+                    {!isPremium && feature.isPremiumOnly && (
                       <div className="absolute -top-1 -right-1 w-6 h-6 bg-amber-400 rounded-full flex items-center justify-center">
                         <Lock className="w-3 h-3 text-white" />
                       </div>
@@ -125,7 +130,7 @@ export default function FeaturesPage() {
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="senior-text-lg font-bold text-gray-800">{feature.title}</h3>
-                      {!isPremium && feature.id !== "premium-exercises" && (
+                      {!isPremium && feature.isPremiumOnly && (
                         <Badge className="bg-gradient-to-r from-amber-400 to-orange-400 text-white border-0 senior-text-sm rounded-xl">
                           Premium
                         </Badge>

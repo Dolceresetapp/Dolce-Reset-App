@@ -193,7 +193,7 @@ export default function ExercisePlayer({ params }: { params: { id: string } }) {
       </div>
 
       {/* Exercise Steps (Hidden during video, shown when paused) */}
-      {!isPlaying && !completed && (
+      {/* {!isPlaying && !completed && (
         <div className="absolute right-4 top-1/2 transform -translate-y-1/2 w-80 animate-slide-up">
           <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-xl">
             <CardContent className="p-6">
@@ -214,7 +214,7 @@ export default function ExercisePlayer({ params }: { params: { id: string } }) {
             </CardContent>
           </Card>
         </div>
-      )}
+      )} */}
     </div>
   )
 }
