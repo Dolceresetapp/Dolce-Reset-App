@@ -1,7 +1,13 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
-const isPublicRoute = createRouteMatcher(["/", "/sign-in(.*)", "/sign-up(.*)", "/api/webhooks(.*)"])
+const isPublicRoute = createRouteMatcher([
+  "/",
+  "/sign-in(.*)",
+  "/sign-up(.*)",
+  "/api/webhooks(.*)",
+  "/onboarding(.*)", // onboarding is technically public
+])
 
 const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
@@ -21,6 +27,11 @@ export default clerkMiddleware(async (auth, req) => {
 
   // Allow public routes for everyone
   if (isPublicRoute(req)) {
+    // 🚨 Block /onboarding if user is logged in
+    if (userId && url.pathname.startsWith("/onboarding")) {
+      url.pathname = "/dashboard" // or send them to /dashboard if that’s better
+      return NextResponse.redirect(url)
+    }
     return NextResponse.next()
   }
 
@@ -36,7 +47,7 @@ export default clerkMiddleware(async (auth, req) => {
 
     if (onboardingCompleted !== "true") {
       // Instead of redirecting to /onboarding, redirect to homepage "/"
-      url.pathname = "/"
+      url.pathname = "/dashboard"
       return NextResponse.redirect(url)
     }
   }

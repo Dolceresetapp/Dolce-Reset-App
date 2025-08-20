@@ -25,6 +25,10 @@ export async function POST(req: Request) {
   console.log("Received Stripe webhook:", event.type)
 
   try {
+    const now = new Date()
+    const oneMonthLater = new Date()
+    oneMonthLater.setMonth(now.getMonth() + 1)
+
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session
@@ -43,8 +47,8 @@ export async function POST(req: Request) {
               stripe_customer_id: subscription.customer as string,
               email: email,
               status: subscription.status,
-              current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-              current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+              current_period_start: now.toISOString(),
+              current_period_end: oneMonthLater.toISOString(),
               trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
               metadata: session.metadata || {},
               updated_at: new Date().toISOString(),
@@ -69,8 +73,8 @@ export async function POST(req: Request) {
           .from("subscriptions")
           .update({
             status: subscription.status,
-            current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-            current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+            current_period_start: now.toISOString(),
+            current_period_end: oneMonthLater.toISOString(),
             trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
             updated_at: new Date().toISOString(),
           })
