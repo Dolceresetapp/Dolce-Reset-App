@@ -105,7 +105,7 @@ export async function POST(req: Request) {
                 .from("users")
                 .update({
                   subscription_status: subscription.status || "active",
-                  subscription_end_date: subscription.current_period_end,
+                  is_premium: true,
                   updated_at: new Date().toISOString(),
                 })
                 .eq("clerk_user_id", id)
