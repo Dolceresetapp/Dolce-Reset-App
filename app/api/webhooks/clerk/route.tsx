@@ -87,7 +87,7 @@ export async function POST(req: Request) {
           // Link subscription to user
           const { error: linkError } = await supabase
             .from("subscriptions")
-            .update({ user_id: user.id, updated_at: new Date().toISOString() })
+            .update({ updated_at: new Date().toISOString() })
             .eq("id", subscription.id)
 
           if (linkError) {
@@ -104,7 +104,7 @@ export async function POST(req: Request) {
               const { error: updateError } = await supabase
                 .from("users")
                 .update({
-                  subscription_status: subscription.status,
+                  subscription_status: subscription.status || "active",
                   subscription_end_date: subscription.current_period_end,
                   updated_at: new Date().toISOString(),
                 })
