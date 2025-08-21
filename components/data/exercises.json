@@ -1,0 +1,104 @@
+{
+    "categories": [
+      {
+        "id": "muscle-toning",
+        "title": "Muscle toning",
+        "image": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-0lF3ah9abazjoJbb8MBUxW9pka1Pul.png",
+        "color": "from-pink-100 to-rose-100",
+        "borderColor": "border-pink-200"
+      },
+      {
+        "id": "joint-pain",
+        "title": "Joint pain",
+        "image": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-0lF3ah9abazjoJbb8MBUxW9pka1Pul.png",
+        "color": "from-blue-100 to-cyan-100",
+        "borderColor": "border-blue-200"
+      },
+      {
+        "id": "stress-relief",
+        "title": "Stress relief",
+        "image": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-0lF3ah9abazjoJbb8MBUxW9pka1Pul.png",
+        "color": "from-green-100 to-emerald-100",
+        "borderColor": "border-green-200"
+      },
+      {
+        "id": "fat-burning",
+        "title": "Fat burning",
+        "image": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-0lF3ah9abazjoJbb8MBUxW9pka1Pul.png",
+        "color": "from-orange-100 to-red-100",
+        "borderColor": "border-orange-200",
+        "featured": true
+      },
+      {
+        "id": "yoga-chair",
+        "title": "Yoga Chair",
+        "image": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-0lF3ah9abazjoJbb8MBUxW9pka1Pul.png",
+        "color": "from-purple-100 to-pink-100",
+        "borderColor": "border-purple-200"
+      },
+      {
+        "id": "pilates-principianti",
+        "title": "Pilates principianti",
+        "image": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-0lF3ah9abazjoJbb8MBUxW9pka1Pul.png",
+        "color": "from-indigo-100 to-purple-100",
+        "borderColor": "border-indigo-200"
+      }
+    ],
+    "levels": [
+      {
+        "id": "beginner",
+        "title": "Beginner",
+        "description": "Perfect for those just starting their fitness journey"
+      },
+      {
+        "id": "intermediate",
+        "title": "Intermediate",
+        "description": "For those with some exercise experience"
+      }
+    ],
+    "videos": [
+      {
+        "id": 1,
+        "title": "Morning Energy Boost",
+        "thumbnail": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-h8hDGxCREnwWifkVPZWXoiMeIAh11h.png",
+        "videoUrl": "/demo-video.mp4",
+        "duration": "12 min"
+      },
+      {
+        "id": 2,
+        "title": "Gentle Strength Builder",
+        "thumbnail": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-h8hDGxCREnwWifkVPZWXoiMeIAh11h.png",
+        "videoUrl": "/demo-video.mp4",
+        "duration": "15 min"
+      },
+      {
+        "id": 3,
+        "title": "Flexibility Flow",
+        "thumbnail": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-h8hDGxCREnwWifkVPZWXoiMeIAh11h.png",
+        "videoUrl": "/demo-video.mp4",
+        "duration": "18 min"
+      },
+      {
+        "id": 4,
+        "title": "Core Confidence",
+        "thumbnail": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-h8hDGxCREnwWifkVPZWXoiMeIAh11h.png",
+        "videoUrl": "/demo-video.mp4",
+        "duration": "20 min"
+      },
+      {
+        "id": 5,
+        "title": "Balance & Stability",
+        "thumbnail": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-h8hDGxCREnwWifkVPZWXoiMeIAh11h.png",
+        "videoUrl": "/demo-video.mp4",
+        "duration": "14 min"
+      },
+      {
+        "id": 6,
+        "title": "Relaxation Routine",
+        "thumbnail": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-h8hDGxCREnwWifkVPZWXoiMeIAh11h.png",
+        "videoUrl": "/demo-video.mp4",
+        "duration": "16 min"
+      }
+    ]
+  }
+  

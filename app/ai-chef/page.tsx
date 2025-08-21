@@ -5,17 +5,15 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { ArrowLeft, Send, ChefHat, Sparkles, User, Bot } from "lucide-react"
+import { ArrowLeft, Send, User, Bot } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
-import { useCheckPremium } from "@/components/hooks/check-package"
+import Image from "next/image"
 
 const preBuiltQuestions = [
-  "What's a healthy breakfast for weight loss?",
-  "Best post-workout meals for women over 50?",
-  "How to meal prep for the week?",
-  "Healthy snacks for energy boost?",
-  "Anti-inflammatory foods for joint health?",
-  "Protein-rich vegetarian meals?",
+  "Tell me what ingredients you have at home and I'll prepare a healthy recipe just for you.",
+  "I slept badly, tell me what to eat",
+  "I want a quick and light recipe",
+  "Suggest a healthy breakfast",
 ]
 
 interface Message {
@@ -27,17 +25,8 @@ interface Message {
 
 export default function AIChefPage() {
   const router = useRouter()
-  const { isPremium } = useCheckPremium() // ✅ premium hook
   const messagesEndRef = useRef<HTMLDivElement>(null)
-
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      text: "Hello beautiful! 👋 I'm your AI Nutrition Chef, here to help you create delicious, healthy meals that support your fitness journey.",
-      isUser: false,
-      timestamp: new Date(),
-    },
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
   const [inputText, setInputText] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -100,78 +89,86 @@ export default function AIChefPage() {
     handleSendMessage(question)
   }
 
-  // ✅ Premium check
-  if (!isPremium) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50">
-        <ChefHat className="w-12 h-12 text-green-500 mb-4" />
-        <h2 className="text-xl font-bold text-gray-800 mb-2">Premium Required</h2>
-        <p className="text-gray-600 mb-6">
-          Access to AI Chef is for premium members only. Upgrade to unlock personalized nutrition coaching 🍎✨
-        </p>
-        <Button
-          onClick={() => router.push("/pricing")}
-          className="bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl shadow-md px-6 py-3"
-        >
-          Upgrade to Premium
-        </Button>
-      </div>
-    )
-  }
-
   return (
-    <div className="app-container bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 min-h-screen pb-20">
+    <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen pb-20">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-green-100 rounded-b-3xl shadow-sm">
+      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-purple-100 rounded-b-3xl shadow-sm">
         <div className="flex items-center justify-between p-4">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => router.back()}
-            className="h-12 w-12 rounded-2xl hover:bg-green-100"
+            className="h-12 w-12 rounded-2xl hover:bg-purple-100"
           >
             <ArrowLeft className="h-6 w-6 text-gray-600" />
           </Button>
           <div className="text-center">
-            <h1 className="senior-text-lg font-bold text-gray-800 flex items-center justify-center">
-              <ChefHat className="w-5 h-5 mr-2 text-green-500" />
-              AI Chef
-            </h1>
-            <p className="senior-text-sm text-gray-600">Your nutrition expert</p>
+            <h1 className="text-xl font-bold text-purple-600">Chef</h1>
           </div>
           <div className="w-12" />
         </div>
       </div>
 
+      {/* Chef Image Card */}
+      <div className="p-4">
+        <div className="">
+          <CardContent className="p-6 text-center">
+            <div className="w-full h-[200px] mx-auto mb-4 rounded-2xl overflow-hidden">
+              <Image
+                src="/custom/chef.png"
+                alt="AI Chef"
+                width={96}
+                height={96}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <h2 className="text-3xl text-pink-500 font-bold mb-2">The Chef Raffaele is Here For You!</h2>
+          </CardContent>
+        </div>
+      </div>
+
       {/* Chat Messages */}
-      <div className="flex-1 p-4 pb-32 space-y-6">
+      <div className="flex-1 p-4 pb-32 space-y-4">
+        {messages.length === 0 && (
+          <div className="space-y-3">
+            {preBuiltQuestions.map((question, index) => (
+              <div
+                key={index}
+                onClick={() => handleQuestionClick(question)}
+                className="w-full h-auto p-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 text-left justify-start"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                {question}
+              </div>
+            ))}
+          </div>
+        )}
+
         {messages.map((message) => (
           <div key={message.id} className={`flex ${message.isUser ? "justify-end" : "justify-start"} animate-fade-in`}>
             <div
               className={`flex items-start space-x-3 max-w-[85%] ${message.isUser ? "flex-row-reverse space-x-reverse" : ""}`}
             >
-              {/* Avatar */}
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
                   message.isUser
                     ? "bg-gradient-to-br from-pink-400 to-rose-400"
-                    : "bg-gradient-to-br from-green-400 to-emerald-400"
+                    : "bg-gradient-to-br from-purple-400 to-pink-400"
                 }`}
               >
                 {message.isUser ? <User className="w-5 h-5 text-white" /> : <Bot className="w-5 h-5 text-white" />}
               </div>
 
-              {/* Message Bubble */}
               <Card
                 className={`border-0 shadow-lg rounded-3xl ${
                   message.isUser
                     ? "bg-gradient-to-br from-pink-500 to-rose-500 text-white"
-                    : "bg-white/90 text-gray-800 border border-green-100"
+                    : "bg-white/90 text-gray-800 border border-purple-100"
                 }`}
               >
                 <CardContent className="p-4">
-                  <p className="senior-text-base leading-relaxed whitespace-pre-wrap">{message.text}</p>
-                  <p className={`senior-text-sm mt-2 ${message.isUser ? "text-white/70" : "text-gray-500"}`}>
+                  <p className="text-base leading-relaxed whitespace-pre-wrap">{message.text}</p>
+                  <p className={`text-sm mt-2 ${message.isUser ? "text-white/70" : "text-gray-500"}`}>
                     {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </p>
                 </CardContent>
@@ -183,53 +180,25 @@ export default function AIChefPage() {
         {isLoading && (
           <div className="flex justify-start animate-fade-in">
             <div className="flex items-start space-x-3 max-w-[85%]">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-400 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
                 <Bot className="w-5 h-5 text-white" />
               </div>
-              <Card className="bg-white/90 border border-green-100 shadow-lg rounded-3xl">
+              <Card className="bg-white/90 border border-purple-100 shadow-lg rounded-3xl">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"></div>
                     <div
-                      className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
+                      className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
                       style={{ animationDelay: "0.1s" }}
                     ></div>
                     <div
-                      className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
+                      className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
                       style={{ animationDelay: "0.2s" }}
                     ></div>
-                    <span className="senior-text-sm text-gray-600 ml-2">Chef is cooking up an answer...</span>
+                    <span className="text-sm text-gray-600 ml-2">Chef is cooking up an answer...</span>
                   </div>
                 </CardContent>
               </Card>
-            </div>
-          </div>
-        )}
-
-        {/* Pre-built Questions */}
-        {messages.length === 1 && (
-          <div className="space-y-3 animate-slide-up">
-            <div className="text-center mb-6">
-              <h3 className="senior-text-lg font-semibold text-gray-700 mb-2">
-                <Sparkles className="w-5 h-5 inline mr-2 text-green-500" />
-                Popular Nutrition Questions
-              </h3>
-              <p className="senior-text-base text-gray-600">Tap any question to get started!</p>
-            </div>
-
-            <div className="grid gap-3">
-              {preBuiltQuestions.map((question, index) => (
-                <Card
-                  key={index}
-                  className="card-hover cursor-pointer bg-white/80 border-green-200 hover:border-green-300 hover:bg-green-50 shadow-md rounded-2xl animate-slide-up"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                  onClick={() => handleQuestionClick(question)}
-                >
-                  <CardContent className="p-4">
-                    <p className="senior-text-base text-gray-700 font-medium">{question}</p>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
           </div>
         )}
@@ -238,21 +207,21 @@ export default function AIChefPage() {
       </div>
 
       {/* Input Area */}
-      <div className="fixed bottom-20 left-0 right-0 p-4 bg-white/95 backdrop-blur-sm border-t border-green-100 shadow-lg">
+      <div className="fixed bottom-20 left-0 right-0 p-4 bg-white/95 backdrop-blur-sm border-t border-purple-100 shadow-lg">
         <div className="max-w-md mx-auto">
-          <div className="flex space-x-3 bg-white rounded-3xl p-2 shadow-lg border border-green-200">
+          <div className="flex space-x-3 bg-white rounded-3xl p-2 shadow-lg border border-purple-200">
             <Input
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Ask about nutrition, recipes, meal plans..."
-              className="flex-1 border-0 bg-transparent senior-text-base placeholder:text-gray-500 focus-visible:ring-0"
+              className="flex-1 border-0 bg-transparent text-base placeholder:text-gray-500 focus-visible:ring-0"
               onKeyPress={(e) => e.key === "Enter" && handleSendMessage(inputText)}
               disabled={isLoading}
             />
             <Button
               onClick={() => handleSendMessage(inputText)}
               disabled={!inputText.trim() || isLoading}
-              className="h-10 w-10 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-md"
+              className="h-10 w-10 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-md"
             >
               <Send className="w-4 h-4" />
             </Button>

@@ -5,16 +5,17 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { ArrowLeft, Send, Stethoscope, Sparkles, User, Bot, AlertTriangle } from "lucide-react"
+import { ArrowLeft, Send, User, Bot } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
+import Image from "next/image"
 
 const preBuiltQuestions = [
-  "What exercises are safe for high blood pressure?",
-  "How to manage joint pain during workouts?",
-  "Best exercises for osteoporosis prevention?",
-  "How often should I exercise at my age?",
-  "What are warning signs to stop exercising?",
-  "How to exercise safely with diabetes?",
+  "How can I lose weight quickly?",
+  "I slept badly, what can I do?",
+  "Can I improve my digestion?",
+  "Recommended foods for more energy",
+  "How can I reduce joint pain?",
+  "Advice for menopause",
 ]
 
 interface Message {
@@ -27,14 +28,7 @@ interface Message {
 export default function AIDoctorPage() {
   const router = useRouter()
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      text: "Hello! 👩‍⚕️ I'm your AI Health Doctor, here to provide general wellness guidance and help you exercise safely.",
-      isUser: false,
-      timestamp: new Date(),
-    },
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
   const [inputText, setInputText] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -49,7 +43,6 @@ export default function AIDoctorPage() {
   const handleSendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return
 
-    // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       text: text.trim(),
@@ -62,7 +55,6 @@ export default function AIDoctorPage() {
     setIsLoading(true)
 
     try {
-      // Call OpenAI API
       const response = await fetch("/api/ai-doctor", {
         method: "POST",
         headers: {
@@ -100,76 +92,88 @@ export default function AIDoctorPage() {
   }
 
   return (
-    <div className="app-container bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50 min-h-screen pb-20">
+    <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen pb-20">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-blue-100 rounded-b-3xl shadow-sm">
+      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-purple-100 rounded-b-3xl shadow-sm">
         <div className="flex items-center justify-between p-4">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => router.back()}
-            className="h-12 w-12 rounded-2xl hover:bg-blue-100"
+            className="h-12 w-12 rounded-2xl hover:bg-purple-100"
           >
             <ArrowLeft className="h-6 w-6 text-gray-600" />
           </Button>
           <div className="text-center">
-            <h1 className="senior-text-lg font-bold text-gray-800 flex items-center justify-center">
-              <Stethoscope className="w-5 h-5 mr-2 text-blue-500" />
-              AI Doctor
-            </h1>
-            <p className="senior-text-sm text-gray-600">Your health advisor</p>
+            <h1 className="text-xl font-bold text-purple-600">Talk to the Doctor</h1>
           </div>
           <div className="w-12" />
         </div>
       </div>
 
-      {/* Disclaimer */}
-      {/* <div className="p-4">
-        <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200 rounded-2xl">
-          <CardContent className="p-4">
-            <div className="flex items-start space-x-3">
-              <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="senior-text-sm text-amber-800 font-medium mb-1">Medical Disclaimer</p>
-                <p className="senior-text-sm text-amber-700">
-                  This AI provides general wellness information only. Always consult healthcare professionals for
-                  medical advice.
-                </p>
-              </div>
+      {/* Doctor Image Card */}
+      <div className="p-4">
+        <div className="">
+          <CardContent className="p-6 text-center">
+            <div className="w-full h-[200px] mx-auto mb-4 rounded-2xl overflow-hidden">
+              <Image
+                src="/custom/doc.png"
+                alt="AI Doctor"
+                width={96}
+                height={96}
+                className="w-full h-full object-cover"
+              />
             </div>
+            <h2 className="text-3xl text-pink-500 font-bold mb-2">Talk to the Doctor</h2>
           </CardContent>
-        </Card>
-      </div> */}
+        </div>
+      </div>
 
       {/* Chat Messages */}
-      <div className="flex-1 p-4 pb-32 space-y-6">
+      <div className="grid grid-col-2 p-4 pb-32">
+      
+  {messages.length === 0 && (
+    <div className="grid grid-cols-2 gap-4 text-center">
+      {preBuiltQuestions.map((question, index) => (
+        <div
+          key={index}
+          onClick={() => handleQuestionClick(question)}
+          className="w-full h-auto p-4 bg-[#ae47ff] text-center font-medium text-lg text-white rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 justify-start"
+          style={{ animationDelay: `${index * 0.1}s` }}
+        >
+          {question}
+        </div>
+      ))}
+    </div>
+  )}
+
+
+
         {messages.map((message) => (
           <div key={message.id} className={`flex ${message.isUser ? "justify-end" : "justify-start"} animate-fade-in`}>
             <div
               className={`flex items-start space-x-3 max-w-[85%] ${message.isUser ? "flex-row-reverse space-x-reverse" : ""}`}
             >
-              {/* Avatar */}
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
                   message.isUser
                     ? "bg-gradient-to-br from-pink-400 to-rose-400"
-                    : "bg-gradient-to-br from-blue-400 to-cyan-400"
+                    : "bg-gradient-to-br from-purple-400 to-pink-400"
                 }`}
               >
                 {message.isUser ? <User className="w-5 h-5 text-white" /> : <Bot className="w-5 h-5 text-white" />}
               </div>
 
-              {/* Message Bubble */}
               <Card
                 className={`border-0 shadow-lg rounded-3xl ${
                   message.isUser
                     ? "bg-gradient-to-br from-pink-500 to-rose-500 text-white"
-                    : "bg-white/90 text-gray-800 border border-blue-100"
+                    : "bg-white/90 text-gray-800 border border-purple-100"
                 }`}
               >
                 <CardContent className="p-4">
-                  <p className="senior-text-base leading-relaxed whitespace-pre-wrap">{message.text}</p>
-                  <p className={`senior-text-sm mt-2 ${message.isUser ? "text-white/70" : "text-gray-500"}`}>
+                  <p className="text-base leading-relaxed whitespace-pre-wrap">{message.text}</p>
+                  <p className={`text-sm mt-2 ${message.isUser ? "text-white/70" : "text-gray-500"}`}>
                     {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </p>
                 </CardContent>
@@ -181,53 +185,25 @@ export default function AIDoctorPage() {
         {isLoading && (
           <div className="flex justify-start animate-fade-in">
             <div className="flex items-start space-x-3 max-w-[85%]">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
                 <Bot className="w-5 h-5 text-white" />
               </div>
-              <Card className="bg-white/90 border border-blue-100 shadow-lg rounded-3xl">
+              <Card className="bg-white/90 border border-purple-100 shadow-lg rounded-3xl">
                 <CardContent className="p-4">
                   <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"></div>
                     <div
-                      className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"
+                      className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
                       style={{ animationDelay: "0.1s" }}
                     ></div>
                     <div
-                      className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"
+                      className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
                       style={{ animationDelay: "0.2s" }}
                     ></div>
-                    <span className="senior-text-sm text-gray-600 ml-2">Doctor is analyzing...</span>
+                    <span className="text-sm text-gray-600 ml-2">Doctor is analyzing...</span>
                   </div>
                 </CardContent>
               </Card>
-            </div>
-          </div>
-        )}
-
-        {/* Pre-built Questions */}
-        {messages.length === 1 && (
-          <div className="space-y-3 animate-slide-up">
-            <div className="text-center mb-6">
-              <h3 className="senior-text-lg font-semibold text-gray-700 mb-2">
-                <Sparkles className="w-5 h-5 inline mr-2 text-blue-500" />
-                Common Health Questions
-              </h3>
-              <p className="senior-text-base text-gray-600">Tap any question to get started!</p>
-            </div>
-
-            <div className="grid gap-3">
-              {preBuiltQuestions.map((question, index) => (
-                <Card
-                  key={index}
-                  className="card-hover cursor-pointer bg-white/80 border-blue-200 hover:border-blue-300 hover:bg-blue-50 shadow-md rounded-2xl animate-slide-up"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                  onClick={() => handleQuestionClick(question)}
-                >
-                  <CardContent className="p-4">
-                    <p className="senior-text-base text-gray-700 font-medium">{question}</p>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
           </div>
         )}
@@ -236,21 +212,21 @@ export default function AIDoctorPage() {
       </div>
 
       {/* Input Area */}
-      <div className="fixed bottom-20 left-0 right-0 p-4 bg-white/95 backdrop-blur-sm border-t border-blue-100 shadow-lg">
+      <div className="fixed bottom-20 left-0 right-0 p-4 bg-white/95 backdrop-blur-sm border-t border-purple-100 shadow-lg">
         <div className="max-w-md mx-auto">
-          <div className="flex space-x-3 bg-white rounded-3xl p-2 shadow-lg border border-blue-200">
+          <div className="flex space-x-3 bg-white rounded-3xl p-2 shadow-lg border border-purple-200">
             <Input
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Ask about health, safety, exercise concerns..."
-              className="flex-1 border-0 bg-transparent senior-text-base placeholder:text-gray-500 focus-visible:ring-0"
+              className="flex-1 border-0 bg-transparent text-base placeholder:text-gray-500 focus-visible:ring-0"
               onKeyPress={(e) => e.key === "Enter" && handleSendMessage(inputText)}
               disabled={isLoading}
             />
             <Button
               onClick={() => handleSendMessage(inputText)}
               disabled={!inputText.trim() || isLoading}
-              className="h-10 w-10 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 shadow-md"
+              className="h-10 w-10 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-md"
             >
               <Send className="w-4 h-4" />
             </Button>

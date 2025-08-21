@@ -8,7 +8,7 @@ import Clarity from '@microsoft/clarity';
 
 const inter = Inter({ subsets: ["latin"] })
 
-const projectId = "yourProjectId"
+const projectId = "syc8m8tzt1"
 
 Clarity.init(projectId);
 

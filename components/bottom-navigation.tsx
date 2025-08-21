@@ -2,33 +2,37 @@
 
 import { useRouter, usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Home, Grid3X3, User } from "lucide-react"
+import { Home, Dumbbell, Stethoscope, Users, CookingPot } from "lucide-react"
 
 export function BottomNavigation() {
   const router = useRouter()
   const pathname = usePathname()
 
   const navItems = [
+    
     {
-      id: "home",
-      label: "Home",
-      icon: Home,
-      path: "/dashboard",
-      color: "text-pink-500",
-    },
-    {
-      id: "features",
-      label: "Features",
-      icon: Grid3X3,
+      id: "exercises",
+      label: "Exercises",
+      icon: Dumbbell,
       path: "/features",
-      color: "text-purple-500",
     },
     {
-      id: "profile",
-      label: "Profile",
-      icon: User,
-      path: "/profile",
-      color: "text-blue-500",
+      id: "doctor",
+      label: "Doctor",
+      icon: Stethoscope,
+      path: "/ai-doctor",
+    },
+    {
+      id: "chef",
+      label: "Ai Chef",
+      icon: CookingPot,
+      path: "/ai-chef",
+    },
+    {
+      id: "community",
+      label: "Community",
+      icon: Users,
+      path: "/community",
     },
   ]
 
@@ -41,21 +45,19 @@ export function BottomNavigation() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50">
-      <div className="max-w-md mx-auto bg-white/95 backdrop-blur-sm border-t border-pink-100 shadow-lg rounded-t-3xl">
-        <div className="flex items-center justify-around py-4 px-6">
+      <div className="max-w-md mx-auto bg-gradient-to-r from-purple-500 to-pink-500 rounded-t-3xl shadow-2xl">
+        <div className="flex items-center justify-around py-4 px-4">
           {navItems.map((item) => (
             <Button
               key={item.id}
               variant="ghost"
               size="sm"
               onClick={() => router.push(item.path)}
-              className={`flex flex-col items-center space-y-2 h-auto py-3 px-4 rounded-2xl transition-all duration-200 ${
-                isActive(item.path)
-                  ? "bg-pink-100 text-pink-600 scale-105"
-                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+              className={`flex flex-col items-center space-y-1 h-auto py-3 px-4 rounded-2xl transition-all duration-200 hover:bg-white/20 ${
+                isActive(item.path) ? "bg-white/30 text-white shadow-lg scale-110" : "text-white/80 hover:text-white"
               }`}
             >
-              <item.icon className={`w-6 h-6 ${isActive(item.path) ? item.color : "text-current"}`} />
+              <item.icon className="w-6 h-6" />
               <span className="text-xs font-medium">{item.label}</span>
             </Button>
           ))}

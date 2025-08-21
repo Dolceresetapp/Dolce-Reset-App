@@ -71,17 +71,7 @@ export default function PremiumExercisesPage() {
 
       {/* Content */}
       <div className="p-6">
-        {/* Welcome Card */}
-        <Card className="mb-6 bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-xl animate-fade-in rounded-3xl">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-center text-center">
-              <div>
-                <h2 className="senior-text-lg font-bold mb-2">Premium Exercise Categories</h2>
-                <p className="senior-text-base opacity-90">Choose the area you want to focus on today</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+       
 
         {/* Categories Grid */}
         <div className="space-y-4">

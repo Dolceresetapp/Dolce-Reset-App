@@ -163,7 +163,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
               )}
 
               {/* Upgrade Section for Free Users */}
-              {!isPremium && isSignedIn && (
+              {/* {!isPremium && isSignedIn && (
                 <div className="mb-8">
                   <Card className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-xl rounded-3xl">
                     <CardContent className="p-6 text-center">
@@ -183,7 +183,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                     </CardContent>
                   </Card>
                 </div>
-              )}
+              )} */}
 
               {/* Install App Section */}
               <div className="mb-8">

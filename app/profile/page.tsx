@@ -94,69 +94,6 @@ export default function ProfilePage() {
           </CardContent>
         </div>
 
-        {/* Stats Grid */}
-        {/* <div className="grid grid-cols-2 gap-4 mb-6">
-          <Card className="bg-white/80 border-pink-200 animate-slide-up rounded-3xl">
-            <CardContent className="p-4 text-center">
-              <TrendingUp className="w-8 h-8 text-pink-500 mx-auto mb-2" />
-              <p className="senior-text-2xl font-bold text-gray-800">{stats.workoutsCompleted}</p>
-              <p className="senior-text-sm text-gray-600">Workouts Done</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/80 border-pink-200 animate-slide-up rounded-3xl" style={{ animationDelay: "0.1s" }}>
-            <CardContent className="p-4 text-center">
-              <Calendar className="w-8 h-8 text-green-500 mx-auto mb-2" />
-              <p className="senior-text-2xl font-bold text-gray-800">{stats.streakDays}</p>
-              <p className="senior-text-sm text-gray-600">Day Streak</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/80 border-pink-200 animate-slide-up rounded-3xl" style={{ animationDelay: "0.2s" }}>
-            <CardContent className="p-4 text-center">
-              <Heart className="w-8 h-8 text-red-500 mx-auto mb-2" />
-              <p className="senior-text-2xl font-bold text-gray-800">{stats.totalMinutes}</p>
-              <p className="senior-text-sm text-gray-600">Total Minutes</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/80 border-pink-200 animate-slide-up rounded-3xl" style={{ animationDelay: "0.3s" }}>
-            <CardContent className="p-4 text-center">
-              <Star className="w-8 h-8 text-amber-500 mx-auto mb-2" />
-              <p className="senior-text-2xl font-bold text-gray-800">{stats.favoriteExercises}</p>
-              <p className="senior-text-sm text-gray-600">Favorites</p>
-            </CardContent>
-          </Card>
-        </div> */}
-
-        {/* Upgrade Section for Free Users */}
-        {/* {!isPremium && (
-          <Card
-            className="mb-6 bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200 animate-slide-up rounded-3xl"
-            style={{ animationDelay: "0.4s" }}
-          >
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="senior-text-lg font-bold text-gray-800 mb-2 flex items-center">
-                    <Crown className="w-6 h-6 text-amber-500 mr-2" />
-                    Upgrade to Premium
-                  </h3>
-                  <p className="senior-text-base text-gray-600 mb-4">
-                    Unlock all features and accelerate your transformation
-                  </p>
-                  <Button
-                    onClick={() => router.push("/pricing")}
-                    className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-2xl h-12 senior-text-base"
-                  >
-                    Upgrade Now
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )} */}
-
         {/* Profile Actions */}
         <div className="space-y-4 animate-slide-up" style={{ animationDelay: "0.5s" }}>
           <Card className="bg-white/80 border-pink-200 rounded-3xl">
