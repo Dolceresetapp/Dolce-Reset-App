@@ -36,21 +36,21 @@ export default clerkMiddleware(async (auth, req) => {
   }
 
   // Block all protected routes if not authenticated
-  if (!userId && isProtectedRoute(req)) {
-    url.pathname = "/sign-in"
-    return NextResponse.redirect(url)
-  }
+  // if (!userId && isProtectedRoute(req)) {
+  //   url.pathname = "/sign-in"
+  //   return NextResponse.redirect(url)
+  // }
 
   // For authenticated users accessing protected routes
-  if (userId && isProtectedRoute(req)) {
-    const onboardingCompleted = req.cookies.get("onboarding-completed")?.value
+  // if (userId && isProtectedRoute(req)) {
+  //   const onboardingCompleted = req.cookies.get("onboarding-completed")?.value
 
-    if (onboardingCompleted !== "true") {
-      // Instead of redirecting to /onboarding, redirect to homepage "/"
-      url.pathname = "/dashboard"
-      return NextResponse.redirect(url)
-    }
-  }
+  //   if (onboardingCompleted !== "true") {
+  //     // Instead of redirecting to /onboarding, redirect to homepage "/"
+  //     url.pathname = "/dashboard"
+  //     return NextResponse.redirect(url)
+  //   }
+  // }
 
   return NextResponse.next()
 })
