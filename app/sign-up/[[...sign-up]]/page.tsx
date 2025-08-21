@@ -10,7 +10,7 @@ export default function SignInPage() {
       <div className="signin-wrapper">
         <div className="signin-card">
           <div className="signin-header">
-            <h1 className="text-5xl font-bold">SeniorFit</h1>
+            <h1 className="text-5xl font-bold">Dolce Reset</h1>
             <p className="">Sign up to start your fitness journey</p>
           </div>
           <SignUp

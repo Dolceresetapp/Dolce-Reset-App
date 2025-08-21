@@ -349,9 +349,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
         {/* Centered Text + Image */}
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
           <div className="flex flex-col items-center gap-6 max-w-md">
-            <h1 className="text-xl font-bold text-gray-800">
-              Hai Un Ottimo Potenziale Per Spaccare Ogni Traguardo
-            </h1>
+           
             <Image
               src="/custom/graph.png"
               alt="BMI Graph"

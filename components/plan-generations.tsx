@@ -141,14 +141,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
       <>
         <div className="app-container bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 min-h-screen pb-20">
           <div className="p-4 pt-6">
-            {/* Success Header */}
-            {/* <div className="text-center mb-6 animate-fade-in">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mb-4 mx-auto shadow-xl">
-                <CheckCircle className="w-8 h-8 text-white" />
-              </div>
-              <h1 className="text-xl font-bold text-gray-800 mb-2">🎉 {userName}, Your Custom Plan is Ready!</h1>
-              <p className="text-sm text-gray-600">Your personalized 30-day transformation journey</p>
-            </div> */}
+         
 
             {/* Custom Plan Chart */}
             <Card className="mb-4  border-0 shadow-xl animate-slide-up">
@@ -202,59 +195,10 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
               </CardContent>
             </Card>
 
-            {/* Custom Plan Features */}
-            {/* <Card
-              className="mb-4 bg-white/90 border-pink-200 shadow-lg animate-slide-up"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <CardContent className="p-4">
-                <h3 className="text-base font-bold text-gray-800 mb-3 flex items-center">
-                  <Heart className="w-4 h-4 text-pink-500 mr-2" />
-                  Your Custom Plan Includes
-                </h3>
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700">
-                      Daily {bodyFocus?.replace("_", " ") || "full body"} workouts
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700">
-                      Focus on {urgentGoal?.replace("_", " ") || "fitness goals"}
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700">BMI optimization from {currentBMI} to ideal range</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
-                    <span className="text-sm text-gray-700">Progress tracking & motivation</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card> */}
+            
 
             <AutoSlider />
-            {/* <Image src="/custom/step.png" alt="sales" width={500} height={500} /> */}
-
-            {/* Success Promise */}
-            {/* <Card
-              className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 shadow-lg animate-slide-up"
-              style={{ animationDelay: "0.4s" }}
-            >
-              <CardContent className="p-4 text-center">
-                <Sparkles className="w-8 h-8 text-green-500 mx-auto mb-2" />
-                <h4 className="text-base font-bold text-gray-800 mb-2">Your Success is Guaranteed!</h4>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  This custom plan is designed specifically for your body type, goals, and lifestyle. Join{" "}
-                  {activeUsers.toLocaleString()}+ women already transforming!
-                </p>
-              </CardContent>
-            </Card> */}
-            {/* <SalesPage /> */}
+            
           </div>
 
           {/* Fixed Bottom CTA Button */}
@@ -318,20 +262,32 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
 
         {/* User Avatars */}
         <div className="flex justify-center mb-4 animate-slide-up" style={{ animationDelay: "0.4s" }}>
-          <div className="flex -space-x-2">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div
-                key={i}
-                className="w-8 h-8 bg-gradient-to-br from-pink-400 to-rose-400 rounded-full border-2 border-white flex items-center justify-center"
-              >
-                <Users className="w-4 h-4 text-white" />
-              </div>
-            ))}
-            <div className="w-8 h-8 bg-pink-500 rounded-full border-2 border-white flex items-center justify-center">
-              <Star className="w-4 h-4 text-white" />
-            </div>
-          </div>
-        </div>
+  <div className="flex -space-x-2">
+    {[1, 2, 3, 4, 5].map((i) => (
+      <div
+        key={i}
+        className="w-8 h-8 rounded-full border-2 border-white overflow-hidden flex items-center justify-center"
+      >
+        {/* Random user image from Unsplash */}
+        <img
+          src={`https://source.unsplash.com/40x40/?face,person&sig=${i}`}
+          alt={`User ${i}`}
+          className="w-full h-full object-cover"
+        />
+      </div>
+    ))}
+
+    {/* Last avatar */}
+    <div className="w-8 h-8 rounded-full border-2 border-white overflow-hidden flex items-center justify-center">
+      <img
+        src={`https://xsgames.co/randomusers/assets/avatars/male/22.jpg`}
+        alt="Random User"
+        className="w-full h-full object-cover"
+      />
+    </div>
+  </div>
+</div>
+
 
         {/* Trusted By */}
         <div className="text-center mb-6 animate-slide-up" style={{ animationDelay: "0.5s" }}>

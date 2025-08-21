@@ -10,7 +10,7 @@ interface OnboardingIntroProps {
 }
 
 export function OnboardingIntro({ onContinue }: OnboardingIntroProps) {
-  const [currentScreen, setCurrentScreen] = useState(1)
+  const [currentScreen, setCurrentScreen] = useState(2)
 
   const handleFirstContinue = () => {
     setCurrentScreen(2)

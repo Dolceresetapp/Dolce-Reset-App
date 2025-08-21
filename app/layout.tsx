@@ -4,8 +4,13 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ClerkProvider } from "@clerk/nextjs"
 import Script from "next/script"
+import Clarity from '@microsoft/clarity';
 
 const inter = Inter({ subsets: ["latin"] })
+
+const projectId = "yourProjectId"
+
+Clarity.init(projectId);
 
 export const metadata: Metadata = {
   title: "SeniorFit - Fitness for Life",

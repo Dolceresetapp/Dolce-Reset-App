@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { CheckCircle, Crown, ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import Link from "next/link"
 
 export default function PaymentSuccessPage() {
@@ -13,7 +13,7 @@ export default function PaymentSuccessPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Simulate loading time
+    // Simulate loading
     const timer = setTimeout(() => {
       setIsLoading(false)
     }, 2000)
@@ -27,7 +27,7 @@ export default function PaymentSuccessPage() {
         <Card className="w-full max-w-md">
           <CardContent className="p-8 text-center">
             <div className="w-16 h-16 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin mx-auto mb-4" />
-            <h2 className="text-xl font-bold text-gray-800 mb-2">Processing your payment...</h2>
+            <h2 className="text-xl font-bold text-gray-800 mb-2">Activating Plan...</h2>
             <p className="text-gray-600">Please wait while we confirm your subscription.</p>
           </CardContent>
         </Card>
@@ -38,56 +38,43 @@ export default function PaymentSuccessPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
-        <CardContent className="p-8 text-center">
-          {/* Success Icon */}
-          <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
-            <CheckCircle className="w-10 h-10 text-white" />
-          </div>
+        <CardContent className="p-8 ">
 
           {/* Success Message */}
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Payment Successful! 🎉</h1>
-          <p className="text-gray-600 mb-6">
-            Your 3-day free trial has started. You now have access to your personalized fitness plan!
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            <span className="mr-2">✅</span> Benvenuta nel tuo nuovo inizio!
+          </h1>
+
+          <p className="text-gray-700 mb-6">
+            Nessun addebito ora: stai iniziando la tua prova gratuita. <br />
+            Puoi cancellare in qualsiasi momento dall’app, anche prima dei 3 giorni. <br />
+            Intanto goditi l’accesso completo:
           </p>
 
-          {/* Trial Info */}
-          <div className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-xl p-4 mb-6 border border-pink-200">
-            <div className="flex items-center justify-center space-x-2 mb-2">
-              <Crown className="w-5 h-5 text-pink-500" />
-              <span className="font-semibold text-gray-800">Premium Access Activated</span>
-            </div>
-            <p className="text-sm text-gray-600">Your trial ends in 3 days. After that, you'll be charged €49/year.</p>
-          </div>
+          {/* Points */}
+          <ul className="list-disc text-left text-gray-700 space-y-2 pl-6 mb-6">
+            <li>👉 Crea il tuo account</li>
+            <li>👉 Inizia subito i tuoi esercizi, a mangiare sano e ad avere supporto</li>
+            <li>👉 Fai il primo passo verso il tuo cambiamento!</li>
+          </ul>
 
-          {/* Next Steps */}
-          <div className="space-y-3 mb-6">
-            <h3 className="font-semibold text-gray-800">Next Steps:</h3>
-            <div className="text-left space-y-2">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-pink-500 rounded-full" />
-                <span className="text-sm text-gray-700">Create your account to access your plan</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-pink-500 rounded-full" />
-                <span className="text-sm text-gray-700">Start your personalized workouts</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-pink-500 rounded-full" />
-                <span className="text-sm text-gray-700">Track your progress daily</span>
-              </div>
-            </div>
-          </div>
+          <p className="text-gray-700 mb-6">
+            💌 Ti invieremo promemoria via email prima della scadenza della prova gratuita. <br />
+            ✨ Sii orgogliosa: hai fatto un passo importante, è arrivato il momento di prendersi cura di te stessa! BASTA dire “dalla settimana prossima inizio”. Bravissima!
+          </p>
 
           {/* CTA Button */}
           <Link href="/sign-up">
             <Button className="w-full h-12 text-lg bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 hover:scale-105">
-              Create Your Account
+              Crea il tuo account
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
 
           {/* Support */}
-          <p className="text-xs text-gray-500 mt-4">Need help? Contact our support team anytime.</p>
+          <p className="text-xs text-gray-500 mt-4">
+            Hai bisogno di aiuto? Contatta il nostro supporto in qualsiasi momento.
+          </p>
         </CardContent>
       </Card>
     </div>

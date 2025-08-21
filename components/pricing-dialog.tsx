@@ -126,8 +126,8 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
 <Image src="/custom/steps.png" width={500} height={500} alt="" className="w-full" />
 
 {/* Yearly Pricing Card */}
-<div className="relative mt-6 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 border-2 border-pink-200 text-center">
-  <Badge className="absolute -top-3 left-0 left-5 bg-black text-white px-3 py-1 rounded-full">
+<div className="relative mt-6n py-2 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 border-2 border-pink-200 text-center">
+  <Badge className="absolute -top-3 left-0 left-5 bg-black text-white px-3 py-0 rounded-full">
     3 DAYS FREE
   </Badge>
 
@@ -139,6 +139,7 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
     <p className="text-sm text-gray-600 mt-1">
       Billed yearly at €49
     </p>
+    <Badge className=" mt-2 bg-yellow-500 text-black">Last 2 spots available for this month</Badge>
   </div>
 </div>
 
