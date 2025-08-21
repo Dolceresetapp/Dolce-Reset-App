@@ -9,6 +9,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react"
 import Image from "next/image"
 import type { EmotionalQuestion as OnboardingQuestion } from "@/lib/onboarding-questions"
 import { CustomScreen } from "./custom-screens"
+import ConsentNotice from "./agree"
 
 interface EmotionalQuestionProps {
   question: OnboardingQuestion
@@ -415,6 +416,8 @@ export function EmotionalQuestion({
           </Button>
         </div>
       )}
+      <ConsentNotice />
+      <br />
     </div>
   )
 }

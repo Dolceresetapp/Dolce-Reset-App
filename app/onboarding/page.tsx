@@ -10,6 +10,7 @@ import { useSupabaseClient } from "@/lib/supabase"
 import { emotionalQuestions } from "@/lib/onboarding-questions"
 import { PlanGeneration } from "@/components/plan-generations"
 import { ConfirmationScreens } from "@/components/confirmation-screen"
+import ConsentNotice from "@/components/agree"
 
 export default function OnboardingPage() {
   const [showIntro, setShowIntro] = useState(true)
@@ -174,6 +175,7 @@ export default function OnboardingPage() {
   }
 
   return (
+    <>
     <EmotionalQuestion
       question={emotionalQuestions[currentQuestion]}
       currentStep={currentQuestion + 1}
@@ -185,5 +187,7 @@ export default function OnboardingPage() {
       onPrevious={handlePrevious}
       canGoNext={canGoNext()}
     />
+    
+    </>
   )
 }
