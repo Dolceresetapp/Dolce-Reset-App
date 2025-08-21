@@ -85,16 +85,9 @@ export default function SalesPage() {
 
         {/* YouTube Videos */}
         <div className="space-y-4">
-        <iframe
-          className="w-full aspect-video rounded-xl"
-          src="https://www.youtube.com/embed/SRY_p1bUgl4?start=1"
-          allowFullScreen
-        />
-        <iframe
-          className="w-full aspect-video rounded-xl"
-          src="https://www.youtube.com/embed/xFBcLh_BRr8"
-          allowFullScreen
-        />
+        <div style={{padding:"177.78% 0 0 0;position:relative;"}}><iframe src="https://player.vimeo.com/video/1111321366?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style={{position:"absolute;top:0;left:0;width:100%;height:100%;"}} title="Testimonials 1"></iframe></div>
+        <div style={{padding:"177.78% 0 0 0;position:relative;"}}><iframe src="https://player.vimeo.com/video/1111333407?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style={{position:"absolute;top:0;left:0;width:100%;height:100%;"}} title="Testimonials 1"></iframe></div>
+        
       </div>
 
        {renderImage(13)}
