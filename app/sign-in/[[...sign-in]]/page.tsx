@@ -27,7 +27,7 @@ export default function SignInPage() {
                 header: "signin-header-hidden"
               },
             }}
-            redirectUrl="/dashboard"
+            redirectUrl="/features"
           />
 
           {/* add sign up */}

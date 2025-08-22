@@ -29,7 +29,7 @@ export default clerkMiddleware(async (auth, req) => {
   if (isPublicRoute(req)) {
     // 🚨 Block /onboarding if user is logged in
     if (userId && url.pathname.startsWith("/onboarding")) {
-      url.pathname = "/dashboard" // or send them to /dashboard if that’s better
+      url.pathname = "/features" // or send them to /dashboard if that’s better
       return NextResponse.redirect(url)
     }
     return NextResponse.next()

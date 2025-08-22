@@ -133,7 +133,7 @@ export default function OnboardingPage() {
     document.cookie = "onboarding-completed=true; path=/; max-age=31536000" // 1 year
 
     if (planType === "free") {
-      router.push("/dashboard")
+      router.push("/features")
     } else {
       router.push("/pricing")
     }

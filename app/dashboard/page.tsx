@@ -8,6 +8,7 @@ import { Menu, Play, Clock, Star, Heart, Zap, Shield, Smile, ArrowRight, Sparkle
 import { MobileMenu } from "@/components/mobile-menu"
 import { BottomNavigation } from "@/components/bottom-navigation"
 import Image from "next/image"
+import Header from "@/components/header"
 
 const exercises = [
   {
@@ -83,22 +84,7 @@ export default function Dashboard() {
   return (
     <div className="app-container bg-gradient-to-br from-rose-50 to-pink-50 pb-20">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-pink-100">
-        <div className="flex items-center justify-between p-4">
-          <div>
-            <h1 className="senior-text-lg font-bold text-gray-800">Good Morning!</h1>
-            <p className="senior-text-sm text-gray-600">Ready for your wellness journey?</p>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setMenuOpen(true)}
-            className="h-12 w-12 rounded-2xl bg-pink-200 hover:bg-pink-100"
-          >
-            <Menu className="h-6 w-6 text-pink-600" />
-          </Button>
-        </div>
-      </div>
+      <Header/>
 
       {/* Welcome Card */}
       <div className="p-4">
@@ -192,7 +178,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
       <BottomNavigation />
     </div>
   )

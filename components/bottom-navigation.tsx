@@ -44,7 +44,7 @@ export function BottomNavigation() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50">
+    <div className="fixed bottom-0 left-0 right-0 z-40">
       <div className="max-w-md mx-auto bg-gradient-to-r from-purple-500 to-pink-500 rounded-t-3xl shadow-2xl">
         <div className="flex items-center justify-around py-4 px-4">
           {navItems.map((item) => (

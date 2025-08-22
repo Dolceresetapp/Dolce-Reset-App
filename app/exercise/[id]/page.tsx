@@ -134,7 +134,7 @@ export default function ExercisePlayer({ params }: { params: { id: string } }) {
                     Do It Again
                   </Button>
                   <Button
-                    onClick={() => router.push("/dashboard")}
+                    onClick={() => router.push("/features")}
                     variant="outline"
                     className="w-full h-12 senior-text-base"
                   >

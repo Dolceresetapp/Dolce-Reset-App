@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ArrowLeft } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
 import Image from "next/image"
+import Header from "@/components/header"
 
 // Exercise categories JSON data
 const exerciseCategories = [
@@ -64,22 +65,7 @@ export default function FeaturesPage() {
   return (
     <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen pb-20">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-purple-100 rounded-b-3xl">
-        <div className="flex items-center justify-between p-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => router.back()}
-            className="h-12 w-12 rounded-2xl hover:bg-purple-100"
-          >
-            <ArrowLeft className="h-6 w-6 text-gray-600" />
-          </Button>
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-pink-600">Select Category</h1>
-          </div>
-          <div className="w-12" />
-        </div>
-      </div>
+      <Header/>
 
       {/* Categories Grid */}
       <div className="p-6">

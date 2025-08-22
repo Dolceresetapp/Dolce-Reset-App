@@ -26,8 +26,8 @@ export async function POST(req: Request) {
 
   try {
     const now = new Date()
-    const oneMonthLater = new Date()
-    oneMonthLater.setMonth(now.getMonth() + 1)
+    const oneYearLater = new Date()
+    oneYearLater.setFullYear(now.getFullYear() + 1)
 
     switch (event.type) {
       case "checkout.session.completed": {
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
               email: email,
               status: subscription.status,
               current_period_start: now.toISOString(),
-              current_period_end: oneMonthLater.toISOString(),
+              current_period_end: oneYearLater.toISOString(),
               trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
               updated_at: new Date().toISOString(),
             })
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
           .update({
             status: subscription.status,
             current_period_start: now.toISOString(),
-            current_period_end: oneMonthLater.toISOString(),
+            current_period_end: oneYearLater.toISOString(),
             trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
             updated_at: new Date().toISOString(),
           })

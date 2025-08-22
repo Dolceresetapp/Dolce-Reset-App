@@ -17,6 +17,7 @@ import {
   Heart,
   Download,
   Smartphone,
+  Settings,
 } from "lucide-react"
 import { InstallPrompt } from "./install-prompt"
 
@@ -91,6 +92,23 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
     }
   }
 
+  const handleManageSubscription = async () => {
+    try {
+      const response = await fetch("/api/create-portal", {
+        method: "POST",
+      })
+
+      if (response.ok) {
+        const { url } = await response.json()
+        window.open(url, "_blank")
+      } else {
+        throw new Error("Failed to create portal session")
+      }
+    } catch (error) {
+      alert("Failed to open subscription management")
+    }
+  }
+
   const handleProfileClick = () => {
     openUserProfile()
     onClose()
@@ -156,8 +174,8 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                     className="w-full h-16 senior-text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-lg transition-all duration-300 hover:scale-105"
                     onClick={handleProfileClick}
                   >
-                    <User className="w-6 h-6 mr-3" />
-                    My Profile
+                    <Settings className="w-6 h-6 mr-3" />
+                    Settings
                   </Button>
                 </div>
               )}
@@ -187,8 +205,8 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
 
               {/* Install App Section */}
               <div className="mb-8">
-                <Card className="card-hover border-0 shadow-md bg-gradient-to-r from-indigo-50 to-purple-50 backdrop-blur-sm rounded-3xl">
-                  <CardContent className="p-4">
+                <div className="card-hover border-0 shadow-md bg-gradient-to-r from-indigo-50 to-purple-50 backdrop-blur-sm rounded-3xl">
+                  <div className="p-4">
                     <Button
                       variant="ghost"
                       className="w-full h-auto p-0 justify-start hover:bg-transparent"
@@ -199,14 +217,37 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                           <Download className="w-6 h-6 text-white" />
                         </div>
                         <div className="text-left flex-1">
-                          <h4 className="senior-text-base font-bold text-gray-800">Install App</h4>
-                          <p className="senior-text-sm text-gray-600">Add to your home screen</p>
+                          <h4 className="senior-text-sm font-bold text-gray-800">Install App</h4>
+                          <p className="senior-text-xs text-gray-600">Add to your home screen</p>
                         </div>
                         <Smartphone className="w-5 h-5 text-indigo-500" />
                       </div>
                     </Button>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-8">
+                <div className="card-hover border-0 shadow-md bg-gradient-to-r from-indigo-50 to-purple-50 backdrop-blur-sm rounded-3xl">
+                  <div className="p-4">
+                    <Button
+                      variant="ghost"
+                      className="w-full h-auto p-0 justify-start hover:bg-transparent"
+                      onClick={handleManageSubscription}
+                    >
+                      <div className="flex items-center space-x-4 w-full">
+                        <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
+                          <Crown className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="text-left flex-1">
+                          <h4 className="senior-text-sm font-bold text-gray-800">Subscription</h4>
+                          <p className="senior-text-xs text-gray-600">Manage your subscription</p>
+                        </div>
+                        <Crown className="w-5 h-5 text-indigo-500" />
+                      </div>
+                    </Button>
+                  </div>
+                </div>
               </div>
 
               {/* Premium Features */}
@@ -218,12 +259,12 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
 
                 <div className="grid grid-cols-1 gap-4">
                   {premiumFeatures.map((feature, index) => (
-                    <Card
+                    <div
                       key={feature.label}
                       className="card-hover border-0 shadow-md bg-white/80 backdrop-blur-sm animate-slide-up rounded-3xl"
                       style={{ animationDelay: `${index * 0.1}s` }}
                     >
-                      <CardContent className="p-4">
+                      <div className="p-4">
                         <Button
                           variant="ghost"
                           className="w-full h-auto p-0 justify-start hover:bg-transparent"
@@ -239,13 +280,13 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                               <feature.icon className="w-6 h-6 text-white" />
                             </div>
                             <div className="text-left flex-1">
-                              <h4 className="senior-text-base font-bold text-gray-800">{feature.label}</h4>
-                              <p className="senior-text-sm text-gray-600">{feature.description}</p>
+                              <h4 className="senior-text-xs font-bold text-gray-800">{feature.label}</h4>
+                              <p className="senior-text-xs text-gray-600">{feature.description}</p>
                             </div>
                           </div>
                         </Button>
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -257,7 +298,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                 <Button
                   onClick={handleSignOut}
                   variant="outline"
-                  className="w-full h-14 senior-text-base border-red-200 text-red-600 hover:bg-red-50 bg-transparent rounded-2xl"
+                  className="w-full h-14 senior-text-xs border-red-200 text-red-600 hover:bg-red-50 bg-transparent rounded-2xl"
                 >
                   <LogOut className="w-5 h-5 mr-3" />
                   Sign Out

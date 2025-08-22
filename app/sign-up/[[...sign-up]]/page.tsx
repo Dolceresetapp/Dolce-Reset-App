@@ -27,7 +27,7 @@ export default function SignInPage() {
                 header: "signin-header-hidden"
               },
             }}
-            redirectUrl="/dashboard"
+            redirectUrl="/features"
           />
           <br/>
           <center><span className="senior-text-sm">Already have an account? <Link href="/sign-in" className="text-white/70">Sign In</Link></span></center>

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { ArrowLeft, Send, User, Bot } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
 import Image from "next/image"
+import Header from "@/components/header"
 
 const preBuiltQuestions = [
   "How can I lose weight quickly?",
@@ -93,23 +94,7 @@ export default function AIDoctorPage() {
 
   return (
     <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen pb-20">
-      {/* Header */}
-      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-purple-100 rounded-b-3xl shadow-sm">
-        <div className="flex items-center justify-between p-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => router.back()}
-            className="h-12 w-12 rounded-2xl hover:bg-purple-100"
-          >
-            <ArrowLeft className="h-6 w-6 text-gray-600" />
-          </Button>
-          <div className="text-center">
-            <h1 className="text-xl font-bold text-purple-600">Talk to the Doctor</h1>
-          </div>
-          <div className="w-12" />
-        </div>
-      </div>
+    <Header/>
 
       {/* Doctor Image Card */}
       <div className="p-4">
@@ -124,7 +109,7 @@ export default function AIDoctorPage() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <h2 className="text-3xl text-pink-500 font-bold mb-2">Talk to the Doctor</h2>
+            <h2 className="text-2xl text-pink-500 font-bold mb-2">Talk to the Doctor</h2>
           </CardContent>
         </div>
       </div>
@@ -138,7 +123,7 @@ export default function AIDoctorPage() {
         <div
           key={index}
           onClick={() => handleQuestionClick(question)}
-          className="w-full h-auto p-4 bg-[#ae47ff] text-center font-medium text-lg text-white rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 justify-start"
+          className="w-full h-auto p-4 bg-[#ae47ff] text-center font-medium text-sm text-white rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 justify-start"
           style={{ animationDelay: `${index * 0.1}s` }}
         >
           {question}
@@ -164,20 +149,20 @@ export default function AIDoctorPage() {
                 {message.isUser ? <User className="w-5 h-5 text-white" /> : <Bot className="w-5 h-5 text-white" />}
               </div>
 
-              <Card
+              <div
                 className={`border-0 shadow-lg rounded-3xl ${
                   message.isUser
                     ? "bg-gradient-to-br from-pink-500 to-rose-500 text-white"
                     : "bg-white/90 text-gray-800 border border-purple-100"
                 }`}
               >
-                <CardContent className="p-4">
-                  <p className="text-base leading-relaxed whitespace-pre-wrap">{message.text}</p>
-                  <p className={`text-sm mt-2 ${message.isUser ? "text-white/70" : "text-gray-500"}`}>
+                <div className="p-4">
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
+                  <p className={`text-xs mt-2 ${message.isUser ? "text-white/70" : "text-gray-500"}`}>
                     {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </p>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
           </div>
         ))}
@@ -188,8 +173,8 @@ export default function AIDoctorPage() {
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
                 <Bot className="w-5 h-5 text-white" />
               </div>
-              <Card className="bg-white/90 border border-purple-100 shadow-lg rounded-3xl">
-                <CardContent className="p-4">
+              <div className="bg-white/90 border border-purple-100 shadow-lg rounded-3xl">
+                <div className="p-4">
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"></div>
                     <div
@@ -202,8 +187,8 @@ export default function AIDoctorPage() {
                     ></div>
                     <span className="text-sm text-gray-600 ml-2">Doctor is analyzing...</span>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -212,7 +197,7 @@ export default function AIDoctorPage() {
       </div>
 
       {/* Input Area */}
-      <div className="fixed bottom-20 left-0 right-0 p-4 bg-white/95 backdrop-blur-sm border-t border-purple-100 shadow-lg">
+      <div className="fixed bottom-22 left-0 right-0 p-4 bg-white/95 backdrop-blur-sm border-t border-purple-100 shadow-lg">
         <div className="max-w-md mx-auto">
           <div className="flex space-x-3 bg-white rounded-3xl p-2 shadow-lg border border-purple-200">
             <Input

@@ -57,7 +57,7 @@ export default function ExerciseLevelPage({ params }: { params: { category: stri
             <ArrowLeft className="h-6 w-6 text-gray-600" />
           </Button>
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-pink-600">Select Level</h1>
+            <h1 className="text-xl font-bold text-pink-600">Select Level</h1>
             <p className="text-md text-pink-600">{getCategoryTitle(params.category)}</p>
           </div>
           <div className="w-12" />
