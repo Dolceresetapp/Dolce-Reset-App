@@ -139,7 +139,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                   Menu
                 </h2>
                 {isSignedIn && (
-                  <p className="senior-text-sm text-gray-600">Welcome back, {user?.firstName || "Beautiful"}!</p>
+                  <p className="senior-text-sm text-gray-600">Benvenuta, {user?.firstName || "Beautiful"}!</p>
                 )}
               </div>
               <Button
@@ -165,7 +165,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                     }}
                   >
                     <LogIn className="w-6 h-6 mr-3" />
-                    Sign In / Create Account
+                    Accedi / Crea Account
                   </Button>
                 </div>
               ) : (
@@ -175,33 +175,10 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                     onClick={handleProfileClick}
                   >
                     <Settings className="w-6 h-6 mr-3" />
-                    Settings
+                    Impostazioni
                   </Button>
                 </div>
               )}
-
-              {/* Upgrade Section for Free Users */}
-              {/* {!isPremium && isSignedIn && (
-                <div className="mb-8">
-                  <Card className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-xl rounded-3xl">
-                    <CardContent className="p-6 text-center">
-                      <Crown className="w-12 h-12 mx-auto mb-4 text-white" />
-                      <h3 className="senior-text-lg font-bold mb-2">Upgrade to Premium</h3>
-                      <p className="senior-text-base opacity-90 mb-4">Unlock all features and transform faster</p>
-                      <Button
-                        onClick={() => {
-                          window.location.href = "/pricing"
-                          onClose()
-                        }}
-                        className="bg-white text-amber-600 hover:bg-gray-50 font-bold rounded-2xl h-12 senior-text-base px-8 transition-all duration-300 hover:scale-105"
-                      >
-                        <Sparkles className="w-5 h-5 mr-2" />
-                        Upgrade Now
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </div>
-              )} */}
 
               {/* Install App Section */}
               <div className="mb-8">
@@ -217,8 +194,8 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                           <Download className="w-6 h-6 text-white" />
                         </div>
                         <div className="text-left flex-1">
-                          <h4 className="senior-text-sm font-bold text-gray-800">Install App</h4>
-                          <p className="senior-text-xs text-gray-600">Add to your home screen</p>
+                          <h4 className="senior-text-sm font-bold text-gray-800">Installa App</h4>
+                          <p className="senior-text-xs text-gray-600">Aggiungi allo schermo d'ingresso</p>
                         </div>
                         <Smartphone className="w-5 h-5 text-indigo-500" />
                       </div>
@@ -240,8 +217,8 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                           <Crown className="w-6 h-6 text-white" />
                         </div>
                         <div className="text-left flex-1">
-                          <h4 className="senior-text-sm font-bold text-gray-800">Subscription</h4>
-                          <p className="senior-text-xs text-gray-600">Manage your subscription</p>
+                          <h4 className="senior-text-sm font-bold text-gray-800">Abbonamento</h4>
+                          <p className="senior-text-xs text-gray-600">Gestisci il tuo abbonamento</p>
                         </div>
                         <Crown className="w-5 h-5 text-indigo-500" />
                       </div>
@@ -254,7 +231,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
               <div className="mb-8">
                 <div className="flex items-center mb-4">
                   <Sparkles className="w-5 h-5 text-pink-500 mr-2" />
-                  <h3 className="senior-text-lg font-bold text-gray-800">Premium Features</h3>
+                  <h3 className="senior-text-lg font-bold text-gray-800">Funzionalità Premium</h3>
                 </div>
 
                 <div className="grid grid-cols-1 gap-4">
@@ -301,7 +278,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                   className="w-full h-14 senior-text-xs border-red-200 text-red-600 hover:bg-red-50 bg-transparent rounded-2xl"
                 >
                   <LogOut className="w-5 h-5 mr-3" />
-                  Sign Out
+                  Esci
                 </Button>
               </div>
             )}

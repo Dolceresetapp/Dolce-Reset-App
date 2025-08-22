@@ -11,11 +11,12 @@ import Image from "next/image"
 import Header from "@/components/header"
 
 const preBuiltQuestions = [
-  "Tell me best healhy italian recipe",
-  "I slept badly, tell me what to eat",
-  "I want a quick and light recipe",
-  "Suggest a healthy breakfast",
+  "Dimmi la migliore ricetta italiana salutare",
+  "Ho dormito male, dimmi cosa mangiare",
+  "Voglio una ricetta veloce e leggera",
+  "Suggerisci una colazione salutare",
 ]
+
 
 interface Message {
   id: string
@@ -107,7 +108,7 @@ export default function AIChefPage() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <h2 className="text-2xl text-pink-500 font-bold mb-2">The Chef Raffaele is Here For You!</h2>
+            <h2 className="text-2xl text-pink-500 font-bold mb-2">Il Mio Cappello è qui per te!</h2>
           </CardContent>
         </div>
       </div>
@@ -180,7 +181,7 @@ export default function AIChefPage() {
                       className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
                       style={{ animationDelay: "0.2s" }}
                     ></div>
-                    <span className="text-xs text-gray-600 ml-2">Chef is cooking up an answer...</span>
+                    <span className="text-xs text-gray-600 ml-2"></span>
                   </div>
                 </div>
               </div>
@@ -198,7 +199,7 @@ export default function AIChefPage() {
             <Input
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Ask about nutrition, recipes, meal plans..."
+              placeholder="Chiedi su nutrizione, ricette, piani di pasto..."
               className="flex-1 border-0 bg-transparent text-base placeholder:text-gray-500 focus-visible:ring-0"
               onKeyPress={(e) => e.key === "Enter" && handleSendMessage(inputText)}
               disabled={isLoading}

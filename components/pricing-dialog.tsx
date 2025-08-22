@@ -81,54 +81,17 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[95vw] max-w-md mx-auto max-h-[90vh] overflow-y-auto p-0 gap-0">
-        {/* <div className="bg-gradient-to-br from-pink-500 to-rose-500 text-white p-6 rounded-t-lg">
-          <DialogHeader className="text-center space-y-2">
-            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
-              <Crown className="w-8 h-8 text-white" />
-            </div>
-            <DialogTitle className="text-2xl font-bold">Start Your Transformation</DialogTitle>
-            <p className="text-pink-100 text-sm">Join thousands of women already transforming their lives</p>
-          </DialogHeader>
-        </div> */}
+      
 
         <div className="p-6 space-y-6">
-          {/* Pricing Card */}
-          {/* <div className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-4 border-2 border-pink-200 relative">
-            <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-500 text-white px-3 py-1">
-              3 Days FREE Trial
-            </Badge>
-
-            <div className="text-center pt-2">
-              <div className="flex items-center justify-center space-x-2 mb-2">
-                <span className="text-3xl font-bold text-gray-800">€4.08</span>
-                <span className="text-gray-600">/month</span>
-              </div>
-              <p className="text-sm text-gray-600 mb-3">
-                Billed yearly at €49 • <span className="text-green-600 font-semibold">Save 83%</span>
-              </p>
-
-              <div className="space-y-2 text-left">
-                {[
-                  "Personalized workout plans",
-                  "AI-powered meal planning",
-                  "Progress tracking & analytics",
-                  "24/7 AI health consultant",
-                ].map((feature, i) => (
-                  <div key={i} className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    <span className="text-sm text-gray-700">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div> */}
+          
 
 <Image src="/custom/steps.png" width={500} height={500} alt="" className="w-full" />
 
 {/* Yearly Pricing Card */}
 <div className="relative mt-6n py-2 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 border-2 border-pink-200 text-center">
   <Badge className="absolute -top-3 left-0 left-5 bg-black text-white px-3 py-0 rounded-full">
-    3 DAYS FREE
+  3 GIORNI GRATIS
   </Badge>
 
   <div className="flex flex-col items-center">
@@ -137,9 +100,9 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
       <span className="text-gray-600 text-lg">/mo</span>
     </div>
     <p className="text-sm text-gray-600 mt-1">
-      Billed yearly at €49
+      Pagato annuo a €49
     </p>
-    <Badge className=" mt-2 bg-yellow-500 text-black">Last 2 spots available for this month</Badge>
+    <Badge className=" mt-2 bg-yellow-500 text-black">Ultimi 2 posti disponibili per questo mese</Badge>
   </div>
 </div>
 
@@ -194,7 +157,7 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
             ) : (
               <div className="flex items-center space-x-2">
                 <CreditCard className="w-5 h-5" />
-                <span>Start Free Trial</span>
+                <span>Avvia la tua prova gratuita</span>
               </div>
             )}
           </Button>
@@ -212,8 +175,8 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
           </div> */}
 
           <p className="text-xs text-gray-500 text-center leading-relaxed">
-            Start your 3-day free trial today. After the trial, you'll be charged €49/year. You can cancel anytime
-            during the trial period with no charges.
+            Avvia la tua prova gratuita di 3 giorni oggi. Dopo la prova, sarai fatturato €49/anno. Puoi annullare in qualsiasi momento
+            durante la fase di prova con no costi.
           </p>
         </div>
       </DialogContent>

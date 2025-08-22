@@ -31,8 +31,8 @@ export function InstallPrompt({ open, onClose }: InstallPromptProps) {
                   <Smartphone className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="senior-text-lg font-bold text-gray-800">Install SeniorFit</h3>
-                  <p className="senior-text-sm text-gray-600">Add to home screen</p>
+                  <h3 className="senior-text-lg font-bold text-gray-800">Install Dolce Reset</h3>
+                  <p className="senior-text-sm text-gray-600">Aggiungi allo schermo d'ingresso</p>
                 </div>
               </div>
               <Button variant="ghost" size="icon" onClick={onClose} className="h-8 w-8">
@@ -49,10 +49,10 @@ export function InstallPrompt({ open, onClose }: InstallPromptProps) {
                       <span className="text-blue-600 font-bold senior-text-sm">1</span>
                     </div>
                     <div>
-                      <p className="senior-text-base font-semibold text-gray-800">Tap the Share button</p>
+                      <p className="senior-text-base font-semibold text-gray-800">Premi il tasto Share</p>
                       <div className="flex items-center mt-2">
                         <Share className="w-5 h-5 text-blue-500 mr-2" />
-                        <span className="senior-text-sm text-gray-600">At the bottom of your screen</span>
+                        <span className="senior-text-sm text-gray-600">Allo schermo d'ingresso</span>
                       </div>
                     </div>
                   </div>
@@ -62,10 +62,10 @@ export function InstallPrompt({ open, onClose }: InstallPromptProps) {
                       <span className="text-green-600 font-bold senior-text-sm">2</span>
                     </div>
                     <div>
-                      <p className="senior-text-base font-semibold text-gray-800">Add to Home Screen</p>
+                      <p className="senior-text-base font-semibold text-gray-800">Aggiungi allo schermo d'ingresso</p>
                       <div className="flex items-center mt-2">
                         <Plus className="w-5 h-5 text-green-500 mr-2" />
-                        <span className="senior-text-sm text-gray-600">Scroll down and tap this option</span>
+                        <span className="senior-text-sm text-gray-600">Scrolla verso il basso e premi questa opzione</span>
                       </div>
                     </div>
                   </div>
@@ -79,8 +79,8 @@ export function InstallPrompt({ open, onClose }: InstallPromptProps) {
                       <span className="text-blue-600 font-bold senior-text-sm">1</span>
                     </div>
                     <div>
-                      <p className="senior-text-base font-semibold text-gray-800">Open browser menu</p>
-                      <p className="senior-text-sm text-gray-600 mt-1">Tap the three dots (⋮) in your browser</p>
+                      <p className="senior-text-base font-semibold text-gray-800">Apri il menu del browser</p>
+                      <p className="senior-text-sm text-gray-600 mt-1">Premi il tasto tre punti (⋮) nel tuo browser</p>
                     </div>
                   </div>
 
@@ -89,10 +89,10 @@ export function InstallPrompt({ open, onClose }: InstallPromptProps) {
                       <span className="text-green-600 font-bold senior-text-sm">2</span>
                     </div>
                     <div>
-                      <p className="senior-text-base font-semibold text-gray-800">Add to Home Screen</p>
+                      <p className="senior-text-base font-semibold text-gray-800">Aggiungi allo schermo d'ingresso</p>
                       <div className="flex items-center mt-2">
                         <Download className="w-5 h-5 text-green-500 mr-2" />
-                        <span className="senior-text-sm text-gray-600">Look for "Install" or "Add to Home Screen"</span>
+                        <span className="senior-text-sm text-gray-600">Cerca "Install" o "Aggiungi allo schermo d'ingresso"</span>
                       </div>
                     </div>
                   </div>
@@ -102,7 +102,7 @@ export function InstallPrompt({ open, onClose }: InstallPromptProps) {
               {!isIOS && !isAndroid && (
                 <div className="text-center">
                   <p className="senior-text-base text-gray-600">
-                    Your browser may support installing this app. Look for an install button in your browser's menu.
+                    Il tuo browser potrebbe supportare l'installazione di questa app. Cerca un pulsante di installazione nel menu del tuo browser.
                   </p>
                 </div>
               )}
@@ -110,12 +110,12 @@ export function InstallPrompt({ open, onClose }: InstallPromptProps) {
 
             {/* Benefits */}
             <div className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-xl p-4 mb-6">
-              <h4 className="senior-text-base font-semibold text-gray-800 mb-2">Why install?</h4>
+              <h4 className="senior-text-base font-semibold text-gray-800 mb-2">Perché installare?</h4>
               <ul className="space-y-1">
-                <li className="senior-text-sm text-gray-600">• Quick access from home screen</li>
-                <li className="senior-text-sm text-gray-600">• Works offline</li>
-                <li className="senior-text-sm text-gray-600">• Faster loading</li>
-                <li className="senior-text-sm text-gray-600">• App-like experience</li>
+                <li className="senior-text-sm text-gray-600">• Accesso rapido dallo schermo d'ingresso</li>
+                <li className="senior-text-sm text-gray-600">• Funziona offline</li>
+                <li className="senior-text-sm text-gray-600">• Caricamento più veloce</li>
+                <li className="senior-text-sm text-gray-600">• Esperienza app-like</li>
               </ul>
             </div>
 
@@ -123,7 +123,7 @@ export function InstallPrompt({ open, onClose }: InstallPromptProps) {
               onClick={onClose}
               className="w-full h-12 senior-text-base bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600"
             >
-              Got it!
+              Ok
             </Button>
           </CardContent>
         </Card>

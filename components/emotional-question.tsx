@@ -92,11 +92,11 @@ export function EmotionalQuestion({
 
   const getBMIStatus = (bmi: number) => {
     if (bmi < 18.5)
-      return { status: "Underweight", color: "text-blue-600", message: "You may need to gain some healthy weight." }
-    if (bmi < 25) return { status: "Normal", color: "text-green-600", message: "Your BMI is in the healthy range! 👍" }
+      return { status: "Underweight", color: "text-blue-600", message: "Potresti beneficiare da un aumento di peso sano." }
+    if (bmi < 25) return { status: "Normal", color: "text-green-600", message: "Il tuo BMI è nella gamma sana! 👍" }
     if (bmi < 30)
-      return { status: "Overweight", color: "text-orange-600", message: "You could benefit from losing some weight." }
-    return { status: "Obese", color: "text-red-600", message: "It's important to work on weight management." }
+      return { status: "Overweight", color: "text-orange-600", message: "Potresti beneficiare da una perdita di peso." }
+    return { status: "Obese", color: "text-red-600", message: "È importante lavorare sulla gestione del peso." }
   }
 
   const getTargetBMIFeedback = (currentBMI: number, targetBMI: number) => {
@@ -105,18 +105,18 @@ export function EmotionalQuestion({
       return {
         level: "Easily achievable",
         color: "text-green-600",
-        message: "This is a realistic and healthy goal! 🎯",
+        message: "Questo è un obiettivo realistico e salutare! 🎯",
       }
     if (difference <= 5)
       return {
         level: "Achievable",
         color: "text-orange-600",
-        message: "With dedication, this goal is definitely possible! 💪",
+        message: "Questo è un obiettivo raggiungibile con dedizione! 💪",
       }
     return {
       level: "Challenging",
       color: "text-red-600",
-      message: "This will require commitment, but it's achievable with time! 🔥",
+      message: "Questo richiede dedizione, ma è raggiungibile con tempo! 🔥",
     }
   }
 
@@ -152,7 +152,7 @@ export function EmotionalQuestion({
     if (question.id === "age") {
       const age = Number.parseInt(value)
       if (age) {
-        setAgeError("At your age, small daily habits make a big impact ! don’t postpone")
+        setAgeError("Alla tua età, piccole abitudini quotidiane fanno una grande differenza! Non rimandare.")
       } else {
         setAgeError("")
       }
@@ -260,8 +260,8 @@ export function EmotionalQuestion({
               {question.id === "height" && inputValue && Number.parseFloat(inputValue) > 0 && (
                 <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-xl">
                   <p className="text-sm text-blue-700">
-                    📏 We're collecting your height to calculate your BMI (Body Mass Index) for personalized
-                    recommendations.
+                    Stiamo raccolgendo la tua altezza per calcolare il tuo BMI (Indice di Massa Corporale) per
+                    raccomandazioni personalizzate.
                   </p>
                 </div>
               )}
@@ -274,7 +274,7 @@ export function EmotionalQuestion({
                 userHeight > 0 && (
                   <div className="mt-3 p-3 bg-white border border-gray-200 rounded-xl">
                     <div className="text-center">
-                      <p className="text-sm text-gray-600 mb-2">Your Current BMI</p>
+                      <p className="text-sm text-gray-600 mb-2">BMI Attuale</p>
                       {(() => {
                         const bmi = Number.parseFloat(calculateBMI(userHeight, currentInputWeight))
                         const bmiInfo = getBMIStatus(bmi)
@@ -300,7 +300,7 @@ export function EmotionalQuestion({
                 currentWeight > 0 && (
                   <div className="mt-3 p-3 bg-white border border-gray-200 rounded-xl">
                     <div className="text-center">
-                      <p className="text-sm text-gray-600 mb-2">Target BMI Analysis</p>
+                      <p className="text-sm text-gray-600 mb-2">Analisi BMI Obiettivo</p>
                       {(() => {
                         const currentBMI = Number.parseFloat(calculateBMI(userHeight, currentWeight))
                         const targetBMI = Number.parseFloat(calculateBMI(userHeight, currentInputTargetWeight))
@@ -310,16 +310,16 @@ export function EmotionalQuestion({
                           <>
                             <div className="grid grid-cols-2 gap-4 mb-3">
                               <div>
-                                <p className="text-xs text-gray-500">Current BMI</p>
+                                <p className="text-xs text-gray-500">BMI Attuale</p>
                                 <p className="text-lg font-bold text-gray-700">{currentBMI}</p>
                               </div>
                               <div>
-                                <p className="text-xs text-gray-500">Target BMI</p>
+                                <p className="text-xs text-gray-500">BMI Obiettivo</p>
                                 <p className={`text-lg font-bold ${targetBMIInfo.color}`}>{targetBMI}</p>
                               </div>
                             </div>
                             <p className={`text-sm font-medium ${targetBMIInfo.color} mb-2`}>
-                              Target: {targetBMIInfo.status}
+                              Obiettivo: {targetBMIInfo.status}
                             </p>
                             <p className="text-sm text-gray-700 mb-3">{targetBMIInfo.message}</p>
 
@@ -411,7 +411,7 @@ export function EmotionalQuestion({
             onClick={question.type === "input" ? handleInputSubmit : onNext}
             className="w-full h-12 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-105"
           >
-            Continue
+            Continua
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
         </div>

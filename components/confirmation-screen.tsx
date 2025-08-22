@@ -84,7 +84,7 @@ export function ConfirmationScreens({ onComplete, onRestart }: ConfirmationScree
               onClick={handleYes}
               className="h-16 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
             >
-              Yes
+              Sì
             </Button>
           </div>
         </div>

@@ -13,7 +13,7 @@ const projectId = "syc8m8tzt1"
 Clarity.init(projectId);
 
 export const metadata: Metadata = {
-  title: "SeniorFit - Fitness for Life",
+  title: "Dolice Reset - Fitness for Life",
   description: "Gentle fitness exercises designed specifically for senior women",
   manifest: "/manifest.json",
   themeColor: "#ec4899",

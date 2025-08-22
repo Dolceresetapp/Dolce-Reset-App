@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "SeniorFit - Fitness for Life",
-    short_name: "SeniorFit",
+    name: "Dolce Reset - Fitness for Life",
+    short_name: "Dolce Reset",
     description: "Gentle fitness exercises designed specifically for senior women",
     start_url: "/",
     display: "standalone",

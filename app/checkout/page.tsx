@@ -25,10 +25,11 @@ export default function CheckoutPage() {
             onClick={handleStartTrial}
             className="w-full h-18 text-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-light rounded-2xl shadow-xl transition-all duration-300 hover:scale-105"
           >
-            <div className="flex flex-col items-center">
-              <span>Start Your 3-Day Free Trial</span>
-              <span className="">Press here to start</span>
-            </div>
+           <div className="flex flex-col items-center">
+            <span>Inizia la tua prova gratuita di 3 giorni</span>
+            <span className="">Premi qui per iniziare</span>
+          </div>
+
           </Button>
         </div>
       </div>

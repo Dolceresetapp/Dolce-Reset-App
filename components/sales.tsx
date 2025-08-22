@@ -112,39 +112,39 @@ export default function SalesPage() {
 
       {/* FAQ Section */}
       <div className="bg-black px-4 py-10">
-        <p className="text-center text-sm tracking-wider text-gray-400">
-          STILL NOT SURE? HERE YOU GO
-        </p>
-        <h2 className="text-2xl text-white font-extrabold text-center mb-4">
-          HAVE QUESTIONS?
-        </h2>
-        <p className="text-center text-gray-400 mb-6 text-sm">
-          Click on the questions to see the answers to your questions.
-          But act quickly before the offer expires!
-        </p>
+  <p className="text-center text-sm tracking-wider text-gray-400">
+    ANCORA INCERTO? ECCO QUI
+  </p>
+  <h2 className="text-2xl text-white font-extrabold text-center mb-4">
+    HAI DOMANDE?
+  </h2>
+  <p className="text-center text-gray-400 mb-6 text-sm">
+    Clicca sulle domande per vedere le risposte. Ma agisci in fretta prima che l'offerta scada!
+  </p>
 
-        <div className="space-y-3">
-          {faqs.map((faq, i) => (
-            <div
-              key={i}
-              className="bg-[#1f1f2e] rounded-lg overflow-hidden"
-            >
-              <button
-                className="w-full flex justify-between items-center px-4 py-3 text-left text-white font-medium"
-                onClick={() => setOpenIndex(openIndex === i ? null : i)}
-              >
-                <span>🔶 {faq.q}</span>
-                <span>{openIndex === i ? "−" : "+"}</span>
-              </button>
-              {openIndex === i && (
-                <div className="px-4 pb-3 text-gray-300 text-sm">
-                  {faq.a}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+  <div className="space-y-3">
+    {faqs.map((faq, i) => (
+      <div
+        key={i}
+        className="bg-[#1f1f2e] rounded-lg overflow-hidden"
+      >
+        <button
+          className="w-full flex justify-between items-center px-4 py-3 text-left text-white font-medium"
+          onClick={() => setOpenIndex(openIndex === i ? null : i)}
+        >
+          <span>🔶 {faq.q}</span>
+          <span>{openIndex === i ? "−" : "+"}</span>
+        </button>
+        {openIndex === i && (
+          <div className="px-4 pb-3 text-gray-300 text-sm">
+            {faq.a}
+          </div>
+        )}
       </div>
+    ))}
+  </div>
+</div>
+
     </div>
   );
 }

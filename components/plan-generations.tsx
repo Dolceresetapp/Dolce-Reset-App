@@ -43,11 +43,12 @@ const testimonials = [
 ]
 
 const progressSteps = [
-  { label: "Scanning your goals", percentage: 100 },
-  { label: "Analyzing body parameters", percentage: 100 },
-  { label: "Choosing workouts to your needs", percentage: 100 },
-  { label: "Generating your action plan", percentage: 100 },
+  { label: "Analizzando i tuoi obiettivi", percentage: 100 },
+  { label: "Analisi dei parametri del corpo", percentage: 100 },
+  { label: "Scelta degli allenamenti adatti alle tue esigenze", percentage: 100 },
+  { label: "Generazione del tuo piano d'azione", percentage: 100 },
 ]
+
 
 export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
   const { user } = useUser()
@@ -146,52 +147,54 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
             {/* Custom Plan Chart */}
             <Card className="mb-4  border-0 shadow-xl animate-slide-up">
               <CardContent className="p-6">
-                <div className="text-center mb-4">
-                  <h2 className="text-4xl font-bold mb-2">Your 30-Day Custom Plan</h2>
-                  <p className="text-sm opacity-90">Scientifically designed for your goals</p>
-                </div>
+              <div className="text-center mb-4">
+                <h2 className="text-4xl font-bold mb-2">Il tuo piano personalizzato di 30 giorni</h2>
+                <p className="text-sm opacity-90">Scientificamente progettato per i tuoi obiettivi</p>
+              </div>
 
-                {/* Progress Chart Visualization */}
-                <div className="bg-white/20 rounded-2xl p-4 mb-4">
-                  <div className="flex justify-between items-center mb-3">
-                    <div className="text-center">
-                      <p className="text-xs opacity-90">Current</p>
-                      <p className="text-lg font-bold">{currentWeight}kg</p>
-                      <p className="text-xs opacity-75">BMI {currentBMI}</p>
-                    </div>
-                    <div className="flex-1 mx-4">
-                      <div className="relative">
-                        <div className="w-full bg-white/30 rounded-full h-3">
-                          <div className="bg-gradient-to-r from-yellow-400 to-green-400 h-3 rounded-full w-full animate-pulse"></div>
-                        </div>
-                        <div className="text-center mt-2">
-                          <p className="text-xs font-bold">30 Days Transformation</p>
-                        </div>
+              {/* Visualizzazione del grafico dei progressi */}
+              <div className="bg-white/20 rounded-2xl p-4 mb-4">
+                <div className="flex justify-between items-center mb-3">
+                  <div className="text-center">
+                    <p className="text-xs opacity-90">Attuale</p>
+                    <p className="text-lg font-bold">{currentWeight}kg</p>
+                    <p className="text-xs opacity-75">BMI {currentBMI}</p>
+                  </div>
+                  <div className="flex-1 mx-4">
+                    <div className="relative">
+                      <div className="w-full bg-white/30 rounded-full h-3">
+                        <div className="bg-gradient-to-r from-yellow-400 to-green-400 h-3 rounded-full w-full animate-pulse"></div>
+                      </div>
+                      <div className="text-center mt-2">
+                        <p className="text-xs font-bold">Trasformazione di 30 giorni</p>
                       </div>
                     </div>
-                    <div className="text-center">
-                      <p className="text-xs opacity-90">Target</p>
-                      <p className="text-lg font-bold">{targetWeight}kg</p>
-                      <p className="text-xs opacity-75">BMI {(Number.parseFloat(currentBMI) - 1.5).toFixed(1)}</p>
-                    </div>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs opacity-90">Obiettivo</p>
+                    <p className="text-lg font-bold">{targetWeight}kg</p>
+                    <p className="text-xs opacity-75">BMI {(Number.parseFloat(currentBMI) - 1.5).toFixed(1)}</p>
                   </div>
                 </div>
+              </div>
+
 
                 {/* Key Metrics */}
                 <div className="grid grid-cols-3 gap-3">
                   <div className="bg-white/20 rounded-xl p-3 text-center">
                     <p className="text-lg font-bold">{weightLoss}kg</p>
-                    <p className="text-xs opacity-90">Weight Loss</p>
+                    <p className="text-xs opacity-90">Perdita di peso</p>
                   </div>
                   <div className="bg-white/20 rounded-xl p-3 text-center">
                     <p className="text-lg font-bold">30</p>
-                    <p className="text-xs opacity-90">Days</p>
+                    <p className="text-xs opacity-90">Giorni</p>
                   </div>
                   <div className="bg-white/20 rounded-xl p-3 text-center">
                     <p className="text-lg font-bold">15min</p>
-                    <p className="text-xs opacity-90">Daily</p>
+                    <p className="text-xs opacity-90">Ogni giorno</p>
                   </div>
                 </div>
+
               </CardContent>
             </Card>
 
@@ -209,7 +212,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
               style={{ animationDelay: "0.6s" }}
             >
               <div className="flex flex-col items-center">
-                <span>Start Now For Free</span>
+                <span>Inizia Ora Gratis</span>
               </div>
             </Button>
           </div>
@@ -223,8 +226,9 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
       <div className="p-4 pt-8">
         {/* Header */}
         <div className="text-center mb-6 animate-fade-in">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Creating your</h1>
-          <h2 className="text-2xl font-bold text-pink-600 mb-4">Personalized plan...</h2>
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">Creando il tuo</h1>
+<h2 className="text-2xl font-bold text-pink-600 mb-4">Piano personalizzato...</h2>
+
         </div>
 
         {/* Progress Steps */}
@@ -292,7 +296,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
         {/* Trusted By */}
         <div className="text-center mb-6 animate-slide-up" style={{ animationDelay: "0.5s" }}>
           <h3 className="text-lg font-bold text-gray-800 mb-2">
-            Trusted by over {activeUsers.toLocaleString()} clients
+          Affidato da oltre {activeUsers.toLocaleString()} clienti
           </h3>
         </div>
 

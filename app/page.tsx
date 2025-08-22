@@ -72,7 +72,7 @@ export default function Sales() {
             className="w-full h-16 senior-text-lg bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm"
           >
             <Play className="w-6 h-6 mr-3" />
-            Start Your Transformation
+            Inizia la tua trasformazione
           </Button>
         </div>
       </div>

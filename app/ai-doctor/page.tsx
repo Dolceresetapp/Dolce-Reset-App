@@ -11,13 +11,14 @@ import Image from "next/image"
 import Header from "@/components/header"
 
 const preBuiltQuestions = [
-  "How can I lose weight quickly?",
-  "I slept badly, what can I do?",
-  "Can I improve my digestion?",
-  "Recommended foods for more energy",
-  "How can I reduce joint pain?",
-  "Advice for menopause",
+  "Come posso perdere peso velocemente?",
+  "Ho dormito male, cosa posso fare?",
+  "Posso migliorare la digestione?",
+  "Alimenti consigliati per più energia",
+  "Come posso ridurre i dolori articolari?",
+  "Consigli per la menopausa",
 ]
+
 
 interface Message {
   id: string
@@ -68,7 +69,7 @@ export default function AIDoctorPage() {
 
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: data.response || "I'm sorry, I couldn't process your request right now. Please try again.",
+        text: data.response || "Mi dispiace, non sono riuscito a processare la tua richiesta. Riprova.",
         isUser: false,
         timestamp: new Date(),
       }
@@ -78,7 +79,7 @@ export default function AIDoctorPage() {
       console.error("Error calling AI Doctor:", error)
       const errorResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: "I'm having trouble connecting right now. Please try again in a moment! 🩺",
+        text: "Sto avendo difficoltà a connettermi. Riprova in un momento! 🩺",
         isUser: false,
         timestamp: new Date(),
       }
@@ -109,7 +110,7 @@ export default function AIDoctorPage() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <h2 className="text-2xl text-pink-500 font-bold mb-2">Talk to the Doctor</h2>
+            <h2 className="text-2xl text-pink-500 font-bold mb-2">Parla con la Doctor</h2>
           </CardContent>
         </div>
       </div>
@@ -185,7 +186,7 @@ export default function AIDoctorPage() {
                       className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
                       style={{ animationDelay: "0.2s" }}
                     ></div>
-                    <span className="text-sm text-gray-600 ml-2">Doctor is analyzing...</span>
+                    <span className="text-sm text-gray-600 ml-2"></span>
                   </div>
                 </div>
               </div>
@@ -203,7 +204,7 @@ export default function AIDoctorPage() {
             <Input
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Ask about health, safety, exercise concerns..."
+              placeholder="Chiedi su salute, sicurezza, esercizi..."
               className="flex-1 border-0 bg-transparent text-base placeholder:text-gray-500 focus-visible:ring-0"
               onKeyPress={(e) => e.key === "Enter" && handleSendMessage(inputText)}
               disabled={isLoading}

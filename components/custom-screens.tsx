@@ -46,40 +46,40 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
       return {
         category: "Underweight",
         color: "text-blue-600",
-        message: "You need to gain some healthy weight!",
+        message: "Hai bisogno di guadagnare qualche peso sano!",
         status: "needs improvement",
       }
     if (bmi < 25)
       return {
         category: "Normal",
         color: "text-green-600",
-        message: "Your BMI is in the healthy range!",
+        message: "Il tuo BMI è nella gamma sana!",
         status: "good",
       }
     if (bmi < 30)
       return {
         category: "Overweight",
         color: "text-orange-600",
-        message: "You could benefit from losing some weight.",
+        message: "Puoi beneficiare da una perdita di peso.",
         status: "needs improvement",
       }
     return {
       category: "Obese",
       color: "text-red-600",
-      message: "It's important to work on weight management.",
+      message: "È importante lavorare sulla gestione del peso.",
       status: "needs improvement",
     }
   }
 
   const getBMIDifficulty = (currentBMI: number, targetBMI: number) => {
     const difference = Math.abs(currentBMI - targetBMI)
-    if (difference <= 2) return { level: "Easy", color: "text-green-600", message: "This is an achievable goal!" }
+    if (difference <= 2) return { level: "Easy", color: "text-green-600", message: "Questo è un obiettivo raggiungibile!" }
     if (difference <= 5)
-      return { level: "Moderate", color: "text-orange-600", message: "With dedication, this is definitely possible!" }
+      return { level: "Moderate", color: "text-orange-600", message: "Con dedizione, questo è certamente raggiungibile!" }
     return {
       level: "Challenging",
       color: "text-red-600",
-      message: "This will require commitment, but it's achievable!",
+      message: "Questo richiede dedizione, ma è raggiungibile!",
     }
   }
 
@@ -111,7 +111,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
             onClick={onContinue}
             className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
           >
-            Continue
+            Continua
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
         </div>
@@ -219,10 +219,10 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
         <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col overflow-hidden">
           <div className="flex-1 flex items-center justify-center p-6" style={{ height: "80vh" }}>
             <div className="text-center">
-              <p className="text-gray-600">Loading target BMI analysis...</p>
+              <p className="text-gray-600">Caricamento analisi BMI obiettivo...</p>
               <p className="text-sm text-gray-500 mt-2">
-                Height: {height || "Not set"}, Current: {currentWeight || "Not set"}, Target:{" "}
-                {targetWeight || "Not set"}
+                Altezza: {height || "Non impostato"}, Attuale: {currentWeight || "Non impostato"}, Obiettivo:{" "}
+                {targetWeight || "Non impostato"}
               </p>
             </div>
           </div>
@@ -247,24 +247,24 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
       <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen flex flex-col overflow-hidden">
         <div className="flex-1 flex items-center justify-center p-6" style={{ height: "80vh" }}>
           <div className="text-center max-w-md">
-            <h1 className="text-xl font-bold text-gray-800 mb-6">Your Target BMI Analysis</h1>
+            <h1 className="text-xl font-bold text-gray-800 mb-6">Analisi BMI Obiettivo</h1>
 
             <Card className="mb-6 bg-white/90 shadow-lg">
               <CardContent className="p-6">
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="text-center">
-                    <div className="text-sm text-gray-600 mb-1">Current BMI</div>
+                    <div className="text-sm text-gray-600 mb-1">BMI Attuale</div>
                     <div className="text-2xl font-bold text-gray-700">{currentBMI}</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-sm text-gray-600 mb-1">Target BMI</div>
+                    <div className="text-sm text-gray-600 mb-1">BMI Obiettivo</div>
                     <div className={`text-2xl font-bold ${targetBMIInfo.color}`}>{targetBMI}</div>
                   </div>
                 </div>
 
                 <div className="text-center mb-4">
                   <div className={`text-lg font-semibold mb-2 ${targetBMIInfo.color}`}>
-                    Target: {targetBMIInfo.category}
+                    bersaglio: {targetBMIInfo.category}
                   </div>
                   <div
                     className={`text-sm p-3 rounded-lg mb-3 ${
@@ -276,7 +276,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
                 </div>
 
                 <div className="border-t pt-4">
-                  <div className={`text-lg font-semibold mb-2 ${difficulty.color}`}>Difficulty: {difficulty.level}</div>
+                  <div className={`text-lg font-semibold mb-2 ${difficulty.color}`}>Difficoltà: {difficulty.level}</div>
                   <div
                     className={`text-sm p-3 rounded-lg ${
                       difficulty.level === "Easy"
@@ -299,7 +299,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
             onClick={onContinue}
             className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
           >
-            Continue
+            Continua
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
         </div>
@@ -333,7 +333,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
             onClick={onContinue}
             className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
           >
-            Continue
+            Continua
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
         </div>
@@ -366,7 +366,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
             onClick={onContinue}
             className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
           >
-            Continue
+            Continua
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
         </div>
@@ -395,7 +395,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
             onClick={onContinue}
             className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105"
           >
-            Continue
+            Continua
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
         </div>

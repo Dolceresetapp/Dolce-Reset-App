@@ -20,29 +20,29 @@ export default function TelegramCommunityCard() {
 
           {/* Heading */}
           <h2 className="text-3xl font-bold text-pink-600">
-            Join the Telegram Community
+          Unisciti alla community di Telegram
           </h2>
 
           {/* Features */}
           <ul className="text-sm text-gray-700 space-y-6 text-left">
             <li className="flex items-center gap-2 text-xl font-semibold text-[#b85eff]">
-              <span className="text-pink-500 text-2xl">★</span> Share your progress
+              <span className="text-pink-500 text-2xl">★</span> Condividi il tuo progresso
             </li>
             <li className="flex items-center gap-2 text-xl font-semibold text-[#b85eff]">
-              <span className="text-pink-500 text-2xl">★</span> Take inspiration and motivation
+              <span className="text-pink-500 text-2xl">★</span> Prendi ispirazione e motivazione
             </li>
             <li className="flex items-center gap-2 text-xl font-semibold text-[#b85eff]">
-              <span className="text-pink-500 text-2xl">★</span> Group Videocall with doctors
+              <span className="text-pink-500 text-2xl">★</span> Chiamata video con i medici
             </li>
             <li className="flex items-center gap-2 text-xl font-semibold text-[#b85eff]">
-              <span className="text-pink-500 text-2xl">★</span> Daily Trick for Your Body
+              <span className="text-pink-500 text-2xl">★</span> Trucchi giornalieri per il tuo corpo
             </li>
           </ul>
 
           {/* Button */}
           <Link href="https://t.me/+iDksb3Ef-8lhNmU0" className="w-full" target="_blank">
           <Button className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold h-auto rounded-full">
-            JOIN NOW <br /> CLICK HERE
+          ISCRIVITI ORA <br /> CLICCA QUI
           </Button>
           </Link>
         </div>

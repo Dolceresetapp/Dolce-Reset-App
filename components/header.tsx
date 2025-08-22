@@ -12,8 +12,8 @@ const header = () => {
     <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-pink-100">
     <div className="flex items-center justify-between p-4">
       <div>
-        <h1 className="senior-text-lg font-bold text-gray-800">Good Day!</h1>
-        <p className="senior-text-sm text-gray-600">Ready for your wellness journey?</p>
+        <h1 className="senior-text-lg font-bold text-gray-800">Buona giornata!</h1>
+        <p className="senior-text-sm text-gray-600">Pronto per il tuo percorso di benessere?</p>
       </div>
       <Button
         variant="ghost"

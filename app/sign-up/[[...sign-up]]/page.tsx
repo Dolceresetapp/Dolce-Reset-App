@@ -6,12 +6,12 @@ export default function SignInPage() {
     <div className="app-container gradient-bg">
       {/* add back button */}
       <br/>
-      <Link href="/" className="m-4 text-white h-24 rounded-2xl">Back</Link>
+      <Link href="/" className="m-4 text-white h-24 rounded-2xl">Indietro</Link>
       <div className="signin-wrapper">
         <div className="signin-card">
           <div className="signin-header">
             <h1 className="text-5xl font-bold">Dolce Reset</h1>
-            <p className="">Sign up to start your fitness journey</p>
+            <p className="">Registrati per iniziare il tuo percorso di fitness</p>
           </div>
           <SignUp
             appearance={{
@@ -30,7 +30,7 @@ export default function SignInPage() {
             redirectUrl="/features"
           />
           <br/>
-          <center><span className="senior-text-sm">Already have an account? <Link href="/sign-in" className="text-white/70">Sign In</Link></span></center>
+          <center><span className="senior-text-sm">Hai già un account? <Link href="/sign-in" className="text-white/70">Accedi</Link></span></center>
         </div>
       </div>
     </div>
