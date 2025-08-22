@@ -11,12 +11,12 @@ import { BottomNavigation } from "@/components/bottom-navigation"
 const exerciseLevels = [
   {
     id: "beginner",
-    title: "Beginner",
+    title: "Principiante",
     description: "Perfect for those just starting their fitness journey",
   },
   {
     id: "intermediate",
-    title: "Intermediate",
+    title: "Intermedio",
     description: "For those with some exercise experience",
   },
 ]
@@ -27,11 +27,11 @@ export default function ExerciseLevelPage({ params }: { params: { category: stri
 
   const getCategoryTitle = (category: string) => {
     const titles = {
-      "muscle-toning": "Muscle Toning",
-      "joint-pain": "Joint Pain",
-      "stress-relief": "Stress Relief",
-      "fat-burning": "Fat Burning",
-      "yoga-chair": "Yoga Chair",
+      "muscle-toning": "Tonificazione Muscolare",
+      "joint-pain": "Dolore Articolare",
+      "stress-relief": "Rilassamento",
+      "fat-burning": "Scellimento Grasso",
+      "yoga-chair": "Yoga Sedia",
       "pilates-principianti": "Pilates Principianti",
     }
     return titles[category as keyof typeof titles] || "Exercise Category"
@@ -57,7 +57,7 @@ export default function ExerciseLevelPage({ params }: { params: { category: stri
             <ArrowLeft className="h-6 w-6 text-gray-600" />
           </Button>
           <div className="text-center">
-            <h1 className="text-xl font-bold text-pink-600">Select Level</h1>
+            <h1 className="text-xl font-bold text-pink-600">Seleziona Livello</h1>
             <p className="text-md text-pink-600">{getCategoryTitle(params.category)}</p>
           </div>
           <div className="w-12" />
@@ -105,7 +105,7 @@ export default function ExerciseLevelPage({ params }: { params: { category: stri
             disabled={!selectedLevel}
             className="w-full h-14 text-lg bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-3xl shadow-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Continue
+            Continua
           </Button>
         </div>
       </div>

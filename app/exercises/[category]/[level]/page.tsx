@@ -58,11 +58,11 @@ export default function ExerciseVideosPage({ params }: { params: { category: str
 
   const getCategoryTitle = (category: string) => {
     const titles = {
-      "muscle-toning": "Muscle Toning",
-      "joint-pain": "Joint Pain",
-      "stress-relief": "Stress Relief",
-      "fat-burning": "Fat Burning",
-      "yoga-chair": "Yoga Chair",
+      "muscle-toning": "Tonificazione Muscolare",
+      "joint-pain": "Dolore Articolare",
+      "stress-relief": "Rilassamento",
+      "fat-burning": "Scellimento Grasso",
+      "yoga-chair": "Yoga Sedia",
       "pilates-principianti": "Pilates Principianti",
     }
     return titles[category as keyof typeof titles] || "Exercise Category"
