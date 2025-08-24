@@ -63,7 +63,7 @@ export default function SalesPage() {
   const CTA = () => (
     <div className="my-6">
       <button className="w-full bg-blue-600 text-white text-2xl font-extralight py-4 shadow-md">
-        Click to get started - 3.99/month
+        Click to get started - 3,90/month
         <p className="text-center text-sm mt-2 font-extralight">
         Total annual cost: $47
       </p>
@@ -83,12 +83,32 @@ export default function SalesPage() {
       {/* <CTA /> */}
       <h2 className="text-2xl font-bold text-center mt-8 mb-4">ECCO COSA DICE CHI HA PROVATO DOLCE RESET</h2>
 
-        {/* YouTube Videos */}
-        <div className="space-y-4">
-        <div style={{padding:"177.78% 0 0 0;position:relative;"}}><iframe src="https://player.vimeo.com/video/1111321366?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style={{position:"absolute;top:0;left:0;width:100%;height:100%;"}} title="Testimonials 1"></iframe></div>
-        <div style={{padding:"177.78% 0 0 0;position:relative;"}}><iframe src="https://player.vimeo.com/video/1111333407?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style={{position:"absolute;top:0;left:0;width:100%;height:100%;"}} title="Testimonials 1"></iframe></div>
-        
-      </div>
+        {/* Vimeo Videos */}
+        <div style={{ width: "100%", height: "500px" }}>
+          <iframe
+            src="https://player.vimeo.com/video/1111333407?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+            style={{
+              width: "100%",
+              height: "100%",
+              border: "none",
+            }}
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+          />
+        </div>
+        <br />
+        <div style={{ width: "100%", height: "500px" }}>
+          <iframe
+            src="https://player.vimeo.com/video/1111321366?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+            style={{
+              width: "100%",
+              height: "100%",
+              border: "none",
+            }}
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+          />
+        </div>
+
+
 
        {renderImage(13)}
       {/* Images */}

@@ -148,7 +148,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
             <Card className="mb-4  border-0 shadow-xl animate-slide-up">
               <CardContent className="p-6">
               <div className="text-center mb-4">
-                <h2 className="text-4xl font-bold mb-2">Il tuo piano personalizzato di 30 giorni</h2>
+                <h2 className="text-xl font-bold mb-2">Il tuo piano personalizzato di 30 giorni è pronto!</h2>
                 <p className="text-sm opacity-90">Scientificamente progettato per i tuoi obiettivi</p>
               </div>
 
@@ -158,7 +158,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
                   <div className="text-center">
                     <p className="text-xs opacity-90">Attuale</p>
                     <p className="text-lg font-bold">{currentWeight}kg</p>
-                    <p className="text-xs opacity-75">BMI {currentBMI}</p>
+                    <p className="text-xs opacity-75">indice massa corporea {currentBMI}</p>
                   </div>
                   <div className="flex-1 mx-4">
                     <div className="relative">
@@ -173,7 +173,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
                   <div className="text-center">
                     <p className="text-xs opacity-90">Obiettivo</p>
                     <p className="text-lg font-bold">{targetWeight}kg</p>
-                    <p className="text-xs opacity-75">BMI {(Number.parseFloat(currentBMI) - 1.5).toFixed(1)}</p>
+                    <p className="text-xs opacity-75">indice massa corporea {(Number.parseFloat(currentBMI) - 1.5).toFixed(1)}</p>
                   </div>
                 </div>
               </div>
@@ -264,33 +264,27 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
           ))}
         </div>
 
-        {/* User Avatars */}
-        <div className="flex justify-center mb-4 animate-slide-up" style={{ animationDelay: "0.4s" }}>
-  <div className="flex -space-x-2">
-    {[1, 2, 3, 4, 5].map((i) => (
+    {/* User Avatars */}
       <div
-        key={i}
-        className="w-8 h-8 rounded-full border-2 border-white overflow-hidden flex items-center justify-center"
+        className="flex justify-center mb-4 animate-slide-up"
+        style={{ animationDelay: "0.4s" }}
       >
-        {/* Random user image from Unsplash */}
-        <img
-          src={`https://source.unsplash.com/40x40/?face,person&sig=${i}`}
-          alt={`User ${i}`}
-          className="w-full h-full object-cover"
-        />
+        <div className="flex -space-x-2">
+          {["t1.png", "t2.png", "t3.png", "t4.png", "t5.png"].map((img, i) => (
+            <div
+              key={i}
+              className="w-8 h-8 rounded-full border-2 border-white overflow-hidden flex items-center justify-center"
+            >
+              <img
+                src={`/testimonials/${img}`} // 👈 adjust path if needed
+                alt={`User ${i + 1}`}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
       </div>
-    ))}
 
-    {/* Last avatar */}
-    <div className="w-8 h-8 rounded-full border-2 border-white overflow-hidden flex items-center justify-center">
-      <img
-        src={`https://xsgames.co/randomusers/assets/avatars/male/22.jpg`}
-        alt="Random User"
-        className="w-full h-full object-cover"
-      />
-    </div>
-  </div>
-</div>
 
 
         {/* Trusted By */}

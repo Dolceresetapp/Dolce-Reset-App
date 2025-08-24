@@ -4,7 +4,7 @@ import Link from "next/link"
 
 export default function ConsentNotice() {
   return (
-    <p className="text-xs text-center text-gray-500 mt-4">
+    <p className="text-xs text-center text-gray-400 mt-4">
       By continuing, you agree to our{" "}
       <Link href="/terms" className="underline hover:text-primary">
         Terms

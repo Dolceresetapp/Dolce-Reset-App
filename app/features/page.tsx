@@ -33,7 +33,7 @@ const exerciseCategories = [
   },
   {
     id: "fat-burning",
-    title: "Scellimento Grasso",
+    title: "Brucia il Grasso",
     image: "/icons/4.png",
     color: "bg-[#fee5f2]",
     borderColor: "border-orange-200",

@@ -108,7 +108,7 @@ export default function AIChefPage() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <h2 className="text-2xl text-pink-500 font-bold mb-2">Il Mio Cappello è qui per te!</h2>
+            <h2 className="text-2xl text-pink-500 font-bold mb-2">Parla Con lo Chef Raffaele</h2>
           </CardContent>
         </div>
       </div>

@@ -134,12 +134,12 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             {/* Header */}
             <div className="flex items-center justify-between p-6 bg-white/80 backdrop-blur-sm border-b border-pink-100 rounded-b-3xl">
               <div>
-                <h2 className="senior-text-xl font-bold text-gray-800 flex items-center">
-                  <Heart className="w-6 h-6 text-pink-500 mr-2" />
+                <h2 className="text-xl font-bold text-gray-800 flex items-center">
+                  {/* <Heart className="w-6 h-6 text-pink-500 mr-2" /> */}
                   Menu
                 </h2>
                 {isSignedIn && (
-                  <p className="senior-text-sm text-gray-600">Benvenuta, {user?.firstName || "Beautiful"}!</p>
+                  <p className="text-sm text-gray-600">Benvenuta, {user?.firstName || "Beautiful"}!</p>
                 )}
               </div>
               <Button
@@ -195,7 +195,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                         </div>
                         <div className="text-left flex-1">
                           <h4 className="senior-text-sm font-bold text-gray-800">Installa App</h4>
-                          <p className="senior-text-xs text-gray-600">Aggiungi allo schermo d'ingresso</p>
+                          <p className="text-xs text-gray-600">Aggiungi allo schermo d'ingresso</p>
                         </div>
                         <Smartphone className="w-5 h-5 text-indigo-500" />
                       </div>

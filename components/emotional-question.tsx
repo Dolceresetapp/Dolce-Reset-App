@@ -274,7 +274,7 @@ export function EmotionalQuestion({
                 userHeight > 0 && (
                   <div className="mt-3 p-3 bg-white border border-gray-200 rounded-xl">
                     <div className="text-center">
-                      <p className="text-sm text-gray-600 mb-2">BMI Attuale</p>
+                      <p className="text-sm text-gray-600 mb-2">indice massa corporea Attuale</p>
                       {(() => {
                         const bmi = Number.parseFloat(calculateBMI(userHeight, currentInputWeight))
                         const bmiInfo = getBMIStatus(bmi)
@@ -300,7 +300,7 @@ export function EmotionalQuestion({
                 currentWeight > 0 && (
                   <div className="mt-3 p-3 bg-white border border-gray-200 rounded-xl">
                     <div className="text-center">
-                      <p className="text-sm text-gray-600 mb-2">Analisi BMI Obiettivo</p>
+                      <p className="text-sm text-gray-600 mb-2">Analisi indice massa corporea Obiettivo</p>
                       {(() => {
                         const currentBMI = Number.parseFloat(calculateBMI(userHeight, currentWeight))
                         const targetBMI = Number.parseFloat(calculateBMI(userHeight, currentInputTargetWeight))
@@ -310,11 +310,11 @@ export function EmotionalQuestion({
                           <>
                             <div className="grid grid-cols-2 gap-4 mb-3">
                               <div>
-                                <p className="text-xs text-gray-500">BMI Attuale</p>
+                                <p className="text-xs text-gray-500">indice massa corporea Attuale</p>
                                 <p className="text-lg font-bold text-gray-700">{currentBMI}</p>
                               </div>
                               <div>
-                                <p className="text-xs text-gray-500">BMI Obiettivo</p>
+                                <p className="text-xs text-gray-500">indice massa corporea Obiettivo</p>
                                 <p className={`text-lg font-bold ${targetBMIInfo.color}`}>{targetBMI}</p>
                               </div>
                             </div>

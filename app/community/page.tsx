@@ -14,28 +14,28 @@ export default function TelegramCommunityCard() {
       <div className="w-full max-w-sm bg-white p-6 text-center">
         <div className="flex flex-col items-center gap-10">
           {/* Icon */}
-          <div className="w-28 h-28 flex items-center justify-center rounded-full bg-pink-100">
-            <Send className="w-14 h-14 text-pink-600" />
+          <div className="w-16 h-16 flex items-center justify-center rounded-full bg-pink-100">
+            <Send className="w-8 h-8 text-pink-600" />
           </div>
 
           {/* Heading */}
-          <h2 className="text-3xl font-bold text-pink-600">
+          <h2 className="text-xl font-bold text-pink-600">
           Unisciti alla community di Telegram
           </h2>
 
           {/* Features */}
-          <ul className="text-sm text-gray-700 space-y-6 text-left">
-            <li className="flex items-center gap-2 text-xl font-semibold text-[#b85eff]">
-              <span className="text-pink-500 text-2xl">★</span> Condividi il tuo progresso
+          <ul className="text-xs text-gray-700 space-y-2 text-left">
+            <li className="flex items-center gap-2 text-lg font-semibold text-[#b85eff]">
+              <span className="text-pink-500 text-lg">★</span> Condividi il tuo progresso
             </li>
-            <li className="flex items-center gap-2 text-xl font-semibold text-[#b85eff]">
-              <span className="text-pink-500 text-2xl">★</span> Prendi ispirazione e motivazione
+            <li className="flex items-center gap-2 text-lg font-semibold text-[#b85eff]">
+              <span className="text-pink-500 text-lg">★</span> Prendi ispirazione e motivazione
             </li>
-            <li className="flex items-center gap-2 text-xl font-semibold text-[#b85eff]">
-              <span className="text-pink-500 text-2xl">★</span> Chiamata video con i medici
+            <li className="flex items-center gap-2 text-lg font-semibold text-[#b85eff]">
+              <span className="text-pink-500 text-lg">★</span> Chiamata video con i medici
             </li>
-            <li className="flex items-center gap-2 text-xl font-semibold text-[#b85eff]">
-              <span className="text-pink-500 text-2xl">★</span> Trucchi giornalieri per il tuo corpo
+            <li className="flex items-center gap-2 text-lg font-semibold text-[#b85eff]">
+              <span className="text-pink-500 text-lg">★</span> Trucchi giornalieri per il tuo corpo
             </li>
           </ul>
 

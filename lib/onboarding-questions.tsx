@@ -85,7 +85,7 @@ export const emotionalQuestions: EmotionalQuestion[] = [
   {
     id: "current_body_type",
     title: "Quale descrive meglio il tuo corpo?",
-    subtitle: "Sii onesto per risultati migliori",
+    subtitle: "Sii onesta per darti risultati migliori",
     type: "single-choice",
     options: [
       {
@@ -138,7 +138,7 @@ export const emotionalQuestions: EmotionalQuestion[] = [
   {
     id: "height",
     title: "Qual è la tua altezza?",
-    subtitle: "Serve per calcolare il tuo BMI",
+    subtitle: "Serve per calcolare il tuo indice massa corporea",
     type: "input",
     inputType: "number",
     placeholder: "es. 165",
@@ -159,7 +159,7 @@ export const emotionalQuestions: EmotionalQuestion[] = [
   },
   {
     id: "current_bmi_analysis",
-    title: "Analisi del tuo BMI attuale",
+    title: "Analisi del tuo indice massa corporea attuale",
     type: "custom-screen",
     customScreenType: "current-bmi",
     options: [],
@@ -177,7 +177,7 @@ export const emotionalQuestions: EmotionalQuestion[] = [
   },
   {
     id: "target_bmi_analysis",
-    title: "Analisi del BMI obiettivo",
+    title: "Analisi del indice massa corporea obiettivo",
     type: "custom-screen",
     customScreenType: "target-bmi",
     options: [],

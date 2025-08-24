@@ -62,7 +62,7 @@ export default function SalesPage() {
   const CTA = () => (
     <div className="my-6">
       <button className="w-full bg-blue-600 text-white text-2xl font-extralight py-4 shadow-md">
-        Click to get started - 3.99/month
+        Click to get started - 3,90/month
         <p className="text-center text-sm mt-2 font-extralight">
         Total annual cost: $47
       </p>

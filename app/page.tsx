@@ -6,6 +6,7 @@ import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Heart, Play } from "lucide-react"
 import Image from "next/image"
+import ConsentNotice from "@/components/agree"
 
 export default function Sales() {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -75,6 +76,7 @@ export default function Sales() {
             Inizia la tua trasformazione
           </Button>
         </div>
+        <ConsentNotice />
       </div>
     </div>
   )

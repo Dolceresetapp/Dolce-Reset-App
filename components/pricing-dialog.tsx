@@ -96,8 +96,8 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
 
   <div className="flex flex-col items-center">
     <div className="flex items-end space-x-2">
-      <span className="text-3xl font-bold text-gray-800">€3.99</span>
-      <span className="text-gray-600 text-lg">/mo</span>
+      <span className="text-3xl font-bold text-gray-800">€3,90</span>
+      <span className="text-gray-600 text-lg">/mese</span>
     </div>
     <p className="text-sm text-gray-600 mt-1">
       Pagato annuo a €49
