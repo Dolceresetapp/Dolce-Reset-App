@@ -1,62 +1,18 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { ArrowLeft } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
 import Image from "next/image"
 import Header from "@/components/header"
-
-// Exercise categories JSON data
-const exerciseCategories = [
-  {
-    id: "muscle-toning",
-    title: "Tonificazione Muscolare",
-    image: "/icons/1.png",
-    color: "bg-[#fee5f2]",
-    borderColor: "border-pink-200",
-  },
-  {
-    id: "joint-pain",
-    title: "Dolore Articolare",
-    image: "/icons/2.png",
-    color: "bg-[#fee5f2]",
-    borderColor: "border-blue-200",
-  },
-  {
-    id: "stress-relief",
-    title: "Rilassamento",
-    image: "/icons/3.png",
-    color: "bg-[#fee5f2]",
-    borderColor: "border-green-200",
-  },
-  {
-    id: "fat-burning",
-    title: "Brucia il Grasso",
-    image: "/icons/4.png",
-    color: "bg-[#fee5f2]",
-    borderColor: "border-orange-200",
-    featured: true,
-  },
-  {
-    id: "yoga-chair",
-    title: "Yoga Sedia",
-    image: "/icons/5.png",
-    color: "bg-[#fee5f2]",
-    borderColor: "border-purple-200",
-  },
-  {
-    id: "pilates-principianti",
-    title: "Pilates Principianti",
-    image: "/icons/6.png",
-    color: "bg-[#fee5f2]",
-    borderColor: "border-indigo-200",
-  },
-]
+import exerciseData from "@/data/exercises.json"
 
 export default function FeaturesPage() {
   const router = useRouter()
+
+  const exerciseCategories = Object.entries(exerciseData.categories).map(([id, category]) => ({
+    id,
+    ...category,
+  }))
 
   const handleCategoryClick = (categoryId: string) => {
     router.push(`/exercises/${categoryId}`)
@@ -65,7 +21,7 @@ export default function FeaturesPage() {
   return (
     <div className="app-container bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 min-h-screen pb-20">
       {/* Header */}
-      <Header/>
+      <Header />
 
       {/* Categories Grid */}
       <div className="p-6">
@@ -77,9 +33,7 @@ export default function FeaturesPage() {
               onClick={() => handleCategoryClick(category.id)}
             >
               <div className="p-4">
-                <div
-                  className={`bg-white rounded-2xl p-4 mb-3 flex items-center justify-center h-24`}
-                >
+                <div className={`bg-white rounded-2xl p-4 mb-3 flex items-center justify-center h-24`}>
                   <Image
                     src={category.image || "/placeholder.svg"}
                     alt={category.title}

@@ -1,0 +1,240 @@
+{
+    "categories": {
+      "muscle-toning": {
+        "title": "Tonificazione Muscolare",
+        "image": "/icons/1.png",
+        "color": "bg-[#fee5f2]",
+        "borderColor": "border-pink-200",
+        "levels": {
+          "beginner": {
+            "title": "Principiante",
+            "videos": [
+              {
+                "id": 1,
+                "title": "Tonificazione Base Braccia",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/1111333407",
+                "duration": "12 min"
+              },
+              {
+                "id": 2,
+                "title": "Tonificazione Gambe Dolce",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456790",
+                "duration": "15 min"
+              }
+            ]
+          },
+          "intermediate": {
+            "title": "Intermedio",
+            "videos": [
+              {
+                "id": 3,
+                "title": "Tonificazione Avanzata",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456791",
+                "duration": "18 min"
+              }
+            ]
+          }
+        }
+      },
+      "joint-pain": {
+        "title": "Dolore Articolare",
+        "image": "/icons/2.png",
+        "color": "bg-[#fee5f2]",
+        "borderColor": "border-blue-200",
+        "levels": {
+          "beginner": {
+            "title": "Principiante",
+            "videos": [
+              {
+                "id": 4,
+                "title": "Sollievo Articolazioni",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456792",
+                "duration": "14 min"
+              },
+              {
+                "id": 5,
+                "title": "Mobilità Dolce",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456793",
+                "duration": "16 min"
+              }
+            ]
+          },
+          "intermediate": {
+            "title": "Intermedio",
+            "videos": [
+              {
+                "id": 6,
+                "title": "Mobilità Avanzata",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456794",
+                "duration": "20 min"
+              }
+            ]
+          }
+        }
+      },
+      "stress-relief": {
+        "title": "Rilassamento",
+        "image": "/icons/3.png",
+        "color": "bg-[#fee5f2]",
+        "borderColor": "border-green-200",
+        "levels": {
+          "beginner": {
+            "title": "Principiante",
+            "videos": [
+              {
+                "id": 7,
+                "title": "Rilassamento Profondo",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456795",
+                "duration": "12 min"
+              },
+              {
+                "id": 8,
+                "title": "Meditazione Guidata",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456796",
+                "duration": "18 min"
+              }
+            ]
+          },
+          "intermediate": {
+            "title": "Intermedio",
+            "videos": [
+              {
+                "id": 9,
+                "title": "Rilassamento Avanzato",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456797",
+                "duration": "25 min"
+              }
+            ]
+          }
+        }
+      },
+      "fat-burning": {
+        "title": "Brucia il Grasso",
+        "image": "/icons/4.png",
+        "color": "bg-[#fee5f2]",
+        "borderColor": "border-orange-200",
+        "featured": true,
+        "levels": {
+          "beginner": {
+            "title": "Principiante",
+            "videos": [
+              {
+                "id": 10,
+                "title": "Cardio Dolce",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456798",
+                "duration": "15 min"
+              },
+              {
+                "id": 11,
+                "title": "Brucia Grassi Base",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456799",
+                "duration": "20 min"
+              }
+            ]
+          },
+          "intermediate": {
+            "title": "Intermedio",
+            "videos": [
+              {
+                "id": 12,
+                "title": "Cardio Intenso",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456800",
+                "duration": "30 min"
+              }
+            ]
+          }
+        }
+      },
+      "yoga-chair": {
+        "title": "Yoga Sedia",
+        "image": "/icons/5.png",
+        "color": "bg-[#fee5f2]",
+        "borderColor": "border-purple-200",
+        "levels": {
+          "beginner": {
+            "title": "Principiante",
+            "videos": [
+              {
+                "id": 13,
+                "title": "Yoga Sedia Base",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456801",
+                "duration": "12 min"
+              },
+              {
+                "id": 14,
+                "title": "Stretching su Sedia",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456802",
+                "duration": "16 min"
+              }
+            ]
+          },
+          "intermediate": {
+            "title": "Intermedio",
+            "videos": [
+              {
+                "id": 15,
+                "title": "Yoga Sedia Avanzato",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456803",
+                "duration": "22 min"
+              }
+            ]
+          }
+        }
+      },
+      "pilates-principianti": {
+        "title": "Pilates Principianti",
+        "image": "/icons/6.png",
+        "color": "bg-[#fee5f2]",
+        "borderColor": "border-indigo-200",
+        "levels": {
+          "beginner": {
+            "title": "Principiante",
+            "videos": [
+              {
+                "id": 16,
+                "title": "Pilates Base",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456804",
+                "duration": "14 min"
+              },
+              {
+                "id": 17,
+                "title": "Core Pilates",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456805",
+                "duration": "18 min"
+              }
+            ]
+          },
+          "intermediate": {
+            "title": "Intermedio",
+            "videos": [
+              {
+                "id": 18,
+                "title": "Pilates Intermedio",
+                "thumbnail": "/icons/7.png",
+                "videoUrl": "https://player.vimeo.com/video/123456806",
+                "duration": "25 min"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+  

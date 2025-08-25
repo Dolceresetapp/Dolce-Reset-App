@@ -1,75 +1,35 @@
 "use client"
 
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { ArrowLeft, Play } from "lucide-react"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { ArrowLeft, Play, X } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
 import Image from "next/image"
-
-// Exercise videos JSON data
-const exerciseVideos = [
-  {
-    id: 1,
-    title: "Morning Energy Boost",
-    thumbnail: "/icons/7.png",
-    videoUrl: "/demo-video.mp4",
-    duration: "12 min",
-  },
-  {
-    id: 2,
-    title: "Gentle Strength Builder",
-    thumbnail: "/icons/7.png",
-    videoUrl: "/demo-video.mp4",
-    duration: "15 min",
-  },
-  {
-    id: 3,
-    title: "Flexibility Flow",
-    thumbnail: "/icons/7.png",
-    videoUrl: "/demo-video.mp4",
-    duration: "18 min",
-  },
-  {
-    id: 4,
-    title: "Core Confidence",
-    thumbnail: "/icons/7.png",
-    videoUrl: "/demo-video.mp4",
-    duration: "20 min",
-  },
-  {
-    id: 5,
-    title: "Balance & Stability",
-    thumbnail: "/icons/7.png",
-    videoUrl: "/demo-video.mp4",
-    duration: "14 min",
-  },
-  {
-    id: 6,
-    title: "Relaxation Routine",
-    thumbnail: "/icons/7.png",
-    videoUrl: "/demo-video.mp4",
-    duration: "16 min",
-  },
-]
+import exerciseData from "@/data/exercises.json"
 
 export default function ExerciseVideosPage({ params }: { params: { category: string; level: string } }) {
   const router = useRouter()
+  const [selectedVideo, setSelectedVideo] = useState<any>(null)
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
+
+  const categoryData = exerciseData.categories[params.category as keyof typeof exerciseData.categories]
+  const levelData = categoryData?.levels[params.level as keyof typeof categoryData.levels]
+  const videos = levelData?.videos || []
 
   const getCategoryTitle = (category: string) => {
-    const titles = {
-      "muscle-toning": "Tonificazione Muscolare",
-      "joint-pain": "Dolore Articolare",
-      "stress-relief": "Rilassamento",
-      "fat-burning": "Scellimento Grasso",
-      "yoga-chair": "Yoga Sedia",
-      "pilates-principianti": "Pilates Principianti",
-    }
-    return titles[category as keyof typeof titles] || "Exercise Category"
+    return categoryData?.title || "Exercise Category"
   }
 
-  const handleVideoClick = (video: (typeof exerciseVideos)[0]) => {
-    router.push(`/exercise/${video.id}`)
+  const handleVideoClick = (video: any) => {
+    setSelectedVideo(video)
+    setIsVideoModalOpen(true)
+  }
+
+  const closeVideoModal = () => {
+    setIsVideoModalOpen(false)
+    setSelectedVideo(null)
   }
 
   return (
@@ -87,7 +47,7 @@ export default function ExerciseVideosPage({ params }: { params: { category: str
           </Button>
           <div className="text-center">
             <h1 className="text-lg font-bold text-purple-600">{getCategoryTitle(params.category)}</h1>
-            <p className="text-sm text-gray-600 capitalize">{params.level} Level</p>
+            <p className="text-sm text-gray-600 capitalize">{levelData?.title} Level</p>
           </div>
           <div className="w-12" />
         </div>
@@ -96,7 +56,7 @@ export default function ExerciseVideosPage({ params }: { params: { category: str
       {/* Videos Grid */}
       <div className="p-6">
         <div className="grid grid-cols-2 gap-4">
-          {exerciseVideos.map((video, index) => (
+          {videos.map((video: any, index: number) => (
             <div
               key={video.id}
               className="cursor-pointer rounded-xl mt-5 bg-pink-100"
@@ -117,9 +77,6 @@ export default function ExerciseVideosPage({ params }: { params: { category: str
                       <Play className="w-6 h-6 text-purple-500 ml-1" />
                     </div>
                   </div>
-                  {/* <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
-                    {video.duration}
-                  </div> */}
                 </div>
                 <div className="pb-3">
                   <h3 className="text-md font-semibold text-gray-800 text-center leading-tight">{video.title}</h3>
@@ -129,6 +86,35 @@ export default function ExerciseVideosPage({ params }: { params: { category: str
           ))}
         </div>
       </div>
+
+      <Dialog open={isVideoModalOpen} onOpenChange={setIsVideoModalOpen}>
+        <DialogContent className="bg-black border-0 p-0 max-w-4xl w-full aspect-video">
+          <div className="relative w-full h-[60vh]">
+            {/* Close Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={closeVideoModal}
+              className="absolute top-4 right-4 z-50 h-12 w-12 rounded-full bg-white/20 hover:bg-white/30 text-white"
+            >
+              <X className="h-6 w-6" />
+            </Button>
+
+            {/* Video Player */}
+            {selectedVideo && (
+              <iframe
+                src={selectedVideo.videoUrl}
+                className="w-full h-full"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title={selectedVideo.title}
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
 
       <BottomNavigation />
     </div>

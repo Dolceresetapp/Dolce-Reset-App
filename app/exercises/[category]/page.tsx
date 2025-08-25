@@ -3,11 +3,10 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { ArrowLeft } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
+import exerciseData from "@/data/exercises.json"
 
-// Exercise levels JSON data
 const exerciseLevels = [
   {
     id: "beginner",
@@ -26,15 +25,8 @@ export default function ExerciseLevelPage({ params }: { params: { category: stri
   const [selectedLevel, setSelectedLevel] = useState<string>("")
 
   const getCategoryTitle = (category: string) => {
-    const titles = {
-      "muscle-toning": "Tonificazione Muscolare",
-      "joint-pain": "Dolore Articolare",
-      "stress-relief": "Rilassamento",
-      "fat-burning": "Scellimento Grasso",
-      "yoga-chair": "Yoga Sedia",
-      "pilates-principianti": "Pilates Principianti",
-    }
-    return titles[category as keyof typeof titles] || "Exercise Category"
+    const categoryData = exerciseData.categories[category as keyof typeof exerciseData.categories]
+    return categoryData?.title || "Exercise Category"
   }
 
   const handleContinue = () => {
@@ -88,7 +80,6 @@ export default function ExerciseLevelPage({ params }: { params: { category: stri
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold">{level.title}</h3>
-                    {/* <p className="text-sm">{level.description}</p> */}
                   </div>
                 </div>
               </div>
