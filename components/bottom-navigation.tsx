@@ -12,25 +12,25 @@ export function BottomNavigation() {
     
     {
       id: "exercises",
-      label: "Exercises",
+      label: "Esercizi",
       icon: Dumbbell,
       path: "/features",
     },
     {
       id: "doctor",
-      label: "Doctor",
+      label: "Dottoressa",
       icon: Stethoscope,
       path: "/ai-doctor",
     },
     {
       id: "chef",
-      label: "Ai Chef",
+      label: "Ai capocuoco",
       icon: CookingPot,
       path: "/ai-chef",
     },
     {
       id: "community",
-      label: "Community",
+      label: "Comunità",
       icon: Users,
       path: "/community",
     },

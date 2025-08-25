@@ -110,7 +110,7 @@ export default function AIDoctorPage() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <h2 className="text-2xl text-pink-500 font-bold mb-2">Parla con la Doctor</h2>
+            <h2 className="text-2xl text-pink-500 font-bold mb-2">Parla con la Dottoressa</h2>
           </div>
         </div>
       </div>
