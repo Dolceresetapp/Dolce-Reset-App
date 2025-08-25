@@ -98,9 +98,9 @@ export default function AIDoctorPage() {
     <Header/>
 
       {/* Doctor Image Card */}
-      <div className="p-4">
+      <div className="p-0">
         <div className="">
-          <CardContent className="p-6 text-center">
+          <div className="p-4 text-center">
             <div className="w-full h-[200px] mx-auto mb-4 rounded-2xl overflow-hidden">
               <Image
                 src="/custom/doc.png"
@@ -111,27 +111,27 @@ export default function AIDoctorPage() {
               />
             </div>
             <h2 className="text-2xl text-pink-500 font-bold mb-2">Parla con la Doctor</h2>
-          </CardContent>
+          </div>
         </div>
       </div>
 
       {/* Chat Messages */}
       <div className="grid grid-col-2 p-4 pb-32">
       
-  {messages.length === 0 && (
-    <div className="grid grid-cols-2 gap-4 text-center">
-      {preBuiltQuestions.map((question, index) => (
-        <div
-          key={index}
-          onClick={() => handleQuestionClick(question)}
-          className="w-full h-auto p-4 bg-[#ae47ff] text-center font-medium text-sm text-white rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 justify-start"
-          style={{ animationDelay: `${index * 0.1}s` }}
-        >
-          {question}
+      {messages.length === 0 && (
+        <div className="grid grid-cols-2 gap-4 text-center">
+          {preBuiltQuestions.map((question, index) => (
+            <div
+              key={index}
+              onClick={() => handleQuestionClick(question)}
+              className="w-full h-auto p-2 bg-[#ae47ff] text-center font-medium text-xs text-white rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 justify-start"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              {question}
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  )}
+      )}
 
 
 
@@ -141,14 +141,25 @@ export default function AIDoctorPage() {
               className={`flex items-start space-x-3 max-w-[85%] ${message.isUser ? "flex-row-reverse space-x-reverse" : ""}`}
             >
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden ${
                   message.isUser
                     ? "bg-gradient-to-br from-pink-400 to-rose-400"
                     : "bg-gradient-to-br from-purple-400 to-pink-400"
                 }`}
               >
-                {message.isUser ? <User className="w-5 h-5 text-white" /> : <Bot className="w-5 h-5 text-white" />}
+                {message.isUser ? (
+                  <User className="w-5 h-5 text-white" />
+                ) : (
+                  <Image
+                    src="/custom/doc.png"
+                    alt="AI Doctor"
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
+
 
               <div
                 className={`border-0 shadow-lg rounded-3xl ${

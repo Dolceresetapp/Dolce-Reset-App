@@ -5,6 +5,7 @@ import "./globals.css"
 import { ClerkProvider } from "@clerk/nextjs"
 import Script from "next/script"
 import Clarity from '@microsoft/clarity';
+import { itIT } from '@clerk/localizations'
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -13,8 +14,8 @@ const projectId = "syc8m8tzt1"
 Clarity.init(projectId);
 
 export const metadata: Metadata = {
-  title: "Dolice Reset - Fitness for Life",
-  description: "Gentle fitness exercises designed specifically for senior women",
+  title: "Dolce Reset - Fitness per la vita",
+  description: "Esercizi di fitness per donne adulte",
   manifest: "/manifest.json",
   themeColor: "#ec4899",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
@@ -30,8 +31,9 @@ export default function RootLayout({
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
       afterSignInUrl="/features"
       afterSignUpUrl="/features"
+      localization={itIT}
     >
-      <html lang="en">
+      <html lang="fr">
         <head>
           {/* Google Tag Manager */}
           <Script id="gtm-script" strategy="afterInteractive">

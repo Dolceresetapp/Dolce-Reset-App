@@ -44,27 +44,27 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
   const getBMICategory = (bmi: number) => {
     if (bmi < 18.5)
       return {
-        category: "Underweight",
+        category: "Sottopeso",
         color: "text-blue-600",
         message: "Hai bisogno di guadagnare qualche peso sano!",
         status: "needs improvement",
       }
     if (bmi < 25)
       return {
-        category: "Normal",
+        category: "Normale",
         color: "text-green-600",
         message: "Il tuo BMI è nella gamma sana!",
         status: "good",
       }
     if (bmi < 30)
       return {
-        category: "Overweight",
+        category: "Sottopeso",
         color: "text-orange-600",
         message: "Puoi beneficiare da una perdita di peso.",
         status: "needs improvement",
       }
     return {
-      category: "Obese",
+      category: "Obeso",
       color: "text-red-600",
       message: "È importante lavorare sulla gestione del peso.",
       status: "needs improvement",

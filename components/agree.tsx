@@ -10,7 +10,7 @@ export default function ConsentNotice() {
         Terms
       </Link>
       ,{" "}
-      <Link href="/privacy" className="underline hover:text-primary">
+      <Link href="/policy" className="underline hover:text-primary">
         Privacy Policy
       </Link>{" "}
       and{" "}

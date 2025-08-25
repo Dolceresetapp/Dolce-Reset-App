@@ -263,28 +263,28 @@ export const emotionalQuestions: EmotionalQuestion[] = [
   },
   {
     id: "body_satisfaction",
-    title: "Negli ultimi 6 mesi, quanto sei stato soddisfatto del tuo corpo?",
+    title: "Negli ultimi 6 mesi, quanto sei stato soddisfatta del tuo corpo?",
     subtitle: "Sii onesto con i tuoi sentimenti",
     type: "single-choice",
     options: [
       {
         id: "very",
-        label: "Molto soddisfatto",
+        label: "Molto soddisfatta",
         emoji: "😍",
       },
       {
         id: "somewhat",
-        label: "Abbastanza soddisfatto",
+        label: "Abbastanza soddisfatta",
         emoji: "🙂",
       },
       {
         id: "little",
-        label: "Poco soddisfatto",
+        label: "Poco soddisfatta",
         emoji: "😐",
       },
       {
         id: "not_at_all",
-        label: "Per nulla soddisfatto",
+        label: "Per nulla soddisfatta",
         emoji: "😔",
       },
     ],

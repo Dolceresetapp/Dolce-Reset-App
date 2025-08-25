@@ -103,18 +103,18 @@ export function EmotionalQuestion({
     const difference = Math.abs(currentBMI - targetBMI)
     if (difference <= 2)
       return {
-        level: "Easily achievable",
+        level: "Facilmente realizzabile",
         color: "text-green-600",
         message: "Questo è un obiettivo realistico e salutare! 🎯",
       }
     if (difference <= 5)
       return {
-        level: "Achievable",
+        level: "Facilmente raggiungibile",
         color: "text-orange-600",
         message: "Questo è un obiettivo raggiungibile con dedizione! 💪",
       }
     return {
-      level: "Challenging",
+      level: "Difficilemente raggiungibile",
       color: "text-red-600",
       message: "Questo richiede dedizione, ma è raggiungibile con tempo! 🔥",
     }
@@ -416,7 +416,7 @@ export function EmotionalQuestion({
           </Button>
         </div>
       )}
-      <ConsentNotice />
+      {/* <ConsentNotice /> */}
       <br />
     </div>
   )

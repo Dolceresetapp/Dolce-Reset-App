@@ -96,9 +96,9 @@ export default function AIChefPage() {
     <Header/>
 
       {/* Chef Image Card */}
-      <div className="p-4">
+      <div className="p-2">
         <div className="">
-          <CardContent className="p-6 text-center">
+          <CardContent className="p-3 text-center">
             <div className="w-full h-[200px] mx-auto mb-4 rounded-2xl overflow-hidden">
               <Image
                 src="/custom/chef.png"
@@ -116,12 +116,12 @@ export default function AIChefPage() {
       {/* Chat Messages */}
       <div className="flex-1 p-4 pb-32 space-y-4">
         {messages.length === 0 && (
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
             {preBuiltQuestions.map((question, index) => (
               <div
                 key={index}
                 onClick={() => handleQuestionClick(question)}
-                className="w-full h-auto text-sm p-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 text-left justify-start"
+                className="w-full h-auto text-xs p-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 text-left justify-start"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {question}
@@ -135,15 +135,23 @@ export default function AIChefPage() {
             <div
               className={`flex items-start space-x-3 max-w-[85%] ${message.isUser ? "flex-row-reverse space-x-reverse" : ""}`}
             >
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  message.isUser
-                    ? "bg-gradient-to-br from-pink-400 to-rose-400"
-                    : "bg-gradient-to-br from-purple-400 to-pink-400"
-                }`}
-              >
-                {message.isUser ? <User className="w-5 h-5 text-white" /> : <Bot className="w-5 h-5 text-white" />}
-              </div>
+          <div
+            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden`}
+          >
+            {message.isUser ? (
+              <User className="w-8 h-8 text-white bg-gradient-to-br from-pink-400 to-rose-400 rounded-full p-1" />
+            ) : (
+              <Image
+                src="/custom/chef.png"
+                alt="AI Doctor"
+                width={40}
+                height={40}
+                quality={50}
+                className="w-full h-full object-cover rounded-full"
+              />
+            )}
+          </div>
+
 
               <div 
                 className={`border-0 shadow-lg rounded-3xl ${
@@ -167,7 +175,14 @@ export default function AIChefPage() {
           <div className="flex justify-start animate-fade-in">
             <div className="flex items-start space-x-3 max-w-[85%]">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
-                <Bot className="w-5 h-5 text-white" />
+                <Image
+                  src="/custom/chef.png"
+                  alt="AI Doctor"
+                  width={40}
+                  height={40}
+                  quality={50}
+                  className="w-full h-full object-cover rounded-full"
+                />
               </div>
               <div className="bg-white/90 border border-purple-100 shadow-lg rounded-3xl">
                 <div className="p-4">
