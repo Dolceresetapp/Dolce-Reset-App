@@ -92,10 +92,10 @@ export function EmotionalQuestion({
 
   const getBMIStatus = (bmi: number) => {
     if (bmi < 18.5)
-      return { status: "Underweight", color: "text-blue-600", message: "Potresti beneficiare da un aumento di peso sano." }
-    if (bmi < 25) return { status: "Normal", color: "text-green-600", message: "Il tuo BMI è nella gamma sana! 👍" }
+      return { status: "Sottopeso", color: "text-blue-600", message: "Potresti beneficiare da un aumento di peso sano." }
+    if (bmi < 25) return { status: "Normale", color: "text-green-600", message: "Il tuo BMI è nella gamma sana! 👍" }
     if (bmi < 30)
-      return { status: "Overweight", color: "text-orange-600", message: "Potresti beneficiare da una perdita di peso." }
+      return { status: "Sovrappeso", color: "text-orange-600", message: "Potresti beneficiare da una perdita di peso." }
     return { status: "Obese", color: "text-red-600", message: "È importante lavorare sulla gestione del peso." }
   }
 
@@ -194,6 +194,10 @@ export function EmotionalQuestion({
   }
 
   if (question.type === "custom-screen") {
+    return <CustomScreen type={question.customScreenType || ""} answers={answers} onContinue={onNext} />
+  }
+
+  if (question.customScreenType === "hurray-screen") {
     return <CustomScreen type={question.customScreenType || ""} answers={answers} onContinue={onNext} />
   }
 

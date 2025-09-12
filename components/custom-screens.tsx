@@ -86,10 +86,10 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
   if (type === "custom-output") {
     return (
       <div className="app-container min-h-screen flex flex-col">
-        
+
         {/* Centered Content */}
         <div className="flex-1 flex flex-col items-center justify-center px-4 text-center">
-          
+
           {/* Text + Image as One Block */}
           <div className="flex flex-col items-center gap-4 max-w-md">
             {/* <h1 className="text-lg font-bold text-gray-800 leading-tight animate-fade-in">
@@ -104,7 +104,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
             />
           </div>
         </div>
-  
+
         {/* Fixed Bottom Button */}
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
           <Button
@@ -118,7 +118,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
       </div>
     )
   }
-  
+
 
   // if (type === "current-bmi") {
   //   // Get values with proper validation - try localStorage as fallback
@@ -267,9 +267,8 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
                     bersaglio: {targetBMIInfo.category}
                   </div>
                   <div
-                    className={`text-sm p-3 rounded-lg mb-3 ${
-                      targetBMIInfo.status === "good" ? "bg-green-50 text-green-700" : "bg-orange-50 text-orange-700"
-                    }`}
+                    className={`text-sm p-3 rounded-lg mb-3 ${targetBMIInfo.status === "good" ? "bg-green-50 text-green-700" : "bg-orange-50 text-orange-700"
+                      }`}
                   >
                     {targetBMIInfo.message}
                   </div>
@@ -278,13 +277,12 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
                 <div className="border-t pt-4">
                   <div className={`text-lg font-semibold mb-2 ${difficulty.color}`}>Difficoltà: {difficulty.level}</div>
                   <div
-                    className={`text-sm p-3 rounded-lg ${
-                      difficulty.level === "Easy"
+                    className={`text-sm p-3 rounded-lg ${difficulty.level === "Easy"
                         ? "bg-green-50 text-green-700"
                         : difficulty.level === "Moderate"
                           ? "bg-orange-50 text-orange-700"
                           : "bg-red-50 text-red-700"
-                    }`}
+                      }`}
                   >
                     {difficulty.message}
                   </div>
@@ -310,7 +308,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
   if (type === "gift-box") {
     return (
       <div className="app-container min-h-screen flex flex-col">
-        
+
         {/* Centered Text + Image */}
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
           <div className="flex flex-col items-center gap-6 max-w-md">
@@ -326,7 +324,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
             />
           </div>
         </div>
-  
+
         {/* Fixed Bottom Button */}
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
           <Button
@@ -340,16 +338,54 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
       </div>
     )
   }
-  
+  if (type === "hurray-screen") {
+    return (
+      <div className="app-container min-h-screen flex flex-col">
+
+        {/* Centered Text + Image */}
+        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+          <div className="flex flex-col items-center gap-6 max-w-md">
+            {/* <h1 className="text-xl font-bold text-gray-800">
+              Wait until the end — there’s a special gift for you 🎁
+            </h1> */}
+            <Image
+              src="/custom/hurray.png"
+              alt="Hurray"
+              width={300}
+              height={300}
+              className="w-full h-full object-contain"
+            />
+          </div>
+        </div>
+
+        {/* Fixed Bottom Button */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
+          <Button
+            onClick={onContinue}
+            className="w-full h-auto px-4 py-3 flex flex-col justify-center items-center bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-3xl shadow-xl transition-all duration-300 hover:scale-105 text-center"
+          >
+            <span className="text-lg font-semibold">
+              Grazie per essere sinceri, ha senso!
+            </span>
+            <span className="text-sm sm:text-base md:text-lg font-light">
+                Clicca qui per continuare
+              </span>
+          </Button>
+
+        </div>
+      </div>
+    )
+  }
+
 
   if (type === "bmi-analysis") {
     return (
       <div className="app-container min-h-screen flex flex-col">
-        
+
         {/* Centered Text + Image */}
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
           <div className="flex flex-col items-center gap-6 max-w-md">
-           
+
             <Image
               src="/custom/graph.png"
               alt="BMI Graph"
@@ -359,7 +395,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
             />
           </div>
         </div>
-  
+
         {/* Fixed Bottom Button */}
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-purple-100 p-4 shadow-lg">
           <Button
@@ -373,7 +409,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
       </div>
     )
   }
-  
+
 
   if (type === "doctor-screen") {
     return (

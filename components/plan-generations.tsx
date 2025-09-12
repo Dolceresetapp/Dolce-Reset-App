@@ -142,41 +142,41 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
       <>
         <div className="app-container bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 min-h-screen pb-20">
           <div className="p-4 pt-6">
-         
+
 
             {/* Custom Plan Chart */}
             <Card className="mb-4  border-0 shadow-xl animate-slide-up">
               <CardContent className="p-6">
-              <div className="text-center mb-4">
-                <h2 className="text-xl font-bold mb-2">Il tuo piano personalizzato di 30 giorni è pronto!</h2>
-                <p className="text-sm opacity-90">Scientificamente progettato per i tuoi obiettivi</p>
-              </div>
+                <div className="text-center mb-4">
+                  <h2 className="text-xl font-bold mb-2">Il tuo piano personalizzato di 30 giorni è pronto!</h2>
+                  <p className="text-sm opacity-90">Scientificamente progettato per i tuoi obiettivi</p>
+                </div>
 
-              {/* Visualizzazione del grafico dei progressi */}
-              <div className="bg-white/20 rounded-2xl p-4 mb-4">
-                <div className="flex justify-between items-center mb-3">
-                  <div className="text-center">
-                    <p className="text-xs opacity-90">Attuale</p>
-                    <p className="text-lg font-bold">{currentWeight}kg</p>
-                    <p className="text-xs opacity-75">indice massa corporea {currentBMI}</p>
-                  </div>
-                  <div className="flex-1 mx-4">
-                    <div className="relative">
-                      <div className="w-full bg-white/30 rounded-full h-3">
-                        <div className="bg-gradient-to-r from-yellow-400 to-green-400 h-3 rounded-full w-full animate-pulse"></div>
-                      </div>
-                      <div className="text-center mt-2">
-                        <p className="text-xs font-bold">Trasformazione di 30 giorni</p>
+                {/* Visualizzazione del grafico dei progressi */}
+                <div className="bg-white/20 rounded-2xl p-4 mb-4">
+                  <div className="flex justify-between items-center mb-3">
+                    <div className="text-center">
+                      <p className="text-xs opacity-90">Attuale</p>
+                      <p className="text-lg font-bold">{currentWeight}kg</p>
+                      <p className="text-xs opacity-75">indice massa corporea {currentBMI}</p>
+                    </div>
+                    <div className="flex-1 mx-4">
+                      <div className="relative">
+                        <div className="w-full bg-white/30 rounded-full h-3">
+                          <div className="bg-gradient-to-r from-yellow-400 to-green-400 h-3 rounded-full w-full animate-pulse"></div>
+                        </div>
+                        <div className="text-center mt-2">
+                          <p className="text-xs font-bold">Trasformazione di 30 giorni</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-xs opacity-90">Obiettivo</p>
-                    <p className="text-lg font-bold">{targetWeight}kg</p>
-                    <p className="text-xs opacity-75">indice massa corporea {(Number.parseFloat(currentBMI) - 1.5).toFixed(1)}</p>
+                    <div className="text-center">
+                      <p className="text-xs opacity-90">Obiettivo</p>
+                      <p className="text-lg font-bold">{targetWeight}kg</p>
+                      <p className="text-xs opacity-75">indice massa corporea {(Number.parseFloat(currentBMI) - 1.5).toFixed(1)}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
 
                 {/* Key Metrics */}
@@ -198,23 +198,22 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
               </CardContent>
             </Card>
 
-            
+
 
             <AutoSlider />
-            
+
           </div>
 
           {/* Fixed Bottom CTA Button */}
           <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-pink-100 p-4 shadow-lg">
             <Button
               onClick={handleContinue}
-              className="w-full h-18 text-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-light rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up"
+              className="w-full h-18 text-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-light rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 animate-slide-up leading-snug text-center whitespace-normal px-4"
               style={{ animationDelay: "0.6s" }}
             >
-              <div className="flex flex-col items-center">
-                <span>Inizia Ora Gratis</span>
-              </div>
+              Inizia il piano con 3 giorni gratis<br />vedi se ti piace
             </Button>
+
           </div>
         </div>
       </>
@@ -226,8 +225,8 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
       <div className="p-4 pt-8">
         {/* Header */}
         <div className="text-center mb-6 animate-fade-in">
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Creando il tuo</h1>
-<h2 className="text-2xl font-bold text-pink-600 mb-4">Piano personalizzato...</h2>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Creando il tuo</h1>
+          <h2 className="text-2xl font-bold text-pink-600 mb-4">Piano personalizzato...</h2>
 
         </div>
 
@@ -248,13 +247,12 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
-                  className={`h-2 rounded-full transition-all duration-1000 ${
-                    index < currentStep
-                      ? "bg-pink-500 w-full"
-                      : index === currentStep
-                        ? "bg-pink-500"
-                        : "bg-gray-200 w-0"
-                  }`}
+                  className={`h-2 rounded-full transition-all duration-1000 ${index < currentStep
+                    ? "bg-pink-500 w-full"
+                    : index === currentStep
+                      ? "bg-pink-500"
+                      : "bg-gray-200 w-0"
+                    }`}
                   style={{
                     width: index < currentStep ? "100%" : index === currentStep ? `${step.percentage}%` : "0%",
                   }}
@@ -264,33 +262,33 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
           ))}
         </div>
 
-    {/* User Avatars */}
-      <div
-        className="flex justify-center mb-4 animate-slide-up"
-        style={{ animationDelay: "0.4s" }}
-      >
-        <div className="flex -space-x-2">
-          {["t1.png", "t2.png", "t3.png", "t4.png", "t5.png"].map((img, i) => (
-            <div
-              key={i}
-              className="w-8 h-8 rounded-full border-2 border-white overflow-hidden flex items-center justify-center"
-            >
-              <img
-                src={`/testimonials/${img}`} // 👈 adjust path if needed
-                alt={`User ${i + 1}`}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))}
+        {/* User Avatars */}
+        <div
+          className="flex justify-center mb-4 animate-slide-up"
+          style={{ animationDelay: "0.4s" }}
+        >
+          <div className="flex -space-x-2">
+            {["t1.png", "t2.png", "t3.png", "t4.png", "t5.png"].map((img, i) => (
+              <div
+                key={i}
+                className="w-8 h-8 rounded-full border-2 border-white overflow-hidden flex items-center justify-center"
+              >
+                <img
+                  src={`/testimonials/${img}`} // 👈 adjust path if needed
+                  alt={`User ${i + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
 
 
         {/* Trusted By */}
         <div className="text-center mb-6 animate-slide-up" style={{ animationDelay: "0.5s" }}>
           <h3 className="text-lg font-bold text-gray-800 mb-2">
-          Affidato da oltre {activeUsers.toLocaleString()} clienti
+            Affidato da oltre {activeUsers.toLocaleString()} clienti
           </h3>
         </div>
 

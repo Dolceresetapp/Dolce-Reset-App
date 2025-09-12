@@ -8,37 +8,53 @@ import LogoMarquee from "./brands";
 export default function SalesPage() {
   // FAQ state
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-
   const faqs = [
     {
-      q: "Is this method suitable if I'm over 45 years old or older?",
-      a: "Yes, this method is specially designed for people over 45, adapting to your body’s natural changes.",
+      q: "✨ Non Servono Pillole Né Integratori",
+      a: "Le Promesse Vanno Bene Finché Non Ti Accorgi Che I Chili Restano Sempre Lì. Con Il Nostro Metodo Basato Su Movimento, Ricette Semplici E Supporto, Dimagrire Diventa Finalmente Reale e Scientificamente Garantito.",
     },
     {
-      q: "Should I follow a diet or exercise every day?",
-      a: "No strict diets or daily intense exercise required — this program is flexible and sustainable.",
+      q: "✨ Troppo Giovane O Troppo Grande Per Questa App?",
+      a: "A 30 Anni Vuoi Tornare A Piacerti Nello Specchio. A 55 Vuoi Sentirti Più Leggera E Sicura. Questa App È Pensata Proprio Per Donne Come Te, Senza Età.",
     },
     {
-      q: "What if I'm not tech-savvy?",
-      a: "Don’t worry! Everything is simple, step-by-step, and easy to follow on mobile.",
+      q: "✨ Perché Non Funzionano Le Altre Soluzioni?",
+      a: "Perché Sono Trucchi Temporanei. Integratori, Digiuni O Mode Ti Fanno Perdere Solo Acqua, Non Grasso. Il Nostro Metodo È Scientifico: Movimento Dolce, Cibo Vero, E Consigli Personalizzati.",
     },
     {
-      q: "What exactly do I get when I sign up?",
-      a: "You’ll get full access to the Sweet program, guides, and exclusive content designed for you.",
+      q: "✨ E Se Non Riesco A Restare Costante?",
+      a: "Non Sei Sola: Ti Guidiamo Giorno Per Giorno Con Allenamenti Facili, Ricette Automatiche E Una Community Che Ti Motiva. Così Restare Costante Diventa Naturale.",
     },
     {
-      q: "Do you need exercise equipment?",
-      a: "Nope! The program works without any equipment — you can start right at home.",
+      q: "✨ Ma Io Non Ho Tempo",
+      a: "Ti Bastano 15 Minuti Al Giorno, Da Casa, Senza Attrezzi. E Inizi A Vedere I Vestiti Che Ti Stanno Meglio Già Dopo Poche Settimane.",
     },
     {
-      q: "Is it also suitable if I have hormonal problems or am undergoing therapy?",
-      a: "Yes, it’s made to complement your body’s needs and can adapt to your situation.",
+      q: "❓ Io Ho Già Provato Mille Soluzioni... Funziona Davvero?",
+      a: "✅ Perché Non Ti Lascia Da Sola: Hai Allenamenti Guidati, Ricette Personalizzate E Una Community Che Ti Sostiene.",
     },
     {
-      q: "Can I cancel at any time?",
-      a: "Absolutely. Cancel anytime with no hidden fees.",
+      q: "❓ Ho Poco Tempo Al Giorno, Ce La Faccio?",
+      a: "✅ Bastano 15 Minuti Al Giorno Da Casa, Senza Attrezzi Né Palestra.",
+    },
+    {
+      q: "❓ E Se Non Riesco A Restare Costante?",
+      a: "✅ La Community Ti Motiva, I Dottori Ti Seguono, E L’App Ti Ricorda Ogni Giorno Cosa Fare.",
+    },
+    {
+      q: "❓ Serve Già Essere Allenata?",
+      a: "✅ No, È Per Principianti: Parti Da Zero E Ti Guida Passo Dopo Passo.",
+    },
+    {
+      q: "❓ Io Non So Cucinare Ricette Fit… Come Faccio?",
+      a: "✅ L’AI Ti Prepara Ricette Facili, Veloci E Con Ingredienti Che Trovi Al Supermercato.",
+    },
+    {
+      q: "❓ Perdo Peso Solo Con La Dieta, Perché Allenarmi?",
+      a: "✅ Perché Senza Movimento Torna Tutto. Qui Combini Allenamenti Brevi E Cibo Sano, Così I Risultati Restano.",
     },
   ];
+
 
   // Helper: render images dynamically (handles png & webp)
   const renderImage = (num: number) => {
@@ -65,10 +81,10 @@ export default function SalesPage() {
       <button className="w-full bg-blue-600 text-white text-2xl font-extralight py-4 shadow-md">
         Click to get started - 3,90/month
         <p className="text-center text-sm mt-2 font-extralight">
-        Total annual cost: $47
-      </p>
+          Total annual cost: $47
+        </p>
       </button>
-     
+
     </div>
   );
 
@@ -83,34 +99,34 @@ export default function SalesPage() {
       {/* <CTA /> */}
       <h2 className="text-2xl font-bold text-center mt-8 mb-4">ECCO COSA DICE CHI HA PROVATO DOLCE RESET</h2>
 
-        {/* Vimeo Videos */}
-        <div style={{ width: "100%", height: "500px" }}>
-          <iframe
-            src="https://player.vimeo.com/video/1111333407?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-            style={{
-              width: "100%",
-              height: "100%",
-              border: "none",
-            }}
-            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-          />
-        </div>
-        <br />
-        <div style={{ width: "100%", height: "500px" }}>
-          <iframe
-            src="https://player.vimeo.com/video/1111321366?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-            style={{
-              width: "100%",
-              height: "100%",
-              border: "none",
-            }}
-            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-          />
-        </div>
+      {/* Vimeo Videos */}
+      <div style={{ width: "100%", height: "500px" }}>
+        <iframe
+          src="https://player.vimeo.com/video/1111333407?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+          style={{
+            width: "100%",
+            height: "100%",
+            border: "none",
+          }}
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+        />
+      </div>
+      <br />
+      <div style={{ width: "100%", height: "500px" }}>
+        <iframe
+          src="https://player.vimeo.com/video/1111321366?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+          style={{
+            width: "100%",
+            height: "100%",
+            border: "none",
+          }}
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+        />
+      </div>
 
 
 
-       {renderImage(13)}
+      {renderImage(13)}
       {/* Images */}
       {renderImage(3)}
       {renderImage(4)}
@@ -132,38 +148,38 @@ export default function SalesPage() {
 
       {/* FAQ Section */}
       <div className="bg-black px-4 py-10">
-  <p className="text-center text-sm tracking-wider text-gray-400">
-    ANCORA INCERTO? ECCO QUI
-  </p>
-  <h2 className="text-2xl text-white font-extrabold text-center mb-4">
-    HAI DOMANDE?
-  </h2>
-  <p className="text-center text-gray-400 mb-6 text-sm">
-    Clicca sulle domande per vedere le risposte. Ma agisci in fretta prima che l'offerta scada!
-  </p>
+        <p className="text-center text-sm tracking-wider text-gray-400">
+          ANCORA INCERTO? ECCO QUI
+        </p>
+        <h2 className="text-2xl text-white font-extrabold text-center mb-4">
+          HAI DOMANDE?
+        </h2>
+        <p className="text-center text-gray-400 mb-6 text-sm">
+          Clicca sulle domande per vedere le risposte. Ma agisci in fretta prima che l'offerta scada!
+        </p>
 
-  <div className="space-y-3">
-    {faqs.map((faq, i) => (
-      <div
-        key={i}
-        className="bg-[#1f1f2e] rounded-lg overflow-hidden"
-      >
-        <button
-          className="w-full flex justify-between items-center px-4 py-3 text-left text-white font-medium"
-          onClick={() => setOpenIndex(openIndex === i ? null : i)}
-        >
-          <span>🔶 {faq.q}</span>
-          <span>{openIndex === i ? "−" : "+"}</span>
-        </button>
-        {openIndex === i && (
-          <div className="px-4 pb-3 text-gray-300 text-sm">
-            {faq.a}
-          </div>
-        )}
+        <div className="space-y-3">
+          {faqs.map((faq, i) => (
+            <div
+              key={i}
+              className="bg-[#1f1f2e] rounded-lg overflow-hidden"
+            >
+              <button
+                className="w-full flex justify-between items-center px-4 py-3 text-left text-white font-medium"
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+              >
+                <span>🔶 {faq.q}</span>
+                <span>{openIndex === i ? "−" : "+"}</span>
+              </button>
+              {openIndex === i && (
+                <div className="px-4 pb-3 text-gray-300 text-sm">
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-    ))}
-  </div>
-</div>
 
     </div>
   );

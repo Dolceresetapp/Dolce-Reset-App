@@ -289,5 +289,12 @@ export const emotionalQuestions: EmotionalQuestion[] = [
       },
     ],
   },
+  {
+    id: "hurray_screen",
+    title: "Anteprima del tuo piano personalizzato",
+    type: "custom-screen",
+    customScreenType: "hurray-screen",
+    options: [],
+  },
 ]
 

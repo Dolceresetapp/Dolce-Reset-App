@@ -35,8 +35,6 @@ export default function OnboardingPage() {
     if (currentQuestion < emotionalQuestions.length - 1) {
       setCurrentQuestion((prev) => prev + 1)
     } else {
-      // All questions completed, show confirmation screens
-      console.log("All questions completed, showing confirmation screens")
       setShowConfirmation(true)
     }
   }
@@ -48,8 +46,6 @@ export default function OnboardingPage() {
   }
 
   const handleConfirmationComplete = async () => {
-    console.log("Confirmation complete, starting plan generation")
-
     // Get all data from localStorage as well
     const getAllStoredData = () => {
       const storedData: Record<string, any> = {}
@@ -103,7 +99,6 @@ export default function OnboardingPage() {
   }
 
   const handleConfirmationRestart = () => {
-    console.log("Restarting onboarding")
     // Clear localStorage
     if (typeof window !== "undefined") {
       const keys = Object.keys(localStorage)
@@ -144,6 +139,13 @@ export default function OnboardingPage() {
     const answer = answers[currentQ.id]
 
     if (currentQ.type === "custom-screen") {
+      return true
+    }
+
+    console.log("Current question:", currentQ)
+    console.log("Current answer:", answer)
+
+    if(currentQ.customScreenType === "hurray-screen") {
       return true
     }
 
