@@ -17,7 +17,7 @@ export default function AutoSlider() {
 
   return (
     <div className="w-full flex justify-center items-center p-6">
-      <div className="relative w-full h-[400px]">
+      <div className="relative w-full h-auto">
         <Image
           src={images[currentIndex]}
           alt="Slider Image"

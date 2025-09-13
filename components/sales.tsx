@@ -4,10 +4,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import LogoMarquee from "./brands";
+import { Button } from "./ui/button";
+import { PricingDialog } from "./pricing-dialog";
+import AutoSlider from "./testimonials";
 
 export default function SalesPage() {
   // FAQ state
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [showPricingDialog, setShowPricingDialog] = useState(false)
   const faqs = [
     {
       q: "✨ Non Servono Pillole Né Integratori",
@@ -55,6 +59,10 @@ export default function SalesPage() {
     },
   ];
 
+  const handleStartTrial = () => {
+    setShowPricingDialog(true)
+  }
+
 
   // Helper: render images dynamically (handles png & webp)
   const renderImage = (num: number) => {
@@ -92,17 +100,17 @@ export default function SalesPage() {
     <div className="max-w-md mx-auto px-4 py-0">
       {/* --- Top Images --- */}
       {renderImage(1)}
-      {renderImage(2)}
+      {/* {renderImage(2)} */}
       <LogoMarquee />
 
       {/* CTA */}
       {/* <CTA /> */}
-      <h2 className="text-2xl font-bold text-center mt-8 mb-4">ECCO COSA DICE CHI HA PROVATO DOLCE RESET</h2>
+      {/* <h2 className="text-2xl font-bold text-center mt-8 mb-4">ECCO COSA DICE CHI HA PROVATO DOLCE RESET</h2> */}
 
       {/* Vimeo Videos */}
       <div style={{ width: "100%", height: "500px" }}>
         <iframe
-          src="https://player.vimeo.com/video/1111333407?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+          src="https://player.vimeo.com/video/1116883226?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
           style={{
             width: "100%",
             height: "100%",
@@ -111,7 +119,7 @@ export default function SalesPage() {
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
         />
       </div>
-      <br />
+      {/* <br />
       <div style={{ width: "100%", height: "500px" }}>
         <iframe
           src="https://player.vimeo.com/video/1111321366?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
@@ -122,20 +130,71 @@ export default function SalesPage() {
           }}
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
         />
-      </div>
+      </div> */}
+
+      <br />
+      <Button
+        onClick={handleStartTrial}
+        className="w-full h-18 my-5 text-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-light rounded-2xl shadow-xl transition-all duration-300 hover:scale-105"
+      >
+        <div className="flex flex-col items-center">
+          <span className="text-base">Ottieni il mio piano personalizzato</span>
+          <span className="text-xs">Premi qui per iniziare</span>
+        </div>
+
+      </Button>
+      <br />
 
 
 
-      {renderImage(13)}
+      {renderImage(2)}
       {/* Images */}
-      {renderImage(3)}
       {renderImage(4)}
-      {renderImage(5)}
+
+      <Button
+        onClick={handleStartTrial}
+        className="w-full h-18 text-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-light rounded-2xl shadow-xl transition-all duration-300 hover:scale-105"
+      >
+        <div className="flex flex-col items-center">
+          <span className="text-base">Ottieni il mio piano personalizzato</span>
+          <span className="text-xs">Premi qui per iniziare</span>
+        </div>
+
+      </Button>
+      <br />
+
+      <AutoSlider />
+      {/* {renderImage(4)}
+      {renderImage(5)} */}
 
       {/* CTA */}
       {/* <CTA /> */}
+      <Button
+        onClick={handleStartTrial}
+        className="w-full h-18 text-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-light rounded-2xl shadow-xl transition-all duration-300 hover:scale-105"
+      >
+        <div className="flex flex-col items-center">
+          <span className="text-base">Ottieni il mio piano personalizzato</span>
+          <span className="text-xs">Premi qui per iniziare</span>
+        </div>
 
-      {[6, 7, 8, 9, 10, 11, 12, 13].map((n) => renderImage(n))}
+      </Button>
+      <br />
+
+      {[6, 7, 8, 9, 10, 11].map((n) => renderImage(n))}
+
+      <Button
+        onClick={handleStartTrial}
+        className="w-full h-18 text-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-light rounded-2xl shadow-xl transition-all duration-300 hover:scale-105"
+      >
+        <div className="flex flex-col items-center">
+          <span className="text-base">Ottieni il mio piano personalizzato</span>
+          <span className="text-xs">Premi qui per iniziare</span>
+        </div>
+
+      </Button>
+      <br />
+      <br />
       {/* <CTA /> */}
 
       {/* Purple Section */}
@@ -180,7 +239,8 @@ export default function SalesPage() {
           ))}
         </div>
       </div>
-
+      {/* Pricing Dialog */}
+      <PricingDialog open={showPricingDialog} onOpenChange={setShowPricingDialog} />
     </div>
   );
 }
