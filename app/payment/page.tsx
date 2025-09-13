@@ -21,8 +21,8 @@ import TestimonialSlider from '@/components/testimonial-slider';
 
 const PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_live_51RVnBBBcIsUXPnbFNO5JrDfHNP28gqlZ3HExjeNJbG5fszbKfQvZJY6saCUs1kd2C1WoBgFGNLYm9c7KZpgPSwpX00cTZZy0hy"
 // Initialize Stripe
-// const stripePromise = loadStripe(PUBLIC_STRIPE_PUBLISHABLE_KEY);
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+const stripePromise = loadStripe(PUBLIC_STRIPE_PUBLISHABLE_KEY);
+// const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 
 // Mock order data
 const orderData = {
