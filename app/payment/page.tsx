@@ -38,9 +38,10 @@ const orderData = {
 
 interface CheckoutFormProps {
   clientSecret: string;
+  customerId: string;
 }
 
-function CheckoutForm({ clientSecret }: CheckoutFormProps) {
+function CheckoutForm({ clientSecret, customerId }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -48,39 +49,49 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (!stripe || !elements) return;
 
-    if (!stripe || !elements) {
-      setError('Stripe has not loaded properly. Please refresh the page.');
+    setIsProcessing(true);
+
+    const { error, setupIntent } = await stripe.confirmSetup({
+      elements,
+      confirmParams: {
+        return_url: window.location.origin + "/payment-success",
+      },
+      redirect: "if_required",
+    });
+
+    if (error) {
+      setError(error.message || "Setup failed");
+      setIsProcessing(false);
       return;
     }
 
-    setIsProcessing(true);
-    setError(null);
-
-    try {
-      const { error, paymentIntent } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/payment-success`,
-        },
-        redirect: 'if_required',
+    if (setupIntent?.status === "succeeded") {
+      // Card saved successfully ✅
+      // Here you can:
+      // 1. Create a subscription with trial server-side using the saved payment method
+      // 2. Wait 3 days, then start billing automatically
+      console.log(setupIntent);
+      const res = await fetch("/api/create-payment-intent/create-subscription-with-trial", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer_id: customerId,
+          payment_method_id: setupIntent.payment_method,
+          trial_days: 3
+        })
       });
 
-      if (error) {
-        setError(error.message || 'An error occurred during payment processing.');
-        setIsProcessing(false);
-      } else if (paymentIntent && paymentIntent.status === 'succeeded') {
-        // Redirect to success page
-        window.location.href = '/payment-success';
+      const data = await res.json();
+      if (data.error) {
+        setError(data.error);
       } else {
-        setError('Payment was not completed. Please try again.');
-        setIsProcessing(false);
+        window.location.href = "/payment-success";
       }
-    } catch (err) {
-      setError('Payment failed. Please try again.');
-      setIsProcessing(false);
     }
   };
+
 
   return (
     <div className="min-h-screen max-w-lg mx-auto bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
@@ -88,7 +99,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
         <DiscountBanner />
 
 
-        <Image src="/custom/payment.png" alt="Logo" width={500} height={500} className='w-full my-10' />
+        <Image src="/custom/payment.png" alt="Logo" width={5000} height={5000} quality={100} className='w-full my-10' />
 
         {/* Yearly Pricing Card */}
         <div className="relative mt-6n py-2 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 border-2 border-pink-200 text-center">
@@ -102,7 +113,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
               <span className="text-gray-600 text-lg">/mese</span>
             </div>
             <p className="text-sm text-gray-600 mt-1">
-              Pagato annuo a €49
+              Pagato annuo a €47
             </p>
             <Badge className=" mt-2 bg-yellow-500 text-black">Ultimi 2 posti disponibili per questo mese</Badge>
           </div>
@@ -114,6 +125,11 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
           <div className="p-5">
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Addebito dopo le prove gratuite NON ora</h1>
             <p className="text-gray-600">Scegli come pagare</p>
+            <ul className="list-disc pl-4">
+              <li>Prezzo al mese: <span className="text-green-600">3,90 euro</span></li>
+              <li>Totale: 47 al anno</li>
+              <li>Hai risparmiato <span className="text-green-600">47,00 euro</span> (50% in meno)</li>
+            </ul>
           </div>
           {/* Checkout Form */}
           <div className="" id='checkout-form'>
@@ -152,12 +168,6 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                   </div>
                 )}
 
-                <ul className="list-disc pl-4">
-                  <li>Prezzo al mese: <span className="text-green-600">3,90 euro</span></li>
-                  <li>Totale: 47 al anno</li>
-                  <li>Hai risparmiato <span className="text-green-600">50 euro</span> (50% in meno)</li>
-                </ul>
-
                 <Button
                   type="submit"
                   disabled={!stripe || isProcessing}
@@ -166,30 +176,24 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                   {isProcessing ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Processing Payment...
+                      Attivazioneo...
                     </>
                   ) : (
                     <>
                       <Lock className="w-4 h-4 mr-2" />
-                      Pay €49,00
+                      Avvia prova gratuita
                     </>
                   )}
                 </Button>
 
-                <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
-                  <div className="flex items-center">
-                    <Lock className="w-4 h-4 mr-1" />
-                    Secure
-                  </div>
-                  <div className="flex items-center">
-                    <span className="w-2 h-2 bg-gray-300 rounded-full"></span>
-                  </div>
-                  <span>256-bit SSL encrypted</span>
+                <div className="flex flex-col gap-2 items-center justify-center space-x-4 text-sm text-gray-500">
+                  <p>Transazione protetta – nessun dato salvato</p>
+                <Image src="https://www.italytoner.it/img/pagamentisicuri1.png" alt="Logo" width={50} height={50} quality={100} className='w-36' />
                 </div>
               </form>
             </CardContent>
           </div>
-          
+
           <TestimonialSlider />
           <Image src="/custom/doctor.png" alt="Logo" width={500} height={500} className='w-full my-10' />
           <Link href="#checkout-form">
@@ -205,6 +209,7 @@ export default function CheckoutPage() {
   const [clientSecret, setClientSecret] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [customerId, setCustomerId] = useState<string>('');
 
   useEffect(() => {
     const fetchClientSecret = async () => {
@@ -231,8 +236,9 @@ export default function CheckoutPage() {
           throw new Error(errorData.error || 'Failed to create payment intent');
         }
 
-        const { client_secret } = await response.json();
+        const { client_secret, customer_id } = await response.json();
         setClientSecret(client_secret);
+        setCustomerId(customer_id);
         setLoading(false);
       } catch (error) {
         console.error('Error creating payment intent:', error);
@@ -301,7 +307,7 @@ export default function CheckoutPage() {
 
   return (
     <Elements stripe={stripePromise} options={stripeElementsOptions}>
-      <CheckoutForm clientSecret={clientSecret} />
+      <CheckoutForm clientSecret={clientSecret} customerId={customerId} />
     </Elements>
   );
 }

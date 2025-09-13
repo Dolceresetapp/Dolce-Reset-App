@@ -105,7 +105,7 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
                 <span className="text-gray-600 text-lg">/mese</span>
               </div>
               <p className="text-sm text-gray-600 mt-1">
-                Pagato annuo a €49
+                Pagato annuo a €47
               </p>
               <Badge className=" mt-2 bg-yellow-500 text-black">Ultimi 2 posti disponibili per questo mese</Badge>
             </div>

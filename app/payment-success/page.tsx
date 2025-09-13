@@ -27,8 +27,8 @@ export default function PaymentSuccessPage() {
         <Card className="w-full max-w-md">
           <CardContent className="p-8 text-center">
             <div className="w-16 h-16 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin mx-auto mb-4" />
-            <h2 className="text-xl font-bold text-gray-800 mb-2">Activating Plan...</h2>
-            <p className="text-gray-600">Please wait while we confirm your subscription.</p>
+            <h2 className="text-xl font-bold text-gray-800 mb-2">Attivazione Piano in corso...</h2>
+            <p className="text-gray-600">Si prega di attendere mentre confermiamo la tua sottoscrizione.</p>
           </CardContent>
         </Card>
       </div>
