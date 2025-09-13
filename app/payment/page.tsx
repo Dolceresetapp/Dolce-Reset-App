@@ -13,6 +13,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { CreditCard, Lock, CheckCircle, Loader2, ShoppingBag } from 'lucide-react';
+import DiscountBanner from '@/components/timer';
+import Image from 'next/image';
+import Link from 'next/link';
+import TestimonialSlider from '@/components/testimonial-slider';
 
 
 const PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_live_51RVnBBBcIsUXPnbFNO5JrDfHNP28gqlZ3HExjeNJbG5fszbKfQvZJY6saCUs1kd2C1WoBgFGNLYm9c7KZpgPSwpX00cTZZy0hy"
@@ -79,12 +83,12 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+    <div className="min-h-screen max-w-lg mx-auto bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Completa il tuo acquisto</h1>
-          {/* <p className="text-gray-600">Secure checkout powered by Stripe</p> */}
-        </div>
+        <DiscountBanner />
+
+
+        <Image src="/custom/payment.png" alt="Logo" width={500} height={500} className='w-full my-10' />
 
         {/* Yearly Pricing Card */}
         <div className="relative mt-6n py-2 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 border-2 border-pink-200 text-center">
@@ -106,9 +110,13 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
 
         <br />
 
-        <div className="grid lg:grid-cols-1 max-w-5xl mx-auto gap-8">
+        <div className="grid lg:grid-cols-1 gap-8 bg-white">
+          <div className="p-5">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Addebito dopo le prove gratuite NON ora</h1>
+            <p className="text-gray-600">Scegli come pagare</p>
+          </div>
           {/* Checkout Form */}
-          <Card className="shadow-lg order-2 lg:order-1">
+          <div className="" id='checkout-form'>
             <CardContent className="space-y-6">
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Payment Element */}
@@ -144,10 +152,16 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                   </div>
                 )}
 
+                <ul className="list-disc pl-4">
+                  <li>Prezzo al mese: <span className="text-green-600">3,90 euro</span></li>
+                  <li>Totale: 47 al anno</li>
+                  <li>Hai risparmiato <span className="text-green-600">50 euro</span> (50% in meno)</li>
+                </ul>
+
                 <Button
                   type="submit"
                   disabled={!stripe || isProcessing}
-                  className="w-full h-12 text-base font-semibold bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="w-full h-12 text-base font-semibold bg-pink-600 hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   {isProcessing ? (
                     <>
@@ -174,7 +188,13 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                 </div>
               </form>
             </CardContent>
-          </Card>
+          </div>
+          
+          <TestimonialSlider />
+          <Image src="/custom/doctor.png" alt="Logo" width={500} height={500} className='w-full my-10' />
+          <Link href="#checkout-form">
+            <Button className="w-full h-12 text-base font-semibold bg-pink-600 hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all">Inizia prova gratuita</Button>
+          </Link>
         </div>
       </div>
     </div>
