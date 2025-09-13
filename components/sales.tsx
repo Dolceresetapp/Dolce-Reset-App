@@ -181,7 +181,7 @@ export default function SalesPage() {
       </Button>
       <br />
 
-      {[6, 7, 8, 9, 10, 11].map((n) => renderImage(n))}
+      {[5, 6, 7, 8, 9, 10, 11].map((n) => renderImage(n))}
 
       <Button
         onClick={handleStartTrial}
