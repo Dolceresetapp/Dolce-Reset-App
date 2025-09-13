@@ -51,7 +51,7 @@ export default function TestimonialSlider() {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % testimonials.length)
-    }, 4000)
+    }, 6000)
     return () => clearInterval(interval)
   }, [])
 
