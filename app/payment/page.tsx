@@ -113,7 +113,7 @@ function CheckoutForm({ clientSecret, customerId }: CheckoutFormProps) {
               <span className="text-gray-600 text-lg">/mese</span>
             </div>
             <p className="text-sm text-gray-600 mt-1">
-              Pagato annuo a €47
+              Pagato annuo a €49
             </p>
             <Badge className=" mt-2 bg-yellow-500 text-black">Ultimi 2 posti disponibili per questo mese</Badge>
           </div>
@@ -123,12 +123,13 @@ function CheckoutForm({ clientSecret, customerId }: CheckoutFormProps) {
 
         <div className="grid lg:grid-cols-1 gap-8 bg-white">
           <div className="p-5">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Addebito dopo le prove gratuite NON ora</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Addebito Dopo La Prova Gratuita Se Continuerai NON Ora! </h1>
             <p className="text-gray-600">Scegli come pagare</p>
             <ul className="list-disc pl-4">
-              <li>Prezzo al mese: <span className="text-green-600">3,90 euro</span></li>
-              <li>Totale: 47 al anno</li>
-              <li>Hai risparmiato <span className="text-green-600">47,00 euro</span> (50% in meno)</li>
+              <li>Prezzo al mese: <span className="text-green-600">33,90€ Mese</span></li>
+              <li>Prezzo Totale: 99 € Anno</li>
+              <li>Sconto Del Mese: (50% in meno)</li>
+              <li>Prezzo Finale: <span className="text-green-600">49€</span></li>
             </ul>
           </div>
           {/* Checkout Form */}

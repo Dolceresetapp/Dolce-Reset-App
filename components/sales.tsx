@@ -151,7 +151,7 @@ export default function SalesPage() {
       {/* Images */}
       {renderImage(4)}
 
-      <Button
+      {/* <Button
         onClick={handleStartTrial}
         className="w-full h-18 text-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-light rounded-2xl shadow-xl transition-all duration-300 hover:scale-105"
       >
@@ -161,7 +161,7 @@ export default function SalesPage() {
         </div>
 
       </Button>
-      <br />
+      <br /> */}
 
       <AutoSlider />
       {/* {renderImage(4)}

@@ -94,7 +94,7 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
           <Image src="/custom/steps.png" width={500} height={500} alt="" className="w-full" />
 
           {/* Yearly Pricing Card */}
-          <div className="relative mt-6n py-2 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 border-2 border-pink-200 text-center">
+          {/* <div className="relative mt-6n py-2 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 border-2 border-pink-200 text-center">
             <Badge className="absolute -top-3 left-0 left-5 bg-black text-white px-3 py-0 rounded-full">
               3 GIORNI GRATIS
             </Badge>
@@ -109,19 +109,19 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
               </p>
               <Badge className=" mt-2 bg-yellow-500 text-black">Ultimi 2 posti disponibili per questo mese</Badge>
             </div>
-          </div>
+          </div> */}
 
           {/* Email Input */}
           <div className="space-y-2 relative">
             <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-              Email Address
+              Indirizzo Email
             </Label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
                 id="email"
                 type="email"
-                placeholder="Enter your email address"
+                placeholder="Inserisci l'indirizzo email"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value)
