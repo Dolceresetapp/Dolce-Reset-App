@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Crown, Mail, CreditCard, Shield, CheckCircle } from "lucide-react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 interface PricingDialogProps {
   open: boolean
@@ -28,13 +29,14 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
   const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const router = useRouter()
 
   // Only show dropdown if user typed '@' and suggestions exist
   const suggestions =
     email.includes("@") && showSuggestions
       ? emailDomains.filter((domain) =>
-          domain.startsWith(email.substring(email.indexOf("@")))
-        )
+        domain.startsWith(email.substring(email.indexOf("@")))
+      )
       : []
 
   const handleSubscribe = async () => {
@@ -44,6 +46,9 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
     }
 
     setIsLoading(true)
+    router.push("/payment")
+    onOpenChange(false)
+    return
 
     try {
       const response = await fetch("/api/create-subscription-checkout", {
@@ -81,30 +86,30 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[95vw] max-w-md mx-auto max-h-[90vh] overflow-y-auto p-0 gap-0">
-      
+
 
         <div className="p-6 space-y-6">
-          
 
-<Image src="/custom/steps.png" width={500} height={500} alt="" className="w-full" />
 
-{/* Yearly Pricing Card */}
-<div className="relative mt-6n py-2 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 border-2 border-pink-200 text-center">
-  <Badge className="absolute -top-3 left-0 left-5 bg-black text-white px-3 py-0 rounded-full">
-  3 GIORNI GRATIS
-  </Badge>
+          <Image src="/custom/steps.png" width={500} height={500} alt="" className="w-full" />
 
-  <div className="flex flex-col items-center">
-    <div className="flex items-end space-x-2">
-      <span className="text-3xl font-bold text-gray-800">€3,90</span>
-      <span className="text-gray-600 text-lg">/mese</span>
-    </div>
-    <p className="text-sm text-gray-600 mt-1">
-      Pagato annuo a €49
-    </p>
-    <Badge className=" mt-2 bg-yellow-500 text-black">Ultimi 2 posti disponibili per questo mese</Badge>
-  </div>
-</div>
+          {/* Yearly Pricing Card */}
+          <div className="relative mt-6n py-2 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 border-2 border-pink-200 text-center">
+            <Badge className="absolute -top-3 left-0 left-5 bg-black text-white px-3 py-0 rounded-full">
+              3 GIORNI GRATIS
+            </Badge>
+
+            <div className="flex flex-col items-center">
+              <div className="flex items-end space-x-2">
+                <span className="text-3xl font-bold text-gray-800">€3,90</span>
+                <span className="text-gray-600 text-lg">/mese</span>
+              </div>
+              <p className="text-sm text-gray-600 mt-1">
+                Pagato annuo a €49
+              </p>
+              <Badge className=" mt-2 bg-yellow-500 text-black">Ultimi 2 posti disponibili per questo mese</Badge>
+            </div>
+          </div>
 
           {/* Email Input */}
           <div className="space-y-2 relative">
