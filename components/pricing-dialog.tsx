@@ -114,7 +114,7 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
           {/* Email Input */}
           <div className="space-y-2 relative">
             <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-              Indirizzo Email
+              Inserisci il Tuo Indirizzo Email Per Continuare e Ricevere il Regalo
             </Label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -161,8 +161,11 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
               </div>
             ) : (
               <div className="flex items-center space-x-2">
-                <CreditCard className="w-5 h-5" />
-                <span>Avvia la tua prova gratuita</span>
+                {/* <CreditCard className="w-5 h-5" /> */}
+                <div className="flex flex-col">
+                  <span>Avvia la tua prova gratuita</span>
+                  <span className="text-xs">Clicca per continuare</span>
+                </div>
               </div>
             )}
           </Button>
@@ -179,10 +182,10 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
             <span>No Hidden Fees</span>
           </div> */}
 
-          <p className="text-xs text-gray-500 text-center leading-relaxed">
+          {/* <p className="text-xs text-gray-500 text-center leading-relaxed">
             Avvia la tua prova gratuita di 3 giorni oggi. Dopo la prova, sarai fatturato €49/anno. Puoi annullare in qualsiasi momento
             durante la fase di prova con no costi.
-          </p>
+          </p> */}
         </div>
       </DialogContent>
     </Dialog>

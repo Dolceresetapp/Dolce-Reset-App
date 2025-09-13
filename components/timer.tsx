@@ -23,11 +23,11 @@ export default function DiscountBanner() {
   return (
     <div className="w-full bg-purple-500 text-white flex items-center justify-between px-4 py-2 rounded-lg">
       <div className="flex flex-col">
-        <span className="text-xs">Your 50% discount ends soon:</span>
+        <span className="text-xs">Il tuo sconto del 50% scade presto:</span>
         <span className="text-2xl font-bold">{formatTime(timeLeft)}</span>
       </div>
       <Button className="bg-white text-purple-600 font-semibold rounded-full px-4 py-2 hover:bg-purple-100">
-        Save 50%
+        Salva il 50%
       </Button>
     </div>
   )

@@ -21,8 +21,8 @@ import TestimonialSlider from '@/components/testimonial-slider';
 
 const PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_live_51RVnBBBcIsUXPnbFNO5JrDfHNP28gqlZ3HExjeNJbG5fszbKfQvZJY6saCUs1kd2C1WoBgFGNLYm9c7KZpgPSwpX00cTZZy0hy"
 // Initialize Stripe
-const stripePromise = loadStripe(PUBLIC_STRIPE_PUBLISHABLE_KEY);
-// const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+// const stripePromise = loadStripe(PUBLIC_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 
 // Mock order data
 const orderData = {
@@ -99,7 +99,7 @@ function CheckoutForm({ clientSecret, customerId }: CheckoutFormProps) {
         <DiscountBanner />
 
 
-        <Image src="/custom/payment.png" alt="Logo" width={5000} height={5000} quality={100} className='w-full mt-10' />
+        <Image src="/custom/payment.jpeg" alt="Logo" width={5000} height={5000} quality={100} className='w-full mt-10' />
         <Image src="/logos/logos.png" alt="Logo" width={5000} height={5000} quality={100} className='w-full mb-10' />
 
         {/* Yearly Pricing Card */}
@@ -124,8 +124,8 @@ function CheckoutForm({ clientSecret, customerId }: CheckoutFormProps) {
 
         <div className="grid lg:grid-cols-1 gap-8 bg-white">
           <div className="p-5 text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Addebito Dopo La Prova Gratuita Se Continuerai NON Ora! </h1>
-            <p className="text-gray-600">Scegli come pagare</p>
+            <h1 className="text-lg font-bold text-gray-900 mb-2">Addebito Dopo La Prova Gratuita Se Continuerai NON Ora! </h1>
+            <p className="text-gray-600">Scegli Come Procedere</p>
             <ul className="pl-4">
               <li>Prezzo al mese: <span className="text-green-600">3,90€ Mese</span></li>
               <li>Prezzo Totale: 99 € Anno</li>

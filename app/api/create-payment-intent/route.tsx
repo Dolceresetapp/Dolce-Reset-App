@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     // Create a SetupIntent
     const setupIntent = await stripe.setupIntents.create({
       customer: customer.id,
-      payment_method_types: ["card"],
+      // payment_method_types: ["card"],
     });
 
     return NextResponse.json({
