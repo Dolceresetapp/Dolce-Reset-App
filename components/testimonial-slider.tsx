@@ -10,7 +10,7 @@ const testimonials = [
     stars: 5,
     text: "Ero convinta fosse la solita app che promette e non mantiene… invece mi sono dovuta ricredere. Allenamenti brevi, piano alimentare semplice e un supporto che ti risponde davvero. Dopo 2 settimane già vedevo la pancia sgonfiarsi.",
     author: "Chiara Lombardi, Verona (34 anni)",
-    image: "/testimonials/t1.png",
+    image: "/testimonials/29.png",
   },
   {
     stars: 5,
@@ -28,7 +28,7 @@ const testimonials = [
     stars: 5,
     text: "Non ho tempo né voglia di spaccarmi in palestra. Con questa app faccio movimento in pochi minuti, seguo i pasti facili suggeriti, e quando ho un dubbio scrivo al supporto. Mi sento seguita, non sola.",
     author: "Daniela Romano, Palermo (36 anni)",
-    image: "/testimonials/t4.png",
+    image: "/testimonials/31.png",
   },
   {
     stars: 5,
@@ -40,7 +40,7 @@ const testimonials = [
     stars: 5,
     text: "La mia paura era di non riuscire a seguirlo per pigrizia… invece bastano pochi minuti al giorno. Tra ricette facili e mini workout, è diventata la mia nuova routine senza stress.",
     author: "Francesca Moretti, Torino (44 anni)",
-    image: "/testimonials/t6.png",
+    image: "/testimonials/33.png",
   },
 ]
 

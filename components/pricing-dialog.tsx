@@ -91,7 +91,7 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
         <div className="p-6 space-y-6">
 
 
-          <Image src="/custom/steps.png" width={500} height={500} alt="" className="w-full" />
+          {/* <Image src="/custom/steps.png" width={500} height={500} alt="" className="w-full" /> */}
 
           {/* Yearly Pricing Card */}
           {/* <div className="relative mt-6n py-2 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 border-2 border-pink-200 text-center">

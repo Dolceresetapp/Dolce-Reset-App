@@ -99,7 +99,8 @@ function CheckoutForm({ clientSecret, customerId }: CheckoutFormProps) {
         <DiscountBanner />
 
 
-        <Image src="/custom/payment.png" alt="Logo" width={5000} height={5000} quality={100} className='w-full my-10' />
+        <Image src="/custom/payment.png" alt="Logo" width={5000} height={5000} quality={100} className='w-full mt-10' />
+        <Image src="/logos/logos.png" alt="Logo" width={5000} height={5000} quality={100} className='w-full mb-10' />
 
         {/* Yearly Pricing Card */}
         <div className="relative mt-6n py-2 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl p-5 border-2 border-pink-200 text-center">
@@ -122,11 +123,11 @@ function CheckoutForm({ clientSecret, customerId }: CheckoutFormProps) {
         <br />
 
         <div className="grid lg:grid-cols-1 gap-8 bg-white">
-          <div className="p-5">
+          <div className="p-5 text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Addebito Dopo La Prova Gratuita Se Continuerai NON Ora! </h1>
             <p className="text-gray-600">Scegli come pagare</p>
-            <ul className="list-disc pl-4">
-              <li>Prezzo al mese: <span className="text-green-600">33,90€ Mese</span></li>
+            <ul className="pl-4">
+              <li>Prezzo al mese: <span className="text-green-600">3,90€ Mese</span></li>
               <li>Prezzo Totale: 99 € Anno</li>
               <li>Sconto Del Mese: (50% in meno)</li>
               <li>Prezzo Finale: <span className="text-green-600">49€</span></li>
@@ -188,8 +189,12 @@ function CheckoutForm({ clientSecret, customerId }: CheckoutFormProps) {
                 </Button>
 
                 <div className="flex flex-col gap-2 items-center justify-center space-x-4 text-sm text-gray-500">
-                  <p>Transazione protetta – nessun dato salvato</p>
-                <Image src="https://www.italytoner.it/img/pagamentisicuri1.png" alt="Logo" width={50} height={50} quality={100} className='w-36' />
+                  <p className="text-xs text-gray-500 text-center leading-relaxed">
+                    Avvia la tua prova gratuita di 3 giorni oggi. Dopo la prova, sarai fatturato €49/anno. Puoi annullare in qualsiasi momento
+                    durante la fase di prova con no costi.
+                  </p>
+                  {/* <p>Transazione protetta – nessun dato salvato</p> */}
+                  <Image src="https://www.italytoner.it/img/pagamentisicuri1.png" alt="Logo" width={50} height={50} quality={100} className='w-36' />
                 </div>
               </form>
             </CardContent>
