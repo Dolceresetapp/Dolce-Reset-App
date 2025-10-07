@@ -180,9 +180,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     } else if (!ischecked) {
                       ToastUtil.showShortToast("Please check your box!!");
                     } else {
-                      NavigationService.navigateToReplacement(
-                        Routes.signUpScreen,
-                      );
+                        _passwordController.clear();
+                      _formKey.currentState!.reset();
+                       ToastUtil.showShortToast("Login Successfully");
                     }
                   },
                   child: Row(

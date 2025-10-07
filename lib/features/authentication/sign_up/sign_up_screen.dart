@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import '../../../common_widget/custom_button.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
+import '../../../helpers/toast.dart';
 import '../../../provider/sign_up_provider.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -187,9 +188,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 CustomButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      NavigationService.navigateToReplacement(
-                        Routes.signInScreen,
-                      );
+                      ToastUtil.showShortToast("Signup Successfully");
+
+                      _passwordController.clear();
+
+                      _formKey.currentState!.reset();
                     }
                   },
                   child: Row(
