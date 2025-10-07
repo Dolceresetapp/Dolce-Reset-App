@@ -14,6 +14,9 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/Or.svg
+  String get or => 'assets/icons/Or.svg';
+
   /// File path: assets/icons/Vector (1).svg
   String get vector1 => 'assets/icons/Vector (1).svg';
 
@@ -23,6 +26,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Vector (3).svg
   String get vector3 => 'assets/icons/Vector (3).svg';
 
+  /// File path: assets/icons/Vector (4).svg
+  String get vector4 => 'assets/icons/Vector (4).svg';
+
   /// File path: assets/icons/eye_off.svg
   String get eyeOff => 'assets/icons/eye_off.svg';
 
@@ -30,7 +36,15 @@ class $AssetsIconsGen {
   String get eyeOn => 'assets/icons/eye_on.svg';
 
   /// List of all assets
-  List<String> get values => [vector1, vector2, vector3, eyeOff, eyeOn];
+  List<String> get values => [
+    or,
+    vector1,
+    vector2,
+    vector3,
+    vector4,
+    eyeOff,
+    eyeOn,
+  ];
 }
 
 class $AssetsImagesGen {

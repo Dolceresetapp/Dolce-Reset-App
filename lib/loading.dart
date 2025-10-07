@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'constants/app_constants.dart';
-import 'features/authentication/sign_up/sign_up_screen.dart';
+import 'features/get_started/get_started_screen.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
 import 'networks/dio/dio.dart';
 import 'splash_screen.dart';
 
-// import 'helpers/helper_methods.dart';
-// import 'constants/app_constants.dart';
-// import 'helpers/app_version_updater.dart';
-// import 'helpers/di.dart';
 
 final class Loading extends StatefulWidget {
   const Loading({super.key});
@@ -48,7 +43,7 @@ class _LoadingState extends State<Loading> {
     if (_isLoading) {
       return const SplashScreen();
     } else {
-      return const SignUpScreen();
+      return const GetStartedScreen();
     }
   }
 }

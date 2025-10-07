@@ -1,4 +1,4 @@
-/* import 'package:fluttertoast/fluttertoast.dart';
+ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 final class ToastUtil {
@@ -32,4 +32,4 @@ final class ToastUtil {
     );
   }
 }
- */
+ 

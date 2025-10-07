@@ -23,7 +23,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _emailController = TextEditingController();
-
+  final _nameController = TextEditingController();
   final _passwordController = TextEditingController();
 
   final _confirmController = TextEditingController();
@@ -35,6 +35,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmController.dispose();
+
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -46,6 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: SafeArea(
           child: Form(
+            autovalidateMode: AutovalidateMode.onUnfocus,
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,8 +56,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 UIHelper.verticalSpace(40.h),
                 Align(child: Image.asset(Assets.images.frame11.path)),
 
-                UIHelper.verticalSpace(56.h),
+                UIHelper.verticalSpace(50.h),
 
+                Text(
+                  "Name",
+                  style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                    color: const Color(0xFF27272A),
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+
+                UIHelper.verticalSpace(8.h),
+
+                CustomTextField(
+                  controller: _nameController,
+                  validator: nameValidation,
+                  hintText: "Enter your name",
+                  keyboardType: TextInputType.emailAddress,
+                  prefixIcon: Assets.icons.vector2,
+                ),
+
+                UIHelper.verticalSpace(16.h),
                 Text(
                   "Email Address",
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
@@ -74,7 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   prefixIcon: Assets.icons.vector2,
                 ),
 
-                UIHelper.verticalSpace(24.h),
+                UIHelper.verticalSpace(16.h),
 
                 Text(
                   "Password",
@@ -163,9 +186,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 UIHelper.verticalSpace(30.h),
                 CustomButton(
                   onPressed: () {
-                    NavigationService.navigateToReplacement(
-                      Routes.signUpScreen,
-                    );
+                    if (_formKey.currentState!.validate()) {
+                      NavigationService.navigateToReplacement(
+                        Routes.signInScreen,
+                      );
+                    }
                   },
                   child: Row(
                     spacing: 10.w,
@@ -227,7 +252,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
 
-                UIHelper.verticalSpace(12.h),
+                UIHelper.verticalSpaceMediumLarge,
               ],
             ),
           ),

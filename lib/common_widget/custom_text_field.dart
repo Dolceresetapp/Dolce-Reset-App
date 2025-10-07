@@ -104,8 +104,14 @@ class CustomTextField extends StatelessWidget {
       validator: validator,
       textInputAction: textInputAction,
       inputFormatters: inputFormatters,
+
       onTap: onTap,
       decoration: InputDecoration(
+        errorStyle: TextFontStyle.headline30c27272AtyleWorkSansW700.copyWith(
+          color: const Color(0xFFFF0000),
+          fontSize: 11.sp,
+          fontWeight: FontWeight.w400,
+        ),
         hintStyle:
             hintStyle ??
             TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
