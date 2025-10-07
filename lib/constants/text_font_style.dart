@@ -13,6 +13,14 @@ class TextFontStyle {
     fontSize: 18.sp,
     fontWeight: FontWeight.w600,
   );
+
+  static final headLine102cF8F3EFBarlowCondensedW700 = GoogleFonts.barlowCondensed(
+    color: Color(0xFFF8F3EF),
+    fontSize: 102.sp,
+    fontWeight: FontWeight.w700,
+  );
+
+
   static final text14c3B3F4BPoppinsW500 = GoogleFonts.poppins(
     color: AppColors.c3B3F4B,
     fontSize: 14.sp,
