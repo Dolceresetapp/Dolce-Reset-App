@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<colors>
+
+
+<!-- Start Project Color -->
+  <color name="c051F42">#FF051F42</color>
+  <color name="c3B3F4B">#FF3B3F4B</color>
+  <color name="cE1E3E5">#FFE1E3E5</color>
+
+<!-- End Project Color --> 
+  <color name="allPrimaryColor">#FF57AE8F</color>
+  <color name="scaffoldBackground">#FFF8F8F8</color>
+  <color name="cBE5F4F">#FFBE5F4F</color>
+  <color name="c57AE8F">#FF57AE8F</color>
+  <color name="c57AE8E">#FF57AE8E</color>
+  <color name="c333333">#FF333333</color>
+  <color name="c666666">#FF666666</color>
+  <color name="cF1F0F0">#FFF1F0F0</color>
+  <color name="cF4F4F4">#FFF4F4F4</color>
+  <color name="cA0A0A0">#FFcA0A0A0</color>
+  <color name="c2C2C2E">#FF2C2C2E</color>
+  <color name="c979797">#FF979797</color>
+  <color name="cBEBEBE">#FFBEBEBE</color>
+  <color name="cECECEC">#FFECECEC</color>
+  <color name="cE2E2E2">#FFE2E2E2</color>
+  <color name="c1E1E1E">#FF1E1E1E</color>
+  <color name="cE0E4EA">#FFE0E4EA</color>
+  <color name="c344057">#FF344057</color>
+  <color name="cDBFFF2">#FFDBFFF2</color>
+  <color name="c959595">#FF959595</color>
+  <color name="cA7A7A7">#FFA7A7A7</color>
+  <color name="cA6A6A6">#FFA6A6A6</color>
+  <color name="c616161">#FF616161</color>
+  <color name="cD9D9D9">#FFD9D9D9</color>
+  <color name="c979393">#FF979393</color>
+  <color name="c4D4D4D">#FF4D4D4D</color>
+  <color name="c4E4E4E">#FF4E4E4E</color>
+  <color name="c737791">#FF737791</color>
+  <color name="cCBCBCB">#FFCBCBCB</color>
+  <color name="c424242">#FF424242</color>
+  <color name="c626262">#FF626262</color>
+  <color name="cAFAFAF">#FFAFAFAF</color>
+  <color name="c141414">#FF141414</color>
+  <color name="cFFDC64">#FFFFDC64</color>
+  <color name="cF1FFFA">#FFF1FFFA</color>
+  <color name="cE7E7E7">#FFE7E7E7</color>
+  <color name="c5A5C5F">#FF5A5C5F</color>
+  <color name="c344057">#FF344057</color>
+  <color name="c036D54">#FF036D54</color>
+  <color name="cB1B1B1">#FFB1B1B1</color>
+  <color name="c797C7B">#FF797C7B</color>
+  <color name="c797C7A">#FF797C7A</color>
+  <color name="cF04A4C">#FFF04A4C</color>
+  <color name="cF2F7FB">#FFF2F7FB</color>
+  <color name="cF3F6F6">#FFF3F6F6</color>
+  <color name="cF8F8F8">#FFF8F8F8</color>
+  <color name="c263238">#FF263238</color>
+  <color name="c8993A4">#FF8993A4</color>
+  <color name="cF0F4F4">#FFF0F4F4</color>
+  <color name="c506060">#FF506060</color>
+  <color name="c002424">#FF002424</color>
+  <color name="cF2F2F2">#FFF2F2F2</color>
+  <color name="c686868">#FF686868</color>
+  <color name="c149C21">#FF149C21</color>
+  <color name="c149C21">#FF149C21</color>
+  
+
+
+
+
+
+
+<!-- //OLD -->
+
+  <!-- <color name="allPrimaryColor">#FFC3B9AA</color> -->
+  <color name="c2F1E19">#FF2F1E19</color>
+  <color name="c6C564C">#FF6C564C</color>
+  <color name="cE1DCD7">#FFE1DCD7</color>
+  <color name="c838383">#FF838383</color>
+  <color name="cEFEFEF">#FFEFEFEF</color>
+  <color name="c3D3D3D">#FF3D3D3D</color>
+  <color name="cE2DDDB">#FFE2DDDB</color>
+  <color name="cEBE6DC">#FFEBE6DC</color>
+  <color name="c292929">#FF292929</color>
+  <color name="cCBC1B4">#FFCBC1B4</color>
+  <color name="cD2D1D2">#FFD2D1D2</color>
+  <color name="cD2C9BE">#FFD2C9BE</color>
+  <color name="c533930">#FF533930</color> 
+  <color name="cF3F3F3">#FFF3F3F3</color>
+  <color name="cBDBDBD">#FFBDBDBD</color>
+  <color name="c3A1E15">#FF3A1E15</color>
+  <color name="cC3B9AA">#FFC3B9AA</color>
+  <color name="cFF5630">#FFFF5630</color>
+  <color name="cE8E1DC">#FFE8E1DC</color>
+  <color name="cB18E5E">#FFB18E5E</color>
+  <color name="gradiantTopBottom">#FFFEF6EE</color>
+  <color name="gradiantMiddle">#FFF7F6F8</color>
+
+
+
+
+
+  <!-- OLD DATA -->
+  
+  <color name="c161C24">#FF161C24</color>
+  <color name="c637381">#FF637381</color>
+  <color name="cED459A">#FFED459A</color>
+  <color name="c919EAB">#FF919EAB</color>
+  <color name="cF4F6F8">#FFF4F6F8</color>
+  <color name="cFAD0E6">#FFFAD0E6</color>
+  <color name="cF67DC4">#FFF67DC4</color>
+  <color name="disableColor">#FFFCC19F</color>
+  <color name="c212B36">#FF212B36</color>
+  <color name="c8F9BB3">#FF8F9BB3</color>
+  <color name="cFBDAEB">#FFFBDAEB</color>
+  <color name="cFEFFFE">#FFFEFFFE</color>
+  <color name="cDFDFDF">#FFDFDFDF</color>
+  <color name="c47B54C">#FF47B54C</color>
+  <color name="c0A0909">#FF0A0909</color>
+  <color name="c000000">#FF000000</color>
+  <color name="cF4F4F4">#FFF4F4F4</color>
+  <color name="cFFFFFF">#FFFFFFFF</color>
+  <color name="c231F20">#FF231F20</color>
+  <color name="cEB001B">#FFEB001B</color>
+  <color name="cF79E1B">#FFF79E1B</color>
+  <color name="cFF5F00">#FFFF5F00</color>
+  <color name="c0B0A0A">#FF0B0A0A</color>
+  <color name="cABABAB">#FFABABAB</color>
+  <color name="cF45310">#FFF45310</color>
+  <color name="cCACACA">#FFCACACA</color>
+  <color name="cFFC6AE">#FFFFC6AE</color>
+  <color name="c969696">#FF969696</color>
+  <color name="cC9C9C9">#FFC9C9C9</color>
+  <color name="cEEEEEE">#FFEEEEEE</color>
+  <color name="cF0F0F0">#FFF0F0F0</color>
+  <color name="cFF0000">#FFFF0000</color>
+  <color name="c7F7E7E">#FF7F7E7E</color>
+  <color name="c212121">#FF212121</color>
+  <color name="cEDBB43">#FFEDBB43</color>
+  <color name="c2C303E">#FF2C303E</color>
+  <color name="c9B9B9B">#FF9B9B9B</color>
+  <color name="cFF9500A">#FFF9500A</color>
+  <color name="cFD9D9D9">#FFD9D9D9</color>
+  <color name="scaffoldColor">#FFFBFBFB</color>
+  <color name="primaryColor">#FF4D3E39</color>
+  <color name="activeColor">#FF326144</color>
+  <color name="debitHigheColor">#FFB7242A</color>
+  <color name="inactiveColor">#FFEDBB43</color>
+  <color name="linkColor">#FFF0E0C1</color>
+  <color name="loginBackground">#FFF4D68E</color>
+  <color name="warningColor">#FFB7242A</color>
+  <color name="ratingColor">#FFE65934</color>
+  <color name="bgColor">#FFFBFBFB</color>
+  <color name="headLine1Color">#FF4A4A4A</color>
+  <color name="headLine2Color">#FF131313</color>
+  <color name="disabledColor">#FF9B9B9B</color>
+  <color name="unselectedButtonTextColor">#FF2C303E</color>
+  <color name="creditHighliteColor">#FF709B72</color>
+  <color name="penIconColor">#FF00A7FF</color>
+  <color name="alertButtonColor">#FFFEFFFB</color>
+  <color name="white">#FFFFFFFF</color>
+  <color name="borderColor">#FFDDDDDD</color>
+  <color name="secondaryColor">#FF444242</color>
+  <color name="shadowText">#FFF1F2F7</color>
+  <color name="shadowText2">#FFB0B0B0</color>
+</colors>
