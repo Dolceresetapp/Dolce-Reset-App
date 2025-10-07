@@ -1,3 +1,5 @@
+// dart format width=80
+
 /// GENERATED CODE - DO NOT MODIFY BY HAND
 /// *****************************************************
 ///  FlutterGen
@@ -5,70 +7,63 @@
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
+// ignore_for_file: deprecated_member_use,directives_ordering,implicit_dynamic_list_literal,unnecessary_import
 
 import 'package:flutter/widgets.dart';
 
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
-  /// File path: assets/icons/Asset 2 1.svg
-  String get asset21 => 'assets/icons/Asset 2 1.svg';
+  /// File path: assets/icons/Vector (1).svg
+  String get vector1 => 'assets/icons/Vector (1).svg';
 
-  /// File path: assets/icons/apple_icon.svg
-  String get appleIcon => 'assets/icons/apple_icon.svg';
+  /// File path: assets/icons/Vector (2).svg
+  String get vector2 => 'assets/icons/Vector (2).svg';
 
-  /// File path: assets/icons/check_icon.svg
-  String get checkIcon => 'assets/icons/check_icon.svg';
+  /// File path: assets/icons/Vector (3).svg
+  String get vector3 => 'assets/icons/Vector (3).svg';
 
-  /// File path: assets/icons/finger_icon.svg
-  String get fingerIcon => 'assets/icons/finger_icon.svg';
+  /// File path: assets/icons/eye_off.svg
+  String get eyeOff => 'assets/icons/eye_off.svg';
 
-  /// File path: assets/icons/google_icon.svg
-  String get googleIcon => 'assets/icons/google_icon.svg';
-
-  /// File path: assets/icons/logos_facebook.svg
-  String get logosFacebook => 'assets/icons/logos_facebook.svg';
-
-  /// File path: assets/icons/mdi_scan.svg
-  String get mdiScan => 'assets/icons/mdi_scan.svg';
-
-  /// File path: assets/icons/trip_icon.svg
-  String get tripIcon => 'assets/icons/trip_icon.svg';
-
-  /// File path: assets/icons/upload_icon.svg
-  String get uploadIcon => 'assets/icons/upload_icon.svg';
+  /// File path: assets/icons/eye_on.svg
+  String get eyeOn => 'assets/icons/eye_on.svg';
 
   /// List of all assets
-  List<String> get values => [
-    asset21,
-    appleIcon,
-    checkIcon,
-    fingerIcon,
-    googleIcon,
-    logosFacebook,
-    mdiScan,
-    tripIcon,
-    uploadIcon,
-  ];
+  List<String> get values => [vector1, vector2, vector3, eyeOff, eyeOn];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/Frame (10).png
+  AssetGenImage get frame10 =>
+      const AssetGenImage('assets/images/Frame (10).png');
+
+  /// File path: assets/images/Frame (11).png
+  AssetGenImage get frame11 =>
+      const AssetGenImage('assets/images/Frame (11).png');
+
+  /// File path: assets/images/Rectangle.png
+  AssetGenImage get rectangle =>
+      const AssetGenImage('assets/images/Rectangle.png');
+
   /// File path: assets/images/no_image_available.png
   AssetGenImage get noImageAvailable =>
       const AssetGenImage('assets/images/no_image_available.png');
 
-  /// File path: assets/images/onboard.png
-  AssetGenImage get onboard => const AssetGenImage('assets/images/onboard.png');
-
-  /// File path: assets/images/splash_bg.png
-  AssetGenImage get splashBg =>
-      const AssetGenImage('assets/images/splash_bg.png');
+  /// File path: assets/images/womens_bg.png
+  AssetGenImage get womensBg =>
+      const AssetGenImage('assets/images/womens_bg.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [noImageAvailable, onboard, splashBg];
+  List<AssetGenImage> get values => [
+    frame10,
+    frame11,
+    rectangle,
+    noImageAvailable,
+    womensBg,
+  ];
 }
 
 class $AssetsLottieGen {
@@ -112,12 +107,18 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
+  const AssetGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+    this.animation,
+  });
 
   final String _assetName;
 
   final Size? size;
   final Set<String> flavors;
+  final AssetGenImageAnimation? animation;
 
   Image image({
     Key? key,
@@ -179,4 +180,16 @@ class AssetGenImage {
   String get path => _assetName;
 
   String get keyName => _assetName;
+}
+
+class AssetGenImageAnimation {
+  const AssetGenImageAnimation({
+    required this.isAnimation,
+    required this.duration,
+    required this.frames,
+  });
+
+  final bool isAnimation;
+  final Duration duration;
+  final int frames;
 }

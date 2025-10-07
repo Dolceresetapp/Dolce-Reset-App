@@ -8,6 +8,22 @@ class TextFontStyle {
   TextFontStyle._();
 
   //new
+
+
+
+  static final headLine16cFFFFFFWorkSansW600 = GoogleFonts.workSans(
+  
+
+      color: Colors.white,
+fontSize: 16.sp,
+
+fontWeight: FontWeight.w600,
+  );
+
+
+
+
+
   static final headLine18c051F42PoppinsW600 = GoogleFonts.poppins(
     color: AppColors.c051F42,
     fontSize: 18.sp,
@@ -61,6 +77,13 @@ class TextFontStyle {
     color: AppColors.c979393,
     fontSize: 10.sp,
     fontWeight: FontWeight.w400,
+  );
+
+   static final headline30c27272AtyleWorkSansW700 = GoogleFonts.workSans(
+ color: const Color(0xFF27272A),
+fontSize: 30.sp,
+
+fontWeight: FontWeight.w700,
   );
 
   //Old
