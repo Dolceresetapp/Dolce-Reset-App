@@ -6,19 +6,18 @@ import 'package:gritti_app/common_widget/custom_button.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
-
+import 'package:numberpicker/numberpicker.dart';
 import '../../../common_widget/app_bar_widget.dart';
-import '../../../helpers/all_routes.dart';
-import '../../../helpers/navigation_service.dart';
 
-class OnboardingScreen6 extends StatefulWidget {
-  const OnboardingScreen6({super.key});
+class OnboardingScreen7 extends StatefulWidget {
+  const OnboardingScreen7({super.key});
 
   @override
-  State<OnboardingScreen6> createState() => _OnboardingScreen6State();
+  State<OnboardingScreen7> createState() => _OnboardingScreen7State();
 }
 
-class _OnboardingScreen6State extends State<OnboardingScreen6> {
+class _OnboardingScreen7State extends State<OnboardingScreen7> {
+  int _currentValue = 3;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +34,7 @@ class _OnboardingScreen6State extends State<OnboardingScreen6> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "You Can't Put Off Physical \n and Mental Health Any \n Longer",
-
+              "What is your height?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -45,14 +43,31 @@ class _OnboardingScreen6State extends State<OnboardingScreen6> {
               textAlign: TextAlign.center,
             ),
             UIHelper.verticalSpace(30.h),
-            Image.asset(
-              Assets.images.oboard6.path,
-              width: 1.sw,
-              height: 346.h,
-              fit: BoxFit.fill,
+
+            NumberPicker(
+              zeroPad: true,
+              itemWidth: double.infinity,
+              itemHeight: 100.h,
+              textStyle: TextFontStyle.headline30c27272AtyleWorkSansW700
+                  .copyWith(
+                    color: const Color(0xFF767EFF),
+                    fontSize: 96.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+              decoration: ShapeDecoration(
+                color: const Color(0xFFE5E9FF),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1.w, color: const Color(0xFF767EFF)),
+                  borderRadius: BorderRadius.circular(32.r),
+                ),
+              ),
+
+              value: _currentValue,
+              minValue: 0,
+              maxValue: 100,
+              onChanged: (value) => setState(() => _currentValue = value),
             ),
 
-            
             UIHelper.verticalSpace(10.h),
 
             Text(
@@ -73,7 +88,7 @@ class _OnboardingScreen6State extends State<OnboardingScreen6> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-              NavigationService.navigateToReplacement(Routes.onboardingScreen7);
+            //  NavigationService.navigateToReplacement(Routes.onboardingScreen2);
           },
           child: Row(
             spacing: 10.w,

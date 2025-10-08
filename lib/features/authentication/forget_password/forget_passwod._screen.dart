@@ -7,6 +7,8 @@ import 'package:gritti_app/constants/validation.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 import '../../../common_widget/custom_button.dart';
+import '../../../helpers/all_routes.dart';
+import '../../../helpers/navigation_service.dart';
 import '../../../helpers/toast.dart';
 import '../widgets/logo_widget.dart';
 
@@ -74,7 +76,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     } else {
                       _formKey.currentState!.reset();
                       ToastUtil.showShortToast("Otp Sent Successfully");
-                      //   NavigationService.navigateTo(Routes.)
+                      NavigationService.navigateTo(Routes.forgetOtpScreen);
                     }
                   },
                   child: Row(

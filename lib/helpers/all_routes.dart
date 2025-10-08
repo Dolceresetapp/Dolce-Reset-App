@@ -1,15 +1,18 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import '../features/authentication/forget_otp/forget_otp_screen.dart';
+import '../features/authentication/forget_password/forget_passwod._screen.dart';
 import '../features/authentication/reset_password/reset_password_screen.dart';
 import '../features/authentication/sign_up/sign_up_screen.dart';
 import '../features/authentication/signin/sign_in_screen.dart';
 import '../features/authentication/signup_otp/signup_otp_screen.dart';
+import '../features/onboarding/presentation/onboarding_screen_1.dart';
 import '../features/onboarding/presentation/onboarding_screen_2.dart';
 import '../features/onboarding/presentation/onboarding_screen_3.dart';
 import '../features/onboarding/presentation/onboarding_screen_4.dart';
 import '../features/onboarding/presentation/onboarding_screen_5.dart';
 import '../features/onboarding/presentation/onboarding_screen_6.dart';
+import '../features/onboarding/presentation/onboarding_screen_7.dart';
 import '../loading.dart';
 
 final class Routes {
@@ -31,13 +34,19 @@ final class Routes {
 
   static const String onboardingScreen2 = '/onboardingScreen2';
 
-    static const String onboardingScreen3 = '/onboardingScreen3';
-        static const String onboardingScreen4 = '/onboardingScreen4';
+  static const String onboardingScreen3 = '/onboardingScreen3';
+  static const String onboardingScreen4 = '/onboardingScreen4';
 
-        static const String onboardingScreen5 = '/onboardingScreen5';
+  static const String onboardingScreen5 = '/onboardingScreen5';
+
+  static const String onboardingScreen6 = '/onboardingScreen6';
+
+  static const String onboardingScreen7 = '/onboardingScreen7';
+
+  static const String onboardingScreen1 = '/onboardingScreen1';
 
 
-        static const String onboardingScreen6 = '/onboardingScreen6';
+  static const String forgetPasswordScreen = '/forgetPasswordScreen';
 }
 
 final class RouteGenerator {
@@ -48,68 +57,94 @@ final class RouteGenerator {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
 
-       case Routes.onboardingScreen6:
-       
+      case Routes.forgetPasswordScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const ForgetPasswordScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const ForgetPasswordScreen(),
+            );
+
+
+      case Routes.onboardingScreen1:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const OnboardingScreen1(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen1(),
+            );
+
+      case Routes.onboardingScreen7:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const OnboardingScreen7(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen7(),
+            );
+
+      case Routes.onboardingScreen6:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const OnboardingScreen6(),
               settings: settings,
             )
-            : CupertinoPageRoute(builder: (context) => const OnboardingScreen6());
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen6(),
+            );
 
-
-
-
-
-   case Routes.onboardingScreen5:
-       
+      case Routes.onboardingScreen5:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const OnboardingScreen5(),
               settings: settings,
             )
-            : CupertinoPageRoute(builder: (context) => const OnboardingScreen5());
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen5(),
+            );
 
-
-
-       case Routes.onboardingScreen4:
-       
+      case Routes.onboardingScreen4:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const OnboardingScreen4(),
               settings: settings,
             )
-            : CupertinoPageRoute(builder: (context) => const OnboardingScreen4());
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen4(),
+            );
 
-       case Routes.onboardingScreen3:
+      case Routes.onboardingScreen3:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const OnboardingScreen3(),
               settings: settings,
             )
-            : CupertinoPageRoute(builder: (context) => const OnboardingScreen3());
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen3(),
+            );
 
-
-
-       case Routes.onboardingScreen2:
+      case Routes.onboardingScreen2:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const OnboardingScreen2(),
               settings: settings,
             )
-            : CupertinoPageRoute(builder: (context) => const OnboardingScreen2());
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen2(),
+            );
 
-
-
-       case Routes.forgetOtpScreen:
+      case Routes.forgetOtpScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const ForgetOtpScreen(),
               settings: settings,
             )
             : CupertinoPageRoute(builder: (context) => const ForgetOtpScreen());
-
-
 
       case Routes.signupOtpScreen:
         return Platform.isAndroid

@@ -9,6 +9,8 @@ import 'package:gritti_app/helpers/ui_helpers.dart';
 import 'package:gritti_app/provider/reset_password_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../common_widget/custom_button.dart';
+import '../../../helpers/all_routes.dart';
+import '../../../helpers/navigation_service.dart';
 import '../../../helpers/toast.dart';
 import '../widgets/logo_widget.dart';
 
@@ -143,6 +145,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       _passwordController.clear();
                       _formKey.currentState!.reset();
                       ToastUtil.showShortToast("Reset Password Successfully");
+                      NavigationService.navigateToReplacement(
+                        Routes.signInScreen,
+                      );
                     }
                   },
                   child: Row(

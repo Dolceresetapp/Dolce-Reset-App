@@ -156,7 +156,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                     InkWell(
                       onTap: () {
-                        NavigationService.navigateTo(Routes.forgetOtpScreen);
+                        NavigationService.navigateTo(Routes.forgetPasswordScreen);
                       },
                       child: Text(
                         'Forgot Password',
@@ -185,6 +185,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       _passwordController.clear();
                       _formKey.currentState!.reset();
                       ToastUtil.showShortToast("Login Successfully");
+                     NavigationService.navigateToReplacement(Routes.onboardingScreen1);
                     }
                   },
                   child: Row(
