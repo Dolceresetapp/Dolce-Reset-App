@@ -11,20 +11,20 @@ import '../../../common_widget/app_bar_widget.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
 
-class OnboardingScreen3 extends StatefulWidget {
-  const OnboardingScreen3({super.key});
+class OnboardingScreen6 extends StatefulWidget {
+  const OnboardingScreen6({super.key});
 
   @override
-  State<OnboardingScreen3> createState() => _OnboardingScreen3State();
+  State<OnboardingScreen6> createState() => _OnboardingScreen6State();
 }
 
-class _OnboardingScreen3State extends State<OnboardingScreen3> {
+class _OnboardingScreen6State extends State<OnboardingScreen6> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 3, isBackIcon: true),
+        title: AppBarWidget(currentStep: 5, isBackIcon: true),
       ),
 
       body: SingleChildScrollView(
@@ -35,7 +35,8 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "You're One Step Away \n From Change",
+              "You Can't Put Off Physical \n and Mental Health Any \n Longer",
+
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -43,34 +44,23 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
               ),
               textAlign: TextAlign.center,
             ),
-
             UIHelper.verticalSpace(30.h),
-
             Image.asset(
-              Assets.images.onboarding3.path,
+              Assets.images.oboard6.path,
               width: 1.sw,
               height: 346.h,
               fit: BoxFit.fill,
             ),
 
+            
             UIHelper.verticalSpace(10.h),
 
             Text(
-              "At the end of the quiz you will \n receive the customized plan for \n free + a gift",
+              "I'm not very tech-savvy, but with \n this app I learned quickly and \n now I feel better.",
               textAlign: TextAlign.center,
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                color: const Color(0xFF27272A),
+                color: const Color.fromARGB(255, 31, 31, 32),
                 fontSize: 21.sp,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            UIHelper.verticalSpace(10.h),
-            Text(
-              textAlign: TextAlign.center,
-              "Carmela Greco, 49, Catania, January 22, 2025",
-              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                color: const Color(0xFF27272A),
-                fontSize: 14.sp,
 
                 fontWeight: FontWeight.w800,
               ),
@@ -83,7 +73,7 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen4);
+            //  NavigationService.navigateToReplacement(Routes.onboardingScreen2);
           },
           child: Row(
             spacing: 10.w,

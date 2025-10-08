@@ -89,7 +89,7 @@ class _OnboardingScreen5State extends State<OnboardingScreen5> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen2);
+            NavigationService.navigateToReplacement(Routes.onboardingScreen6);
           },
           child: Row(
             spacing: 10.w,

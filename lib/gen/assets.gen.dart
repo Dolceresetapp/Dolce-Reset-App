@@ -108,6 +108,9 @@ class $AssetsImagesGen {
   AssetGenImage get noImageAvailable =>
       const AssetGenImage('assets/images/no_image_available.png');
 
+  /// File path: assets/images/oboard6.png
+  AssetGenImage get oboard6 => const AssetGenImage('assets/images/oboard6.png');
+
   /// File path: assets/images/onboard_4_1.png
   AssetGenImage get onboard41 =>
       const AssetGenImage('assets/images/onboard_4_1.png');
@@ -163,6 +166,7 @@ class $AssetsImagesGen {
     logo,
     losttWeight,
     noImageAvailable,
+    oboard6,
     onboard41,
     onboard42,
     onboard43,
