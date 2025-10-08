@@ -14,6 +14,9 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/Icon.svg
+  String get icon => 'assets/icons/Icon.svg';
+
   /// File path: assets/icons/Monotone add (1).svg
   String get monotoneAdd1 => 'assets/icons/Monotone add (1).svg';
 
@@ -50,6 +53,7 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<String> get values => [
+    icon,
     monotoneAdd1,
     monotoneAdd2,
     monotoneAdd,
@@ -79,12 +83,27 @@ class $AssetsImagesGen {
   AssetGenImage get rectangle =>
       const AssetGenImage('assets/images/Rectangle.png');
 
+  /// File path: assets/images/into_shape.png
+  AssetGenImage get intoShape =>
+      const AssetGenImage('assets/images/into_shape.png');
+
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+
+  /// File path: assets/images/lostt_weight.png
+  AssetGenImage get losttWeight =>
+      const AssetGenImage('assets/images/lostt_weight.png');
 
   /// File path: assets/images/no_image_available.png
   AssetGenImage get noImageAvailable =>
       const AssetGenImage('assets/images/no_image_available.png');
+
+  /// File path: assets/images/reduce_pain.png
+  AssetGenImage get reducePain =>
+      const AssetGenImage('assets/images/reduce_pain.png');
+
+  /// File path: assets/images/slep.png
+  AssetGenImage get slep => const AssetGenImage('assets/images/slep.png');
 
   /// File path: assets/images/womens_bg.png
   AssetGenImage get womensBg =>
@@ -95,8 +114,12 @@ class $AssetsImagesGen {
     frame10,
     frame11,
     rectangle,
+    intoShape,
     logo,
+    losttWeight,
     noImageAvailable,
+    reducePain,
+    slep,
     womensBg,
   ];
 }

@@ -25,7 +25,12 @@ class CustomSvgAsset extends StatelessWidget {
       assetName,
       width: width ?? 60.w,
       height: height ?? 60.h,
-      color: color,
+
+      colorFilter: ColorFilter.mode(
+        color ?? Colors.transparent,
+        BlendMode.srcIn,
+      ),
+
       fit: fit ?? BoxFit.contain,
       semanticsLabel: semanticsLabel,
     );
