@@ -155,7 +155,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     Spacer(),
 
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        NavigationService.navigateTo(Routes.forgetOtpScreen);
+                      },
                       child: Text(
                         'Forgot Password',
                         textAlign: TextAlign.right,
@@ -180,9 +182,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     } else if (!ischecked) {
                       ToastUtil.showShortToast("Please check your box!!");
                     } else {
-                        _passwordController.clear();
+                      _passwordController.clear();
                       _formKey.currentState!.reset();
-                       ToastUtil.showShortToast("Login Successfully");
+                      ToastUtil.showShortToast("Login Successfully");
                     }
                   },
                   child: Row(

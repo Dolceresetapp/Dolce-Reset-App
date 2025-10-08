@@ -14,6 +14,15 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/Monotone add (1).svg
+  String get monotoneAdd1 => 'assets/icons/Monotone add (1).svg';
+
+  /// File path: assets/icons/Monotone add (2).svg
+  String get monotoneAdd2 => 'assets/icons/Monotone add (2).svg';
+
+  /// File path: assets/icons/Monotone add.svg
+  String get monotoneAdd => 'assets/icons/Monotone add.svg';
+
   /// File path: assets/icons/Or.svg
   String get or => 'assets/icons/Or.svg';
 
@@ -35,8 +44,15 @@ class $AssetsIconsGen {
   /// File path: assets/icons/eye_on.svg
   String get eyeOn => 'assets/icons/eye_on.svg';
 
+  /// File path: assets/icons/transport rocket diagonal.svg
+  String get transportRocketDiagonal =>
+      'assets/icons/transport rocket diagonal.svg';
+
   /// List of all assets
   List<String> get values => [
+    monotoneAdd1,
+    monotoneAdd2,
+    monotoneAdd,
     or,
     vector1,
     vector2,
@@ -44,6 +60,7 @@ class $AssetsIconsGen {
     vector4,
     eyeOff,
     eyeOn,
+    transportRocketDiagonal,
   ];
 }
 

@@ -193,6 +193,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       _passwordController.clear();
 
                       _formKey.currentState!.reset();
+
+                      NavigationService.navigateTo(Routes.signupOtpScreen);
                     }
                   },
                   child: Row(
