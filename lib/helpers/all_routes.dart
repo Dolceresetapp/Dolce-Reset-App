@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import '../features/authentication/reset_password/reset_password_screen.dart';
 import '../features/authentication/sign_up/sign_up_screen.dart';
 import '../features/authentication/signin/sign_in_screen.dart';
 import '../loading.dart';
@@ -11,9 +12,11 @@ final class Routes {
 
   static const String loadingScreen = '/Loading';
 
-    static const String signUpScreen = '/signUpScreen';
+  static const String signUpScreen = '/signUpScreen';
 
-     static const String signInScreen = '/signInScreen';
+  static const String signInScreen = '/signInScreen';
+
+  static const String resetPasswordScreen = '/resetPasswordScreen';
 }
 
 final class RouteGenerator {
@@ -23,23 +26,36 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-
-       case Routes.signInScreen:
+      case Routes.resetPasswordScreen:
         return Platform.isAndroid
-            ? _FadedTransitionRoute(widget: const SignInScreen(), settings: settings)
-            : CupertinoPageRoute(builder: (context) => const SignInScreen());
+            ? _FadedTransitionRoute(
+              widget: const ResetPasswordScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const ResetPasswordScreen(),
+            );
 
+      case Routes.signInScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const SignInScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(builder: (context) => const SignInScreen());
 
       case Routes.loadingScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(widget: const Loading(), settings: settings)
             : CupertinoPageRoute(builder: (context) => const Loading());
 
-             case Routes.signUpScreen:
+      case Routes.signUpScreen:
         return Platform.isAndroid
-            ? _FadedTransitionRoute(widget: const SignUpScreen(), settings: settings)
+            ? _FadedTransitionRoute(
+              widget: const SignUpScreen(),
+              settings: settings,
+            )
             : CupertinoPageRoute(builder: (context) => const SignUpScreen());
-
 
       default:
         return null;

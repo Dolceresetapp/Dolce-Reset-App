@@ -62,6 +62,9 @@ class $AssetsImagesGen {
   AssetGenImage get rectangle =>
       const AssetGenImage('assets/images/Rectangle.png');
 
+  /// File path: assets/images/logo.png
+  AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+
   /// File path: assets/images/no_image_available.png
   AssetGenImage get noImageAvailable =>
       const AssetGenImage('assets/images/no_image_available.png');
@@ -75,6 +78,7 @@ class $AssetsImagesGen {
     frame10,
     frame11,
     rectangle,
+    logo,
     noImageAvailable,
     womensBg,
   ];
