@@ -108,6 +108,10 @@ class $AssetsImagesGen {
   AssetGenImage get noImageAvailable =>
       const AssetGenImage('assets/images/no_image_available.png');
 
+  /// File path: assets/images/onboarding_3.png
+  AssetGenImage get onboarding3 =>
+      const AssetGenImage('assets/images/onboarding_3.png');
+
   /// File path: assets/images/reduce_pain.png
   AssetGenImage get reducePain =>
       const AssetGenImage('assets/images/reduce_pain.png');
@@ -135,6 +139,7 @@ class $AssetsImagesGen {
     logo,
     losttWeight,
     noImageAvailable,
+    onboarding3,
     reducePain,
     slep,
     wholeBody,

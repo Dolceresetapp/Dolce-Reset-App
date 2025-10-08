@@ -10,34 +10,21 @@ import 'package:gritti_app/helpers/ui_helpers.dart';
 import '../../../common_widget/app_bar_widget.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
-import '../widgets/tile_card_widget.dart';
 
-class OnboardingScreen2 extends StatefulWidget {
-  const OnboardingScreen2({super.key});
+class OnboardingScreen3 extends StatefulWidget {
+  const OnboardingScreen3({super.key});
 
   @override
-  State<OnboardingScreen2> createState() => _OnboardingScreen2State();
+  State<OnboardingScreen3> createState() => _OnboardingScreen3State();
 }
 
-class _OnboardingScreen2State extends State<OnboardingScreen2> {
-  List<Map<String, dynamic>> dataList = [
-    {"image": Assets.images.abdomen.path, "title": "Abdomen and face"},
-
-    {"image": Assets.images.legs.path, "title": "Legs"},
-
-    {"image": Assets.images.backPosture.path, "title": "Back / Posture"},
-
-    {"image": Assets.images.wholeBody.path, "title": "Whole body"},
-  ];
-
-  int? selectedIndex;
-
+class _OnboardingScreen3State extends State<OnboardingScreen3> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 2, isBackIcon: true),
+        title: AppBarWidget(currentStep: 1, isBackIcon: true),
       ),
 
       body: SingleChildScrollView(
@@ -48,7 +35,7 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "How much of the body \n does it last for 30 days?",
+              "You're One Step Away \n From Change",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -59,29 +46,35 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
 
             UIHelper.verticalSpace(30.h),
 
-            ListView.builder(
-              itemCount: dataList.length,
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (_, index) {
-                var data = dataList[index];
-                bool isChecked = selectedIndex == index;
-                return TileCardWidget(
-                  icon: data["image"],
-                  isChecked: isChecked,
-                  title: data["title"],
-                  onChanged: (value) {
-                    setState(() {
-                      if (selectedIndex == index) {
-                        selectedIndex = null;
-                      } else {
-                        selectedIndex = index;
-                      }
-                    });
-                  },
-                );
-              },
+            Image.asset(
+              Assets.images.onboarding3.path,
+              width: 1.sw,
+              height: 346.h,
+              fit: BoxFit.fill,
+            ),
+
+            UIHelper.verticalSpace(10.h),
+
+            Text(
+              "I'm not very tech-savvy, but with \n this app I learned quickly and \n now I feel better.",
+              textAlign: TextAlign.center,
+              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                color: const Color(0xFF27272A),
+                fontSize: 21.sp,
+
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            UIHelper.verticalSpace(10.h),
+            Text(
+              textAlign: TextAlign.center,
+              "Carmela Greco, 49, Catania, January 22, 2025",
+              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                color: const Color(0xFF27272A),
+                fontSize: 14.sp,
+
+                fontWeight: FontWeight.w800,
+              ),
             ),
           ],
         ),
@@ -91,7 +84,7 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen3);
+            NavigationService.navigateToReplacement(Routes.onboardingScreen2);
           },
           child: Row(
             spacing: 10.w,

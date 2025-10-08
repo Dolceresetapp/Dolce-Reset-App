@@ -48,11 +48,11 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "Did you feel it was necessary to immediately repair your body?",
+              "Did you feel it was \n necessary to immediately \n repair your body?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w800,
               ),
               textAlign: TextAlign.center,
             ),
