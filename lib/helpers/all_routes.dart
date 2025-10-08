@@ -5,6 +5,7 @@ import '../features/authentication/reset_password/reset_password_screen.dart';
 import '../features/authentication/sign_up/sign_up_screen.dart';
 import '../features/authentication/signin/sign_in_screen.dart';
 import '../features/authentication/signup_otp/signup_otp_screen.dart';
+import '../features/onboarding/presentation/onboarding_screen_2.dart';
 import '../loading.dart';
 
 final class Routes {
@@ -23,6 +24,8 @@ final class Routes {
   static const String signupOtpScreen = '/signupOtpScreen';
 
   static const String forgetOtpScreen = '/forgetOtpScreen';
+
+  static const String onboardingScreen2 = '/onboardingScreen2';
 }
 
 final class RouteGenerator {
@@ -32,6 +35,16 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
+
+       case Routes.onboardingScreen2:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const OnboardingScreen2(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(builder: (context) => const OnboardingScreen2());
+
+
 
        case Routes.forgetOtpScreen:
         return Platform.isAndroid

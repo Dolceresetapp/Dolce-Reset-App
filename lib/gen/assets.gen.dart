@@ -83,9 +83,19 @@ class $AssetsImagesGen {
   AssetGenImage get rectangle =>
       const AssetGenImage('assets/images/Rectangle.png');
 
+  /// File path: assets/images/abdomen.png
+  AssetGenImage get abdomen => const AssetGenImage('assets/images/abdomen.png');
+
+  /// File path: assets/images/back_posture.png
+  AssetGenImage get backPosture =>
+      const AssetGenImage('assets/images/back_posture.png');
+
   /// File path: assets/images/into_shape.png
   AssetGenImage get intoShape =>
       const AssetGenImage('assets/images/into_shape.png');
+
+  /// File path: assets/images/legs.png
+  AssetGenImage get legs => const AssetGenImage('assets/images/legs.png');
 
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
@@ -105,6 +115,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/slep.png
   AssetGenImage get slep => const AssetGenImage('assets/images/slep.png');
 
+  /// File path: assets/images/whole_body.png
+  AssetGenImage get wholeBody =>
+      const AssetGenImage('assets/images/whole_body.png');
+
   /// File path: assets/images/womens_bg.png
   AssetGenImage get womensBg =>
       const AssetGenImage('assets/images/womens_bg.png');
@@ -114,12 +128,16 @@ class $AssetsImagesGen {
     frame10,
     frame11,
     rectangle,
+    abdomen,
+    backPosture,
     intoShape,
+    legs,
     logo,
     losttWeight,
     noImageAvailable,
     reducePain,
     slep,
+    wholeBody,
     womensBg,
   ];
 }

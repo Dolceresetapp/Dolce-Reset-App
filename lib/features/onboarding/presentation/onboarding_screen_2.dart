@@ -12,22 +12,22 @@ import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
 import '../widgets/tile_card_widget.dart';
 
-class RepairBodyScreen extends StatefulWidget {
-  const RepairBodyScreen({super.key});
+class OnboardingScreen2 extends StatefulWidget {
+  const OnboardingScreen2({super.key});
 
   @override
-  State<RepairBodyScreen> createState() => _RepairBodyScreenState();
+  State<OnboardingScreen2> createState() => _OnboardingScreen2State();
 }
 
-class _RepairBodyScreenState extends State<RepairBodyScreen> {
+class _OnboardingScreen2State extends State<OnboardingScreen2> {
   List<Map<String, dynamic>> dataList = [
-    {"image": Assets.images.losttWeight.path, "title": "Lose Weight"},
+    {"image": Assets.images.abdomen.path, "title": "Abdomen and face"},
 
-    {"image": Assets.images.intoShape.path, "title": "Get back into shape"},
+    {"image": Assets.images.legs.path, "title": "Legs"},
 
-    {"image": Assets.images.slep.path, "title": "Improve sleep/energy"},
+    {"image": Assets.images.backPosture.path, "title": "Back / Posture"},
 
-    {"image": Assets.images.reducePain.path, "title": "Reduce pain/stiffness"},
+    {"image": Assets.images.wholeBody.path, "title": "Whole body"},
   ];
 
   int? selectedIndex;
@@ -37,7 +37,7 @@ class _RepairBodyScreenState extends State<RepairBodyScreen> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 1, maxSteps: 15, isBackIcon: true),
+        title: AppBarWidget(currentStep: 2, isBackIcon: true),
       ),
 
       body: SingleChildScrollView(
