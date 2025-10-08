@@ -108,6 +108,30 @@ class $AssetsImagesGen {
   AssetGenImage get noImageAvailable =>
       const AssetGenImage('assets/images/no_image_available.png');
 
+  /// File path: assets/images/onboard_4_1.png
+  AssetGenImage get onboard41 =>
+      const AssetGenImage('assets/images/onboard_4_1.png');
+
+  /// File path: assets/images/onboard_4_2.png
+  AssetGenImage get onboard42 =>
+      const AssetGenImage('assets/images/onboard_4_2.png');
+
+  /// File path: assets/images/onboard_4_3.png
+  AssetGenImage get onboard43 =>
+      const AssetGenImage('assets/images/onboard_4_3.png');
+
+  /// File path: assets/images/onboard_5_1.png
+  AssetGenImage get onboard51 =>
+      const AssetGenImage('assets/images/onboard_5_1.png');
+
+  /// File path: assets/images/onboard_5_2.png
+  AssetGenImage get onboard52 =>
+      const AssetGenImage('assets/images/onboard_5_2.png');
+
+  /// File path: assets/images/onboard_5_3.png
+  AssetGenImage get onboard53 =>
+      const AssetGenImage('assets/images/onboard_5_3.png');
+
   /// File path: assets/images/onboarding_3.png
   AssetGenImage get onboarding3 =>
       const AssetGenImage('assets/images/onboarding_3.png');
@@ -139,6 +163,12 @@ class $AssetsImagesGen {
     logo,
     losttWeight,
     noImageAvailable,
+    onboard41,
+    onboard42,
+    onboard43,
+    onboard51,
+    onboard52,
+    onboard53,
     onboarding3,
     reducePain,
     slep,
