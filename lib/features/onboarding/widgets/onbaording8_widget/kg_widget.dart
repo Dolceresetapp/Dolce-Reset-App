@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ruler/flutter_ruler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
-import '../../../../common_widget/custom_button.dart';
 import '../../../../constants/text_font_style.dart';
-import '../../../../gen/assets.gen.dart';
-import '../../../../helpers/all_routes.dart';
-import '../../../../helpers/navigation_service.dart';
 
 class KgWidget extends StatelessWidget {
   final int kgValue;
@@ -87,29 +82,7 @@ class KgWidget extends StatelessWidget {
         ],
       ),
 
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: CustomButton(
-        onPressed: () {
-          NavigationService.navigateToReplacement(Routes.onboardingScreen7);
-        },
-        child: Row(
-          spacing: 10.w,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Continue",
-              style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
-            ),
-
-            SvgPicture.asset(
-              Assets.icons.vector1,
-              width: 20.w,
-              height: 20.h,
-              fit: BoxFit.cover,
-            ),
-          ],
-        ),
-      ),
+     
     );
   }
 }

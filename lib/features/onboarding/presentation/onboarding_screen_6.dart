@@ -24,7 +24,7 @@ class _OnboardingScreen6State extends State<OnboardingScreen6> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 5, isBackIcon: true),
+        title: AppBarWidget(currentStep: 6, isBackIcon: true),
       ),
 
       body: SingleChildScrollView(

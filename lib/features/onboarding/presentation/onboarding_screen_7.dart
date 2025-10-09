@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/features/onboarding/widgets/onbaording7_widget/cm_widget.dart';
 import 'package:gritti_app/features/onboarding/widgets/onbaording7_widget/inch_widget.dart';
+import 'package:gritti_app/gen/assets.gen.dart';
 
 import '../../../common_widget/app_bar_widget.dart';
 import '../../../common_widget/custom_app_bar.dart';
+import '../../../common_widget/custom_button.dart';
 import '../../../constants/text_font_style.dart';
 import '../../../gen/colors.gen.dart';
+import '../../../helpers/all_routes.dart';
+import '../../../helpers/navigation_service.dart';
 
 class OnboardingScreen7 extends StatefulWidget {
   const OnboardingScreen7({super.key});
@@ -106,6 +111,32 @@ class _OnboardingScreen7State extends State<OnboardingScreen7> {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: CustomButton(
+          onPressed: () {
+            NavigationService.navigateToReplacement(Routes.onboardingScreen8);
+          },
+          child: Row(
+            spacing: 10.w,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Continue",
+                style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+              ),
+
+              SvgPicture.asset(
+                Assets.icons.vector1,
+                width: 20.w,
+                height: 20.h,
+                fit: BoxFit.cover,
+              ),
+            ],
           ),
         ),
       ),

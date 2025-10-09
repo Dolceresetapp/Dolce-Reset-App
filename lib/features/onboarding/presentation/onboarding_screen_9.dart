@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/features/onboarding/widgets/onbaording8_widget/ibs_widget.dart';
 import 'package:gritti_app/features/onboarding/widgets/onbaording8_widget/kg_widget.dart';
+import 'package:gritti_app/helpers/toast.dart';
 
 import '../../../common_widget/app_bar_widget.dart';
 import '../../../common_widget/custom_app_bar.dart';
@@ -12,17 +13,15 @@ import '../../../common_widget/custom_button.dart';
 import '../../../constants/text_font_style.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../gen/colors.gen.dart';
-import '../../../helpers/all_routes.dart';
-import '../../../helpers/navigation_service.dart';
 
-class OnboardingScreen8 extends StatefulWidget {
-  const OnboardingScreen8({super.key});
+class OnboardingScreen9 extends StatefulWidget {
+  const OnboardingScreen9({super.key});
 
   @override
-  State<OnboardingScreen8> createState() => _OnboardingScreen8State();
+  State<OnboardingScreen9> createState() => _OnboardingScreen9State();
 }
 
-class _OnboardingScreen8State extends State<OnboardingScreen8> {
+class _OnboardingScreen9State extends State<OnboardingScreen9> {
   int ibsValue = 162;
 
   int kgValue = 300;
@@ -33,7 +32,7 @@ class _OnboardingScreen8State extends State<OnboardingScreen8> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 8, isBackIcon: true),
+        title: AppBarWidget(currentStep: 9, isBackIcon: true),
       ),
       body: DefaultTabController(
         length: 2,
@@ -45,7 +44,9 @@ class _OnboardingScreen8State extends State<OnboardingScreen8> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "What is your weight?",
+                  "What is your target weight?",
+                  textAlign: TextAlign.center,
+
                   style: TextFontStyle.headline30c27272AtyleWorkSansW700
                       .copyWith(
                         color: const Color(0xFF27272A),
@@ -104,13 +105,13 @@ class _OnboardingScreen8State extends State<OnboardingScreen8> {
           ),
         ),
       ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen9);
+            ToastUtil.showShortToast("Next screen is  working");
+            //  NavigationService.navigateToReplacement(Routes.onboardingScreen7);
           },
           child: Row(
             spacing: 10.w,

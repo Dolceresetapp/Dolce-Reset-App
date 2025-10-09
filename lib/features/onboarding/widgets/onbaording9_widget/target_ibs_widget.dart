@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ruler/flutter_ruler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:gritti_app/helpers/ui_helpers.dart';
+
 import '../../../../constants/text_font_style.dart';
 
-class IbsWidget extends StatelessWidget {
+
+class TargetIbsWidget extends StatelessWidget {
   final int ibsValue;
 
-  const IbsWidget({super.key, required this.ibsValue});
+
+  const TargetIbsWidget({super.key, required this.ibsValue});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +54,7 @@ class IbsWidget extends StatelessWidget {
           UIHelper.verticalSpace(20.h),
 
           FlutterRuler(
-            minValue: 120,
+            minValue: 120, 
             maxValue: ibsValue,
             rulerWidth: double.infinity,
             rulerHeight: 140.h,
@@ -81,6 +85,8 @@ class IbsWidget extends StatelessWidget {
           ),
         ],
       ),
+
+    
     );
   }
 }

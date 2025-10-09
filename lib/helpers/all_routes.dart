@@ -13,6 +13,8 @@ import '../features/onboarding/presentation/onboarding_screen_4.dart';
 import '../features/onboarding/presentation/onboarding_screen_5.dart';
 import '../features/onboarding/presentation/onboarding_screen_6.dart';
 import '../features/onboarding/presentation/onboarding_screen_7.dart';
+import '../features/onboarding/presentation/onboarding_screen_8.dart';
+import '../features/onboarding/presentation/onboarding_screen_9.dart';
 import '../loading.dart';
 
 final class Routes {
@@ -47,6 +49,10 @@ final class Routes {
 
 
   static const String forgetPasswordScreen = '/forgetPasswordScreen';
+
+   static const String onboardingScreen8 = '/onboardingScreen8';
+
+   static const String onboardingScreen9 = '/onboardingScreen9';
 }
 
 final class RouteGenerator {
@@ -77,6 +83,32 @@ final class RouteGenerator {
             : CupertinoPageRoute(
               builder: (context) => const OnboardingScreen1(),
             );
+
+            
+
+ case Routes.onboardingScreen9:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const OnboardingScreen9(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen9(),
+            );
+
+
+
+  case Routes.onboardingScreen8:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const OnboardingScreen8(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen8(),
+            );
+
+
 
       case Routes.onboardingScreen7:
         return Platform.isAndroid
