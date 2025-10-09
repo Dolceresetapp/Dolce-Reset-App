@@ -6,25 +6,47 @@ import 'package:gritti_app/common_widget/custom_button.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
-
 import '../../../common_widget/app_bar_widget.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
+import '../widgets/tile_card_widget.dart';
 
-class OnboardingScreen11 extends StatefulWidget {
-  const OnboardingScreen11({super.key});
+class OnboardingScreen12 extends StatefulWidget {
+  const OnboardingScreen12({super.key});
 
   @override
-  State<OnboardingScreen11> createState() => _OnboardingScreen11State();
+  State<OnboardingScreen12> createState() => _OnboardingScreen12State();
 }
 
-class _OnboardingScreen11State extends State<OnboardingScreen11> {
+class _OnboardingScreen12State extends State<OnboardingScreen12> {
+  List<Map<String, dynamic>> dataList = [
+    {
+      "image": Assets.images.noboard121.path,
+      "title": "May proveto",
+      "subtitle": "It's my first attempt",
+    },
+
+    {
+      "image": Assets.images.noboard122.path,
+      "title": "A few months",
+      "subtitle": "I just started",
+    },
+
+    {
+      "image": Assets.images.noboard123.path,
+      "title": "Years",
+      "subtitle": "Problem that has been present for years",
+    },
+  ];
+
+  int? selectedIndex;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 11, isBackIcon: true),
+        title: AppBarWidget(currentStep: 12, isBackIcon: true),
       ),
 
       body: SingleChildScrollView(
@@ -35,7 +57,7 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "You have great potential to smash any finish line",
+              "Did you find solutions to solve your problem?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -46,46 +68,30 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
 
             UIHelper.verticalSpace(30.h),
 
-            Image.asset(
-              Assets.images.pnboard11.path,
-              width: 1.sw,
-              height: 346.h,
-              fit: BoxFit.fill,
-            ),
-
-            UIHelper.verticalSpace(10.h),
-
-            Text.rich(
-              textAlign: TextAlign.center,
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'RESULT: Profile Similar to Ours \n',
-                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                      color: const Color(0xFF27272A),
-                      fontSize: 21.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'Successes: Excellent Chances Of \n',
-
-                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                      color: const Color(0xFFF4349D),
-                      fontSize: 21.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'Achieve Your Goals!',
-                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                      color: const Color(0xFF27272A),
-                      fontSize: 21.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
+            ListView.builder(
+              itemCount: dataList.length,
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (_, index) {
+                var data = dataList[index];
+                bool isChecked = selectedIndex == index;
+                return TileCardWidget(
+                  subtitle: data["subtitle"],
+                  icon: data["image"],
+                  isChecked: isChecked,
+                  title: data["title"],
+                  onChanged: (value) {
+                    setState(() {
+                      if (selectedIndex == index) {
+                        selectedIndex = null;
+                      } else {
+                        selectedIndex = index;
+                      }
+                    });
+                  },
+                );
+              },
             ),
           ],
         ),
@@ -95,7 +101,7 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen4);
+            NavigationService.navigateToReplacement(Routes.onboardingScreen5);
           },
           child: Row(
             spacing: 10.w,

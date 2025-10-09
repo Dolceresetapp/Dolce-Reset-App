@@ -116,6 +116,18 @@ class $AssetsImagesGen {
   AssetGenImage get noImageAvailable =>
       const AssetGenImage('assets/images/no_image_available.png');
 
+  /// File path: assets/images/noboard_12_1.png
+  AssetGenImage get noboard121 =>
+      const AssetGenImage('assets/images/noboard_12_1.png');
+
+  /// File path: assets/images/noboard_12_2.png
+  AssetGenImage get noboard122 =>
+      const AssetGenImage('assets/images/noboard_12_2.png');
+
+  /// File path: assets/images/noboard_12_3.png
+  AssetGenImage get noboard123 =>
+      const AssetGenImage('assets/images/noboard_12_3.png');
+
   /// File path: assets/images/oboard6.png
   AssetGenImage get oboard6 => const AssetGenImage('assets/images/oboard6.png');
 
@@ -178,6 +190,9 @@ class $AssetsImagesGen {
     logo,
     losttWeight,
     noImageAvailable,
+    noboard121,
+    noboard122,
+    noboard123,
     oboard6,
     onboard41,
     onboard42,

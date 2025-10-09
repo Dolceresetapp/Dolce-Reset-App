@@ -6,6 +6,7 @@ import '../../../constants/text_font_style.dart';
 class TileCardWidget extends StatelessWidget {
   final String icon;
   final String title;
+  final String? subtitle;
   final bool isChecked;
   final ValueChanged<bool?> onChanged;
   const TileCardWidget({
@@ -14,6 +15,7 @@ class TileCardWidget extends StatelessWidget {
     required this.isChecked,
     required this.title,
     required this.onChanged,
+    this.subtitle,
   });
 
   @override
@@ -25,9 +27,13 @@ class TileCardWidget extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 12.h),
         padding: EdgeInsets.all(16.sp),
         decoration: ShapeDecoration(
-          color: const Color(0xFFFAFAFA),
+          color: isChecked ? const Color(0xFFE5E8FF) : const Color(0xFFFAFAFA),
           shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1.w, color: const Color(0xFFE4E4E7)),
+            side: BorderSide(
+              width: 1.w,
+              color:
+                  isChecked ? const Color(0xFF767EFF) : const Color(0xFFE4E4E7),
+            ),
             borderRadius: BorderRadius.circular(20.r),
           ),
         ),
@@ -39,13 +45,32 @@ class TileCardWidget extends StatelessWidget {
             Image.asset(icon, width: 48.w, height: 48.h, fit: BoxFit.fill),
 
             // Title
-            Text(
-              title,
-              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                color: const Color(0xFF27272A),
-                fontWeight: FontWeight.w600,
+            Expanded(
+              child: Column(
+                spacing: 4.h,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                      color: const Color(0xFF27272A),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+
+                  Text(
+                    subtitle ?? "",
+                    maxLines: 2,
+                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                      color: const Color(0xFF52525B),
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
               ),
             ),
+
             Spacer(),
 
             MSHCheckbox(
