@@ -30,7 +30,6 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: onPressed,
-
       padding:
           padding ?? EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
       minWidth: minWidth ?? 1.sw,

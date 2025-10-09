@@ -427,6 +427,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.30"
+  flutter_ruler:
+    dependency: "direct main"
+    description:
+      name: flutter_ruler
+      sha256: "942d0c25b73c4251446ad2bd07fffce24ea23b019133384cc520c1d6ebeb2c19"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   flutter_screenutil:
     dependency: "direct main"
     description:
