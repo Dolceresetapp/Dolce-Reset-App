@@ -41,11 +41,17 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Vector (4).svg
   String get vector4 => 'assets/icons/Vector (4).svg';
 
+  /// File path: assets/icons/apple_icon.svg
+  String get appleIcon => 'assets/icons/apple_icon.svg';
+
   /// File path: assets/icons/eye_off.svg
   String get eyeOff => 'assets/icons/eye_off.svg';
 
   /// File path: assets/icons/eye_on.svg
   String get eyeOn => 'assets/icons/eye_on.svg';
+
+  /// File path: assets/icons/logos_facebook.svg
+  String get logosFacebook => 'assets/icons/logos_facebook.svg';
 
   /// File path: assets/icons/transport rocket diagonal.svg
   String get transportRocketDiagonal =>
@@ -62,8 +68,10 @@ class $AssetsIconsGen {
     vector2,
     vector3,
     vector4,
+    appleIcon,
     eyeOff,
     eyeOn,
+    logosFacebook,
     transportRocketDiagonal,
   ];
 }

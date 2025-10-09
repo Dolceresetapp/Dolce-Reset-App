@@ -156,7 +156,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
                     InkWell(
                       onTap: () {
-                        NavigationService.navigateTo(Routes.forgetPasswordScreen);
+                        NavigationService.navigateTo(
+                          Routes.forgetPasswordScreen,
+                        );
                       },
                       child: Text(
                         'Forgot Password',
@@ -185,7 +187,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       _passwordController.clear();
                       _formKey.currentState!.reset();
                       ToastUtil.showShortToast("Login Successfully");
-                     NavigationService.navigateToReplacement(Routes.onboardingScreen1);
+                      NavigationService.navigateToReplacement(
+                        Routes.onboardingScreen1,
+                      );
                     }
                   },
                   child: Row(
@@ -232,6 +236,60 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       Text(
                         "Sign In With Google",
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                      ),
+                    ],
+                  ),
+                ),
+
+                UIHelper.verticalSpace(16.h),
+
+                CustomButton(
+                  color: Color(0xFF000000),
+                  onPressed: () {
+                    NavigationService.navigateToReplacement(
+                      Routes.signUpScreen,
+                    );
+                  },
+                  child: Row(
+                    spacing: 10.w,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        Assets.icons.logosFacebook,
+                        width: 20.w,
+                        height: 20.h,
+                        fit: BoxFit.cover,
+                      ),
+                      Text(
+                        "Sign In With Facebook",
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                      ),
+                    ],
+                  ),
+                ),
+
+                UIHelper.verticalSpace(16.h),
+
+                CustomButton(
+                  color: Color(0xFF000000),
+                  onPressed: () {
+                    NavigationService.navigateToReplacement(
+                      Routes.signUpScreen,
+                    );
+                  },
+                  child: Row(
+                    spacing: 10.w,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        Assets.icons.appleIcon,
+                        width: 20.w,
+                        height: 20.h,
+                        fit: BoxFit.cover,
+                      ),
+                      Text(
+                        "Sign In With Apple",
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                       ),
                     ],
