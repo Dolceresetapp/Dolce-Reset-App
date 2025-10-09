@@ -13,6 +13,8 @@ import '../../../common_widget/custom_button.dart';
 import '../../../constants/text_font_style.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../gen/colors.gen.dart';
+import '../../../helpers/all_routes.dart';
+import '../../../helpers/navigation_service.dart';
 
 class OnboardingScreen9 extends StatefulWidget {
   const OnboardingScreen9({super.key});
@@ -110,8 +112,8 @@ class _OnboardingScreen9State extends State<OnboardingScreen9> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            ToastUtil.showShortToast("Next screen is  working");
-            //  NavigationService.navigateToReplacement(Routes.onboardingScreen7);
+      
+              NavigationService.navigateToReplacement(Routes.onboardingScreen10);
           },
           child: Row(
             spacing: 10.w,

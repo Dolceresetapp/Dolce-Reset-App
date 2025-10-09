@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '/helpers/all_routes.dart';
 import 'features/onboarding/presentation/onboarding_screen_11.dart';
 import 'features/onboarding/presentation/onboarding_screen_12.dart';
+import 'features/onboarding/presentation/onboarding_screen_13.dart';
 import 'gen/colors.gen.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
@@ -82,7 +83,7 @@ class UtillScreenMobile extends StatelessWidget {
             },
             navigatorKey: NavigationService.navigatorKey,
             onGenerateRoute: RouteGenerator.generateRoute,
-            home: OnboardingScreen12(),
+            home: OnboardingScreen13(),
           ),
         );
       },

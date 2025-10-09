@@ -11,31 +11,27 @@ import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
 import '../widgets/tile_card_widget.dart';
 
-class OnboardingScreen12 extends StatefulWidget {
-  const OnboardingScreen12({super.key});
+class OnboardingScreen13 extends StatefulWidget {
+  const OnboardingScreen13({super.key});
 
   @override
-  State<OnboardingScreen12> createState() => _OnboardingScreen12State();
+  State<OnboardingScreen13> createState() => _OnboardingScreen13State();
 }
 
-class _OnboardingScreen12State extends State<OnboardingScreen12> {
+class _OnboardingScreen13State extends State<OnboardingScreen13> {
   List<Map<String, dynamic>> dataList = [
+    {"image": Assets.images.onboard131.path, "title": "have a big party"},
+
+    {"image": Assets.images.onboard132.path, "title": "have a fun trip"},
+
     {
-      "image": Assets.images.noboard121.path,
-      "title": "May proveto",
-      "subtitle": "It's my first attempt",
+      "image": Assets.images.onboard133.path,
+      "title": "Going out for a special dinner",
     },
 
     {
-      "image": Assets.images.noboard122.path,
-      "title": "A few months",
-      "subtitle": "I just started",
-    },
-
-    {
-      "image": Assets.images.noboard123.path,
-      "title": "Years",
-      "subtitle": "Problem that has been present for years",
+      "image": Assets.images.onboard134.path,
+      "title": "Going out for a special dinner",
     },
   ];
 
@@ -46,7 +42,7 @@ class _OnboardingScreen12State extends State<OnboardingScreen12> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 12, isBackIcon: true),
+        title: AppBarWidget(currentStep: 13, isBackIcon: true),
       ),
 
       body: SingleChildScrollView(
@@ -57,7 +53,7 @@ class _OnboardingScreen12State extends State<OnboardingScreen12> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "Did you find solutions to solve your problem?",
+              "how will you celebrate when you reach your goals?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -81,6 +77,7 @@ class _OnboardingScreen12State extends State<OnboardingScreen12> {
                   icon: data["image"],
                   isChecked: isChecked,
                   title: data["title"],
+                  isSubtitle: true,
                   onChanged: (value) {
                     setState(() {
                       if (selectedIndex == index) {
@@ -101,7 +98,7 @@ class _OnboardingScreen12State extends State<OnboardingScreen12> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen13);
+            NavigationService.navigateToReplacement(Routes.onboardingScreen5);
           },
           child: Row(
             spacing: 10.w,

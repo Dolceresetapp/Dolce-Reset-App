@@ -7,6 +7,10 @@ import '../features/authentication/sign_up/sign_up_screen.dart';
 import '../features/authentication/signin/sign_in_screen.dart';
 import '../features/authentication/signup_otp/signup_otp_screen.dart';
 import '../features/onboarding/presentation/onboarding_screen_1.dart';
+import '../features/onboarding/presentation/onboarding_screen_10.dart';
+import '../features/onboarding/presentation/onboarding_screen_11.dart';
+import '../features/onboarding/presentation/onboarding_screen_12.dart';
+import '../features/onboarding/presentation/onboarding_screen_13.dart';
 import '../features/onboarding/presentation/onboarding_screen_2.dart';
 import '../features/onboarding/presentation/onboarding_screen_3.dart';
 import '../features/onboarding/presentation/onboarding_screen_4.dart';
@@ -47,12 +51,18 @@ final class Routes {
 
   static const String onboardingScreen1 = '/onboardingScreen1';
 
-
   static const String forgetPasswordScreen = '/forgetPasswordScreen';
 
-   static const String onboardingScreen8 = '/onboardingScreen8';
+  static const String onboardingScreen8 = '/onboardingScreen8';
 
-   static const String onboardingScreen9 = '/onboardingScreen9';
+  static const String onboardingScreen9 = '/onboardingScreen9';
+
+  static const String onboardingScreen12 = '/onboardingScreen12';
+  static const String onboardingScreen11 = '/onboardingScreen11';
+
+    static const String onboardingScreen10 = '/onboardingScreen10';
+
+     static const String onboardingScreen13 = '/onboardingScreen13';
 }
 
 final class RouteGenerator {
@@ -62,6 +72,48 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
+
+       case Routes.onboardingScreen13:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const OnboardingScreen13(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen13(),
+            );
+
+
+      case Routes.onboardingScreen11:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const OnboardingScreen11(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen11(),
+            );
+
+              case Routes.onboardingScreen10:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const OnboardingScreen10(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen10(),
+            );
+
+
+      case Routes.onboardingScreen12:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const OnboardingScreen12(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen12(),
+            );
 
       case Routes.forgetPasswordScreen:
         return Platform.isAndroid
@@ -73,7 +125,6 @@ final class RouteGenerator {
               builder: (context) => const ForgetPasswordScreen(),
             );
 
-
       case Routes.onboardingScreen1:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
@@ -84,9 +135,7 @@ final class RouteGenerator {
               builder: (context) => const OnboardingScreen1(),
             );
 
-            
-
- case Routes.onboardingScreen9:
+      case Routes.onboardingScreen9:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const OnboardingScreen9(),
@@ -96,9 +145,7 @@ final class RouteGenerator {
               builder: (context) => const OnboardingScreen9(),
             );
 
-
-
-  case Routes.onboardingScreen8:
+      case Routes.onboardingScreen8:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const OnboardingScreen8(),
@@ -107,8 +154,6 @@ final class RouteGenerator {
             : CupertinoPageRoute(
               builder: (context) => const OnboardingScreen8(),
             );
-
-
 
       case Routes.onboardingScreen7:
         return Platform.isAndroid

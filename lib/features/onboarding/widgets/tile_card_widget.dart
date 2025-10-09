@@ -8,6 +8,7 @@ class TileCardWidget extends StatelessWidget {
   final String title;
   final String? subtitle;
   final bool isChecked;
+  final bool? isSubtitle;
   final ValueChanged<bool?> onChanged;
   const TileCardWidget({
     super.key,
@@ -15,6 +16,7 @@ class TileCardWidget extends StatelessWidget {
     required this.isChecked,
     required this.title,
     required this.onChanged,
+    this.isSubtitle = false,
     this.subtitle,
   });
 
@@ -41,6 +43,8 @@ class TileCardWidget extends StatelessWidget {
         child: Row(
           spacing: 12.w,
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+
           children: [
             Image.asset(icon, width: 48.w, height: 48.h, fit: BoxFit.fill),
 
@@ -49,6 +53,10 @@ class TileCardWidget extends StatelessWidget {
               child: Column(
                 spacing: 4.h,
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment:
+                    (isSubtitle ?? false)
+                        ? MainAxisAlignment.center
+                        : MainAxisAlignment.center,
                 children: [
                   Text(
                     title,

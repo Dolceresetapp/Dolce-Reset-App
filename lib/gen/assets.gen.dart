@@ -131,6 +131,22 @@ class $AssetsImagesGen {
   /// File path: assets/images/oboard6.png
   AssetGenImage get oboard6 => const AssetGenImage('assets/images/oboard6.png');
 
+  /// File path: assets/images/onboard_13_1.png
+  AssetGenImage get onboard131 =>
+      const AssetGenImage('assets/images/onboard_13_1.png');
+
+  /// File path: assets/images/onboard_13_2.png
+  AssetGenImage get onboard132 =>
+      const AssetGenImage('assets/images/onboard_13_2.png');
+
+  /// File path: assets/images/onboard_13_3.png
+  AssetGenImage get onboard133 =>
+      const AssetGenImage('assets/images/onboard_13_3.png');
+
+  /// File path: assets/images/onboard_13_4.png
+  AssetGenImage get onboard134 =>
+      const AssetGenImage('assets/images/onboard_13_4.png');
+
   /// File path: assets/images/onboard_4_1.png
   AssetGenImage get onboard41 =>
       const AssetGenImage('assets/images/onboard_4_1.png');
@@ -194,6 +210,10 @@ class $AssetsImagesGen {
     noboard122,
     noboard123,
     oboard6,
+    onboard131,
+    onboard132,
+    onboard133,
+    onboard134,
     onboard41,
     onboard42,
     onboard43,
