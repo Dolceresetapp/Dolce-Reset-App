@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names, unnecessary_string_interpolations
 
 // const String url = String.fromEnvironment("BASE_URL");
-const String url = "https://poswell.app";
+const String url = "https://griti.softvencefsd.xyz/api";
 // ignore: unnecessary_brace_in_string_interps
 const String imageUrl = "${url}";
 
@@ -27,7 +27,10 @@ final class Endpoints {
   Endpoints._();
   //backend_url
   //New
-  static String signUp() => "/api/register";
+  static String signUp() => "/register";
+
+
+
   static String logIn() => "/api/login";
   static String logout() => "/api/logout";
   static String getBabyProfile() => "/api/baby/profile/show";

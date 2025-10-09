@@ -147,6 +147,10 @@ class $AssetsImagesGen {
   AssetGenImage get onboarding3 =>
       const AssetGenImage('assets/images/onboarding_3.png');
 
+  /// File path: assets/images/pnboard11.png
+  AssetGenImage get pnboard11 =>
+      const AssetGenImage('assets/images/pnboard11.png');
+
   /// File path: assets/images/reduce_pain.png
   AssetGenImage get reducePain =>
       const AssetGenImage('assets/images/reduce_pain.png');
@@ -182,6 +186,7 @@ class $AssetsImagesGen {
     onboard52,
     onboard53,
     onboarding3,
+    pnboard11,
     reducePain,
     slep,
     wholeBody,
