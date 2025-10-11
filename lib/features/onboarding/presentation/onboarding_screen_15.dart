@@ -3,31 +3,32 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/common_widget/custom_app_bar.dart';
 import 'package:gritti_app/common_widget/custom_button.dart';
+import 'package:gritti_app/constants/app_constants.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/di.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
-
 import '../../../common_widget/app_bar_widget.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
 import '../widgets/tile_card_widget.dart';
 
-class OnboardingScreen1 extends StatefulWidget {
-  const OnboardingScreen1({super.key});
+class OnboardingScreen15 extends StatefulWidget {
+  const OnboardingScreen15({super.key});
 
   @override
-  State<OnboardingScreen1> createState() => _OnboardingScreen1State();
+  State<OnboardingScreen15> createState() => _OnboardingScreen15State();
 }
 
-class _OnboardingScreen1State extends State<OnboardingScreen1> {
+class _OnboardingScreen15State extends State<OnboardingScreen15> {
   List<Map<String, dynamic>> dataList = [
-    {"image": Assets.images.losttWeight.path, "title": "Lose Weight"},
+    {"image": Assets.images.onboard151.path, "title": "Very satisfied"},
 
-    {"image": Assets.images.intoShape.path, "title": "Get back into shape"},
+    {"image": Assets.images.onboard152.path, "title": "Quite satisfied"},
 
-    {"image": Assets.images.slep.path, "title": "Improve sleep/energy"},
+    {"image": Assets.images.onboard153.path, "title": "Not very satisfied"},
 
-    {"image": Assets.images.reducePain.path, "title": "Reduce pain/stiffness"},
+    {"image": Assets.images.onboard154.path, "title": "Not at all satisfied"},
   ];
 
   int? selectedIndex;
@@ -37,7 +38,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 1, isBackIcon: true),
+        title: AppBarWidget(currentStep: 15, isBackIcon: true),
       ),
 
       body: SingleChildScrollView(
@@ -48,7 +49,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "Did you feel it was \n necessary to immediately \n repair your body?",
+              "how will you celebrate when you reach your goals?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -68,10 +69,10 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
                 var data = dataList[index];
                 bool isChecked = selectedIndex == index;
                 return TileCardWidget(
-                  isSubtitle: false,
                   icon: data["image"],
                   isChecked: isChecked,
                   title: data["title"],
+                  isSubtitle: true,
                   onChanged: (value) {
                     setState(() {
                       if (selectedIndex == index) {
@@ -92,7 +93,8 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen2);
+            appData.write(kKeyIsFirstTime, false);
+            NavigationService.navigateToReplacement(Routes.signUpScreen);
           },
           child: Row(
             spacing: 10.w,

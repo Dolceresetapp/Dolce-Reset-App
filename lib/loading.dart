@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gritti_app/features/onboarding/presentation/one_time_onboarding/onboard_screen_1.dart';
 import 'constants/app_constants.dart';
 import 'features/get_started/get_started_screen.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
 import 'networks/dio/dio.dart';
 import 'splash_screen.dart';
-
 
 final class Loading extends StatefulWidget {
   const Loading({super.key});
@@ -43,7 +43,9 @@ class _LoadingState extends State<Loading> {
     if (_isLoading) {
       return const SplashScreen();
     } else {
-      return const GetStartedScreen();
+      return appData.read(kKeyIsFirstTime)
+          ? OnboardScreen1()
+          : GetStartedScreen();
     }
   }
 }

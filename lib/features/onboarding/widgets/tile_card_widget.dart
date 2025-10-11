@@ -39,24 +39,20 @@ class TileCardWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(20.r),
           ),
         ),
-
         child: Row(
           spacing: 12.w,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-
           children: [
             Image.asset(icon, width: 48.w, height: 48.h, fit: BoxFit.fill),
 
-            // Title
+            // Title and Subtitle
             Expanded(
               child: Column(
-                spacing: 4.h,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment:
-                    (isSubtitle ?? false)
-                        ? MainAxisAlignment.center
-                        : MainAxisAlignment.center,
+                mainAxisAlignment: isSubtitle == true && subtitle != null
+                    ? MainAxisAlignment.start
+                    : MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     title,
@@ -66,15 +62,20 @@ class TileCardWidget extends StatelessWidget {
                     ),
                   ),
 
-                  Text(
-                    subtitle ?? "",
-                    maxLines: 2,
-                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                      color: const Color(0xFF52525B),
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
+                  // Subtitle with conditional alignment
+                  if (subtitle != null && subtitle!.isNotEmpty)
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        subtitle!,
+                        maxLines: 2,
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                          color: const Color(0xFF52525B),
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

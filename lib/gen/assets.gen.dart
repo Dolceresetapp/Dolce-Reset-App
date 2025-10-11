@@ -131,6 +131,25 @@ class $AssetsImagesGen {
   /// File path: assets/images/oboard6.png
   AssetGenImage get oboard6 => const AssetGenImage('assets/images/oboard6.png');
 
+  /// File path: assets/images/on1.png
+  AssetGenImage get on1 => const AssetGenImage('assets/images/on1.png');
+
+  /// File path: assets/images/on2.png
+  AssetGenImage get on2 => const AssetGenImage('assets/images/on2.png');
+
+  /// File path: assets/images/on3.png
+  AssetGenImage get on3 => const AssetGenImage('assets/images/on3.png');
+
+  /// File path: assets/images/on4.png
+  AssetGenImage get on4 => const AssetGenImage('assets/images/on4.png');
+
+  /// File path: assets/images/on5.png
+  AssetGenImage get on5 => const AssetGenImage('assets/images/on5.png');
+
+  /// File path: assets/images/onboard14.png
+  AssetGenImage get onboard14 =>
+      const AssetGenImage('assets/images/onboard14.png');
+
   /// File path: assets/images/onboard_13_1.png
   AssetGenImage get onboard131 =>
       const AssetGenImage('assets/images/onboard_13_1.png');
@@ -146,6 +165,22 @@ class $AssetsImagesGen {
   /// File path: assets/images/onboard_13_4.png
   AssetGenImage get onboard134 =>
       const AssetGenImage('assets/images/onboard_13_4.png');
+
+  /// File path: assets/images/onboard_15_1.png
+  AssetGenImage get onboard151 =>
+      const AssetGenImage('assets/images/onboard_15_1.png');
+
+  /// File path: assets/images/onboard_15_2.png
+  AssetGenImage get onboard152 =>
+      const AssetGenImage('assets/images/onboard_15_2.png');
+
+  /// File path: assets/images/onboard_15_3.png
+  AssetGenImage get onboard153 =>
+      const AssetGenImage('assets/images/onboard_15_3.png');
+
+  /// File path: assets/images/onboard_15_4.png
+  AssetGenImage get onboard154 =>
+      const AssetGenImage('assets/images/onboard_15_4.png');
 
   /// File path: assets/images/onboard_4_1.png
   AssetGenImage get onboard41 =>
@@ -210,10 +245,20 @@ class $AssetsImagesGen {
     noboard122,
     noboard123,
     oboard6,
+    on1,
+    on2,
+    on3,
+    on4,
+    on5,
+    onboard14,
     onboard131,
     onboard132,
     onboard133,
     onboard134,
+    onboard151,
+    onboard152,
+    onboard153,
+    onboard154,
     onboard41,
     onboard42,
     onboard43,

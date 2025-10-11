@@ -5,8 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/features/onboarding/widgets/onbaording8_widget/ibs_widget.dart';
 import 'package:gritti_app/features/onboarding/widgets/onbaording8_widget/kg_widget.dart';
-import 'package:gritti_app/helpers/toast.dart';
-
 import '../../../common_widget/app_bar_widget.dart';
 import '../../../common_widget/custom_app_bar.dart';
 import '../../../common_widget/custom_button.dart';

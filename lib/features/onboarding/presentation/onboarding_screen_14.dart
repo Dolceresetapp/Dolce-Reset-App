@@ -11,20 +11,20 @@ import '../../../common_widget/app_bar_widget.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
 
-class OnboardingScreen10 extends StatefulWidget {
-  const OnboardingScreen10({super.key});
+class OnboardingScreen14 extends StatefulWidget {
+  const OnboardingScreen14({super.key});
 
   @override
-  State<OnboardingScreen10> createState() => _OnboardingScreen10State();
+  State<OnboardingScreen14> createState() => _OnboardingScreen14State();
 }
 
-class _OnboardingScreen10State extends State<OnboardingScreen10> {
+class _OnboardingScreen14State extends State<OnboardingScreen14> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 10, isBackIcon: true),
+        title: AppBarWidget(currentStep: 14, isBackIcon: true),
       ),
 
       body: SingleChildScrollView(
@@ -35,19 +35,39 @@ class _OnboardingScreen10State extends State<OnboardingScreen10> {
           children: [
             UIHelper.verticalSpace(30.h),
 
-            Align(
-              child: Text(
-                "How old are you?",
-                style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                  color: const Color(0xFF27272A),
-                  fontSize: 27.sp,
-                  fontWeight: FontWeight.w800,
-                ),
-                textAlign: TextAlign.center,
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Movement + Nutrition + Support = ',
+                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                      color: const Color(0xFF27272A),
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  TextSpan(
+                    text: 'Scientific Results',
+                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                      color: const Color(0xFF27272A),
+                      fontSize: 35,
+                   
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
               ),
+              textAlign: TextAlign.center,
             ),
 
             UIHelper.verticalSpace(30.h),
+
+            Image.asset(
+              Assets.images.onboard14.path,
+              width: 1.sw,
+              height: 346.h,
+              fit: BoxFit.fill,
+            ),
           ],
         ),
       ),
@@ -56,7 +76,7 @@ class _OnboardingScreen10State extends State<OnboardingScreen10> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen11);
+            NavigationService.navigateToReplacement(Routes.onboardingScreen15);
           },
           child: Row(
             spacing: 10.w,

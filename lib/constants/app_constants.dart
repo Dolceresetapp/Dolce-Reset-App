@@ -110,8 +110,10 @@ const String kKeycategoriesID = 'categoriesId';
 const String kKeyproductID = 'productId';
 const String kKeyShopSlug = 'shop_slug';
 const String kKeyRestaurantID = 'productId';
-const String kKeyIsExploring = 'exploring';
+const String kKeyIsExploring = 'exploring'; 
 const String kKeyIsFirst = 'is_first_time';
+
+const String kKeyIsFirstTime = 'kKeyIsFirstTime';
 //order statuses
 
 const List<String> kLanguagesKey = [

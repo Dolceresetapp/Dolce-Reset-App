@@ -79,7 +79,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                         onPressed: () {
                           appData.write(kKeyIsFirst, false);
                           NavigationService.navigateToReplacement(
-                            Routes.signUpScreen,
+                            Routes.onboardingScreen1,
                           );
                         },
                         child: Row(

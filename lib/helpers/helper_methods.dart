@@ -128,6 +128,9 @@ Future<String?> networkImageToBase64(String imageUrl) async {
 Future<void> setInitValue() async {
   // Map<String,dynamic> arabicDefault = {};
   await appData.writeIfNull(kKeyIsLoggedIn, false);
+
+
+    await appData.writeIfNull(kKeyIsFirstTime, true);
   /*  appData.writeIfNull(kKeyLanguage, kKeyEnglish);
 appData.writeIfNull(kKeyIsFirst, true);
 appData.writeIfNull(kKeyIsLoggedIn, false);

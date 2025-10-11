@@ -55,6 +55,7 @@ dependencies:
   provider: ^6.1.5
   rxdart: ^0.28.0
   shimmer: ^3.0.0
+  smooth_page_indicator: ^1.2.1
   stylish_bottom_bar: ^1.1.1
   timer_button: ^2.3.3
   url_launcher: ^6.3.1

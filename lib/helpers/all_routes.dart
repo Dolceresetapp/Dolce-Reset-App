@@ -6,11 +6,14 @@ import '../features/authentication/reset_password/reset_password_screen.dart';
 import '../features/authentication/sign_up/sign_up_screen.dart';
 import '../features/authentication/signin/sign_in_screen.dart';
 import '../features/authentication/signup_otp/signup_otp_screen.dart';
+import '../features/get_started/get_started_screen.dart';
 import '../features/onboarding/presentation/onboarding_screen_1.dart';
 import '../features/onboarding/presentation/onboarding_screen_10.dart';
 import '../features/onboarding/presentation/onboarding_screen_11.dart';
 import '../features/onboarding/presentation/onboarding_screen_12.dart';
 import '../features/onboarding/presentation/onboarding_screen_13.dart';
+import '../features/onboarding/presentation/onboarding_screen_14.dart';
+import '../features/onboarding/presentation/onboarding_screen_15.dart';
 import '../features/onboarding/presentation/onboarding_screen_2.dart';
 import '../features/onboarding/presentation/onboarding_screen_3.dart';
 import '../features/onboarding/presentation/onboarding_screen_4.dart';
@@ -60,9 +63,15 @@ final class Routes {
   static const String onboardingScreen12 = '/onboardingScreen12';
   static const String onboardingScreen11 = '/onboardingScreen11';
 
-    static const String onboardingScreen10 = '/onboardingScreen10';
+  static const String onboardingScreen10 = '/onboardingScreen10';
 
-     static const String onboardingScreen13 = '/onboardingScreen13';
+  static const String onboardingScreen13 = '/onboardingScreen13';
+
+  static const String onboardingScreen14 = '/onboardingScreen14';
+
+  static const String onboardingScreen15 = '/onboardingScreen15';
+
+   static const String getStartedScreen = '/getStartedScreen';
 }
 
 final class RouteGenerator {
@@ -73,7 +82,39 @@ final class RouteGenerator {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
 
-       case Routes.onboardingScreen13:
+       case Routes.getStartedScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const GetStartedScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const GetStartedScreen(),
+            );
+
+
+
+      case Routes.onboardingScreen15:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const OnboardingScreen15(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen15(),
+            );
+
+      case Routes.onboardingScreen14:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const OnboardingScreen14(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const OnboardingScreen14(),
+            );
+
+      case Routes.onboardingScreen13:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const OnboardingScreen13(),
@@ -82,7 +123,6 @@ final class RouteGenerator {
             : CupertinoPageRoute(
               builder: (context) => const OnboardingScreen13(),
             );
-
 
       case Routes.onboardingScreen11:
         return Platform.isAndroid
@@ -94,7 +134,7 @@ final class RouteGenerator {
               builder: (context) => const OnboardingScreen11(),
             );
 
-              case Routes.onboardingScreen10:
+      case Routes.onboardingScreen10:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const OnboardingScreen10(),
@@ -103,7 +143,6 @@ final class RouteGenerator {
             : CupertinoPageRoute(
               builder: (context) => const OnboardingScreen10(),
             );
-
 
       case Routes.onboardingScreen12:
         return Platform.isAndroid

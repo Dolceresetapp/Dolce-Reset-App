@@ -112,4 +112,12 @@ class TextFontStyle {
     fontSize: 16.sp,
     fontWeight: FontWeight.w600,
   );
+
+  static final headLine16c2F1E19StyleBarlowCondensedW700 =
+      GoogleFonts.barlowCondensed(
+        color: const Color(0xFFF8F3EF),
+        fontSize: 36.sp,
+
+        fontWeight: FontWeight.w800,
+      );
 }
