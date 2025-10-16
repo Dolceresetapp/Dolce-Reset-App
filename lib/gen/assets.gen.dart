@@ -14,6 +14,18 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/Frame (1).svg
+  String get frame1 => 'assets/icons/Frame (1).svg';
+
+  /// File path: assets/icons/Frame (2).svg
+  String get frame2 => 'assets/icons/Frame (2).svg';
+
+  /// File path: assets/icons/Frame (3).svg
+  String get frame3 => 'assets/icons/Frame (3).svg';
+
+  /// File path: assets/icons/Frame.svg
+  String get frame => 'assets/icons/Frame.svg';
+
   /// File path: assets/icons/Icon.svg
   String get icon => 'assets/icons/Icon.svg';
 
@@ -29,6 +41,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Or.svg
   String get or => 'assets/icons/Or.svg';
 
+  /// File path: assets/icons/Polygon (1).svg
+  String get polygon1 => 'assets/icons/Polygon (1).svg';
+
+  /// File path: assets/icons/Polygon.svg
+  String get polygon => 'assets/icons/Polygon.svg';
+
   /// File path: assets/icons/Vector (1).svg
   String get vector1 => 'assets/icons/Vector (1).svg';
 
@@ -41,8 +59,30 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Vector (4).svg
   String get vector4 => 'assets/icons/Vector (4).svg';
 
+  /// File path: assets/icons/Vector.svg
+  String get vector => 'assets/icons/Vector.svg';
+
+  /// File path: assets/icons/activity running jogging.svg
+  String get activityRunningJogging =>
+      'assets/icons/activity running jogging.svg';
+
   /// File path: assets/icons/apple_icon.svg
   String get appleIcon => 'assets/icons/apple_icon.svg';
+
+  /// File path: assets/icons/arrow repeat.svg
+  String get arrowRepeat => 'assets/icons/arrow repeat.svg';
+
+  /// File path: assets/icons/arrow sign out.svg
+  String get arrowSignOut => 'assets/icons/arrow sign out.svg';
+
+  /// File path: assets/icons/cake.svg
+  String get cake => 'assets/icons/cake.svg';
+
+  /// File path: assets/icons/chevron right.svg
+  String get chevronRight => 'assets/icons/chevron right.svg';
+
+  /// File path: assets/icons/envelope email.svg
+  String get envelopeEmail => 'assets/icons/envelope email.svg';
 
   /// File path: assets/icons/eye_off.svg
   String get eyeOff => 'assets/icons/eye_off.svg';
@@ -50,29 +90,82 @@ class $AssetsIconsGen {
   /// File path: assets/icons/eye_on.svg
   String get eyeOn => 'assets/icons/eye_on.svg';
 
+  /// File path: assets/icons/fire.svg
+  String get fire => 'assets/icons/fire.svg';
+
+  /// File path: assets/icons/health plus alt.svg
+  String get healthPlusAlt => 'assets/icons/health plus alt.svg';
+
+  /// File path: assets/icons/lock locked.svg
+  String get lockLocked => 'assets/icons/lock locked.svg';
+
   /// File path: assets/icons/logos_facebook.svg
   String get logosFacebook => 'assets/icons/logos_facebook.svg';
+
+  /// File path: assets/icons/question mark circle.svg
+  String get questionMarkCircle => 'assets/icons/question mark circle.svg';
+
+  /// File path: assets/icons/ruler.svg
+  String get ruler => 'assets/icons/ruler.svg';
+
+  /// File path: assets/icons/sound on.svg
+  String get soundOn => 'assets/icons/sound on.svg';
 
   /// File path: assets/icons/transport rocket diagonal.svg
   String get transportRocketDiagonal =>
       'assets/icons/transport rocket diagonal.svg';
 
+  /// File path: assets/icons/trash.svg
+  String get trash => 'assets/icons/trash.svg';
+
+  /// File path: assets/icons/upload.svg
+  String get upload => 'assets/icons/upload.svg';
+
+  /// File path: assets/icons/user single.svg
+  String get userSingle => 'assets/icons/user single.svg';
+
+  /// File path: assets/icons/weight scale.svg
+  String get weightScale => 'assets/icons/weight scale.svg';
+
   /// List of all assets
   List<String> get values => [
+    frame1,
+    frame2,
+    frame3,
+    frame,
     icon,
     monotoneAdd1,
     monotoneAdd2,
     monotoneAdd,
     or,
+    polygon1,
+    polygon,
     vector1,
     vector2,
     vector3,
     vector4,
+    vector,
+    activityRunningJogging,
     appleIcon,
+    arrowRepeat,
+    arrowSignOut,
+    cake,
+    chevronRight,
+    envelopeEmail,
     eyeOff,
     eyeOn,
+    fire,
+    healthPlusAlt,
+    lockLocked,
     logosFacebook,
+    questionMarkCircle,
+    ruler,
+    soundOn,
     transportRocketDiagonal,
+    trash,
+    upload,
+    userSingle,
+    weightScale,
   ];
 }
 
