@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,48 +29,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 140.h,
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Container(
-                    width: 1.sw,
-                    height: 140.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20.r),
-                        bottomRight: Radius.circular(20.r),
-                      ),
-                      color: Color(0xFFF566A9),
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                //
+                Container(
+                  width: 1.sw,
+                  height: 140.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20.r),
+                      bottomRight: Radius.circular(20.r),
                     ),
+                    color: Color(0xFFF566A9),
                   ),
+                ),
 
-                  // Profile text
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    child: Center(
-                      child: SafeArea(
-                        child: Text(
-                          "Profile",
-                          style: TextFontStyle.headline30c27272AtyleWorkSansW700
-                              .copyWith(
-                                color: Colors.white,
-                                fontSize: 16.sp,
-
-                                fontWeight: FontWeight.w600,
-                              ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: Center(
+                // Profile text
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: SafeArea(
                       child: Text(
                         "Profile",
                         style: TextFontStyle.headline30c27272AtyleWorkSansW700
@@ -81,116 +62,123 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                   ),
+                ),
 
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: -40,
-                    child: Center(
-                      child: Container(
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: -40,
+                  child: Center(
+                    child: Container(
+                      width: 80.w,
+                      height: 100.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 3.w),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: CustomCachedNetworkImage(
                         width: 80.w,
                         height: 80.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 3.w),
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        child: CustomCachedNetworkImage(
-                          width: 80.w,
-                          height: 80.h,
-                          imageUrl: "",
-                        ),
+                        imageUrl: "",
                       ),
                     ),
                   ),
+                ),
 
-                  Positioned(
-                    left: 0,
-                    right: -40,
-                    bottom: -40,
-                    child: InkWell(
-                      onTap: () async {
-                        await showModalBottomSheet(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10.r),
-                              topRight: Radius.circular(10.r),
-                            ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+
+                  child: InkWell(
+                    onTap: () async {
+                      log(
+                        "Tapped Me==================================================",
+                      );
+                      /*  await showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10.r),
+                            topRight: Radius.circular(10.r),
                           ),
-                          context: context,
-                          builder: (_) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: Color(0xFF1A2F20),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10.r),
-                                  topRight: Radius.circular(10.r),
+                        ),
+                        context: context,
+                        builder: (_) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Color(0xFF1A2F20),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10.r),
+                                topRight: Radius.circular(10.r),
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 20.w,
+                              vertical: 20.h,
+                            ),
+            
+                            child: Column(
+                              spacing: 20.h,
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  onTap: () async {
+                                    NavigationService.goBack;
+                                  },
+                                  child: Row(
+                                    spacing: 10.w,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                    children: [
+                                      Icon(
+                                        Icons.camera_alt,
+                                        color: Colors.white,
+                                        size: 20.sp,
+                                      ),
+                                      Text(
+                                        "Camera",
+                                        style: TextFontStyle
+                                            .headLine102cF8F3EFBarlowCondensedW700
+                                            .copyWith(fontSize: 14.sp),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 20.w,
-                                vertical: 20.h,
-                              ),
-
-                              child: Column(
-                                spacing: 20.h,
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      NavigationService.goBack;
-                                    },
-                                    child: Row(
-                                      spacing: 10.w,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.camera_alt,
-                                          color: Colors.white,
-                                          size: 20.sp,
-                                        ),
-                                        Text(
-                                          "Camera",
-                                          style: TextFontStyle
-                                              .headLine102cF8F3EFBarlowCondensedW700
-                                              .copyWith(fontSize: 14.sp),
-                                        ),
-                                      ],
-                                    ),
+            
+                                // Gallery
+                                InkWell(
+                                  onTap: () async {
+                                    NavigationService.goBack;
+                                  },
+                                  child: Row(
+                                    spacing: 10.w,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                    children: [
+                                      Icon(
+                                        Icons.photo_library,
+                                        color: Colors.white,
+                                        size: 20.sp,
+                                      ),
+                                      Text(
+                                        "Gallery",
+                                        style: TextFontStyle
+                                            .headLine102cF8F3EFBarlowCondensedW700
+                                            .copyWith(fontSize: 14.sp),
+                                      ),
+                                    ],
                                   ),
-
-                                  // Gallery
-                                  InkWell(
-                                    onTap: () async {
-                                      NavigationService.goBack;
-                                    },
-                                    child: Row(
-                                      spacing: 10.w,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.photo_library,
-                                          color: Colors.white,
-                                          size: 20.sp,
-                                        ),
-                                        Text(
-                                          "Gallery",
-                                          style: TextFontStyle
-                                              .headLine102cF8F3EFBarlowCondensedW700
-                                              .copyWith(fontSize: 14.sp),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ); */
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8.w),
+                      color: Colors.transparent,
                       child: SvgPicture.asset(
                         Assets.icons.upload,
                         width: 28.w,
@@ -198,11 +186,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
 
-            UIHelper.verticalSpace(66.h),
+            UIHelper.verticalSpace(40.h),
 
             Align(
               alignment: Alignment.center,

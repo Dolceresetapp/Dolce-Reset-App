@@ -68,6 +68,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Vector.svg
   String get vector => 'assets/icons/Vector.svg';
 
+  /// File path: assets/icons/Vectorqq.svg
+  String get vectorqq => 'assets/icons/Vectorqq.svg';
+
+  /// File path: assets/icons/Vectorww.svg
+  String get vectorww => 'assets/icons/Vectorww.svg';
+
   /// File path: assets/icons/activity running jogging.svg
   String get activityRunningJogging =>
       'assets/icons/activity running jogging.svg';
@@ -101,6 +107,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/fire.svg
   String get fire => 'assets/icons/fire.svg';
+
+  /// File path: assets/icons/fires simple.svg
+  String get firesSimple => 'assets/icons/fires simple.svg';
 
   /// File path: assets/icons/health plus alt.svg
   String get healthPlusAlt => 'assets/icons/health plus alt.svg';
@@ -156,6 +165,8 @@ class $AssetsIconsGen {
     vector3,
     vector4,
     vector,
+    vectorqq,
+    vectorww,
     activityRunningJogging,
     appleIcon,
     arrowRepeat,
@@ -167,6 +178,7 @@ class $AssetsIconsGen {
     eyeOff,
     eyeOn,
     fire,
+    firesSimple,
     healthPlusAlt,
     lockLocked,
     logosFacebook,
@@ -192,6 +204,14 @@ class $AssetsImagesGen {
   AssetGenImage get frame11 =>
       const AssetGenImage('assets/images/Frame (11).png');
 
+  /// File path: assets/images/Rectangle 34624174 (1).png
+  AssetGenImage get rectangle346241741 =>
+      const AssetGenImage('assets/images/Rectangle 34624174 (1).png');
+
+  /// File path: assets/images/Rectangle 34624174.png
+  AssetGenImage get rectangle34624174 =>
+      const AssetGenImage('assets/images/Rectangle 34624174.png');
+
   /// File path: assets/images/Rectangle.png
   AssetGenImage get rectangle =>
       const AssetGenImage('assets/images/Rectangle.png');
@@ -205,6 +225,9 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/image.png
   AssetGenImage get image => const AssetGenImage('assets/images/image.png');
+
+  /// File path: assets/images/image22.png
+  AssetGenImage get image22 => const AssetGenImage('assets/images/image22.png');
 
   /// File path: assets/images/into_shape.png
   AssetGenImage get intoShape =>
@@ -341,10 +364,13 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [
     frame10,
     frame11,
+    rectangle346241741,
+    rectangle34624174,
     rectangle,
     abdomen,
     backPosture,
     image,
+    image22,
     intoShape,
     legs,
     logo,
