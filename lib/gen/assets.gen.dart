@@ -14,6 +14,12 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/Button Icon (1).svg
+  String get buttonIcon1 => 'assets/icons/Button Icon (1).svg';
+
+  /// File path: assets/icons/Button Icon (2).svg
+  String get buttonIcon2 => 'assets/icons/Button Icon (2).svg';
+
   /// File path: assets/icons/Frame (1).svg
   String get frame1 => 'assets/icons/Frame (1).svg';
 
@@ -72,6 +78,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/arrow repeat.svg
   String get arrowRepeat => 'assets/icons/arrow repeat.svg';
 
+  /// File path: assets/icons/arrow right.svg
+  String get arrowRight => 'assets/icons/arrow right.svg';
+
   /// File path: assets/icons/arrow sign out.svg
   String get arrowSignOut => 'assets/icons/arrow sign out.svg';
 
@@ -129,6 +138,8 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<String> get values => [
+    buttonIcon1,
+    buttonIcon2,
     frame1,
     frame2,
     frame3,
@@ -148,6 +159,7 @@ class $AssetsIconsGen {
     activityRunningJogging,
     appleIcon,
     arrowRepeat,
+    arrowRight,
     arrowSignOut,
     cake,
     chevronRight,
@@ -190,6 +202,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/back_posture.png
   AssetGenImage get backPosture =>
       const AssetGenImage('assets/images/back_posture.png');
+
+  /// File path: assets/images/image.png
+  AssetGenImage get image => const AssetGenImage('assets/images/image.png');
 
   /// File path: assets/images/into_shape.png
   AssetGenImage get intoShape =>
@@ -329,6 +344,7 @@ class $AssetsImagesGen {
     rectangle,
     abdomen,
     backPosture,
+    image,
     intoShape,
     legs,
     logo,

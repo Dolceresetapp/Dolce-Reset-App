@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:gritti_app/loading.dart';
 import 'package:gritti_app/navigation_screen.dart';
 import 'package:provider/provider.dart';
 import '/helpers/all_routes.dart';
