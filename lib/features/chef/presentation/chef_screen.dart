@@ -56,33 +56,6 @@ class _ChefScreenState extends State<ChefScreen> {
                 ),
               ),
 
-              UIHelper.verticalSpace(30.h),
-
-              CustomButton(
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "panic Button",
-                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                          .copyWith(fontSize: 16.sp),
-                    ),
-
-                    UIHelper.horizontalSpace(10.w),
-                    SvgPicture.asset(
-                      Assets.icons.arrowRight,
-                      width: 20.w,
-                      height: 20.h,
-                      colorFilter: const ColorFilter.mode(
-                        Colors.white,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
               UIHelper.verticalSpace(20.h),
 
               Row(

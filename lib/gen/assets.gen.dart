@@ -223,6 +223,9 @@ class $AssetsImagesGen {
   AssetGenImage get backPosture =>
       const AssetGenImage('assets/images/back_posture.png');
 
+  /// File path: assets/images/frame.png
+  AssetGenImage get frame => const AssetGenImage('assets/images/frame.png');
+
   /// File path: assets/images/image.png
   AssetGenImage get image => const AssetGenImage('assets/images/image.png');
 
@@ -369,6 +372,7 @@ class $AssetsImagesGen {
     rectangle,
     abdomen,
     backPosture,
+    frame,
     image,
     image22,
     intoShape,
