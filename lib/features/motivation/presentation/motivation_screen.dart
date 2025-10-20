@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gritti_app/common_widget/custom_button.dart';
+import 'package:gritti_app/common_widget/custom_network_image.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
@@ -33,12 +34,30 @@ class _MotivationScreenState extends State<MotivationScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Top Title
-                UIHelper.verticalSpace(10.h),
-                Text(
-                  "Motivation",
-                  style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                    fontSize: 16.sp,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ClipOval(
+                      child: CustomCachedNetworkImage(
+                        imageUrl: "",
+                        width: 36.w,
+                        height: 36.h,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+
+                    Text(
+                      "Motivation",
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                          .copyWith(fontSize: 16.sp),
+                    ),
+
+                    SvgPicture.asset(
+                      Assets.icons.gallery,
+                      width: 40.w,
+                      height: 40.h,
+                    ),
+                  ],
                 ),
 
                 // Center Text & Icons
@@ -58,7 +77,13 @@ class _MotivationScreenState extends State<MotivationScreen> {
                               ),
                         ),
                         UIHelper.verticalSpace(56.h),
-                        Row(
+
+                        SvgPicture.asset(
+                          Assets.icons.buttonIcon2,
+                          width: 80.w,
+                          height: 80.h,
+                        ),
+                        /*  Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset(
@@ -75,7 +100,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
                               height: 80.h,
                             ),
                           ],
-                        ),
+                        ), */
                       ],
                     ),
                   ),

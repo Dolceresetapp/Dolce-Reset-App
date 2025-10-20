@@ -7,19 +7,20 @@ import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
-import '../../../common_widget/app_bar_widget.dart';
-import '../../../helpers/all_routes.dart';
-import '../../../helpers/navigation_service.dart';
-import '../widgets/tile_card_widget.dart';
+import '../../../../common_widget/app_bar_widget.dart';
+import '../../../../helpers/all_routes.dart';
+import '../../../../helpers/navigation_service.dart';
+import '../../widgets/tile_card_widget.dart';
 
-class OnboardingScreen1 extends StatefulWidget {
-  const OnboardingScreen1({super.key});
+
+class ChefBoardingScreen2 extends StatefulWidget {
+  const ChefBoardingScreen2({super.key});
 
   @override
-  State<OnboardingScreen1> createState() => _OnboardingScreen1State();
+  State<ChefBoardingScreen2> createState() => _ChefBoardingScreen2State();
 }
 
-class _OnboardingScreen1State extends State<OnboardingScreen1> {
+class _ChefBoardingScreen2State extends State<ChefBoardingScreen2> {
   List<Map<String, dynamic>> dataList = [
     {"image": Assets.images.losttWeight.path, "title": "Lose Weight"},
 
@@ -37,7 +38,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 1, isBackIcon: true, maxSteps: 15),
+        title: AppBarWidget(currentStep: 2, isBackIcon: true, maxSteps : 5),
       ),
 
       body: SingleChildScrollView(
@@ -92,7 +93,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen2);
+            NavigationService.navigateTo(Routes.chefBoardingScreen3);
           },
           child: Row(
             spacing: 10.w,

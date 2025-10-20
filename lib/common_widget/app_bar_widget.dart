@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
-
 import 'package:linear_progress_bar/linear_progress_bar.dart';
-
-import '../constants/text_font_style.dart';
 import '../gen/assets.gen.dart';
 import 'custom_svg_asset.dart';
 
 class AppBarWidget extends StatelessWidget {
   final int currentStep;
+  final int maxSteps;
   final bool isBackIcon;
 
   const AppBarWidget({
     super.key,
     required this.currentStep,
+    required this.maxSteps,
     this.isBackIcon = true,
   });
 
@@ -49,7 +48,7 @@ class AppBarWidget extends StatelessWidget {
           flex: 3,
           child: LinearProgressBar(
             minHeight: 10.h,
-            maxSteps: 15,
+            maxSteps: maxSteps,
             progressType: LinearProgressBar.progressTypeLinear,
             currentStep: currentStep,
             progressColor: Color(0xFFF566A9),
@@ -57,7 +56,9 @@ class AppBarWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.r),
           ),
         ),
-        Expanded(
+
+        Expanded(flex: 1, child: Text("")),
+        /* Expanded(
           flex: 1,
           child: InkWell(
             onTap: () {
@@ -76,7 +77,7 @@ class AppBarWidget extends StatelessWidget {
               ),
             ),
           ),
-        ),
+        ), */
       ],
     );
   }

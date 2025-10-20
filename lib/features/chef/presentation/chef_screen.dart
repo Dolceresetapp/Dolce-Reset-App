@@ -1,11 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../../../common_widget/custom_button.dart';
 import '../../../constants/text_font_style.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../helpers/ui_helpers.dart';
@@ -63,18 +61,22 @@ class _ChefScreenState extends State<ChefScreen> {
                 children: [
                   Expanded(
                     child: AiCardWidget(
+                      title: "AI Recipe \n Generator",
                       image: Assets.images.rectangle34624174.path,
                       onTap: () {
-                        NavigationService.navigateTo(Routes.forgetOtpScreen);
+                        NavigationService.navigateTo(
+                          Routes.chefBoardingScreen1,
+                        );
                       },
                     ),
                   ),
 
                   Expanded(
                     child: AiCardWidget(
+                      title: "Food Health \n Analyzer",
                       image: Assets.images.rectangle346241741.path,
                       onTap: () {
-                        NavigationService.navigateTo(Routes.forgetOtpScreen);
+                       NavigationService.navigateTo(Routes.foodAnalyzerScreen);
                       },
                     ),
                   ),
@@ -99,7 +101,7 @@ class _ChefScreenState extends State<ChefScreen> {
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF767EFF),
                       fontSize: 14.sp,
-                      fontFamily: 'Work Sans',
+
                       fontWeight: FontWeight.w500,
                     ),
                   ),

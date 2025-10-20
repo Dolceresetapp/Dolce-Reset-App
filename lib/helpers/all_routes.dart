@@ -6,7 +6,14 @@ import '../features/authentication/reset_password/reset_password_screen.dart';
 import '../features/authentication/sign_up/sign_up_screen.dart';
 import '../features/authentication/signin/sign_in_screen.dart';
 import '../features/authentication/signup_otp/signup_otp_screen.dart';
+import '../features/food_analyzer/food_analyzer_screen.dart';
 import '../features/get_started/get_started_screen.dart';
+import '../features/meal_result/meal_result_screen.dart';
+import '../features/onboarding/presentation/chef_boarding/chef_boarding_1_screen.dart';
+import '../features/onboarding/presentation/chef_boarding/chef_boarding_2_screen.dart';
+import '../features/onboarding/presentation/chef_boarding/chef_boarding_3_screen.dart';
+import '../features/onboarding/presentation/chef_boarding/chef_boarding_4_screen.dart';
+import '../features/onboarding/presentation/chef_boarding/chef_boarding_5_screen.dart';
 import '../features/onboarding/presentation/onboarding_screen_1.dart';
 import '../features/onboarding/presentation/onboarding_screen_10.dart';
 import '../features/onboarding/presentation/onboarding_screen_11.dart';
@@ -71,7 +78,17 @@ final class Routes {
 
   static const String onboardingScreen15 = '/onboardingScreen15';
 
-   static const String getStartedScreen = '/getStartedScreen';
+  static const String getStartedScreen = '/getStartedScreen';
+
+  static const String chefBoardingScreen1 = '/chefBoardingScreen1';
+    static const String chefBoardingScreen2 = '/chefBoardingScreen2';
+  static const String chefBoardingScreen3 = '/chefBoardingScreen3';
+  static const String chefBoardingScreen4 = '/chefBoardingScreen4';
+  static const String chefBoardingScreen5 = '/chefBoardingScreen5';
+
+    static const String foodAnalyzerScreen = '/foodAnalyzerScreen';
+
+     static const String mealResultScreen = '/mealResultScreen';
 }
 
 final class RouteGenerator {
@@ -81,8 +98,79 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
+       case Routes.mealResultScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const MealResultScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const MealResultScreen(),
+            );
 
-       case Routes.getStartedScreen:
+
+
+ case Routes.foodAnalyzerScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const FoodAnalyzerScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const FoodAnalyzerScreen(),
+            );
+
+
+       case Routes.chefBoardingScreen1:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const ChefBoardingScreen1(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const ChefBoardingScreen1(),
+            );
+
+             case Routes.chefBoardingScreen2:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const ChefBoardingScreen2(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const ChefBoardingScreen2(),
+            );
+
+      case Routes.chefBoardingScreen3:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const ChefBoardingScreen3(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const ChefBoardingScreen3(),
+            );
+      case Routes.chefBoardingScreen4:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const ChefBoardingScreen4(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const ChefBoardingScreen4(),
+            );
+
+      case Routes.chefBoardingScreen5:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const ChefBoardingScreen5(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const ChefBoardingScreen5(),
+            );
+
+      case Routes.getStartedScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const GetStartedScreen(),
@@ -91,8 +179,6 @@ final class RouteGenerator {
             : CupertinoPageRoute(
               builder: (context) => const GetStartedScreen(),
             );
-
-
 
       case Routes.onboardingScreen15:
         return Platform.isAndroid

@@ -7,19 +7,19 @@ import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
-import '../../../common_widget/app_bar_widget.dart';
-import '../../../helpers/all_routes.dart';
-import '../../../helpers/navigation_service.dart';
-import '../widgets/tile_card_widget.dart';
+import '../../../../common_widget/app_bar_widget.dart';
+import '../../../../helpers/all_routes.dart';
+import '../../../../helpers/navigation_service.dart';
+import '../../widgets/tile_card_widget.dart';
 
-class OnboardingScreen1 extends StatefulWidget {
-  const OnboardingScreen1({super.key});
+class ChefBoardingScreen1 extends StatefulWidget {
+  const ChefBoardingScreen1({super.key});
 
   @override
-  State<OnboardingScreen1> createState() => _OnboardingScreen1State();
+  State<ChefBoardingScreen1> createState() => _ChefBoardingScreen1State();
 }
 
-class _OnboardingScreen1State extends State<OnboardingScreen1> {
+class _ChefBoardingScreen1State extends State<ChefBoardingScreen1> {
   List<Map<String, dynamic>> dataList = [
     {"image": Assets.images.losttWeight.path, "title": "Lose Weight"},
 
@@ -37,7 +37,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 1, isBackIcon: true, maxSteps: 15),
+        title: AppBarWidget(currentStep: 1, isBackIcon: true, maxSteps : 5),
       ),
 
       body: SingleChildScrollView(
@@ -48,7 +48,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "Did you feel it was \n necessary to immediately \n repair your body?",
+              "What is your goal for the \n next 4 months ? ",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -92,7 +92,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen2);
+            NavigationService.navigateTo(Routes.chefBoardingScreen2);
           },
           child: Row(
             spacing: 10.w,

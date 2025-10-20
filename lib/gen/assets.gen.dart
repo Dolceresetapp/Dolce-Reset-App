@@ -93,6 +93,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/cake.svg
   String get cake => 'assets/icons/cake.svg';
 
+  /// File path: assets/icons/camera.svg
+  String get camera => 'assets/icons/camera.svg';
+
   /// File path: assets/icons/chevron right.svg
   String get chevronRight => 'assets/icons/chevron right.svg';
 
@@ -111,8 +114,14 @@ class $AssetsIconsGen {
   /// File path: assets/icons/fires simple.svg
   String get firesSimple => 'assets/icons/fires simple.svg';
 
+  /// File path: assets/icons/gallery.svg
+  String get gallery => 'assets/icons/gallery.svg';
+
   /// File path: assets/icons/health plus alt.svg
   String get healthPlusAlt => 'assets/icons/health plus alt.svg';
+
+  /// File path: assets/icons/info-circle.svg
+  String get infoCircle => 'assets/icons/info-circle.svg';
 
   /// File path: assets/icons/lock locked.svg
   String get lockLocked => 'assets/icons/lock locked.svg';
@@ -120,8 +129,14 @@ class $AssetsIconsGen {
   /// File path: assets/icons/logos_facebook.svg
   String get logosFacebook => 'assets/icons/logos_facebook.svg';
 
+  /// File path: assets/icons/ques.svg
+  String get ques => 'assets/icons/ques.svg';
+
   /// File path: assets/icons/question mark circle.svg
   String get questionMarkCircle => 'assets/icons/question mark circle.svg';
+
+  /// File path: assets/icons/right_arrows.svg
+  String get rightArrows => 'assets/icons/right_arrows.svg';
 
   /// File path: assets/icons/ruler.svg
   String get ruler => 'assets/icons/ruler.svg';
@@ -173,16 +188,21 @@ class $AssetsIconsGen {
     arrowRight,
     arrowSignOut,
     cake,
+    camera,
     chevronRight,
     envelopeEmail,
     eyeOff,
     eyeOn,
     fire,
     firesSimple,
+    gallery,
     healthPlusAlt,
+    infoCircle,
     lockLocked,
     logosFacebook,
+    ques,
     questionMarkCircle,
+    rightArrows,
     ruler,
     soundOn,
     transportRocketDiagonal,
@@ -223,6 +243,13 @@ class $AssetsImagesGen {
   AssetGenImage get backPosture =>
       const AssetGenImage('assets/images/back_posture.png');
 
+  /// File path: assets/images/food.png
+  AssetGenImage get food => const AssetGenImage('assets/images/food.png');
+
+  /// File path: assets/images/fooodddd.png
+  AssetGenImage get fooodddd =>
+      const AssetGenImage('assets/images/fooodddd.png');
+
   /// File path: assets/images/frame.png
   AssetGenImage get frame => const AssetGenImage('assets/images/frame.png');
 
@@ -231,6 +258,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/image22.png
   AssetGenImage get image22 => const AssetGenImage('assets/images/image22.png');
+
+  /// File path: assets/images/images232.png
+  AssetGenImage get images232 =>
+      const AssetGenImage('assets/images/images232.png');
 
   /// File path: assets/images/into_shape.png
   AssetGenImage get intoShape =>
@@ -372,9 +403,12 @@ class $AssetsImagesGen {
     rectangle,
     abdomen,
     backPosture,
+    food,
+    fooodddd,
     frame,
     image,
     image22,
+    images232,
     intoShape,
     legs,
     logo,

@@ -32,7 +32,7 @@ class _OnboardingScreen9State extends State<OnboardingScreen9> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 9, isBackIcon: true),
+        title: AppBarWidget(currentStep: 9, isBackIcon: true, maxSteps : 15),
       ),
       body: DefaultTabController(
         length: 2,
@@ -111,7 +111,7 @@ class _OnboardingScreen9State extends State<OnboardingScreen9> {
         child: CustomButton(
           onPressed: () {
       
-              NavigationService.navigateToReplacement(Routes.onboardingScreen10);
+              NavigationService.navigateTo(Routes.onboardingScreen10);
           },
           child: Row(
             spacing: 10.w,
@@ -123,7 +123,7 @@ class _OnboardingScreen9State extends State<OnboardingScreen9> {
               ),
 
               SvgPicture.asset(
-                Assets.icons.vector1,
+                Assets.icons.rightArrows,
                 width: 20.w,
                 height: 20.h,
                 fit: BoxFit.cover,

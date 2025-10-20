@@ -3,23 +3,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/common_widget/custom_app_bar.dart';
 import 'package:gritti_app/common_widget/custom_button.dart';
+import 'package:gritti_app/common_widget/custom_text_field.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
+import '../../../../common_widget/app_bar_widget.dart';
 
-import '../../../common_widget/app_bar_widget.dart';
-import '../../../helpers/all_routes.dart';
-import '../../../helpers/navigation_service.dart';
-import '../widgets/tile_card_widget.dart';
 
-class OnboardingScreen1 extends StatefulWidget {
-  const OnboardingScreen1({super.key});
+class ChefBoardingScreen5 extends StatefulWidget {
+  const ChefBoardingScreen5({super.key});
 
   @override
-  State<OnboardingScreen1> createState() => _OnboardingScreen1State();
+  State<ChefBoardingScreen5> createState() => _ChefBoardingScreen5State();
 }
 
-class _OnboardingScreen1State extends State<OnboardingScreen1> {
+class _ChefBoardingScreen5State extends State<ChefBoardingScreen5> {
   List<Map<String, dynamic>> dataList = [
     {"image": Assets.images.losttWeight.path, "title": "Lose Weight"},
 
@@ -30,14 +28,20 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
     {"image": Assets.images.reducePain.path, "title": "Reduce pain/stiffness"},
   ];
 
-  int? selectedIndex;
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 1, isBackIcon: true, maxSteps: 15),
+        title: AppBarWidget(currentStep: 5, isBackIcon: true, maxSteps: 5),
       ),
 
       body: SingleChildScrollView(
@@ -48,7 +52,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "Did you feel it was \n necessary to immediately \n repair your body?",
+              "Do you have any specific intolerances ?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -57,32 +61,25 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
               textAlign: TextAlign.center,
             ),
 
-            UIHelper.verticalSpace(30.h),
+            UIHelper.verticalSpace(16.h),
 
-            ListView.builder(
-              itemCount: dataList.length,
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (_, index) {
-                var data = dataList[index];
-                bool isChecked = selectedIndex == index;
-                return TileCardWidget(
-                  isSubtitle: false,
-                  icon: data["image"],
-                  isChecked: isChecked,
-                  title: data["title"],
-                  onChanged: (value) {
-                    setState(() {
-                      if (selectedIndex == index) {
-                        selectedIndex = null;
-                      } else {
-                        selectedIndex = index;
-                      }
-                    });
-                  },
-                );
-              },
+            Text(
+              "In you don’t have intolerance just click on the button continue",
+              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                color: const Color(0xFF52525B),
+                fontSize: 16.sp,
+
+                fontWeight: FontWeight.w400,
+              ),
+              textAlign: TextAlign.center,
+            ),
+
+            UIHelper.verticalSpace(16.h),
+
+            CustomTextField(
+              controller: _controller,
+              maxLines: 5,
+              hintText: "Type your answer. \n (ex. Lactose , Gluten etc)",
             ),
           ],
         ),
@@ -92,7 +89,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen2);
+      //      NavigationService.navigateToReplacement(Routes.onboardingScreen2);
           },
           child: Row(
             spacing: 10.w,

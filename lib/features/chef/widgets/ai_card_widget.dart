@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
-import 'package:gritti_app/gen/assets.gen.dart';
 
 class AiCardWidget extends StatelessWidget {
   final VoidCallback onTap;
 
   final String image;
 
-  const AiCardWidget({super.key, required this.onTap, required this.image});
+  final String title;
+
+  const AiCardWidget({super.key, required this.onTap, required this.image, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class AiCardWidget extends StatelessWidget {
             Image.asset(image, width: 67.w, height: 67.h),
 
             Text(
-              "Ai Recipe \n Generator",
+             title,
               textAlign: TextAlign.center,
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF52525B),

@@ -24,7 +24,7 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 3, isBackIcon: true),
+        title: AppBarWidget(currentStep: 3, isBackIcon: true, maxSteps : 15),
       ),
 
       body: SingleChildScrollView(
@@ -83,7 +83,7 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen4);
+            NavigationService.navigateTo(Routes.onboardingScreen4);
           },
           child: Row(
             spacing: 10.w,
@@ -95,7 +95,7 @@ class _OnboardingScreen3State extends State<OnboardingScreen3> {
               ),
 
               SvgPicture.asset(
-                Assets.icons.vector1,
+                Assets.icons.rightArrows,
                 width: 20.w,
                 height: 20.h,
                 fit: BoxFit.cover,

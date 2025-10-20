@@ -8,8 +8,6 @@ import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
-import '../../../helpers/navigation_service.dart';
-import '../widgets/achivement_widget.dart';
 import '../widgets/settings_title_widget.dart';
 import '../widgets/user_info_widget.dart';
 
@@ -246,9 +244,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ],
             ),
 
-            UIHelper.verticalSpace(30.h),
+            /*      UIHelper.verticalSpace(30.h), */
 
-            Padding(
+            /* Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -274,9 +272,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
 
-            UIHelper.verticalSpace(10.h),
+            UIHelper.verticalSpace(10.h), */
 
-            Padding(
+            /*  Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Container(
                 width: double.infinity,
@@ -371,8 +369,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
 
             UIHelper.verticalSpace(32.h),
-
-            Padding(
+ */
+            /*  Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -471,8 +469,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ],
                 ),
               ),
-            ),
-
+            ), */
             UIHelper.verticalSpace(32.h),
 
             Padding(

@@ -8,7 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:gritti_app/navigation_screen.dart';
 import 'package:provider/provider.dart';
 import '/helpers/all_routes.dart';
-import 'features/great_job/great_job_screen.dart';
+import 'features/meal_result/meal_result_screen.dart';
 import 'gen/colors.gen.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';

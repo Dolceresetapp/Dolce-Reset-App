@@ -24,7 +24,7 @@ class _OnboardingScreen14State extends State<OnboardingScreen14> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 14, isBackIcon: true),
+        title: AppBarWidget(currentStep: 14, isBackIcon: true, maxSteps : 15),
       ),
 
       body: SingleChildScrollView(
@@ -76,7 +76,7 @@ class _OnboardingScreen14State extends State<OnboardingScreen14> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen15);
+            NavigationService.navigateTo(Routes.onboardingScreen15);
           },
           child: Row(
             spacing: 10.w,
@@ -88,7 +88,7 @@ class _OnboardingScreen14State extends State<OnboardingScreen14> {
               ),
 
               SvgPicture.asset(
-                Assets.icons.vector1,
+                Assets.icons.rightArrows,
                 width: 20.w,
                 height: 20.h,
                 fit: BoxFit.cover,
