@@ -109,7 +109,7 @@ BottomBarItem _bottomBarItem({
         label,
         style: TextFontStyle.headline30c27272AtyleWorkSansW700.copyWith(
           fontSize: 12.sp,
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.w400,
           color: isSelected ? const Color(0xFFF566A9) : const Color(0xFFA1A1AA),
         ),
       ),

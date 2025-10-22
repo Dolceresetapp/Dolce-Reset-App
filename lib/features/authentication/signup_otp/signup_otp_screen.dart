@@ -130,7 +130,7 @@ class _SignupOtpScreenState extends State<SignupOtpScreen> {
                     ),
 
                     SvgPicture.asset(
-                      Assets.icons.vector1,
+                      Assets.icons.arrowRight,
                       width: 20.w,
                       height: 20.h,
                       fit: BoxFit.cover,

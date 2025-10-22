@@ -187,9 +187,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       _passwordController.clear();
                       _formKey.currentState!.reset();
                       ToastUtil.showShortToast("Login Successfully");
-                      NavigationService.navigateToReplacement(
-                        Routes.onboardingScreen1,
-                      );
+                      /* NavigationService.navigateToReplacement(
+                        Routes.,
+                      ); */
                     }
                   },
                   child: Row(
@@ -202,7 +202,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
 
                       SvgPicture.asset(
-                        Assets.icons.vector1,
+                        Assets.icons.arrowRight,
                         width: 20.w,
                         height: 20.h,
                         fit: BoxFit.cover,

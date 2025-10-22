@@ -6,6 +6,8 @@ import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
+import '../../helpers/navigation_service.dart';
+
 class MealResultScreen extends StatefulWidget {
   const MealResultScreen({super.key});
 
@@ -18,13 +20,24 @@ class _MealResultScreenState extends State<MealResultScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: InkWell(
+          onTap: () {
+            NavigationService.goBack;
+          },
+          child: Padding(
+            padding: EdgeInsets.all(14.sp),
+            child: SvgPicture.asset(
+              Assets.icons.icon,
+              width: 20.w,
+              height: 20.h,
+            ),
+          ),
+        ),
         elevation: 0,
         backgroundColor: Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SvgPicture.asset(Assets.icons.icon, width: 20.w, height: 20.h),
-
             Text(
               "Meal Result",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
@@ -120,7 +133,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
               padding: EdgeInsets.zero,
               itemBuilder: (_, index) {
                 return Container(
-                  width: 1.sw, 
+                  width: 1.sw,
                   margin: EdgeInsets.only(bottom: 8.h),
                   padding: EdgeInsets.all(12.sp),
                   clipBehavior: Clip.antiAlias,

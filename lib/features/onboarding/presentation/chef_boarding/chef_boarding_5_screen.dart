@@ -8,7 +8,8 @@ import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 import '../../../../common_widget/app_bar_widget.dart';
-
+import '../../../../helpers/all_routes.dart';
+import '../../../../helpers/navigation_service.dart';
 
 class ChefBoardingScreen5 extends StatefulWidget {
   const ChefBoardingScreen5({super.key});
@@ -89,7 +90,7 @@ class _ChefBoardingScreen5State extends State<ChefBoardingScreen5> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-      //      NavigationService.navigateToReplacement(Routes.onboardingScreen2);
+            NavigationService.navigateTo(Routes.greatJobScreen);
           },
           child: Row(
             spacing: 10.w,

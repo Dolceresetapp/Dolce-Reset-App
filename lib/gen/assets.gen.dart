@@ -29,6 +29,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Frame (3).svg
   String get frame3 => 'assets/icons/Frame (3).svg';
 
+  /// File path: assets/icons/Frame (5).svg
+  String get frame5 => 'assets/icons/Frame (5).svg';
+
   /// File path: assets/icons/Frame.svg
   String get frame => 'assets/icons/Frame.svg';
 
@@ -90,6 +93,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/arrow sign out.svg
   String get arrowSignOut => 'assets/icons/arrow sign out.svg';
 
+  /// File path: assets/icons/bread toast.svg
+  String get breadToast => 'assets/icons/bread toast.svg';
+
   /// File path: assets/icons/cake.svg
   String get cake => 'assets/icons/cake.svg';
 
@@ -98,6 +104,12 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/chevron right.svg
   String get chevronRight => 'assets/icons/chevron right.svg';
+
+  /// File path: assets/icons/close x.svg
+  String get closeX => 'assets/icons/close x.svg';
+
+  /// File path: assets/icons/egg whole.svg
+  String get eggWhole => 'assets/icons/egg whole.svg';
 
   /// File path: assets/icons/envelope email.svg
   String get envelopeEmail => 'assets/icons/envelope email.svg';
@@ -114,14 +126,23 @@ class $AssetsIconsGen {
   /// File path: assets/icons/fires simple.svg
   String get firesSimple => 'assets/icons/fires simple.svg';
 
+  /// File path: assets/icons/fish.svg
+  String get fish => 'assets/icons/fish.svg';
+
   /// File path: assets/icons/gallery.svg
   String get gallery => 'assets/icons/gallery.svg';
 
   /// File path: assets/icons/health plus alt.svg
   String get healthPlusAlt => 'assets/icons/health plus alt.svg';
 
+  /// File path: assets/icons/ic_round-plus.svg
+  String get icRoundPlus => 'assets/icons/ic_round-plus.svg';
+
   /// File path: assets/icons/info-circle.svg
   String get infoCircle => 'assets/icons/info-circle.svg';
+
+  /// File path: assets/icons/lactose.svg
+  String get lactose => 'assets/icons/lactose.svg';
 
   /// File path: assets/icons/lock locked.svg
   String get lockLocked => 'assets/icons/lock locked.svg';
@@ -157,8 +178,14 @@ class $AssetsIconsGen {
   /// File path: assets/icons/user single.svg
   String get userSingle => 'assets/icons/user single.svg';
 
+  /// File path: assets/icons/water glass.svg
+  String get waterGlass => 'assets/icons/water glass.svg';
+
   /// File path: assets/icons/weight scale.svg
   String get weightScale => 'assets/icons/weight scale.svg';
+
+  /// File path: assets/icons/wheat.svg
+  String get wheat => 'assets/icons/wheat.svg';
 
   /// List of all assets
   List<String> get values => [
@@ -167,6 +194,7 @@ class $AssetsIconsGen {
     frame1,
     frame2,
     frame3,
+    frame5,
     frame,
     icon,
     monotoneAdd1,
@@ -187,17 +215,23 @@ class $AssetsIconsGen {
     arrowRepeat,
     arrowRight,
     arrowSignOut,
+    breadToast,
     cake,
     camera,
     chevronRight,
+    closeX,
+    eggWhole,
     envelopeEmail,
     eyeOff,
     eyeOn,
     fire,
     firesSimple,
+    fish,
     gallery,
     healthPlusAlt,
+    icRoundPlus,
     infoCircle,
+    lactose,
     lockLocked,
     logosFacebook,
     ques,
@@ -209,12 +243,18 @@ class $AssetsIconsGen {
     trash,
     upload,
     userSingle,
+    waterGlass,
     weightScale,
+    wheat,
   ];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
+
+  /// File path: assets/images/Container.png
+  AssetGenImage get container =>
+      const AssetGenImage('assets/images/Container.png');
 
   /// File path: assets/images/Frame (10).png
   AssetGenImage get frame10 =>
@@ -396,6 +436,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+    container,
     frame10,
     frame11,
     rectangle346241741,

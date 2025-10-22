@@ -7,6 +7,7 @@ import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FoodAnalyzerScreen extends StatefulWidget {
   const FoodAnalyzerScreen({super.key});
@@ -84,8 +85,17 @@ class _FoodAnalyzerScreenState extends State<FoodAnalyzerScreen> {
             UIHelper.verticalSpace(30.h),
 
             CustomButton(
-              onPressed: () {
-                NavigationService.navigateTo(Routes.mealResultScreen);
+              onPressed: () async {
+                ImagePicker imagePicker = ImagePicker();
+                XFile? ImageFile = await imagePicker.pickImage(
+                  source: ImageSource.camera,
+                );
+
+                if (ImageFile != null) {
+                  NavigationService.navigateTo(Routes.mealResultScreen);
+                }
+
+              
               },
               child: Row(
                 spacing: 10.w,

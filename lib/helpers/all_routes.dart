@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import '../features/ai_recipe_generator/presentation/ai_recipe_generator_screen.dart';
+import '../features/ai_recipe_generator_chat/presentation/ai_receipe_generator_chat_screen.dart';
 import '../features/authentication/forget_otp/forget_otp_screen.dart';
 import '../features/authentication/forget_password/forget_passwod._screen.dart';
 import '../features/authentication/reset_password/reset_password_screen.dart';
@@ -8,6 +10,7 @@ import '../features/authentication/signin/sign_in_screen.dart';
 import '../features/authentication/signup_otp/signup_otp_screen.dart';
 import '../features/food_analyzer/food_analyzer_screen.dart';
 import '../features/get_started/get_started_screen.dart';
+import '../features/great_job/great_job_screen.dart';
 import '../features/meal_result/meal_result_screen.dart';
 import '../features/onboarding/presentation/chef_boarding/chef_boarding_1_screen.dart';
 import '../features/onboarding/presentation/chef_boarding/chef_boarding_2_screen.dart';
@@ -81,14 +84,18 @@ final class Routes {
   static const String getStartedScreen = '/getStartedScreen';
 
   static const String chefBoardingScreen1 = '/chefBoardingScreen1';
-    static const String chefBoardingScreen2 = '/chefBoardingScreen2';
+  static const String chefBoardingScreen2 = '/chefBoardingScreen2';
   static const String chefBoardingScreen3 = '/chefBoardingScreen3';
   static const String chefBoardingScreen4 = '/chefBoardingScreen4';
   static const String chefBoardingScreen5 = '/chefBoardingScreen5';
 
-    static const String foodAnalyzerScreen = '/foodAnalyzerScreen';
+  static const String foodAnalyzerScreen = '/foodAnalyzerScreen';
 
-     static const String mealResultScreen = '/mealResultScreen';
+  static const String mealResultScreen = '/mealResultScreen';
+
+  static const String greatJobScreen = '/greatJobScreen';
+  static const String aiReceipeGeneratorScreen = '/aiReceipeGeneratorScreen';
+    static const String aiReceipeGeneratorChatScreen = '/aiReceipeGeneratorChatScreen';
 }
 
 final class RouteGenerator {
@@ -98,7 +105,38 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-       case Routes.mealResultScreen:
+
+      case Routes.aiReceipeGeneratorChatScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const AiReceipeGeneratorChatScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const AiReceipeGeneratorChatScreen(),
+            );
+
+
+
+      case Routes.aiReceipeGeneratorScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const AiReceipeGeneratorScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const AiReceipeGeneratorScreen(),
+            );
+
+      case Routes.greatJobScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const GreatJobScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(builder: (context) => const GreatJobScreen());
+
+      case Routes.mealResultScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const MealResultScreen(),
@@ -108,9 +146,7 @@ final class RouteGenerator {
               builder: (context) => const MealResultScreen(),
             );
 
-
-
- case Routes.foodAnalyzerScreen:
+      case Routes.foodAnalyzerScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const FoodAnalyzerScreen(),
@@ -120,8 +156,7 @@ final class RouteGenerator {
               builder: (context) => const FoodAnalyzerScreen(),
             );
 
-
-       case Routes.chefBoardingScreen1:
+      case Routes.chefBoardingScreen1:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const ChefBoardingScreen1(),
@@ -131,7 +166,7 @@ final class RouteGenerator {
               builder: (context) => const ChefBoardingScreen1(),
             );
 
-             case Routes.chefBoardingScreen2:
+      case Routes.chefBoardingScreen2:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const ChefBoardingScreen2(),
