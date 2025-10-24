@@ -24,7 +24,7 @@ class GreatJobScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
-                  Assets.images.frame.path,
+                  Assets.images.frame2147224380.path,
                   width: 200.w,
                   height: 200.h,
                   fit: BoxFit.contain,

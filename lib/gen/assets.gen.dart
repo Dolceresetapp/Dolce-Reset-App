@@ -35,6 +35,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Frame.svg
   String get frame => 'assets/icons/Frame.svg';
 
+  /// File path: assets/icons/Icoddn.svg
+  String get icoddn => 'assets/icons/Icoddn.svg';
+
+  /// File path: assets/icons/Icon (1).svg
+  String get icon1 => 'assets/icons/Icon (1).svg';
+
   /// File path: assets/icons/Icon.svg
   String get icon => 'assets/icons/Icon.svg';
 
@@ -55,6 +61,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/Polygon.svg
   String get polygon => 'assets/icons/Polygon.svg';
+
+  /// File path: assets/icons/Text.svg
+  String get text => 'assets/icons/Text.svg';
 
   /// File path: assets/icons/Vector (1).svg
   String get vector1 => 'assets/icons/Vector (1).svg';
@@ -138,6 +147,21 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_round-plus.svg
   String get icRoundPlus => 'assets/icons/ic_round-plus.svg';
 
+  /// File path: assets/icons/image (1).svg
+  String get image1 => 'assets/icons/image (1).svg';
+
+  /// File path: assets/icons/image (2).svg
+  String get image2 => 'assets/icons/image (2).svg';
+
+  /// File path: assets/icons/image (3).svg
+  String get image3 => 'assets/icons/image (3).svg';
+
+  /// File path: assets/icons/image 1807.svg
+  String get image1807 => 'assets/icons/image 1807.svg';
+
+  /// File path: assets/icons/image.svg
+  String get image => 'assets/icons/image.svg';
+
   /// File path: assets/icons/info-circle.svg
   String get infoCircle => 'assets/icons/info-circle.svg';
 
@@ -146,6 +170,12 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/lock locked.svg
   String get lockLocked => 'assets/icons/lock locked.svg';
+
+  /// File path: assets/icons/logos.svg
+  String get logos => 'assets/icons/logos.svg';
+
+  /// File path: assets/icons/logos2.png
+  AssetGenImage get logos2 => const AssetGenImage('assets/icons/logos2.png');
 
   /// File path: assets/icons/logos_facebook.svg
   String get logosFacebook => 'assets/icons/logos_facebook.svg';
@@ -188,7 +218,7 @@ class $AssetsIconsGen {
   String get wheat => 'assets/icons/wheat.svg';
 
   /// List of all assets
-  List<String> get values => [
+  List<dynamic> get values => [
     buttonIcon1,
     buttonIcon2,
     frame1,
@@ -196,6 +226,8 @@ class $AssetsIconsGen {
     frame3,
     frame5,
     frame,
+    icoddn,
+    icon1,
     icon,
     monotoneAdd1,
     monotoneAdd2,
@@ -203,6 +235,7 @@ class $AssetsIconsGen {
     or,
     polygon1,
     polygon,
+    text,
     vector1,
     vector2,
     vector3,
@@ -230,9 +263,16 @@ class $AssetsIconsGen {
     gallery,
     healthPlusAlt,
     icRoundPlus,
+    image1,
+    image2,
+    image3,
+    image1807,
+    image,
     infoCircle,
     lactose,
     lockLocked,
+    logos,
+    logos2,
     logosFacebook,
     ques,
     questionMarkCircle,
@@ -256,6 +296,10 @@ class $AssetsImagesGen {
   AssetGenImage get container =>
       const AssetGenImage('assets/images/Container.png');
 
+  /// File path: assets/images/Frame (1).png
+  AssetGenImage get frame1 =>
+      const AssetGenImage('assets/images/Frame (1).png');
+
   /// File path: assets/images/Frame (10).png
   AssetGenImage get frame10 =>
       const AssetGenImage('assets/images/Frame (10).png');
@@ -263,6 +307,28 @@ class $AssetsImagesGen {
   /// File path: assets/images/Frame (11).png
   AssetGenImage get frame11 =>
       const AssetGenImage('assets/images/Frame (11).png');
+
+  /// File path: assets/images/Frame (2).png
+  AssetGenImage get frame2 =>
+      const AssetGenImage('assets/images/Frame (2).png');
+
+  /// File path: assets/images/Frame (3).png
+  AssetGenImage get frame3 =>
+      const AssetGenImage('assets/images/Frame (3).png');
+
+  /// File path: assets/images/Frame (4).png
+  AssetGenImage get frame4 =>
+      const AssetGenImage('assets/images/Frame (4).png');
+
+  /// File path: assets/images/Frame 2147224380.png
+  AssetGenImage get frame2147224380 =>
+      const AssetGenImage('assets/images/Frame 2147224380.png');
+
+  /// File path: assets/images/Frame.png
+  AssetGenImage get framePng => const AssetGenImage('assets/images/Frame.png');
+
+  /// File path: assets/images/frame.png
+  AssetGenImage get framePng_ => const AssetGenImage('assets/images/frame.png');
 
   /// File path: assets/images/Rectangle 34624174 (1).png
   AssetGenImage get rectangle346241741 =>
@@ -272,16 +338,45 @@ class $AssetsImagesGen {
   AssetGenImage get rectangle34624174 =>
       const AssetGenImage('assets/images/Rectangle 34624174.png');
 
+  /// File path: assets/images/Rectangle 34624225.png
+  AssetGenImage get rectangle34624225 =>
+      const AssetGenImage('assets/images/Rectangle 34624225.png');
+
+  /// File path: assets/images/Rectangle 34624226.png
+  AssetGenImage get rectangle34624226 =>
+      const AssetGenImage('assets/images/Rectangle 34624226.png');
+
+  /// File path: assets/images/Rectangle 34624227.png
+  AssetGenImage get rectangle34624227 =>
+      const AssetGenImage('assets/images/Rectangle 34624227.png');
+
+  /// File path: assets/images/Rectangle 34624229.png
+  AssetGenImage get rectangle34624229 =>
+      const AssetGenImage('assets/images/Rectangle 34624229.png');
+
   /// File path: assets/images/Rectangle.png
   AssetGenImage get rectangle =>
       const AssetGenImage('assets/images/Rectangle.png');
 
+  /// File path: assets/images/Text.png
+  AssetGenImage get text => const AssetGenImage('assets/images/Text.png');
+
   /// File path: assets/images/abdomen.png
   AssetGenImage get abdomen => const AssetGenImage('assets/images/abdomen.png');
+
+  /// File path: assets/images/abs.png
+  AssetGenImage get abs => const AssetGenImage('assets/images/abs.png');
 
   /// File path: assets/images/back_posture.png
   AssetGenImage get backPosture =>
       const AssetGenImage('assets/images/back_posture.png');
+
+  /// File path: assets/images/biceps.png
+  AssetGenImage get biceps => const AssetGenImage('assets/images/biceps.png');
+
+  /// File path: assets/images/chevron right.png
+  AssetGenImage get chevronRight =>
+      const AssetGenImage('assets/images/chevron right.png');
 
   /// File path: assets/images/food.png
   AssetGenImage get food => const AssetGenImage('assets/images/food.png');
@@ -290,8 +385,21 @@ class $AssetsImagesGen {
   AssetGenImage get fooodddd =>
       const AssetGenImage('assets/images/fooodddd.png');
 
-  /// File path: assets/images/frame.png
-  AssetGenImage get frame => const AssetGenImage('assets/images/frame.png');
+  /// File path: assets/images/image (1).png
+  AssetGenImage get image1 =>
+      const AssetGenImage('assets/images/image (1).png');
+
+  /// File path: assets/images/image (2).png
+  AssetGenImage get image2 =>
+      const AssetGenImage('assets/images/image (2).png');
+
+  /// File path: assets/images/image (3).png
+  AssetGenImage get image3 =>
+      const AssetGenImage('assets/images/image (3).png');
+
+  /// File path: assets/images/image 1807.png
+  AssetGenImage get image1807 =>
+      const AssetGenImage('assets/images/image 1807.png');
 
   /// File path: assets/images/image.png
   AssetGenImage get image => const AssetGenImage('assets/images/image.png');
@@ -306,6 +414,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/into_shape.png
   AssetGenImage get intoShape =>
       const AssetGenImage('assets/images/into_shape.png');
+
+  /// File path: assets/images/leg.png
+  AssetGenImage get leg => const AssetGenImage('assets/images/leg.png');
 
   /// File path: assets/images/legs.png
   AssetGenImage get legs => const AssetGenImage('assets/images/legs.png');
@@ -423,6 +534,10 @@ class $AssetsImagesGen {
   AssetGenImage get reducePain =>
       const AssetGenImage('assets/images/reduce_pain.png');
 
+  /// File path: assets/images/shoulders.png
+  AssetGenImage get shoulders =>
+      const AssetGenImage('assets/images/shoulders.png');
+
   /// File path: assets/images/slep.png
   AssetGenImage get slep => const AssetGenImage('assets/images/slep.png');
 
@@ -437,20 +552,39 @@ class $AssetsImagesGen {
   /// List of all assets
   List<AssetGenImage> get values => [
     container,
+    frame1,
     frame10,
     frame11,
+    frame2,
+    frame3,
+    frame4,
+    frame2147224380,
+    framePng,
+    framePng_,
     rectangle346241741,
     rectangle34624174,
+    rectangle34624225,
+    rectangle34624226,
+    rectangle34624227,
+    rectangle34624229,
     rectangle,
+    text,
     abdomen,
+    abs,
     backPosture,
+    biceps,
+    chevronRight,
     food,
     fooodddd,
-    frame,
+    image1,
+    image2,
+    image3,
+    image1807,
     image,
     image22,
     images232,
     intoShape,
+    leg,
     legs,
     logo,
     losttWeight,
@@ -482,6 +616,7 @@ class $AssetsImagesGen {
     onboarding3,
     pnboard11,
     reducePain,
+    shoulders,
     slep,
     wholeBody,
     womensBg,
