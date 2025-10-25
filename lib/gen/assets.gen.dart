@@ -114,6 +114,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/chevron right.svg
   String get chevronRight => 'assets/icons/chevron right.svg';
 
+  /// File path: assets/icons/clock.png
+  AssetGenImage get clock => const AssetGenImage('assets/icons/clock.png');
+
   /// File path: assets/icons/close x.svg
   String get closeX => 'assets/icons/close x.svg';
 
@@ -129,8 +132,11 @@ class $AssetsIconsGen {
   /// File path: assets/icons/eye_on.svg
   String get eyeOn => 'assets/icons/eye_on.svg';
 
+  /// File path: assets/icons/fire.png
+  AssetGenImage get firePng => const AssetGenImage('assets/icons/fire.png');
+
   /// File path: assets/icons/fire.svg
-  String get fire => 'assets/icons/fire.svg';
+  String get fireSvg => 'assets/icons/fire.svg';
 
   /// File path: assets/icons/fires simple.svg
   String get firesSimple => 'assets/icons/fires simple.svg';
@@ -252,12 +258,14 @@ class $AssetsIconsGen {
     cake,
     camera,
     chevronRight,
+    clock,
     closeX,
     eggWhole,
     envelopeEmail,
     eyeOff,
     eyeOn,
-    fire,
+    firePng,
+    fireSvg,
     firesSimple,
     fish,
     gallery,
