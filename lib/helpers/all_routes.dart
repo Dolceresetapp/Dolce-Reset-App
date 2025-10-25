@@ -32,6 +32,7 @@ import '../features/onboarding/presentation/onboarding_screen_6.dart';
 import '../features/onboarding/presentation/onboarding_screen_7.dart';
 import '../features/onboarding/presentation/onboarding_screen_8.dart';
 import '../features/onboarding/presentation/onboarding_screen_9.dart';
+import '../features/video/video_screen.dart';
 import '../loading.dart';
 
 final class Routes {
@@ -96,6 +97,8 @@ final class Routes {
   static const String greatJobScreen = '/greatJobScreen';
   static const String aiReceipeGeneratorScreen = '/aiReceipeGeneratorScreen';
     static const String aiReceipeGeneratorChatScreen = '/aiReceipeGeneratorChatScreen';
+
+     static const String videoScreen = '/videoScreen';
 }
 
 final class RouteGenerator {
@@ -105,6 +108,18 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
+
+       case Routes.videoScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const VideoScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const VideoScreen(),
+            );
+
+
 
       case Routes.aiReceipeGeneratorChatScreen:
         return Platform.isAndroid

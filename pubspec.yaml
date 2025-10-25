@@ -61,6 +61,7 @@ dependencies:
   stylish_bottom_bar: ^1.1.1
   timer_button: ^2.3.3
   url_launcher: ^6.3.1
+  video_player: ^2.10.0
 
 dev_dependencies:
   build_runner: null

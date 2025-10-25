@@ -17,7 +17,7 @@ class NavigationScreen extends StatefulWidget {
 }
 
 class _NavigationScreenState extends State<NavigationScreen> {
-  int currentIndex = 2;
+  int currentIndex = 0;
   final List<Widget> widgetList = [
     ExceriseScreen(),
     ChefScreen(),
@@ -109,8 +109,8 @@ BottomBarItem _bottomBarItem({
         label,
         style: TextFontStyle.headline30c27272AtyleWorkSansW700.copyWith(
           fontSize: 12.sp,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.w400,
-          color: isSelected ? const Color(0xFFF566A9) : const Color(0xFFA1A1AA),
+          fontWeight: isSelected ? FontWeight.w800 : FontWeight.w400,
+          color: isSelected ? Colors.black : const Color(0xFFA1A1AA),
         ),
       ),
     ),

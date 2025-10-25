@@ -5,6 +5,8 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:gritti_app/common_widget/custom_text_field.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/all_routes.dart';
+import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
 import '../widgets/active_workout_widget.dart';
@@ -99,32 +101,37 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (_, index) {
                     var data = bodyPartsList[index];
-                    return Padding(
-                      padding: EdgeInsets.only(right: 20.w),
-                      child: Column(
-                        spacing: 10.h,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          ClipOval(
-                            child: Image.asset(
-                              data["icon"],
-                              width: 70.w,
-                              height: 70.h,
-                              fit: BoxFit.fill,
+                    return InkWell(
+                      onTap: () {
+                        NavigationService.navigateTo(Routes.videoScreen);
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 20.w),
+                        child: Column(
+                          spacing: 10.h,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ClipOval(
+                              child: Image.asset(
+                                data["icon"],
+                                width: 70.w,
+                                height: 70.h,
+                                fit: BoxFit.fill,
+                              ),
                             ),
-                          ),
 
-                          Text(
-                            data["title"],
-                            textAlign: TextAlign.center,
-                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                                .copyWith(
-                                  color: const Color(0xFF2E2E2E),
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
-                        ],
+                            Text(
+                              data["title"],
+                              textAlign: TextAlign.center,
+                              style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                                  .copyWith(
+                                    color: const Color(0xFF2E2E2E),
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -175,23 +182,29 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                     columnCount: 2,
                     child: ScaleAnimation(
                       child: FadeInAnimation(
-                        child: Container(
-                          alignment: Alignment.bottomLeft,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(data["icon"]),
+                        child: InkWell(
+                          onTap: () {
+                            NavigationService.navigateTo(Routes.videoScreen);
+                          },
+                          child: Container(
+                            alignment: Alignment.bottomLeft,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(data["icon"]),
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 20, left: 10.w),
-                            child: Text(
-                              data["title"],
-                              style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                                  .copyWith(
-                                    color: Colors.white,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 20, left: 10.w),
+                              child: Text(
+                                data["title"],
+                                style: TextFontStyle
+                                    .headLine16cFFFFFFWorkSansW600
+                                    .copyWith(
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              ),
                             ),
                           ),
                         ),
@@ -257,12 +270,32 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
 
               UIHelper.verticalSpace(16.h),
 
-              ActiveWorkoutWidget(
-                icon: Assets.images.abs.path,
-                title: "Pushups For Beginners & Beyond",
-                text: "Upper Body",
-                time: "20 min",
+              ListView.builder(
+                itemCount: 10,
+
+                shrinkWrap: true,
+
+                padding: EdgeInsets.zero,
+
+                itemBuilder: (_, index) {
+                  return InkWell(
+                    onTap: () {
+                      NavigationService.navigateTo(Routes.videoScreen);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 12.h),
+                      child: ActiveWorkoutWidget(
+                        icon: Assets.images.abs.path,
+                        title: "Pushups For Beginners & Beyond",
+                        text: "Upper Body",
+                        time: "20 min",
+                      ),
+                    ),
+                  );
+                },
               ),
+
+              UIHelper.verticalSpaceSemiLarge,
             ],
           ),
         ),
