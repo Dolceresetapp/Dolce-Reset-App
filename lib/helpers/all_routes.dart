@@ -8,6 +8,9 @@ import '../features/authentication/reset_password/reset_password_screen.dart';
 import '../features/authentication/sign_up/sign_up_screen.dart';
 import '../features/authentication/signin/sign_in_screen.dart';
 import '../features/authentication/signup_otp/signup_otp_screen.dart';
+import '../features/download_countdown/download_countdown_screen.dart';
+import '../features/download_progress/download_progress_screen.dart';
+import '../features/exercise_video/exercise_video_screen.dart';
 import '../features/food_analyzer/food_analyzer_screen.dart';
 import '../features/get_started/get_started_screen.dart';
 import '../features/great_job/great_job_screen.dart';
@@ -99,6 +102,12 @@ final class Routes {
     static const String aiReceipeGeneratorChatScreen = '/aiReceipeGeneratorChatScreen';
 
      static const String videoScreen = '/videoScreen';
+
+      static const String downloadProgressScreen = '/downloadProgressScreen';
+
+       static const String downloadCountdownScreen = '/downloadCountdownScreen';
+
+        static const String exerciseVideoScreen = '/exerciseVideoScreen';
 }
 
 final class RouteGenerator {
@@ -108,6 +117,43 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
+
+
+         case Routes.exerciseVideoScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const ExerciseVideoScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const ExerciseVideoScreen(),
+            );
+
+
+
+         case Routes.downloadCountdownScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const DownloadCountdownScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const DownloadCountdownScreen(),
+            );
+
+
+
+        case Routes.downloadProgressScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const DownloadProgressScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const DownloadProgressScreen(),
+            );
+
+
 
        case Routes.videoScreen:
         return Platform.isAndroid

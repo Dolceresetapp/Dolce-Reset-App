@@ -120,6 +120,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/close x.svg
   String get closeX => 'assets/icons/close x.svg';
 
+  /// File path: assets/icons/download_progress.png
+  AssetGenImage get downloadProgress =>
+      const AssetGenImage('assets/icons/download_progress.png');
+
   /// File path: assets/icons/egg whole.svg
   String get eggWhole => 'assets/icons/egg whole.svg';
 
@@ -260,6 +264,7 @@ class $AssetsIconsGen {
     chevronRight,
     clock,
     closeX,
+    downloadProgress,
     eggWhole,
     envelopeEmail,
     eyeOff,

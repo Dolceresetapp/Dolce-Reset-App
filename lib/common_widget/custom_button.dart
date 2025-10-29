@@ -31,7 +31,7 @@ class CustomButton extends StatelessWidget {
     return MaterialButton(
       onPressed: onPressed,
       padding:
-          padding ?? EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
+          padding ?? EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
       minWidth: minWidth ?? 1.sw,
       color: color ?? Color(0xFFF566A9),
       shape: RoundedRectangleBorder(

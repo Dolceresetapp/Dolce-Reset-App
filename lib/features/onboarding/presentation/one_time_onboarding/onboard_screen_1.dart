@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -93,7 +92,7 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
 
   @override
   Widget build(BuildContext context) {
-    log("value => $currentIndex");
+
     return Scaffold(
       backgroundColor: Color(0xFFEF3E41),
       body: SafeArea(
