@@ -87,11 +87,11 @@ class _FoodAnalyzerScreenState extends State<FoodAnalyzerScreen> {
             CustomButton(
               onPressed: () async {
                 ImagePicker imagePicker = ImagePicker();
-                XFile? ImageFile = await imagePicker.pickImage(
+                XFile? imageFile = await imagePicker.pickImage(
                   source: ImageSource.camera,
                 );
 
-                if (ImageFile != null) {
+                if (imageFile != null) {
                   NavigationService.navigateTo(Routes.mealResultScreen);
                 }
 

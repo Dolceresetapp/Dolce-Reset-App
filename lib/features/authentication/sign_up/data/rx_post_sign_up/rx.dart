@@ -32,7 +32,9 @@ final class SignupRx extends RxResponseInt<SignupResponseModel> {
       );
       handleSuccessWithReturn(data);
       return true;
-    } catch (error) {
+    } catch (error, stack) {
+
+      log("Errror =======================> $stack");
       return handleErrorWithReturn(error);
     }
   }
@@ -50,7 +52,8 @@ final class SignupRx extends RxResponseInt<SignupResponseModel> {
         ToastUtil.showShortToast(error.response!.data["message"]);
       } else {
         if (error.response!.statusCode == 401) {
-          ToastUtil.showShortToast(error.response!.data["message"]);   totalDataClean();
+          ToastUtil.showShortToast(error.response!.data["message"]);
+          totalDataClean();
           NavigationService.navigateToReplacement(Routes.signInScreen);
         } else {
           ToastUtil.showShortToast(error.response!.data["message"]);

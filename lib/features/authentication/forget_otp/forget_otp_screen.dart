@@ -4,20 +4,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 import 'package:timer_button/timer_button.dart';
+
 import '../../../common_widget/custom_button.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
-import '../../../helpers/toast.dart';
+import '../../../networks/api_acess.dart';
 import '../../../provider/otp_provider.dart';
 import '../widgets/logo_widget.dart';
 import '../widgets/pinput_theme.dart';
 
 class ForgetOtpScreen extends StatefulWidget {
-  const ForgetOtpScreen({super.key});
+  final String email;
+  const ForgetOtpScreen({super.key, required this.email});
 
   @override
   State<ForgetOtpScreen> createState() => _ForgetOtpScreenState();
@@ -143,7 +146,11 @@ class _ForgetOtpScreenState extends State<ForgetOtpScreen> {
                           ),
                     );
                   },
-                  onPressed: () {},
+                  onPressed: () {
+                      signupResendOtpRxObj
+                        .signupResendOtpRx(email: widget.email)
+                        .waitingForFuture();
+                  },
                   timeOutInSeconds: 120,
                 ),
               ),
@@ -152,12 +159,23 @@ class _ForgetOtpScreenState extends State<ForgetOtpScreen> {
 
               CustomButton(
                 onPressed: () {
-                  if (!_formKey.currentState!.validate()) {
-                    return;
-                  } else {
-                    _formKey.currentState!.reset();
-                    ToastUtil.showShortToast("Otp Verified Successfully");
-                    NavigationService.navigateTo(Routes.resetPasswordScreen);
+                  if (_formKey.currentState!.validate()) {
+                    forgetPasswordOtpRxObj
+                        .forgetPasswordOtpRx(
+                          email: widget.email,
+                          otp: _otpController.text.toString(),
+                        )
+                        .waitingForFuture()
+                        .then((success) {
+                          if (success) {
+                            NavigationService.navigateToWithArgs(
+                              Routes.resetPasswordScreen,{
+                                "email" : widget.email,
+                                "token" : forgetPasswordOtpRxObj.token
+                              }
+                            );
+                          }
+                        });
                   }
                 },
                 child: Row(

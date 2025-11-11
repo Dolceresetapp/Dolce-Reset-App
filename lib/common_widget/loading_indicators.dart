@@ -7,21 +7,17 @@ import '../gen/assets.gen.dart';
 
 Widget loadingIndicatorCircle({
   required BuildContext context,
-  Color? color,
-  double? size,
 }) {
-  double loaderSize = 200.sp;
+  double loaderSize = 150.sp;
   return DotLottieLoader.fromAsset(
-    Assets.lottie.wedeAnimation,
+    Assets.lottie.loadingSpinner,
     frameBuilder: (BuildContext ctx, DotLottie? dotlottie) {
       if (dotlottie != null) {
         return Center(
-          child: Container(
-            child: Lottie.memory(
-              dotlottie.animations.values.single,
-              height: loaderSize,
-              width: loaderSize,
-            ),
+          child: Lottie.asset(
+            Assets.lottie.loadingSpinner,
+            height: loaderSize,
+            width: loaderSize,
           ),
         );
       } else {

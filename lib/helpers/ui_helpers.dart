@@ -37,7 +37,7 @@ final class UIHelper {
   static Widget horizontalSpace(double width) => SizedBox(width: width);
   static Widget verticalSpace(double height) => SizedBox(height: height);
 
-  static double safePadding() => MediaQuery.of(NavigationService.context).padding.top;
+  static double safePadding() => MediaQuery.of(NavigationService.context!).padding.top;
 
   static Widget customDivider() => Container(
         height: 1.h,

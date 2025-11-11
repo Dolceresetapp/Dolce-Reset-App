@@ -1,29 +1,25 @@
 import 'dart:convert';
 
 class SignupResponseModel {
-    bool? success;
+    bool? status;
     String? message;
     Data? data;
-    int? code;
 
     SignupResponseModel({
-        this.success,
+        this.status,
         this.message,
         this.data,
-        this.code,
     });
 
     SignupResponseModel copyWith({
-        bool? success,
+        bool? status,
         String? message,
         Data? data,
-        int? code,
     }) => 
         SignupResponseModel(
-            success: success ?? this.success,
+            status: status ?? this.status,
             message: message ?? this.message,
             data: data ?? this.data,
-            code: code ?? this.code,
         );
 
     factory SignupResponseModel.fromRawJson(String str) => SignupResponseModel.fromJson(json.decode(str));
@@ -31,41 +27,39 @@ class SignupResponseModel {
     String toRawJson() => json.encode(toJson());
 
     factory SignupResponseModel.fromJson(Map<String, dynamic> json) => SignupResponseModel(
-        success: json["success"],
+        status: json["status"],
         message: json["message"],
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
-        code: json["code"],
     );
 
     Map<String, dynamic> toJson() => {
-        "success": success,
+        "status": status,
         "message": message,
         "data": data?.toJson(),
-        "code": code,
     };
 }
 
 class Data {
-    String? message;
+    int? id;
     String? name;
     String? email;
-    int? otp;
+    String? otp;
 
     Data({
-        this.message,
+        this.id,
         this.name,
         this.email,
         this.otp,
     });
 
     Data copyWith({
-        String? message,
+        int? id,
         String? name,
         String? email,
-        int? otp,
+        String? otp,
     }) => 
         Data(
-            message: message ?? this.message,
+            id: id ?? this.id,
             name: name ?? this.name,
             email: email ?? this.email,
             otp: otp ?? this.otp,
@@ -76,14 +70,14 @@ class Data {
     String toRawJson() => json.encode(toJson());
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
-        message: json["message"],
+        id: json["id"],
         name: json["name"],
         email: json["email"],
         otp: json["otp"],
     );
 
     Map<String, dynamic> toJson() => {
-        "message": message,
+        "id": id,
         "name": name,
         "email": email,
         "otp": otp,

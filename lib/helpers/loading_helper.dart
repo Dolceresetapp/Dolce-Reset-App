@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../common_widget/loading_indicators.dart';
 import '../gen/assets.gen.dart';
-
 import '../gen/colors.gen.dart';
 import '../networks/exception_handler/data_source.dart';
 import 'default_response_model.dart';
@@ -14,8 +13,7 @@ import 'navigation_service.dart';
 extension Loader on Future {
   Future<dynamic> waitingForFuture() async {
     showDialog(
-      context: NavigationService.context,
-      barrierColor: AppColors.cF4F4F4,
+      context: NavigationService.context!,
       builder: (context) => loadingIndicatorCircle(context: context),
     );
 
@@ -32,8 +30,11 @@ extension Loader on Future {
 
   Future<dynamic> waitingForSucess() async {
     showDialog(
-      context: NavigationService.context,
-      builder: (context) => Center(child: shimmer(context: context, name: Assets.lottie.loading)),
+      context: NavigationService.context!,
+      builder:
+          (context) => Center(
+            child: shimmer(context: context, name: Assets.lottie.loading),
+          ),
     );
 
     try {
@@ -51,10 +52,15 @@ extension Loader on Future {
     showDialog(
       // barrierDismissible: false,
       // barrierColor: AppColors.cF4F4F4.withOpacity(.8),
-      context: NavigationService.context,
-      builder: (context) => Center(
-        child: shimmer(context: context, name: Assets.lottie.removeFromCart, size: 120.sp),
-      ),
+      context: NavigationService.context!,
+      builder:
+          (context) => Center(
+            child: shimmer(
+              context: context,
+              name: Assets.lottie.removeFromCart,
+              size: 120.sp,
+            ),
+          ),
     );
 
     try {
@@ -70,7 +76,7 @@ extension Loader on Future {
 
   Future<dynamic> waitingForFutureWithoutBg() async {
     showDialog(
-      context: NavigationService.context,
+      context: NavigationService.context!,
       builder: (context) => loadingIndicatorCircle(context: context),
     );
 
@@ -87,7 +93,7 @@ extension Loader on Future {
   Future<void> waitingForFuturewithTime() async {
     try {
       showDialog(
-        context: NavigationService.context,
+        context: NavigationService.context!,
         barrierColor: AppColors.cF4F4F4,
         builder: (context) => loadingIndicatorCircle(context: context),
       );
@@ -95,8 +101,13 @@ extension Loader on Future {
       NavigationService.goBack;
       if (result) {
         showDialog(
-          context: NavigationService.context,
-          builder: (context) => shimmer(context: NavigationService.context, name: Assets.lottie.success, size: 120.sp),
+          context: NavigationService.context!,
+          builder:
+              (context) => shimmer(
+                context: NavigationService.context!,
+                name: Assets.lottie.success,
+                size: 120.sp,
+              ),
         );
         await Future.delayed(const Duration(milliseconds: 800), () {
           NavigationService.goBack;
@@ -113,8 +124,13 @@ extension Loader on Future {
       bool result = await this;
       if (result) {
         showDialog(
-          context: NavigationService.context,
-          builder: (context) => shimmer(context: NavigationService.context, name: Assets.lottie.success, size: 120.sp),
+          context: NavigationService.context!,
+          builder:
+              (context) => shimmer(
+                context: NavigationService.context!,
+                name: Assets.lottie.success,
+                size: 120.sp,
+              ),
         );
         await Future.delayed(const Duration(milliseconds: 800), () {
           NavigationService.goBack;
@@ -130,26 +146,27 @@ extension Loader on Future {
     bool retunValue = await then(
       (value) async {
         showDialog(
-          context: NavigationService.context,
-          builder: (context) => shimmer(context: NavigationService.context, name: Assets.lottie.success, size: 120.sp),
+          context: NavigationService.context!,
+          builder:
+              (context) => shimmer(
+                context: NavigationService.context!,
+                name: Assets.lottie.success,
+                size: 120.sp,
+              ),
         );
         await Future.delayed(const Duration(milliseconds: 800), () {
           NavigationService.goBack;
         });
         DefaultResponse defaultResponse = value as DefaultResponse;
-        ScaffoldMessenger.of(NavigationService.context).showSnackBar(
-          SnackBar(
-            content: Text(defaultResponse.message!),
-          ),
-        );
+        ScaffoldMessenger.of(
+          NavigationService.context!,
+        ).showSnackBar(SnackBar(content: Text(defaultResponse.message!)));
         return true;
       },
       onError: (value) {
         Failure failureresponse = value as Failure;
-        ScaffoldMessenger.of(NavigationService.context).showSnackBar(
-          SnackBar(
-            content: Text(failureresponse.responseMessage),
-          ),
+        ScaffoldMessenger.of(NavigationService.context!).showSnackBar(
+          SnackBar(content: Text(failureresponse.responseMessage)),
         );
         return false;
       },

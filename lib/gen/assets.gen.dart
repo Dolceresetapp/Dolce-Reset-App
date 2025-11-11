@@ -337,12 +337,6 @@ class $AssetsImagesGen {
   AssetGenImage get frame2147224380 =>
       const AssetGenImage('assets/images/Frame 2147224380.png');
 
-  /// File path: assets/images/Frame.png
-  AssetGenImage get framePng => const AssetGenImage('assets/images/Frame.png');
-
-  /// File path: assets/images/frame.png
-  AssetGenImage get framePng_ => const AssetGenImage('assets/images/frame.png');
-
   /// File path: assets/images/Rectangle 34624174 (1).png
   AssetGenImage get rectangle346241741 =>
       const AssetGenImage('assets/images/Rectangle 34624174 (1).png');
@@ -397,6 +391,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/fooodddd.png
   AssetGenImage get fooodddd =>
       const AssetGenImage('assets/images/fooodddd.png');
+
+  /// File path: assets/images/frame.png
+  AssetGenImage get frame => const AssetGenImage('assets/images/frame.png');
 
   /// File path: assets/images/image (1).png
   AssetGenImage get image1 =>
@@ -572,8 +569,6 @@ class $AssetsImagesGen {
     frame3,
     frame4,
     frame2147224380,
-    framePng,
-    framePng_,
     rectangle346241741,
     rectangle34624174,
     rectangle34624225,
@@ -589,6 +584,7 @@ class $AssetsImagesGen {
     chevronRight,
     food,
     fooodddd,
+    frame,
     image1,
     image2,
     image3,
@@ -651,6 +647,12 @@ class $AssetsLottieGen {
   /// File path: assets/lottie/loading.json
   String get loading => 'assets/lottie/loading.json';
 
+  /// File path: assets/lottie/loading_spinner.json
+  String get loadingSpinner => 'assets/lottie/loading_spinner.json';
+
+  /// File path: assets/lottie/loading_spinner_alt.json
+  String get loadingSpinnerAlt => 'assets/lottie/loading_spinner_alt.json';
+
   /// File path: assets/lottie/remove_from_cart.json
   String get removeFromCart => 'assets/lottie/remove_from_cart.json';
 
@@ -663,6 +665,8 @@ class $AssetsLottieGen {
     hamburger,
     imageShimmer,
     loading,
+    loadingSpinner,
+    loadingSpinnerAlt,
     removeFromCart,
     success,
   ];

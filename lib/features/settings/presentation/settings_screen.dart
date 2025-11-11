@@ -4,10 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gritti_app/common_widget/custom_network_image.dart';
+import 'package:gritti_app/constants/app_constants.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/all_routes.dart';
+import 'package:gritti_app/helpers/di.dart';
+import 'package:gritti_app/helpers/loading_helper.dart';
+import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
+import 'package:gritti_app/networks/dio/dio.dart';
 
+import '../../../networks/api_acess.dart';
 import '../widgets/settings_title_widget.dart';
 import '../widgets/user_info_widget.dart';
 
@@ -193,7 +200,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                "Emma Johns",
+                appData.read(kKeyName) ?? "",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   color: const Color(0xFF27272A),
                   fontSize: 24.sp,
@@ -595,7 +602,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
             UIHelper.verticalSpace(20.h),
 
             InkWell(
-              onTap: () {},
+              onTap: () {
+                logoutRxObj.logoutRx().waitingForFuture().then((success) {
+                  if (success) {
+                    appData.write(kKeyIsLoggedIn, false);
+                    DioSingleton.instance.update('');
+                    NavigationService.navigateToReplacement(
+                      Routes.signInScreen,
+                    );
+                  }
+                });
+              },
               child: SvgPicture.asset(
                 Assets.icons.frame3,
                 width: 24.w,

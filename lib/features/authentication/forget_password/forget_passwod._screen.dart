@@ -5,12 +5,15 @@ import 'package:gritti_app/common_widget/custom_text_field.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/constants/validation.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 import '../../../common_widget/custom_button.dart';
+import '../../../common_widget/custom_svg_asset.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
-import '../../../helpers/toast.dart';
+import '../../../networks/api_acess.dart';
 import '../widgets/logo_widget.dart';
+
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key});
@@ -43,6 +46,21 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                InkWell(
+                  onTap: () {
+                    NavigationService.goBack;
+                  },
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: CustomSvgAsset(
+                      width: 20.w,
+                      height: 20.h,
+                      color: Color(0xFF27272A),
+                      fit: BoxFit.contain,
+                      assetName: Assets.icons.icon,
+                    ),
+                  ),
+                ),
                 UIHelper.verticalSpace(40.h),
 
                 LogoWidget(title: "Forget your account Password"),
@@ -71,12 +89,20 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 UIHelper.verticalSpace(30.h),
                 CustomButton(
                   onPressed: () {
-                    if (!_formKey.currentState!.validate()) {
-                      return;
-                    } else {
-                      _formKey.currentState!.reset();
-                      ToastUtil.showShortToast("Otp Sent Successfully");
-                      NavigationService.navigateTo(Routes.forgetOtpScreen);
+                    if (_formKey.currentState!.validate()) {
+                      forgetPasswordRxObj
+                          .forgetPasswordRx(
+                            email: _emailController.text.trim().toString(),
+                          )
+                          .waitingForFuture()
+                          .then((success) {
+                            if (success) {
+                            
+                              NavigationService.navigateToWithArgs(
+                                Routes.forgetOtpScreen,{"email" : _emailController.text.trim().toString()}
+                              );
+                            }
+                          });
                     }
                   },
                   child: Row(

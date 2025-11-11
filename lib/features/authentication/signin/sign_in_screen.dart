@@ -6,7 +6,9 @@ import 'package:gritti_app/common_widget/custom_text_field.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/constants/validation.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
+import 'package:gritti_app/networks/api_acess.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widget/custom_button.dart';
@@ -184,12 +186,20 @@ class _SignInScreenState extends State<SignInScreen> {
                     } else if (!ischecked) {
                       ToastUtil.showShortToast("Please check your box!!");
                     } else {
-                      _passwordController.clear();
-                      _formKey.currentState!.reset();
-                      ToastUtil.showShortToast("Login Successfully");
-                      /* NavigationService.navigateToReplacement(
-                        Routes.,
-                      ); */
+                      signInRxObj
+                          .signInRx(
+                            email: _emailController.text.trim().toString(),
+                            password:
+                                _passwordController.text.trim().toString(),
+                          )
+                          .waitingForFuture()
+                          .then((success) {
+                            if (success) {
+                              NavigationService.navigateToReplacement(
+                                Routes.navigationScreen,
+                              );
+                            }
+                          });
                     }
                   },
                   child: Row(
@@ -244,33 +254,31 @@ class _SignInScreenState extends State<SignInScreen> {
 
                 UIHelper.verticalSpace(16.h),
 
-                CustomButton(
-                  color: Color(0xFF000000),
-                  onPressed: () {
-                    NavigationService.navigateToReplacement(
-                      Routes.signUpScreen,
-                    );
-                  },
-                  child: Row(
-                    spacing: 10.w,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        Assets.icons.logosFacebook,
-                        width: 20.w,
-                        height: 20.h,
-                        fit: BoxFit.cover,
-                      ),
-                      Text(
-                        "Sign In With Facebook",
-                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
-                      ),
-                    ],
-                  ),
-                ),
-
-                UIHelper.verticalSpace(16.h),
-
+                // CustomButton(
+                //   color: Color(0xFF000000),
+                //   onPressed: () {
+                //     NavigationService.navigateToReplacement(
+                //       Routes.signUpScreen,
+                //     );
+                //   },
+                //   child: Row(
+                //     spacing: 10.w,
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       SvgPicture.asset(
+                //         Assets.icons.logosFacebook,
+                //         width: 20.w,
+                //         height: 20.h,
+                //         fit: BoxFit.cover,
+                //       ),
+                //       Text(
+                //         "Sign In With Facebook",
+                //         style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                //    UIHelper.verticalSpace(16.h),
                 CustomButton(
                   color: Color(0xFF000000),
                   onPressed: () {

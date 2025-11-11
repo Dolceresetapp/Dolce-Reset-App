@@ -6,13 +6,14 @@ import 'package:gritti_app/common_widget/custom_text_field.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/constants/validation.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widget/custom_button.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
-import '../../../helpers/toast.dart';
+import '../../../networks/api_acess.dart';
 import '../../../provider/sign_up_provider.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _nameController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  final _confirmController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -35,7 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmController.dispose();
+    _confirmPasswordController.dispose();
 
     _nameController.dispose();
     super.dispose();
@@ -157,7 +158,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       prefixIcon: Assets.icons.vector3,
                       obscureText: !provider.confirmPasswordVisible,
                       keyboardType: TextInputType.visiblePassword,
-                      controller: _confirmController,
+                      controller: _confirmPasswordController,
                       hintText: "Confirm Password",
                       validator:
                           (value) => confirmPasswordValidation(
@@ -188,13 +189,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 CustomButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      ToastUtil.showShortToast("Signup Successfully");
-
-                      _passwordController.clear();
-
-                      _formKey.currentState!.reset();
-
-                      NavigationService.navigateTo(Routes.signupOtpScreen);
+                      signupRxObj
+                          .signupRx(
+                            name: _nameController.text.trim().toString(),
+                            email: _emailController.text.trim().toString(),
+                            password:
+                                _passwordController.text.trim().toString(),
+                            passwordConfirmation:
+                                _confirmPasswordController.text
+                                    .trim()
+                                    .toString(),
+                          )
+                          .waitingForFuture()
+                          .then((success) {
+                            if (success) {
+                              NavigationService.navigateToWithArgs(
+                                Routes.signupOtpScreen,
+                                {
+                                  "email":
+                                      _emailController.text.trim().toString(),
+                                },
+                              );
+                            }
+                          });
                     }
                   },
                   child: Row(

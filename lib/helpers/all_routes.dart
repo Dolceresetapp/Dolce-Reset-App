@@ -37,6 +37,7 @@ import '../features/onboarding/presentation/onboarding_screen_8.dart';
 import '../features/onboarding/presentation/onboarding_screen_9.dart';
 import '../features/video/video_screen.dart';
 import '../loading.dart';
+import '../navigation_screen.dart';
 
 final class Routes {
   static final Routes _routes = Routes._internal();
@@ -99,17 +100,22 @@ final class Routes {
 
   static const String greatJobScreen = '/greatJobScreen';
   static const String aiReceipeGeneratorScreen = '/aiReceipeGeneratorScreen';
-    static const String aiReceipeGeneratorChatScreen = '/aiReceipeGeneratorChatScreen';
+  static const String aiReceipeGeneratorChatScreen =
+      '/aiReceipeGeneratorChatScreen';
 
-     static const String videoScreen = '/videoScreen';
+  static const String videoScreen = '/videoScreen';
 
-      static const String downloadProgressScreen = '/downloadProgressScreen';
+  static const String downloadProgressScreen = '/downloadProgressScreen';
 
-       static const String downloadCountdownScreen = '/downloadCountdownScreen';
+  static const String downloadCountdownScreen = '/downloadCountdownScreen';
 
-        static const String exerciseVideoScreen = '/exerciseVideoScreen';
+  static const String exerciseVideoScreen = '/exerciseVideoScreen';
+
+  static const String navigationScreen = '/navigationScreen';
 }
 
+
+// 
 final class RouteGenerator {
   static final RouteGenerator _routeGenerator = RouteGenerator._internal();
   RouteGenerator._internal();
@@ -118,8 +124,19 @@ final class RouteGenerator {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
 
+      case Routes.navigationScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const NavigationScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const NavigationScreen(),
+            );
 
-         case Routes.exerciseVideoScreen:
+
+
+      case Routes.exerciseVideoScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const ExerciseVideoScreen(),
@@ -129,9 +146,7 @@ final class RouteGenerator {
               builder: (context) => const ExerciseVideoScreen(),
             );
 
-
-
-         case Routes.downloadCountdownScreen:
+      case Routes.downloadCountdownScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const DownloadCountdownScreen(),
@@ -141,9 +156,7 @@ final class RouteGenerator {
               builder: (context) => const DownloadCountdownScreen(),
             );
 
-
-
-        case Routes.downloadProgressScreen:
+      case Routes.downloadProgressScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const DownloadProgressScreen(),
@@ -153,19 +166,13 @@ final class RouteGenerator {
               builder: (context) => const DownloadProgressScreen(),
             );
 
-
-
-       case Routes.videoScreen:
+      case Routes.videoScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: const VideoScreen(),
               settings: settings,
             )
-            : CupertinoPageRoute(
-              builder: (context) => const VideoScreen(),
-            );
-
-
+            : CupertinoPageRoute(builder: (context) => const VideoScreen());
 
       case Routes.aiReceipeGeneratorChatScreen:
         return Platform.isAndroid
@@ -176,8 +183,6 @@ final class RouteGenerator {
             : CupertinoPageRoute(
               builder: (context) => const AiReceipeGeneratorChatScreen(),
             );
-
-
 
       case Routes.aiReceipeGeneratorScreen:
         return Platform.isAndroid
@@ -437,29 +442,42 @@ final class RouteGenerator {
             );
 
       case Routes.forgetOtpScreen:
+
+      final args =  settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const ForgetOtpScreen(),
+              widget:  ForgetOtpScreen(email: args["email"]),
               settings: settings,
             )
-            : CupertinoPageRoute(builder: (context) => const ForgetOtpScreen());
+            : CupertinoPageRoute(builder: (context) =>  ForgetOtpScreen(email: args["email"]));
 
       case Routes.signupOtpScreen:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const SignupOtpScreen(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(builder: (context) => const SignupOtpScreen());
-
-      case Routes.resetPasswordScreen:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const ResetPasswordScreen(),
+              widget: SignupOtpScreen(email: args["email"]),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const ResetPasswordScreen(),
+              builder: (context) => SignupOtpScreen(email: args["email"]),
+            );
+
+      case Routes.resetPasswordScreen:
+
+      final args = settings.arguments as Map;
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget:  ResetPasswordScreen(
+                email: args["email"],
+                token: args["token"],
+              ),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) =>  ResetPasswordScreen(
+                  email: args["email"],
+                token: args["token"],
+              ),
             );
 
       case Routes.signInScreen:

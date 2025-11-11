@@ -5,17 +5,25 @@ import 'package:gritti_app/common_widget/custom_text_field.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/constants/validation.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 import 'package:gritti_app/provider/reset_password_provider.dart';
 import 'package:provider/provider.dart';
+
 import '../../../common_widget/custom_button.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
-import '../../../helpers/toast.dart';
+import '../../../networks/api_acess.dart';
 import '../widgets/logo_widget.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({super.key});
+  final String token;
+  final String email;
+  const ResetPasswordScreen({
+    super.key,
+    required this.email,
+    required this.token,
+  });
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
@@ -139,15 +147,26 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 UIHelper.verticalSpace(30.h),
                 CustomButton(
                   onPressed: () {
-                    if (!_formKey.currentState!.validate()) {
-                      return;
-                    } else {
-                      _passwordController.clear();
-                      _formKey.currentState!.reset();
-                      ToastUtil.showShortToast("Reset Password Successfully");
-                      NavigationService.navigateToReplacement(
-                        Routes.signInScreen,
-                      );
+                    if (_formKey.currentState!.validate()) {
+                      resetPasswordRxObj
+                          .resetPasswordRx(
+                            email: widget.email,
+                            token: widget.token,
+                            password:
+                                _passwordController.text.trim().toString(),
+                            passwordConfirmation:
+                                _confirmPasswordController.text
+                                    .trim()
+                                    .toString(),
+                          )
+                          .waitingForFuture()
+                          .then((success) {
+                            if (success) {
+                              NavigationService.navigateToReplacement(
+                                Routes.signInScreen,
+                              );
+                            }
+                          });
                     }
                   },
                   child: Row(
