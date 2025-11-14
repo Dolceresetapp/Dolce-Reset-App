@@ -1,5 +1,7 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
+
 import '../features/ai_recipe_generator/presentation/ai_recipe_generator_screen.dart';
 import '../features/ai_recipe_generator_chat/presentation/ai_receipe_generator_chat_screen.dart';
 import '../features/authentication/forget_otp/forget_otp_screen.dart';
@@ -27,11 +29,11 @@ import '../features/onboarding/presentation/onboarding_screen_12.dart';
 import '../features/onboarding/presentation/onboarding_screen_13.dart';
 import '../features/onboarding/presentation/onboarding_screen_14.dart';
 import '../features/onboarding/presentation/onboarding_screen_15.dart';
+import '../features/onboarding/presentation/onboarding_screen_16.dart';
+import '../features/onboarding/presentation/onboarding_screen_17.dart';
 import '../features/onboarding/presentation/onboarding_screen_2.dart';
-import '../features/onboarding/presentation/onboarding_screen_3.dart';
 import '../features/onboarding/presentation/onboarding_screen_4.dart';
 import '../features/onboarding/presentation/onboarding_screen_5.dart';
-import '../features/onboarding/presentation/onboarding_screen_6.dart';
 import '../features/onboarding/presentation/onboarding_screen_7.dart';
 import '../features/onboarding/presentation/onboarding_screen_8.dart';
 import '../features/onboarding/presentation/onboarding_screen_9.dart';
@@ -58,12 +60,9 @@ final class Routes {
 
   static const String onboardingScreen2 = '/onboardingScreen2';
 
-  static const String onboardingScreen3 = '/onboardingScreen3';
   static const String onboardingScreen4 = '/onboardingScreen4';
 
   static const String onboardingScreen5 = '/onboardingScreen5';
-
-  static const String onboardingScreen6 = '/onboardingScreen6';
 
   static const String onboardingScreen7 = '/onboardingScreen7';
 
@@ -85,6 +84,10 @@ final class Routes {
   static const String onboardingScreen14 = '/onboardingScreen14';
 
   static const String onboardingScreen15 = '/onboardingScreen15';
+
+  static const String onboardingScreen16 = '/onboardingScreen16';
+
+  static const String onboardingScreen17 = '/onboardingScreen17';
 
   static const String getStartedScreen = '/getStartedScreen';
 
@@ -114,8 +117,7 @@ final class Routes {
   static const String navigationScreen = '/navigationScreen';
 }
 
-
-// 
+//
 final class RouteGenerator {
   static final RouteGenerator _routeGenerator = RouteGenerator._internal();
   RouteGenerator._internal();
@@ -123,7 +125,6 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-
       case Routes.navigationScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
@@ -133,8 +134,6 @@ final class RouteGenerator {
             : CupertinoPageRoute(
               builder: (context) => const NavigationScreen(),
             );
-
-
 
       case Routes.exerciseVideoScreen:
         return Platform.isAndroid
@@ -281,64 +280,394 @@ final class RouteGenerator {
               builder: (context) => const GetStartedScreen(),
             );
 
-      case Routes.onboardingScreen15:
+      case Routes.onboardingScreen17:
+        final args = settings.arguments as Map;
+
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const OnboardingScreen15(),
+              widget: OnboardingScreen17(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+                onboard4: args["onboard4"],
+                onboard5: args["onboard5"],
+                onboard7HeightUnit: args["onboard7HeightUnit"],
+                onboard7HeightValue: args["onboard7HeightValue"],
+
+                onboard8WeightUnit: args["onboard8WeightUnit"],
+                onboard8WeightValue: args["onboard8WeightValue"],
+
+                onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                onboard9TargetWeightValue: args["onboard9TargetWeightValue"],
+
+                selectedDate: args["selectedDate"],
+
+                onboard12: args["onboard12"],
+
+                onboard13: args["onboard13"],
+
+                onboard15: args["onboard15"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen15(),
+              builder:
+                  (context) => OnboardingScreen17(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                    onboard4: args["onboard4"],
+                    onboard5: args["onboard5"],
+                    onboard7HeightUnit: args["onboard7HeightUnit"],
+                    onboard7HeightValue: args["onboard7HeightValue"],
+
+                    onboard8WeightUnit: args["onboard8WeightUnit"],
+                    onboard8WeightValue: args["onboard8WeightValue"],
+
+                    onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                    onboard9TargetWeightValue:
+                        args["onboard9TargetWeightValue"],
+
+                    selectedDate: args["selectedDate"],
+
+                    onboard12: args["onboard12"],
+
+                    onboard13: args["onboard13"],
+
+                    onboard15: args["onboard15"],
+                  ),
+            );
+
+      case Routes.onboardingScreen16:
+        final args = settings.arguments as Map;
+
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: OnboardingScreen16(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+                onboard4: args["onboard4"],
+                onboard5: args["onboard5"],
+                onboard7HeightUnit: args["onboard7HeightUnit"],
+                onboard7HeightValue: args["onboard7HeightValue"],
+
+                onboard8WeightUnit: args["onboard8WeightUnit"],
+                onboard8WeightValue: args["onboard8WeightValue"],
+
+                onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                onboard9TargetWeightValue: args["onboard9TargetWeightValue"],
+
+                selectedDate: args["selectedDate"],
+
+                onboard12: args["onboard12"],
+
+                onboard13: args["onboard13"],
+
+                onboard15: args["onboard15"],
+              ),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder:
+                  (context) => OnboardingScreen16(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                    onboard4: args["onboard4"],
+                    onboard5: args["onboard5"],
+                    onboard7HeightUnit: args["onboard7HeightUnit"],
+                    onboard7HeightValue: args["onboard7HeightValue"],
+
+                    onboard8WeightUnit: args["onboard8WeightUnit"],
+                    onboard8WeightValue: args["onboard8WeightValue"],
+
+                    onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                    onboard9TargetWeightValue:
+                        args["onboard9TargetWeightValue"],
+
+                    selectedDate: args["selectedDate"],
+
+                    onboard12: args["onboard12"],
+
+                    onboard13: args["onboard13"],
+
+                    onboard15: args["onboard15"],
+                  ),
+            );
+
+      case Routes.onboardingScreen15:
+        final args = settings.arguments as Map;
+
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: OnboardingScreen15(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+                onboard4: args["onboard4"],
+                onboard5: args["onboard5"],
+                onboard7HeightUnit: args["onboard7HeightUnit"],
+                onboard7HeightValue: args["onboard7HeightValue"],
+
+                onboard8WeightUnit: args["onboard8WeightUnit"],
+                onboard8WeightValue: args["onboard8WeightValue"],
+
+                onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                onboard9TargetWeightValue: args["onboard9TargetWeightValue"],
+
+                selectedDate: args["selectedDate"],
+
+                onboard12: args["onboard12"],
+
+                onboard13: args["onboard13"],
+              ),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder:
+                  (context) => OnboardingScreen15(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                    onboard4: args["onboard4"],
+                    onboard5: args["onboard5"],
+                    onboard7HeightUnit: args["onboard7HeightUnit"],
+                    onboard7HeightValue: args["onboard7HeightValue"],
+
+                    onboard8WeightUnit: args["onboard8WeightUnit"],
+                    onboard8WeightValue: args["onboard8WeightValue"],
+
+                    onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                    onboard9TargetWeightValue:
+                        args["onboard9TargetWeightValue"],
+
+                    selectedDate: args["selectedDate"],
+
+                    onboard12: args["onboard12"],
+
+                    onboard13: args["onboard13"],
+                  ),
             );
 
       case Routes.onboardingScreen14:
+        final args = settings.arguments as Map;
+
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const OnboardingScreen14(),
+              widget: OnboardingScreen14(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+                onboard4: args["onboard4"],
+                onboard5: args["onboard5"],
+                onboard7HeightUnit: args["onboard7HeightUnit"],
+                onboard7HeightValue: args["onboard7HeightValue"],
+
+                onboard8WeightUnit: args["onboard8WeightUnit"],
+                onboard8WeightValue: args["onboard8WeightValue"],
+
+                onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                onboard9TargetWeightValue: args["onboard9TargetWeightValue"],
+
+                selectedDate: args["selectedDate"],
+
+                onboard12: args["onboard12"],
+
+                onboard13: args["onboard13"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen14(),
+              builder:
+                  (context) => OnboardingScreen14(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                    onboard4: args["onboard4"],
+                    onboard5: args["onboard5"],
+                    onboard7HeightUnit: args["onboard7HeightUnit"],
+                    onboard7HeightValue: args["onboard7HeightValue"],
+
+                    onboard8WeightUnit: args["onboard8WeightUnit"],
+                    onboard8WeightValue: args["onboard8WeightValue"],
+
+                    onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                    onboard9TargetWeightValue:
+                        args["onboard9TargetWeightValue"],
+
+                    selectedDate: args["selectedDate"],
+
+                    onboard12: args["onboard12"],
+
+                    onboard13: args["onboard13"],
+                  ),
             );
 
       case Routes.onboardingScreen13:
+        final args = settings.arguments as Map;
+
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const OnboardingScreen13(),
+              widget: OnboardingScreen13(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+                onboard4: args["onboard4"],
+                onboard5: args["onboard5"],
+                onboard7HeightUnit: args["onboard7HeightUnit"],
+                onboard7HeightValue: args["onboard7HeightValue"],
+
+                onboard8WeightUnit: args["onboard8WeightUnit"],
+                onboard8WeightValue: args["onboard8WeightValue"],
+
+                onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                onboard9TargetWeightValue: args["onboard9TargetWeightValue"],
+
+                selectedDate: args["selectedDate"],
+
+                onboard12: args["onboard12"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen13(),
+              builder:
+                  (context) => OnboardingScreen13(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                    onboard4: args["onboard4"],
+                    onboard5: args["onboard5"],
+                    onboard7HeightUnit: args["onboard7HeightUnit"],
+                    onboard7HeightValue: args["onboard7HeightValue"],
+
+                    onboard8WeightUnit: args["onboard8WeightUnit"],
+                    onboard8WeightValue: args["onboard8WeightValue"],
+
+                    onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                    onboard9TargetWeightValue:
+                        args["onboard9TargetWeightValue"],
+
+                    selectedDate: args["selectedDate"],
+
+                    onboard12: args["onboard12"],
+                  ),
             );
 
       case Routes.onboardingScreen11:
+        final args = settings.arguments as Map;
+
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const OnboardingScreen11(),
+              widget: OnboardingScreen11(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+                onboard4: args["onboard4"],
+                onboard5: args["onboard5"],
+                onboard7HeightUnit: args["onboard7HeightUnit"],
+                onboard7HeightValue: args["onboard7HeightValue"],
+
+                onboard8WeightUnit: args["onboard8WeightUnit"],
+                onboard8WeightValue: args["onboard8WeightValue"],
+
+                onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                onboard9TargetWeightValue: args["onboard9TargetWeightValue"],
+
+                selectedDate: args["selectedDate"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen11(),
+              builder:
+                  (context) => OnboardingScreen11(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                    onboard4: args["onboard4"],
+                    onboard5: args["onboard5"],
+                    onboard7HeightUnit: args["onboard7HeightUnit"],
+                    onboard7HeightValue: args["onboard7HeightValue"],
+
+                    onboard8WeightUnit: args["onboard8WeightUnit"],
+                    onboard8WeightValue: args["onboard8WeightValue"],
+
+                    onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                    onboard9TargetWeightValue:
+                        args["onboard9TargetWeightValue"],
+
+                    selectedDate: args["selectedDate"],
+                  ),
             );
 
       case Routes.onboardingScreen10:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const OnboardingScreen10(),
+              widget: OnboardingScreen10(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+                onboard4: args["onboard4"],
+                onboard5: args["onboard5"],
+                onboard7HeightUnit: args["onboard7HeightUnit"],
+                onboard7HeightValue: args["onboard7HeightValue"],
+
+                onboard8WeightUnit: args["onboard8WeightUnit"],
+                onboard8WeightValue: args["onboard8WeightValue"],
+
+                onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                onboard9TargetWeightValue: args["onboard9TargetWeightValue"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen10(),
+              builder:
+                  (context) => OnboardingScreen10(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                    onboard4: args["onboard4"],
+                    onboard5: args["onboard5"],
+                    onboard7HeightUnit: args["onboard7HeightUnit"],
+                    onboard7HeightValue: args["onboard7HeightValue"],
+
+                    onboard8WeightUnit: args["onboard8WeightUnit"],
+                    onboard8WeightValue: args["onboard8WeightValue"],
+
+                    onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                    onboard9TargetWeightValue:
+                        args["onboard9TargetWeightValue"],
+                  ),
             );
 
       case Routes.onboardingScreen12:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const OnboardingScreen12(),
+              widget: OnboardingScreen12(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+                onboard4: args["onboard4"],
+                onboard5: args["onboard5"],
+                onboard7HeightUnit: args["onboard7HeightUnit"],
+                onboard7HeightValue: args["onboard7HeightValue"],
+
+                onboard8WeightUnit: args["onboard8WeightUnit"],
+                onboard8WeightValue: args["onboard8WeightValue"],
+
+                onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                onboard9TargetWeightValue: args["onboard9TargetWeightValue"],
+
+                selectedDate: args["selectedDate"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen12(),
+              builder:
+                  (context) => OnboardingScreen12(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                    onboard4: args["onboard4"],
+                    onboard5: args["onboard5"],
+                    onboard7HeightUnit: args["onboard7HeightUnit"],
+                    onboard7HeightValue: args["onboard7HeightValue"],
+
+                    onboard8WeightUnit: args["onboard8WeightUnit"],
+                    onboard8WeightValue: args["onboard8WeightValue"],
+
+                    onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
+                    onboard9TargetWeightValue:
+                        args["onboard9TargetWeightValue"],
+
+                    selectedDate: args["selectedDate"],
+                  ),
             );
 
       case Routes.forgetPasswordScreen:
@@ -362,94 +691,145 @@ final class RouteGenerator {
             );
 
       case Routes.onboardingScreen9:
+        final args = settings.arguments as Map;
+
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const OnboardingScreen9(),
+              widget: OnboardingScreen9(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+                onboard4: args["onboard4"],
+                onboard5: args["onboard5"],
+                onboard7HeightUnit: args["onboard7HeightUnit"],
+                onboard7HeightValue: args["onboard7HeightValue"],
+                onboard8WeightUnit: args["onboard8WeightUnit"],
+                onboard8WeightValue: args[" onboard8WeightValue"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen9(),
+              builder:
+                  (context) => OnboardingScreen9(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                    onboard4: args["onboard4"],
+                    onboard5: args["onboard5"],
+                    onboard7HeightUnit: args["onboard7HeightUnit"],
+                    onboard7HeightValue: args["onboard7HeightValue"],
+
+                    onboard8WeightUnit: args["onboard8WeightUnit"],
+                    onboard8WeightValue: args["onboard8WeightValue"],
+                  ),
             );
 
       case Routes.onboardingScreen8:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const OnboardingScreen8(),
+              widget: OnboardingScreen8(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+                onboard4: args["onboard4"],
+                onboard5: args["onboard5"],
+                onboard7HeightUnit: args["onboard7HeightUnit"],
+                onboard7HeightValue: args["onboard7HeightValue"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen8(),
+              builder:
+                  (context) => OnboardingScreen8(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                    onboard4: args["onboard4"],
+                    onboard5: args["onboard5"],
+                    onboard7HeightUnit: args["onboard7HeightUnit"],
+                    onboard7HeightValue: args["onboard7HeightValue"],
+                  ),
             );
 
       case Routes.onboardingScreen7:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const OnboardingScreen7(),
+              widget: OnboardingScreen7(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+                onboard4: args["onboard4"],
+                onboard5: args["onboard5"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen7(),
-            );
-
-      case Routes.onboardingScreen6:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const OnboardingScreen6(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen6(),
+              builder:
+                  (context) => OnboardingScreen7(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                    onboard4: args["onboard4"],
+                    onboard5: args["onboard5"],
+                  ),
             );
 
       case Routes.onboardingScreen5:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const OnboardingScreen5(),
+              widget: OnboardingScreen5(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+                onboard4: args["onboard4"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen5(),
+              builder:
+                  (context) => OnboardingScreen5(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                    onboard4: args["onboard4"],
+                  ),
             );
 
       case Routes.onboardingScreen4:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const OnboardingScreen4(),
+              widget: OnboardingScreen4(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen4(),
-            );
-
-      case Routes.onboardingScreen3:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: const OnboardingScreen3(),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen3(),
+              builder:
+                  (context) => OnboardingScreen4(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                  ),
             );
 
       case Routes.onboardingScreen2:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const OnboardingScreen2(),
+              widget: OnboardingScreen2(onboard1: args["onboard1"]),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const OnboardingScreen2(),
+              builder:
+                  (context) => OnboardingScreen2(onboard1: args["onboard1"]),
             );
 
       case Routes.forgetOtpScreen:
-
-      final args =  settings.arguments as Map;
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget:  ForgetOtpScreen(email: args["email"]),
+              widget: ForgetOtpScreen(email: args["email"]),
               settings: settings,
             )
-            : CupertinoPageRoute(builder: (context) =>  ForgetOtpScreen(email: args["email"]));
+            : CupertinoPageRoute(
+              builder: (context) => ForgetOtpScreen(email: args["email"]),
+            );
 
       case Routes.signupOtpScreen:
         final args = settings.arguments as Map;
@@ -463,21 +843,21 @@ final class RouteGenerator {
             );
 
       case Routes.resetPasswordScreen:
-
-      final args = settings.arguments as Map;
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget:  ResetPasswordScreen(
+              widget: ResetPasswordScreen(
                 email: args["email"],
                 token: args["token"],
               ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) =>  ResetPasswordScreen(
-                  email: args["email"],
-                token: args["token"],
-              ),
+              builder:
+                  (context) => ResetPasswordScreen(
+                    email: args["email"],
+                    token: args["token"],
+                  ),
             );
 
       case Routes.signInScreen:

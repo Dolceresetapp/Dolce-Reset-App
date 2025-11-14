@@ -143,7 +143,7 @@ class _SignupOtpScreenState extends State<SignupOtpScreen> {
                         .then((success) {
                           if (success) {
                             NavigationService.navigateToReplacement(
-                              Routes.navigationScreen,
+                              Routes.getStartedScreen,
                             );
                           }
                         });

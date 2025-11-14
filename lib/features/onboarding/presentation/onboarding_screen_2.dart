@@ -6,14 +6,15 @@ import 'package:gritti_app/common_widget/custom_button.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
-
 import '../../../common_widget/app_bar_widget.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
+import '../../../helpers/toast.dart';
 import '../widgets/tile_card_widget.dart';
 
 class OnboardingScreen2 extends StatefulWidget {
-  const OnboardingScreen2({super.key});
+  final String onboard1;
+  const OnboardingScreen2({super.key, required this.onboard1});
 
   @override
   State<OnboardingScreen2> createState() => _OnboardingScreen2State();
@@ -32,12 +33,14 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
 
   int? selectedIndex;
 
+  String? selectedText;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 2, isBackIcon: true, maxSteps : 15),
+        title: AppBarWidget(currentStep: 2),
       ),
 
       body: SingleChildScrollView(
@@ -48,7 +51,7 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "How much of the body \n does it last for 30 days?",
+              "Which body part would you like to improve in the next 30 days?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -77,6 +80,7 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
                         selectedIndex = null;
                       } else {
                         selectedIndex = index;
+                        selectedText = data["title"];
                       }
                     });
                   },
@@ -91,7 +95,14 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateTo(Routes.onboardingScreen3);
+            if (selectedIndex == null) {
+              ToastUtil.showErrorShortToast("Please select an item.");
+            } else {
+              NavigationService.navigateToWithArgs(Routes.onboardingScreen4, {
+                "onboard1": widget.onboard1,
+                "onboard2": selectedText,
+              });
+            }
           },
           child: Row(
             spacing: 10.w,

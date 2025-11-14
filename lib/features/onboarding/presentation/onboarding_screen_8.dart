@@ -16,24 +16,55 @@ import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
 
 class OnboardingScreen8 extends StatefulWidget {
-  const OnboardingScreen8({super.key});
+  final String onboard1;
+  final String onboard2;
+  final String onboard4;
+  final String onboard5;
+  final int onboard7HeightValue;
+  final String onboard7HeightUnit;
+
+  const OnboardingScreen8({
+    super.key,
+    required this.onboard1,
+    required this.onboard2,
+    required this.onboard4,
+    required this.onboard5,
+    required this.onboard7HeightValue,
+    required this.onboard7HeightUnit,
+  });
 
   @override
   State<OnboardingScreen8> createState() => _OnboardingScreen8State();
 }
 
-class _OnboardingScreen8State extends State<OnboardingScreen8> {
-  int ibsValue = 162;
+class _OnboardingScreen8State extends State<OnboardingScreen8>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
-  int kgValue = 300;
+  double ibsValue = 162.0;
+
+  double kgValue = 300.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    log(ibsValue.toString());
+    log("onboard7HeightValue : ${widget.onboard7HeightValue}");
+    log("onboard7HeightUnit : ${widget.onboard7HeightUnit}");
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 8, isBackIcon: true, maxSteps : 15),
+        title: AppBarWidget(currentStep: 6),
       ),
       body: DefaultTabController(
         length: 2,
@@ -50,7 +81,6 @@ class _OnboardingScreen8State extends State<OnboardingScreen8> {
                       .copyWith(
                         color: const Color(0xFF27272A),
                         fontSize: 30,
-
                         fontWeight: FontWeight.w700,
                       ),
                 ),
@@ -64,6 +94,7 @@ class _OnboardingScreen8State extends State<OnboardingScreen8> {
                     borderRadius: BorderRadius.circular(14.r),
                   ),
                   child: TabBar(
+                    controller: _tabController,
                     padding: EdgeInsets.zero,
                     labelPadding: EdgeInsets.zero,
 
@@ -93,6 +124,7 @@ class _OnboardingScreen8State extends State<OnboardingScreen8> {
 
                 Expanded(
                   child: TabBarView(
+                    controller: _tabController,
                     children: [
                       IbsWidget(ibsValue: ibsValue),
                       KgWidget(kgValue: kgValue),
@@ -110,7 +142,25 @@ class _OnboardingScreen8State extends State<OnboardingScreen8> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateTo(Routes.onboardingScreen9);
+            int selectedTab = _tabController.index;
+
+            final onboard8WeightValue = selectedTab == 0 ? ibsValue : kgValue;
+            final onboard8WeightUnit = selectedTab == 0 ? "ibs" : "kg";
+
+            // ---------------------------
+            // DATA IS VALID → GO NEXT
+            // ---------------------------
+            NavigationService.navigateToWithArgs(Routes.onboardingScreen9, {
+              "onboard1": widget.onboard1,
+              "onboard2": widget.onboard2,
+              "onboard4": widget.onboard4,
+              "onboard5": widget.onboard5,
+              "onboard7HeightUnit": widget.onboard7HeightUnit,
+              "onboard7HeightValue": widget.onboard7HeightValue,
+
+              "onboard8WeightUnit": onboard8WeightUnit,
+              "onboard8WeightValue": onboard8WeightValue,
+            });
           },
           child: Row(
             spacing: 10.w,

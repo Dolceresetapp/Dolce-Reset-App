@@ -10,10 +10,20 @@ import 'package:gritti_app/helpers/ui_helpers.dart';
 import '../../../common_widget/app_bar_widget.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
+import '../../../helpers/toast.dart';
 import '../widgets/tile_card_widget.dart';
 
 class OnboardingScreen5 extends StatefulWidget {
-  const OnboardingScreen5({super.key});
+  final String onboard1;
+  final String onboard2;
+  final String onboard4;
+
+  const OnboardingScreen5({
+    super.key,
+    required this.onboard1,
+    required this.onboard2,
+    required this.onboard4,
+  });
 
   @override
   State<OnboardingScreen5> createState() => _OnboardingScreen5State();
@@ -29,13 +39,13 @@ class _OnboardingScreen5State extends State<OnboardingScreen5> {
   ];
 
   int? selectedIndex;
-
+  String? selectedText;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 5, isBackIcon: true, maxSteps : 15),
+        title: AppBarWidget(currentStep: 4),
       ),
 
       body: SingleChildScrollView(
@@ -46,7 +56,7 @@ class _OnboardingScreen5State extends State<OnboardingScreen5> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "What is your ideal body?",
+              "If you think about the ideal body, what would you like it to be like?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -75,6 +85,7 @@ class _OnboardingScreen5State extends State<OnboardingScreen5> {
                         selectedIndex = null;
                       } else {
                         selectedIndex = index;
+                        selectedText = data["title"];
                       }
                     });
                   },
@@ -89,7 +100,16 @@ class _OnboardingScreen5State extends State<OnboardingScreen5> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateTo(Routes.onboardingScreen6);
+            if (selectedIndex == null) {
+              ToastUtil.showErrorShortToast("Please select an item.");
+            } else {
+              NavigationService.navigateToWithArgs(Routes.onboardingScreen7, {
+                "onboard1": widget.onboard1,
+                "onboard2": widget.onboard2,
+                "onboard4": widget.onboard4,
+                "onboard5": selectedText,
+              });
+            }
           },
           child: Row(
             spacing: 10.w,

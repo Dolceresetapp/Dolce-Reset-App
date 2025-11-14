@@ -102,33 +102,6 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                         ),
                       ),
 
-                      /*   UIHelper.verticalSpace(24.h),
-
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Already have an account? ',
-                              style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                                  .copyWith(
-                                    color: const Color(0xFF52525B),
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
-                            TextSpan(
-                              text: 'Sign In.',
-                              style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                                  .copyWith(
-                                    color: const Color(0xFF767EFF),
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                          ],
-                        ),
-                        textAlign: TextAlign.center,
-                      ), */
                       UIHelper.verticalSpace(24.h),
                     ],
                   ),

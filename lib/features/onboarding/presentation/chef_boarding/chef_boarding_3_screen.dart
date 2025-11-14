@@ -8,7 +8,7 @@ import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
-import '../../../../common_widget/app_bar_widget.dart';
+import '../../../../common_widget/app_bar_widget2.dart';
 import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/navigation_service.dart';
 
@@ -43,7 +43,7 @@ class _ChefBoardingScreen3State extends State<ChefBoardingScreen3> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 3, isBackIcon: true, maxSteps: 5),
+        title: AppBarWidget2(currentStep: 1),
       ),
 
       body: SingleChildScrollView(

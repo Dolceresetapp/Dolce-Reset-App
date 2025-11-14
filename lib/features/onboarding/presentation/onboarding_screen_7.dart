@@ -14,22 +14,48 @@ import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
 
 class OnboardingScreen7 extends StatefulWidget {
-  const OnboardingScreen7({super.key});
+  final String onboard1;
+  final String onboard2;
+  final String onboard4;
+  final String onboard5;
+
+  const OnboardingScreen7({
+    super.key,
+    required this.onboard1,
+    required this.onboard2,
+    required this.onboard4,
+    required this.onboard5,
+  });
 
   @override
   State<OnboardingScreen7> createState() => _OnboardingScreen7State();
 }
 
-class _OnboardingScreen7State extends State<OnboardingScreen7> {
+class _OnboardingScreen7State extends State<OnboardingScreen7>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   int cmValue = 162;
 
   int inchValue = 100;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 7, isBackIcon: true, maxSteps : 15),
+        title: AppBarWidget(currentStep: 5),
       ),
       body: DefaultTabController(
         length: 2,
@@ -60,6 +86,7 @@ class _OnboardingScreen7State extends State<OnboardingScreen7> {
                     borderRadius: BorderRadius.circular(14.r),
                   ),
                   child: TabBar(
+                    controller: _tabController,
                     padding: EdgeInsets.zero,
                     labelPadding: EdgeInsets.zero,
 
@@ -89,6 +116,7 @@ class _OnboardingScreen7State extends State<OnboardingScreen7> {
 
                 Expanded(
                   child: TabBarView(
+                    controller: _tabController,
                     children: [
                       CmWidget(
                         currentValue: cmValue,
@@ -119,7 +147,24 @@ class _OnboardingScreen7State extends State<OnboardingScreen7> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateTo(Routes.onboardingScreen8);
+            // Determine which tab is selected
+            final selectedTab = _tabController.index;
+
+            final onboard7HeightValue =
+                selectedTab == 0 ? cmValue : inchValue; // get value from state
+            final onboard7HeightUnit = selectedTab == 0 ? "cm" : "inch";
+
+          
+
+            // Navigate with data
+            NavigationService.navigateToWithArgs(Routes.onboardingScreen8, {
+              "onboard1": widget.onboard1,
+              "onboard2": widget.onboard2,
+              "onboard4": widget.onboard4,
+              "onboard5": widget.onboard5,
+              "onboard7HeightUnit": onboard7HeightUnit,
+              "onboard7HeightValue": onboard7HeightValue,
+            });
           },
           child: Row(
             spacing: 10.w,

@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/features/onboarding/widgets/onbaording8_widget/ibs_widget.dart';
 import 'package:gritti_app/features/onboarding/widgets/onbaording8_widget/kg_widget.dart';
+
 import '../../../common_widget/app_bar_widget.dart';
 import '../../../common_widget/custom_app_bar.dart';
 import '../../../common_widget/custom_button.dart';
@@ -15,24 +14,60 @@ import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
 
 class OnboardingScreen9 extends StatefulWidget {
-  const OnboardingScreen9({super.key});
+  final String onboard1;
+  final String onboard2;
+  final String onboard4;
+  final String onboard5;
+  final int onboard7HeightValue;
+  final String onboard7HeightUnit;
+
+  final double onboard8WeightValue;
+  final String onboard8WeightUnit;
+
+  const OnboardingScreen9({
+    super.key,
+
+    required this.onboard1,
+    required this.onboard2,
+    required this.onboard4,
+    required this.onboard5,
+    required this.onboard7HeightValue,
+    required this.onboard7HeightUnit,
+
+    required this.onboard8WeightUnit,
+    required this.onboard8WeightValue,
+  });
 
   @override
   State<OnboardingScreen9> createState() => _OnboardingScreen9State();
 }
 
-class _OnboardingScreen9State extends State<OnboardingScreen9> {
-  int ibsValue = 162;
+class _OnboardingScreen9State extends State<OnboardingScreen9>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
-  int kgValue = 300;
+  double ibsValue = 162.0;
+
+  double kgValue = 300.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    log(ibsValue.toString());
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 9, isBackIcon: true, maxSteps : 15),
+        title: AppBarWidget(currentStep: 7),
       ),
       body: DefaultTabController(
         length: 2,
@@ -65,6 +100,7 @@ class _OnboardingScreen9State extends State<OnboardingScreen9> {
                     borderRadius: BorderRadius.circular(14.r),
                   ),
                   child: TabBar(
+                    controller: _tabController,
                     padding: EdgeInsets.zero,
                     labelPadding: EdgeInsets.zero,
 
@@ -94,6 +130,7 @@ class _OnboardingScreen9State extends State<OnboardingScreen9> {
 
                 Expanded(
                   child: TabBarView(
+                    controller: _tabController,
                     children: [
                       IbsWidget(ibsValue: ibsValue),
                       KgWidget(kgValue: kgValue),
@@ -110,8 +147,29 @@ class _OnboardingScreen9State extends State<OnboardingScreen9> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-      
-              NavigationService.navigateTo(Routes.onboardingScreen10);
+            int selectedTab = _tabController.index;
+
+            final onboard9TargetWeightValue =
+                selectedTab == 0 ? ibsValue : kgValue;
+            final onboard9TargetWeightUnit = selectedTab == 0 ? "ibs" : "kg";
+
+            // ---------------------------
+            // DATA IS VALID → GO NEXT
+            // ---------------------------
+            NavigationService.navigateToWithArgs(Routes.onboardingScreen10, {
+              "onboard1": widget.onboard1,
+              "onboard2": widget.onboard2,
+              "onboard4": widget.onboard4,
+              "onboard5": widget.onboard5,
+              "onboard7HeightUnit": widget.onboard7HeightUnit,
+              "onboard7HeightValue": widget.onboard7HeightValue,
+
+              "onboard8WeightUnit": widget.onboard8WeightUnit,
+              "onboard8WeightValue": widget.onboard8WeightValue,
+
+              "onboard9TargetWeightValue": onboard9TargetWeightValue,
+              "onboard9TargetWeightUnit": onboard9TargetWeightUnit,
+            });
           },
           child: Row(
             spacing: 10.w,

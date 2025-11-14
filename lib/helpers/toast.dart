@@ -1,21 +1,16 @@
- import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 final class ToastUtil {
   ToastUtil._();
   static void showLongToast(String message) {
     String trn = message.tr;
-    Fluttertoast.showToast(
-      msg: trn,
-      toastLength: Toast.LENGTH_LONG,
-    );
+    Fluttertoast.showToast(msg: trn, toastLength: Toast.LENGTH_LONG);
   }
 
   static void showShortToast(String message) {
-    Fluttertoast.showToast(
-      msg: message.tr,
-      toastLength: Toast.LENGTH_SHORT,
-    );
+    Fluttertoast.showToast(msg: message.tr, toastLength: Toast.LENGTH_SHORT);
   }
 
   static void showNoInternetToast() {
@@ -31,5 +26,14 @@ final class ToastUtil {
       toastLength: Toast.LENGTH_SHORT,
     );
   }
+
+  static void showErrorShortToast(String message) {
+    Fluttertoast.showToast(
+      msg: message.tr,
+
+      backgroundColor: Colors.red,
+
+      toastLength: Toast.LENGTH_SHORT,
+    );
+  }
 }
- 

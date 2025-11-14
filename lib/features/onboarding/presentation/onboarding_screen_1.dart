@@ -5,11 +5,12 @@ import 'package:gritti_app/common_widget/custom_app_bar.dart';
 import 'package:gritti_app/common_widget/custom_button.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/all_routes.dart';
+import 'package:gritti_app/helpers/navigation_service.dart';
+import 'package:gritti_app/helpers/toast.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
 import '../../../common_widget/app_bar_widget.dart';
-import '../../../helpers/all_routes.dart';
-import '../../../helpers/navigation_service.dart';
 import '../widgets/tile_card_widget.dart';
 
 class OnboardingScreen1 extends StatefulWidget {
@@ -32,12 +33,14 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
 
   int? selectedIndex;
 
+  String? selectedText;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 1, isBackIcon: true, maxSteps: 15),
+        title: AppBarWidget(currentStep: 1, isBackIcon: false),
       ),
 
       body: SingleChildScrollView(
@@ -48,7 +51,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "Did you feel it was \n necessary to immediately \n repair your body?",
+              "What do you feel needs immediate improvement in your body?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -78,6 +81,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
                         selectedIndex = null;
                       } else {
                         selectedIndex = index;
+                        selectedText = data["title"];
                       }
                     });
                   },
@@ -92,7 +96,13 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToReplacement(Routes.onboardingScreen2);
+            if (selectedIndex == null) {
+              ToastUtil.showErrorShortToast("Please select an item.");
+            } else {
+              NavigationService.navigateToWithArgs(Routes.onboardingScreen2, {
+                "onboard1": selectedText,
+              });
+            }
           },
           child: Row(
             spacing: 10.w,

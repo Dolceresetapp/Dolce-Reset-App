@@ -472,6 +472,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/on5.png
   AssetGenImage get on5 => const AssetGenImage('assets/images/on5.png');
 
+  /// File path: assets/images/onboard11.png
+  AssetGenImage get onboard11 =>
+      const AssetGenImage('assets/images/onboard11.png');
+
   /// File path: assets/images/onboard14.png
   AssetGenImage get onboard14 =>
       const AssetGenImage('assets/images/onboard14.png');
@@ -507,6 +511,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/onboard_15_4.png
   AssetGenImage get onboard154 =>
       const AssetGenImage('assets/images/onboard_15_4.png');
+
+  /// File path: assets/images/onboard_16.png
+  AssetGenImage get onboard16 =>
+      const AssetGenImage('assets/images/onboard_16.png');
 
   /// File path: assets/images/onboard_4_1.png
   AssetGenImage get onboard41 =>
@@ -607,6 +615,7 @@ class $AssetsImagesGen {
     on3,
     on4,
     on5,
+    onboard11,
     onboard14,
     onboard131,
     onboard132,
@@ -616,6 +625,7 @@ class $AssetsImagesGen {
     onboard152,
     onboard153,
     onboard154,
+    onboard16,
     onboard41,
     onboard42,
     onboard43,

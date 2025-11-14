@@ -41,7 +41,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 5, isBackIcon: true, maxSteps: 15),
+        title: AppBarWidget(currentStep: 5),
         actions: [
           Center(
             child: Padding(

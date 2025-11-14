@@ -14,7 +14,17 @@ import '../features/authentication/signin/data/rx_post_sign_in/rx.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp/model/signup_otp_response_model.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp/rx.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp_resend/rx.dart';
+import '../features/onboarding/data/model/onboarding_response_model.dart';
+import '../features/onboarding/data/rx_post_onboard/rx.dart';
 import '../features/settings/data/rx_post_logout/rx.dart';
+
+
+
+OnboardingRx onboardingRxObj = OnboardingRx(
+  empty: OnboardingResponseModel(),
+  dataFetcher: BehaviorSubject<OnboardingResponseModel>(),
+);
+
 
 SignupRx signupRxObj = SignupRx(
   empty: SignupResponseModel(),

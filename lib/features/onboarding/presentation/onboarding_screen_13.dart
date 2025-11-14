@@ -9,10 +9,47 @@ import 'package:gritti_app/helpers/ui_helpers.dart';
 import '../../../common_widget/app_bar_widget.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
+import '../../../helpers/toast.dart';
 import '../widgets/tile_card_widget.dart';
 
 class OnboardingScreen13 extends StatefulWidget {
-  const OnboardingScreen13({super.key});
+  final String onboard1;
+  final String onboard2;
+  final String onboard4;
+  final String onboard5;
+  final int onboard7HeightValue;
+  final String onboard7HeightUnit;
+
+  final double onboard8WeightValue;
+  final String onboard8WeightUnit;
+
+  final double onboard9TargetWeightValue;
+  final String onboard9TargetWeightUnit;
+
+  final DateTime selectedDate;
+
+  final String onboard12;
+
+  const OnboardingScreen13({
+    super.key,
+
+    required this.onboard1,
+    required this.onboard2,
+    required this.onboard4,
+    required this.onboard5,
+    required this.onboard7HeightValue,
+    required this.onboard7HeightUnit,
+
+    required this.onboard8WeightUnit,
+    required this.onboard8WeightValue,
+
+    required this.onboard9TargetWeightValue,
+    required this.onboard9TargetWeightUnit,
+
+    required this.selectedDate,
+
+    required this.onboard12,
+  });
 
   @override
   State<OnboardingScreen13> createState() => _OnboardingScreen13State();
@@ -37,12 +74,14 @@ class _OnboardingScreen13State extends State<OnboardingScreen13> {
 
   int? selectedIndex;
 
+  String? onboard13;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 13, isBackIcon: true, maxSteps : 15),
+        title: AppBarWidget(currentStep: 10),
       ),
 
       body: SingleChildScrollView(
@@ -84,6 +123,7 @@ class _OnboardingScreen13State extends State<OnboardingScreen13> {
                         selectedIndex = null;
                       } else {
                         selectedIndex = index;
+                        onboard13 = data["title"];
                       }
                     });
                   },
@@ -98,7 +138,35 @@ class _OnboardingScreen13State extends State<OnboardingScreen13> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateTo(Routes.onboardingScreen14);
+            if (selectedIndex == null) {
+              ToastUtil.showErrorShortToast("Please select an item.");
+            } else {
+              NavigationService.navigateToWithArgs(Routes.onboardingScreen14, {
+              
+                "onboard1": widget.onboard1,
+                "onboard2": widget.onboard2,
+                "onboard4": widget.onboard4,
+                "onboard5": widget.onboard5,
+                "onboard7HeightUnit": widget.onboard7HeightUnit,
+                "onboard7HeightValue": widget.onboard7HeightValue,
+
+                "onboard8WeightUnit": widget.onboard8WeightUnit,
+                "onboard8WeightValue": widget.onboard8WeightValue,
+
+                "onboard9TargetWeightValue": widget.onboard9TargetWeightValue,
+                "onboard9TargetWeightUnit": widget.onboard9TargetWeightUnit,
+
+                "selectedDate": widget.selectedDate,
+
+                "onboard12": widget.onboard12,
+
+                "onboard13": onboard13,
+
+              
+              });
+            }
+
+           
           },
           child: Row(
             spacing: 10.w,
