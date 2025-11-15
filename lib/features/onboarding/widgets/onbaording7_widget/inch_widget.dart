@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:numberpicker/numberpicker.dart';
+
 import '../../../../constants/text_font_style.dart';
 
 class InchWidget extends StatelessWidget {
@@ -62,8 +63,8 @@ class InchWidget extends StatelessWidget {
                     ),
 
                 value: currentValue,
-                minValue: 100,
-                maxValue: 500,
+                minValue: 51,
+                maxValue: 82,
                 onChanged: onChanged,
               ),
             ],

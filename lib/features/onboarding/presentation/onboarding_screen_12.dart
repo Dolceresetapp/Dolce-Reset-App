@@ -29,6 +29,8 @@ class OnboardingScreen12 extends StatefulWidget {
 
   final DateTime selectedDate;
 
+  final double bmi;
+
   const OnboardingScreen12({
     super.key,
 
@@ -46,6 +48,8 @@ class OnboardingScreen12 extends StatefulWidget {
     required this.onboard9TargetWeightUnit,
 
     required this.selectedDate,
+
+    required this.bmi,
   });
 
   @override
@@ -156,6 +160,8 @@ class _OnboardingScreen12State extends State<OnboardingScreen12> {
                 "onboard9TargetWeightUnit": widget.onboard9TargetWeightUnit,
 
                 "selectedDate": widget.selectedDate,
+
+                "bmi" : widget.bmi,
 
                 "onboard12": selectedText,
               });

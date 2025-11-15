@@ -46,9 +46,10 @@ class _OnboardingScreen9State extends State<OnboardingScreen9>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  double ibsValue = 162.0;
+ 
+  double ibsValue = 120.0;
 
-  double kgValue = 300.0;
+  double kgValue = 80.0;
 
   @override
   void initState() {

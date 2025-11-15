@@ -27,6 +27,8 @@ class OnboardingScreen14 extends StatefulWidget {
 
   final DateTime selectedDate;
 
+   final double bmi;
+
   final String onboard12;
 
   final String onboard13;
@@ -48,6 +50,8 @@ class OnboardingScreen14 extends StatefulWidget {
     required this.onboard9TargetWeightUnit,
 
     required this.selectedDate,
+
+       required this.bmi,
 
     required this.onboard12,
 
@@ -150,6 +154,8 @@ class _OnboardingScreen14State extends State<OnboardingScreen14> {
               "onboard9TargetWeightUnit": widget.onboard9TargetWeightUnit,
 
               "selectedDate": widget.selectedDate,
+
+               "bmi" : widget.bmi,
 
               "onboard12": widget.onboard12,
 

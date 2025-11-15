@@ -56,8 +56,8 @@ class _IbsWidgetState extends State<IbsWidget> {
           UIHelper.verticalSpace(20.h),
 
           RulerSlider(
-            minValue: 0.0,
-            maxValue: 500.0,
+            minValue: 66,
+            maxValue: 440,
             initialValue: widget.ibsValue,
 
             rulerHeight: 140.h,

@@ -35,6 +35,10 @@ class OnboardingScreen17 extends StatefulWidget {
 
   final DateTime selectedDate;
 
+  
+  final double bmi;
+
+
   final String onboard12;
 
   final String onboard13;
@@ -57,6 +61,12 @@ class OnboardingScreen17 extends StatefulWidget {
     required this.onboard9TargetWeightUnit,
 
     required this.selectedDate,
+
+
+
+     required this.bmi,
+
+    
 
     required this.onboard12,
 
@@ -215,7 +225,7 @@ class _OnboardingScreen17State extends State<OnboardingScreen17> {
                 .onboardingRx(
                   userId: appData.read(kKeyID).toString(),
                   age: DateFormat('yyyy-MM-dd').format(widget.selectedDate),
-                  bmi: "",
+                  bmi: widget.bmi.toString(),
                   bodyPartFocus: widget.onboard2, // 84
                   bodySatisfaction: widget.onboard15, // 97
 

@@ -34,9 +34,9 @@ class OnboardingScreen7 extends StatefulWidget {
 class _OnboardingScreen7State extends State<OnboardingScreen7>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  int cmValue = 162;
+  int cmValue = 150;
 
-  int inchValue = 100;
+  int inchValue = 60;
 
   @override
   void initState() {

@@ -56,8 +56,8 @@ class _KgWidgetState extends State<KgWidget> {
           UIHelper.verticalSpace(20.h),
 
           RulerSlider(
-            minValue: 0.0,
-            maxValue: 500.0,
+            minValue: 30.0,
+            maxValue: 200.0,
             initialValue: widget.kgValue,
             rulerHeight: 140.h,
             selectedBarColor: Colors.blue,

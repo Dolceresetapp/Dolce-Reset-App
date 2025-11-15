@@ -301,6 +301,8 @@ final class RouteGenerator {
 
                 selectedDate: args["selectedDate"],
 
+                    bmi: args["bmi"],
+
                 onboard12: args["onboard12"],
 
                 onboard13: args["onboard13"],
@@ -327,6 +329,8 @@ final class RouteGenerator {
                         args["onboard9TargetWeightValue"],
 
                     selectedDate: args["selectedDate"],
+
+                        bmi: args["bmi"],
 
                     onboard12: args["onboard12"],
 
@@ -357,6 +361,8 @@ final class RouteGenerator {
 
                 selectedDate: args["selectedDate"],
 
+                bmi: args["bmi"],
+
                 onboard12: args["onboard12"],
 
                 onboard13: args["onboard13"],
@@ -383,6 +389,8 @@ final class RouteGenerator {
                         args["onboard9TargetWeightValue"],
 
                     selectedDate: args["selectedDate"],
+
+                    bmi: args["bmi"],
 
                     onboard12: args["onboard12"],
 
@@ -413,6 +421,8 @@ final class RouteGenerator {
 
                 selectedDate: args["selectedDate"],
 
+                bmi: args["bmi"],
+
                 onboard12: args["onboard12"],
 
                 onboard13: args["onboard13"],
@@ -437,6 +447,8 @@ final class RouteGenerator {
                         args["onboard9TargetWeightValue"],
 
                     selectedDate: args["selectedDate"],
+
+                    bmi: args["bmi"],
 
                     onboard12: args["onboard12"],
 
@@ -465,6 +477,8 @@ final class RouteGenerator {
 
                 selectedDate: args["selectedDate"],
 
+                bmi: args["bmi"],
+
                 onboard12: args["onboard12"],
 
                 onboard13: args["onboard13"],
@@ -489,6 +503,8 @@ final class RouteGenerator {
                         args["onboard9TargetWeightValue"],
 
                     selectedDate: args["selectedDate"],
+
+                    bmi: args["bmi"],
 
                     onboard12: args["onboard12"],
 
@@ -517,6 +533,8 @@ final class RouteGenerator {
 
                 selectedDate: args["selectedDate"],
 
+                bmi: args["bmi"],
+
                 onboard12: args["onboard12"],
               ),
               settings: settings,
@@ -539,6 +557,8 @@ final class RouteGenerator {
                         args["onboard9TargetWeightValue"],
 
                     selectedDate: args["selectedDate"],
+
+                    bmi: args["bmi"],
 
                     onboard12: args["onboard12"],
                   ),
@@ -646,6 +666,8 @@ final class RouteGenerator {
                 onboard9TargetWeightValue: args["onboard9TargetWeightValue"],
 
                 selectedDate: args["selectedDate"],
+
+                bmi: args["bmi"],
               ),
               settings: settings,
             )
@@ -667,6 +689,8 @@ final class RouteGenerator {
                         args["onboard9TargetWeightValue"],
 
                     selectedDate: args["selectedDate"],
+
+                    bmi: args["bmi"],
                   ),
             );
 
