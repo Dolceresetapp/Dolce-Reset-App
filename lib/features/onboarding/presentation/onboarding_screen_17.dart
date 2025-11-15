@@ -3,18 +3,20 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gritti_app/helpers/all_routes.dart';
-import 'package:gritti_app/helpers/loading_helper.dart';
-import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/toast.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 import 'package:intl/intl.dart';
 import 'package:signature/signature.dart';
 
 import '../../../common_widget/custom_button.dart';
+import '../../../common_widget/custom_svg_asset.dart';
 import '../../../constants/app_constants.dart';
 import '../../../constants/text_font_style.dart';
+import '../../../gen/assets.gen.dart';
+import '../../../helpers/all_routes.dart';
 import '../../../helpers/di.dart';
+import '../../../helpers/loading_helper.dart';
+import '../../../helpers/navigation_service.dart';
 import '../../../networks/api_acess.dart';
 
 class OnboardingScreen17 extends StatefulWidget {
@@ -97,7 +99,9 @@ class _OnboardingScreen17State extends State<OnboardingScreen17> {
 
     log("ID  Type: ${appData.read(kKeyID).runtimeType}");
 
-    log("ID string type  : ${appData.read(kKeyID).toString().runtimeType.toString()}");
+    log(
+      "ID string type  : ${appData.read(kKeyID).toString().runtimeType.toString()}",
+    );
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -108,7 +112,21 @@ class _OnboardingScreen17State extends State<OnboardingScreen17> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              BackButton(),
+              InkWell(
+                onTap: () {
+                  NavigationService.goBack;
+                },
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: CustomSvgAsset(
+                    width: 20.w,
+                    height: 20.h,
+                    color: Color(0xFF27272A),
+                    fit: BoxFit.contain,
+                    assetName: Assets.icons.icon,
+                  ),
+                ),
+              ),
               UIHelper.verticalSpace(40.h),
               Align(
                 alignment: Alignment.center,
@@ -191,42 +209,41 @@ class _OnboardingScreen17State extends State<OnboardingScreen17> {
               return;
             }
 
+            log(DateFormat('yyyy-MM-dd').format(widget.selectedDate));
 
-            log(DateFormat('MMMM dd, yyyy').format(widget.selectedDate),);
+            onboardingRxObj
+                .onboardingRx(
+                  userId: appData.read(kKeyID).toString(),
+                  age: DateFormat('yyyy-MM-dd').format(widget.selectedDate),
+                  bmi: "",
+                  bodyPartFocus: widget.onboard2, // 84
+                  bodySatisfaction: widget.onboard15, // 97
 
-            // onboardingRxObj
-            //     .onboardingRx(
-            //       userId: appData.read(kKeyID).toString(),
-            //       age: DateFormat('MMMM dd, yyyy').format(widget.selectedDate),
-            //       bmi: "",
-            //       bodyPartFocus: widget.onboard2, // 84
-            //       bodySatisfaction: widget.onboard15, // 97
+                  celebrationPlan: widget.onboard13, // 95
+                  currentBodyType: widget.onboard4, // 86
+                  currentWeight: widget.onboard8WeightValue.toString(), // 90
+                  dreamBody: widget.onboard5, // 87
+                  height: widget.onboard7HeightValue.toString(), // 89
+                  targetWeight:
+                      widget.onboard9TargetWeightValue.toString(), // 91
+                  tryingDuration: widget.onboard12, // 94
+                  urgentImprovement: widget.onboard1, // 83
+                  signature: signatureBytes,
+                  heightIn: widget.onboard7HeightUnit.toString(), // 89
+                  targetWeightIn:
+                      widget.onboard9TargetWeightUnit.toString(), // 91
+                  weightIn: widget.onboard8WeightUnit.toString(), // 90
+                )
+                .waitingForFuture()
+                .then((success) {
+                  if (success) {
+                    ToastUtil.showShortToast("User info saved successfully");
 
-            //       celebrationPlan: widget.onboard13, // 95
-            //       currentBodyType: widget.onboard4, // 86
-            //       currentWeight: widget.onboard8WeightValue.toString(), // 90
-            //       dreamBody: widget.onboard5, // 87
-            //       height: widget.onboard7HeightValue.toString(), // 89
-            //       targetWeight:
-            //           widget.onboard9TargetWeightValue.toString(), // 91
-            //       tryingDuration: widget.onboard12, // 94
-            //       urgentImprovement: widget.onboard1, // 83
-            //       signature: signatureBytes,
-            //       heightIn: widget.onboard7HeightUnit.toString(), // 89
-            //       targetWeightIn:
-            //           widget.onboard9TargetWeightUnit.toString(), // 91
-            //       weightIn: widget.onboard8WeightUnit.toString(), // 90
-            //     )
-            //     .waitingForFuture()
-            //     .then((success) {
-            //       if (success) {
-            //         ToastUtil.showShortToast("User info saved successfully");
-
-            //         NavigationService.navigateToReplacement(
-            //           Routes.navigationScreen,
-            //         );
-            //       }
-            //     });
+                    NavigationService.navigateToReplacement(
+                      Routes.navigationScreen,
+                    );
+                  }
+                });
           },
           child: Text(
             "Finish",

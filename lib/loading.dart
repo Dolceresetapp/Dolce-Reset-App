@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gritti_app/features/authentication/sign_up/sign_up_screen.dart';
 import 'package:gritti_app/features/onboarding/presentation/one_time_onboarding/onboard_screen_1.dart';
 import 'package:gritti_app/navigation_screen.dart';
+
 import 'constants/app_constants.dart';
-import 'features/get_started/get_started_screen.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
 import 'networks/dio/dio.dart';
@@ -47,8 +47,6 @@ class _LoadingState extends State<Loading> {
     } else {
       return appData.read(kKeyIsFirstTime)
           ? OnboardScreen1()
-          : appData.read(kKeyIsFirstTime)
-          ? GetStartedScreen()
           : appData.read(kKeyIsLoggedIn)
           ? NavigationScreen()
           : SignUpScreen();

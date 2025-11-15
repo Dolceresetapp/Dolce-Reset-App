@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
+
 
 import '../../../../../../networks/dio/dio.dart';
 import '../../../../../../networks/endpoints.dart';
@@ -35,10 +35,13 @@ final class OnboardingApi {
     required String heightIn,
   }) async {
     try {
+       // Convert Uint8List -> PNG File Upload
       MultipartFile signatureFile = MultipartFile.fromBytes(
         signature,
-        //  filename: "signature.png",
-        //  contentType: MediaType("image", "png"),
+          filename: "signature.png",
+   
+
+   
       );
 
       FormData formData = FormData.fromMap({

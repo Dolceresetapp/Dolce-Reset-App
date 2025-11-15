@@ -76,7 +76,7 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
       );
     } else {
       appData.write(kKeyIsFirstTime, false);
-      NavigationService.navigateToReplacement(Routes.getStartedScreen);
+      NavigationService.navigateToReplacement(Routes.signUpScreen);
     }
   }
 
