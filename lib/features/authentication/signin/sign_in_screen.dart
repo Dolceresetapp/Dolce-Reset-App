@@ -195,13 +195,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           .waitingForFuture()
                           .then((success) {
                             if (success) {
-                              // NavigationService.navigateToReplacement(
-                              //   Routes.navigationScreen,
-                              // );
-
-                                NavigationService.navigateToReplacement(
-                              Routes.getStartedScreen,
-                            );
+                              NavigationService.navigateToReplacement(
+                                Routes.navigationScreen,
+                              );
                             }
                           });
                     }

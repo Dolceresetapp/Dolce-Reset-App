@@ -248,11 +248,13 @@ class _OnboardingScreen17State extends State<OnboardingScreen17> {
                 .then((success) {
                   if (success) {
                     ToastUtil.showShortToast("User info saved successfully");
-
                     NavigationService.navigateToReplacement(
                       Routes.navigationScreen,
                     );
+
+                     appData.write(kKeyIsOnboarding, false);
                   }
+
                 });
           },
           child: Text(

@@ -37,6 +37,7 @@ import '../features/onboarding/presentation/onboarding_screen_5.dart';
 import '../features/onboarding/presentation/onboarding_screen_7.dart';
 import '../features/onboarding/presentation/onboarding_screen_8.dart';
 import '../features/onboarding/presentation/onboarding_screen_9.dart';
+import '../features/onboarding/presentation/one_time_onboarding/onboard_screen_1.dart';
 import '../features/video/video_screen.dart';
 import '../loading.dart';
 import '../navigation_screen.dart';
@@ -115,6 +116,8 @@ final class Routes {
   static const String exerciseVideoScreen = '/exerciseVideoScreen';
 
   static const String navigationScreen = '/navigationScreen';
+
+  static const String oneTimeOnboardingScreen = '/oneTimeOnboardingScreen';
 }
 
 //
@@ -301,7 +304,7 @@ final class RouteGenerator {
 
                 selectedDate: args["selectedDate"],
 
-                    bmi: args["bmi"],
+                bmi: args["bmi"],
 
                 onboard12: args["onboard12"],
 
@@ -330,7 +333,7 @@ final class RouteGenerator {
 
                     selectedDate: args["selectedDate"],
 
-                        bmi: args["bmi"],
+                    bmi: args["bmi"],
 
                     onboard12: args["onboard12"],
 
@@ -714,6 +717,28 @@ final class RouteGenerator {
               builder: (context) => const OnboardingScreen1(),
             );
 
+      case Routes.oneTimeOnboardingScreen:
+        final args = settings.arguments as Map;
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: OneTimeOnboardingScreen(
+                onboard1: args["onboard1"],
+                onboard2: args["onboard2"],
+                onboard4: args["onboard4"],
+                onboard5: args["onboard5"],
+              ),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder:
+                  (context) => OneTimeOnboardingScreen(
+                    onboard1: args["onboard1"],
+                    onboard2: args["onboard2"],
+                    onboard4: args["onboard4"],
+                    onboard5: args["onboard5"],
+                  ),
+            );
+
       case Routes.onboardingScreen9:
         final args = settings.arguments as Map;
 
@@ -726,8 +751,9 @@ final class RouteGenerator {
                 onboard5: args["onboard5"],
                 onboard7HeightUnit: args["onboard7HeightUnit"],
                 onboard7HeightValue: args["onboard7HeightValue"],
+
                 onboard8WeightUnit: args["onboard8WeightUnit"],
-                onboard8WeightValue: args[" onboard8WeightValue"],
+                onboard8WeightValue: args["onboard8WeightValue"],
               ),
               settings: settings,
             )

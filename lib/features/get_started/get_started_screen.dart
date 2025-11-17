@@ -77,9 +77,9 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                       CustomButton(
                         color: const Color(0xFFF17389),
                         onPressed: () {
-                          appData.write(kKeyIsFirst, false);
+                          appData.write(kKeyIsFirstTime, false);
                           NavigationService.navigateToReplacement(
-                            Routes.onboardingScreen1,
+                            Routes.signUpScreen,
                           );
                         },
                         child: Row(

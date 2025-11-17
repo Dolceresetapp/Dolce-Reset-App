@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gritti_app/constants/app_constants.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
+import 'package:gritti_app/helpers/di.dart';
 import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
@@ -142,8 +144,9 @@ class _SignupOtpScreenState extends State<SignupOtpScreen> {
                         .waitingForFuture()
                         .then((success) {
                           if (success) {
+                            appData.write(kKeyIsOnboarding, true);
                             NavigationService.navigateToReplacement(
-                              Routes.getStartedScreen,
+                              Routes.onboardingScreen1,
                             );
                           }
                         });

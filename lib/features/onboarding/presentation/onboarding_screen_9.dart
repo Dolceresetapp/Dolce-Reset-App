@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -46,7 +48,6 @@ class _OnboardingScreen9State extends State<OnboardingScreen9>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
- 
   double ibsValue = 120.0;
 
   double kgValue = 80.0;
@@ -65,6 +66,8 @@ class _OnboardingScreen9State extends State<OnboardingScreen9>
 
   @override
   Widget build(BuildContext context) {
+    log("onboard8WeightValue : ${widget.onboard8WeightValue}");
+    log("onboard8WeightUnit : ${widget.onboard8WeightUnit}");
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,

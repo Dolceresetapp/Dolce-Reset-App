@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gritti_app/loading.dart';
 import 'package:provider/provider.dart';
-
 import '/helpers/all_routes.dart';
 import 'gen/colors.gen.dart';
 import 'helpers/di.dart';
@@ -83,8 +82,8 @@ class UtillScreenMobile extends StatelessWidget {
             onGenerateRoute: RouteGenerator.generateRoute,
 
             // app package Name :  //  com.dolceresetltd.app
-            home: Loading(),
-            // ReadyScreen ()
+        
+          home: Loading()
           ),
         );
       },

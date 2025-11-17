@@ -1,11 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gritti_app/constants/app_constants.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
-import 'package:gritti_app/helpers/di.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -13,14 +10,26 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../../common_widget/custom_button.dart';
 import '../../widgets/onetime_onbaord_widget.dart';
 
-class OnboardScreen1 extends StatefulWidget {
-  const OnboardScreen1({super.key});
+class OneTimeOnboardingScreen extends StatefulWidget {
+  final String onboard1;
+  final String onboard2;
+  final String onboard4;
+  final String onboard5;
+
+  const OneTimeOnboardingScreen({
+    super.key,
+    required this.onboard1,
+    required this.onboard2,
+    required this.onboard4,
+    required this.onboard5,
+  });
 
   @override
-  State<OnboardScreen1> createState() => _OnboardScreen1State();
+  State<OneTimeOnboardingScreen> createState() =>
+      _OneTimeOnboardingScreenState();
 }
 
-class _OnboardScreen1State extends State<OnboardScreen1> {
+class _OneTimeOnboardingScreenState extends State<OneTimeOnboardingScreen> {
   List<Map<String, dynamic>> dataList = [
     {
       "image": Assets.images.on1.path,
@@ -75,8 +84,15 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
         curve: Curves.easeInOut,
       );
     } else {
-      appData.write(kKeyIsFirstTime, false);
-      NavigationService.navigateToReplacement(Routes.signUpScreen);
+      //  appData.write(kKeyIsFirstTime, false);
+      //  NavigationService.navigateToReplacement(Routes.signUpScreen);
+
+      NavigationService.navigateToWithArgs(Routes.onboardingScreen7, {
+        "onboard1": widget.onboard1,
+        "onboard2": widget.onboard2,
+        "onboard4": widget.onboard4,
+        "onboard5": widget.onboard5,
+      });
     }
   }
 
@@ -92,7 +108,6 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Color(0xFFEF3E41),
       body: SafeArea(
@@ -101,20 +116,25 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              currentIndex > 0
-                  ? Align(
-                    alignment: Alignment.topLeft,
-                    child: BackButton(
-                      color: Colors.white,
-                      onPressed: () {
-                        goToPreviousPage();
-                      },
-                    ),
-                  )
-                  : SizedBox.shrink(),
-              currentIndex > 0
-                  ? UIHelper.verticalSpace(0.h)
-                  : UIHelper.verticalSpace(42.h),
+              //currentIndex > 0
+              //    ?
+              Align(
+                alignment: Alignment.topLeft,
+                child: BackButton(
+                  color: Colors.white,
+                  onPressed: () {
+                    if (currentIndex == 0) {
+                      NavigationService.goBack;
+                    } else {
+                      goToPreviousPage();
+                    }
+                  },
+                ),
+              ),
+              //   : SizedBox.shrink(),
+              //    currentIndex > 0
+              //   ? UIHelper.verticalSpace(0.h)
+              // : UIHelper.verticalSpace(42.h),
               Text(
                 'DOLCE\nRESET',
                 textAlign: TextAlign.center,

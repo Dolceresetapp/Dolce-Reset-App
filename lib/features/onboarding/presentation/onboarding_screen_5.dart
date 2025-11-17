@@ -103,7 +103,7 @@ class _OnboardingScreen5State extends State<OnboardingScreen5> {
             if (selectedIndex == null) {
               ToastUtil.showErrorShortToast("Please select an item.");
             } else {
-              NavigationService.navigateToWithArgs(Routes.onboardingScreen7, {
+              NavigationService.navigateToWithArgs(Routes.oneTimeOnboardingScreen, {
                 "onboard1": widget.onboard1,
                 "onboard2": widget.onboard2,
                 "onboard4": widget.onboard4,

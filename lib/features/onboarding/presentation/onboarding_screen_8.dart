@@ -145,11 +145,16 @@ class _OnboardingScreen8State extends State<OnboardingScreen8>
             int selectedTab = _tabController.index;
 
             final onboard8WeightValue = selectedTab == 0 ? ibsValue : kgValue;
-            final onboard8WeightUnit = selectedTab == 0 ? "ibs" : "kg";
+            final onboard8WeightUnit = selectedTab == 0 ? "lbs" : "kg";
 
             // ---------------------------
             // DATA IS VALID → GO NEXT
             // ---------------------------
+
+            log("onboard8WeightValue : $onboard8WeightValue");
+            log("onboard8WeightUnit : $onboard8WeightUnit");
+
+         
             NavigationService.navigateToWithArgs(Routes.onboardingScreen9, {
               "onboard1": widget.onboard1,
               "onboard2": widget.onboard2,
