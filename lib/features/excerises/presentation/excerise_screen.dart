@@ -4,11 +4,16 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'package:gritti_app/common_widget/custom_text_field.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
+import 'package:gritti_app/features/excerises/data/rx_get_category/model/category_response_model.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
+import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
+import '../../../common_widget/custom_network_image.dart';
+import '../../../common_widget/waiting_widget.dart';
+import '../../../networks/api_acess.dart';
 import '../widgets/active_workout_widget.dart';
 import '../widgets/profile_section_widget.dart';
 import '../widgets/training_level_card_widget.dart';
@@ -21,22 +26,6 @@ class ExceriseScreen extends StatefulWidget {
 }
 
 class _ExceriseScreenState extends State<ExceriseScreen> {
-  final searchControler = TextEditingController();
-
-  @override
-  void dispose() {
-    searchControler.dispose();
-    super.dispose();
-  }
-
-  // Body Parts Excerise List
-  List<Map<String, dynamic>> bodyPartsList = [
-    {"icon": Assets.images.leg.path, "title": "Leg"},
-    {"icon": Assets.images.shoulders.path, "title": "Shoulders"},
-    {"icon": Assets.images.biceps.path, "title": "Biceps"},
-    {"icon": Assets.images.abs.path, "title": "Abs"},
-  ];
-
   // Theme Workout List
   List<Map<String, dynamic>> workoutThemeList = [
     {"icon": Assets.images.rectangle34624225.path, "title": "Wall \n pilates"},
@@ -44,6 +33,13 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
     {"icon": Assets.images.rectangle34624229.path, "title": "Full \n Body"},
     {"icon": Assets.images.rectangle34624227.path, "title": "Bed \n workout"},
   ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    categoryRxObj.categoryRx();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +51,13 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              ProfileSectionWidget(),
-              UIHelper.verticalSpace(8.h),
+              UIHelper.verticalSpace(10.h),
+              ProfileSectionWidget(avatar: '',),
+              UIHelper.verticalSpace(20.h),
 
               CustomTextField(
-                controller: searchControler,
                 prefixIcon: Assets.icons.icon1,
+                readOnly: true,
                 hintText: "Search for a workout...",
               ),
 
@@ -77,13 +74,22 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  Text(
-                    "See All",
-                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                      color: const Color(0xFFF97316),
-                      fontSize: 14.sp,
+                  GestureDetector(
+                    onTap: () {
+                      NavigationService.navigateToWithArgs(
+                        Routes.exceriseSeeScreen,
+                        {"categoryType": "body_part_exercise"},
+                      );
+                    },
+                    child: Text(
+                      "See All",
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                          .copyWith(
+                            color: const Color(0xFFF97316),
+                            fontSize: 14.sp,
 
-                      fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w500,
+                          ),
                     ),
                   ),
                 ],
@@ -91,50 +97,102 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
 
               UIHelper.verticalSpace(20.h),
 
-              SizedBox(
-                height: 100.h,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: bodyPartsList.length,
-                  padding: EdgeInsets.zero,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (_, index) {
-                    var data = bodyPartsList[index];
-                    return InkWell(
-                      onTap: () {
-                        NavigationService.navigateTo(Routes.videoScreen);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 20.w),
-                        child: Column(
-                          spacing: 10.h,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            ClipOval(
-                              child: Image.asset(
-                                data["icon"],
-                                width: 70.w,
-                                height: 70.h,
-                                fit: BoxFit.fill,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: SizedBox(
+                  height: 100.h,
+                  child: StreamBuilder<CategoryResponseModel>(
+                    stream: categoryRxObj.categoryRxStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return WaitingWidget();
+                      } else if (snapshot.hasError) {
+                        return Text(
+                          "someting went wrong",
+                          style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                              .copyWith(
+                                color: const Color(0xFFF97316),
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w800,
                               ),
-                            ),
+                        );
+                      } else if (!snapshot.hasData ||
+                          snapshot.data!.data!.isEmpty) {
+                        return Center(
+                          child: Text(
+                            "Category data \n not availabe",
+                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                                .copyWith(
+                                  color: const Color(0xFFF97316),
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                          ),
+                        );
+                      } else if (snapshot.hasData) {
+                        CategoryResponseModel? model = snapshot.data;
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: model?.data?.length,
+                          padding: EdgeInsets.zero,
 
-                            Text(
-                              data["title"],
-                              textAlign: TextAlign.center,
-                              style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                                  .copyWith(
-                                    color: const Color(0xFF2E2E2E),
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                          physics: ClampingScrollPhysics(),
+                          itemBuilder: (_, index) {
+                            var data = model?.data?[index];
+                            return InkWell(
+                              onTap: () {
+                                categoryWiseThemeRxObj
+                                    .categoryWiseThemeRx(categoryId: data?.id!)
+                                    .waitingForFuture()
+                                    .then((success) {
+                                      if (success) {
+                                        NavigationService.navigateToWithArgs(
+                                          Routes.exceriseSeeScreen,
+                                          {"categoryType": "theme_workout"},
+                                        );
+                                      }
+                                    });
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 20.w),
+                                child: Column(
+                                  spacing: 10.h,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ClipOval(
+                                      child: CustomCachedNetworkImage(
+                                        imageUrl: data?.image ?? "",
+                                        width: 70.w,
+                                        height: 70.h,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+
+                                    Text(
+                                      data?.name ?? "",
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextFontStyle
+                                          .headLine16cFFFFFFWorkSansW600
+                                          .copyWith(
+                                            color: const Color(0xFF2E2E2E),
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
+                  ),
                 ),
               ),
 
@@ -150,13 +208,22 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  Text(
-                    "See All",
-                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                      color: const Color(0xFFF97316),
-                      fontSize: 14.sp,
+                  GestureDetector(
+                    onTap: () {
+                      NavigationService.navigateToWithArgs(
+                        Routes.exceriseSeeScreen,
+                        {"categoryType": "theme_workout"},
+                      );
+                    },
+                    child: Text(
+                      "See All",
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                          .copyWith(
+                            color: const Color(0xFFF97316),
+                            fontSize: 14.sp,
 
-                      fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w500,
+                          ),
                     ),
                   ),
                 ],

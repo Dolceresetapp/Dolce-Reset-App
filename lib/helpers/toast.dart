@@ -29,6 +29,10 @@ final class ToastUtil {
 
   static void showErrorShortToast(String message) {
     Fluttertoast.showToast(
+
+      gravity: ToastGravity.TOP,
+
+
       msg: message.tr,
 
       backgroundColor: Colors.red,

@@ -84,6 +84,8 @@ class UtillScreenMobile extends StatelessWidget {
             // app package Name :  //  com.dolceresetltd.app
         
           home: Loading()
+
+          // all theme get api
           ),
         );
       },

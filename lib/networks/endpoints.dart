@@ -33,4 +33,13 @@ final class Endpoints {
 
   // onboading
   static String onboardUserInfo() => "/user/info";
+
+  // Excercise  Screen
+
+   static String category() => "/category";
+
+
+      static String categoryWiseTheme() => "/category_wise_themes";
+
+
 }

@@ -12,6 +12,7 @@ import '../features/authentication/signin/sign_in_screen.dart';
 import '../features/authentication/signup_otp/signup_otp_screen.dart';
 import '../features/download_countdown/download_countdown_screen.dart';
 import '../features/download_progress/download_progress_screen.dart';
+import '../features/exercise_see/exercise_see_screen.dart';
 import '../features/exercise_video/exercise_video_screen.dart';
 import '../features/food_analyzer/food_analyzer_screen.dart';
 import '../features/get_started/get_started_screen.dart';
@@ -118,16 +119,35 @@ final class Routes {
   static const String navigationScreen = '/navigationScreen';
 
   static const String oneTimeOnboardingScreen = '/oneTimeOnboardingScreen';
+
+    static const String exceriseSeeScreen = '/exceriseSeeScreen';
 }
 
 //
 final class RouteGenerator {
   static final RouteGenerator _routeGenerator = RouteGenerator._internal();
   RouteGenerator._internal();
-  static RouteGenerator get instance => _routeGenerator;
+  static RouteGenerator get instanc => _routeGenerator;
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
-    switch (settings.name) {
+    switch (settings.name) { 
+
+       case Routes.exceriseSeeScreen:
+
+       final args = settings.arguments as Map;
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget:  ExceriseSeeScreen(
+                categoryType : args["categoryType"]
+              ),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) =>  ExceriseSeeScreen( categoryType : args["categoryType"]),
+            );
+
+
+
       case Routes.navigationScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(

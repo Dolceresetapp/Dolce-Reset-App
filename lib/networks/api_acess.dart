@@ -1,3 +1,5 @@
+import 'package:gritti_app/features/excerises/data/rx_get_category/model/category_response_model.dart';
+import 'package:gritti_app/features/excerises/data/rx_get_category/rx.dart';
 import 'package:gritti_app/features/settings/data/model/logout_response_model.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -14,17 +16,26 @@ import '../features/authentication/signin/data/rx_post_sign_in/rx.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp/model/signup_otp_response_model.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp/rx.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp_resend/rx.dart';
+import '../features/excerises/data/rx_post_theme/model/category_wise_theme_response_model.dart';
+import '../features/excerises/data/rx_post_theme/rx.dart';
 import '../features/onboarding/data/model/onboarding_response_model.dart';
 import '../features/onboarding/data/rx_post_onboard/rx.dart';
 import '../features/settings/data/rx_post_logout/rx.dart';
 
+CategoryWiseThemeRx categoryWiseThemeRxObj = CategoryWiseThemeRx(
+  empty: CategoryWiseThemeResponseModel(),
+  dataFetcher: BehaviorSubject<CategoryWiseThemeResponseModel>(),
+);
 
+CategoryRx categoryRxObj = CategoryRx(
+  empty: CategoryResponseModel(),
+  dataFetcher: BehaviorSubject<CategoryResponseModel>(),
+);
 
 OnboardingRx onboardingRxObj = OnboardingRx(
   empty: OnboardingResponseModel(),
   dataFetcher: BehaviorSubject<OnboardingResponseModel>(),
 );
-
 
 SignupRx signupRxObj = SignupRx(
   empty: SignupResponseModel(),
