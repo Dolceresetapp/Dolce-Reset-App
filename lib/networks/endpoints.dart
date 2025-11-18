@@ -30,16 +30,43 @@ final class Endpoints {
   static String resetPassword() => "/reset-password";
   static String logout() => "/logout";
 
-
   // onboading
   static String onboardUserInfo() => "/user/info";
 
   // Excercise  Screen
 
-   static String category() => "/category";
+  static String category({String? search}) {
+    if (search != null && search.isNotEmpty) {
+      return "/category?search=$search";
+    }
+    return "/category";
+  }
 
+  static String categoryWiseTheme({
+    int? categoryId,
+    String? type,
+    String? search,
+  }) {
+    String endpoint = "/category_wise_themes";
+    List<String> queryParams = [];
 
-      static String categoryWiseTheme() => "/category_wise_themes";
+    if (categoryId != null) {
+      queryParams.add("category_id=$categoryId");
+    }
+    if (type != null && type.isNotEmpty) {
+      queryParams.add("type=$type");
+    }
 
+    if (search != null && search.isNotEmpty) {
+      queryParams.add("name=$search");
+    }
 
+    if (queryParams.isNotEmpty) {
+      endpoint += "?${queryParams.join("&")}";
+    }
+    return endpoint;
+  }
+
+  static String themeWiseVideo({required int themeId}) =>
+      "/themes_wise_video/$themeId";
 }

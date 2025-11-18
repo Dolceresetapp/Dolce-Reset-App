@@ -15,12 +15,18 @@ final class CategoryWiseThemeApi {
   static CategoryWiseThemeApi get instance => _singleton;
 
   Future<CategoryWiseThemeResponseModel> categoryWiseThemeApi({
- int? categoryId,
-   String? type,
+    int? categoryId,
+    String? type,
+    String? search,
   }) async {
     try {
-      Map data = {"category_id": categoryId, "type": type};
-      Response response = await postHttp(Endpoints.categoryWiseTheme(), data);
+      Response response = await getHttp(
+        Endpoints.categoryWiseTheme(
+          categoryId: categoryId,
+          type: type,
+          search: search,
+        ),
+      );
       if (response.statusCode == 200 || response.statusCode == 201) {
         CategoryWiseThemeResponseModel data =
             CategoryWiseThemeResponseModel.fromRawJson(

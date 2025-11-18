@@ -13,9 +13,9 @@ final class CategoryApi {
 
   static CategoryApi get instance => _singleton;
 
-  Future<CategoryResponseModel> categoryApi() async {
+  Future<CategoryResponseModel> categoryApi({String? search}) async {
     try {
-      Response response = await getHttp(Endpoints.category());
+      Response response = await getHttp(Endpoints.category(search: search));
       if (response.statusCode == 200 || response.statusCode == 201) {
         CategoryResponseModel data = CategoryResponseModel.fromRawJson(
           json.encode(response.data),

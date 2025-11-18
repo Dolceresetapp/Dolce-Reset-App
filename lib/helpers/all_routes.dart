@@ -120,7 +120,7 @@ final class Routes {
 
   static const String oneTimeOnboardingScreen = '/oneTimeOnboardingScreen';
 
-    static const String exceriseSeeScreen = '/exceriseSeeScreen';
+  static const String exceriseSeeScreen = '/exceriseSeeScreen';
 }
 
 //
@@ -130,23 +130,28 @@ final class RouteGenerator {
   static RouteGenerator get instanc => _routeGenerator;
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
-    switch (settings.name) { 
-
-       case Routes.exceriseSeeScreen:
-
-       final args = settings.arguments as Map;
+    switch (settings.name) {
+      case Routes.exceriseSeeScreen:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget:  ExceriseSeeScreen(
-                categoryType : args["categoryType"]
+              widget: ExceriseSeeScreen(
+                categoryType: args["categoryType"],
+                categoryId: args["categoryId"],
+                trainingLevel: args["trainingLevel"],
+                type: args["type"],
               ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) =>  ExceriseSeeScreen( categoryType : args["categoryType"]),
+              builder:
+                  (context) => ExceriseSeeScreen(
+                    categoryType: args["categoryType"],
+                    categoryId: args["categoryId"],
+                    trainingLevel: args["trainingLevel"],
+                    type: args["type"],
+                  ),
             );
-
-
 
       case Routes.navigationScreen:
         return Platform.isAndroid
@@ -189,12 +194,15 @@ final class RouteGenerator {
             );
 
       case Routes.videoScreen:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const VideoScreen(),
+              widget: VideoScreen(themeId: args["themeId"]),
               settings: settings,
             )
-            : CupertinoPageRoute(builder: (context) => const VideoScreen());
+            : CupertinoPageRoute(
+              builder: (context) => VideoScreen(themeId: args["themeId"]),
+            );
 
       case Routes.aiReceipeGeneratorChatScreen:
         return Platform.isAndroid

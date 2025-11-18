@@ -1,7 +1,9 @@
 import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:gritti_app/features/excerises/data/rx_post_theme/model/category_wise_theme_response_model.dart';
 import 'package:rxdart/rxdart.dart';
+
 import '../../../../../../helpers/toast.dart';
 import '../../../../../../networks/rx_base.dart';
 import '../../../../../helpers/all_routes.dart';
@@ -18,11 +20,16 @@ final class CategoryWiseThemeRx
   ValueStream<CategoryWiseThemeResponseModel> get categoryWiseThemeRxStream =>
       dataFetcher.stream;
 
-  Future<bool> categoryWiseThemeRx({int? categoryId, String? type}) async {
+  Future<bool> categoryWiseThemeRx({
+    int? categoryId,
+    String? type,
+    String? search,
+  }) async {
     try {
       CategoryWiseThemeResponseModel data = await api.categoryWiseThemeApi(
         categoryId: categoryId,
         type: type,
+        search: search,
       );
       handleSuccessWithReturn(data);
       return true;

@@ -8,19 +8,23 @@ import '../../../../../../networks/rx_base.dart';
 import '../../../../../helpers/all_routes.dart';
 import '../../../../../helpers/navigation_service.dart';
 import '../../../../../networks/stream_cleaner.dart';
+import '../model/theme_wise_video_response_model.dart';
 import 'api.dart';
-import 'model/category_response_model.dart';
 
-final class CategoryRx extends RxResponseInt<CategoryResponseModel> {
-  final api = CategoryApi.instance;
+final class ThemeWiseVideoRx
+    extends RxResponseInt<ThemeWiseVideoResponseModel> {
+  final api = ThemeWiseVideoApi.instance;
 
-  CategoryRx({required super.empty, required super.dataFetcher});
+  ThemeWiseVideoRx({required super.empty, required super.dataFetcher});
 
-  ValueStream<CategoryResponseModel> get categoryRxStream => dataFetcher.stream;
+  ValueStream<ThemeWiseVideoResponseModel> get themeWiseVideoRxStream =>
+      dataFetcher.stream;
 
-  Future<bool> categoryRx({String? search}) async {
+  Future<bool> themeWiseVideoRx({required int themeId}) async {
     try {
-      CategoryResponseModel data = await api.categoryApi(search: search);
+      ThemeWiseVideoResponseModel data = await api.themeWiseVideoApi(
+        themeId: themeId,
+      );
       handleSuccessWithReturn(data);
       return true;
     } catch (error) {
@@ -29,7 +33,7 @@ final class CategoryRx extends RxResponseInt<CategoryResponseModel> {
   }
 
   @override
-  handleSuccessWithReturn(CategoryResponseModel data) {
+  handleSuccessWithReturn(ThemeWiseVideoResponseModel data) {
     dataFetcher.sink.add(data);
     return true;
   }

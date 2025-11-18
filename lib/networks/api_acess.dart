@@ -21,6 +21,15 @@ import '../features/excerises/data/rx_post_theme/rx.dart';
 import '../features/onboarding/data/model/onboarding_response_model.dart';
 import '../features/onboarding/data/rx_post_onboard/rx.dart';
 import '../features/settings/data/rx_post_logout/rx.dart';
+import '../features/video/data/model/theme_wise_video_response_model.dart';
+import '../features/video/data/rx_get_video/rx.dart';
+
+//
+
+ThemeWiseVideoRx themeWiseVideoRxObj = ThemeWiseVideoRx(
+  empty: ThemeWiseVideoResponseModel(),
+  dataFetcher: BehaviorSubject<ThemeWiseVideoResponseModel>(),
+);
 
 CategoryWiseThemeRx categoryWiseThemeRxObj = CategoryWiseThemeRx(
   empty: CategoryWiseThemeResponseModel(),

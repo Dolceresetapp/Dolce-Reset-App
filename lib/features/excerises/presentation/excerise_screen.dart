@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-
 import 'package:gritti_app/common_widget/custom_text_field.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/features/excerises/data/rx_get_category/model/category_response_model.dart';
+import 'package:gritti_app/features/excerises/data/rx_post_theme/model/category_wise_theme_response_model.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
-import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
@@ -39,6 +38,8 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
     super.initState();
 
     categoryRxObj.categoryRx();
+
+    categoryWiseThemeRxObj.categoryWiseThemeRx();
   }
 
   @override
@@ -52,7 +53,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
           child: Column(
             children: [
               UIHelper.verticalSpace(10.h),
-              ProfileSectionWidget(avatar: '',),
+              ProfileSectionWidget(avatar: ''),
               UIHelper.verticalSpace(20.h),
 
               CustomTextField(
@@ -78,7 +79,10 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                     onTap: () {
                       NavigationService.navigateToWithArgs(
                         Routes.exceriseSeeScreen,
-                        {"categoryType": "body_part_exercise"},
+                        {
+                          "categoryType": "body_part_exercise",
+                          "type": "all_category",
+                        },
                       );
                     },
                     child: Text(
@@ -97,6 +101,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
 
               UIHelper.verticalSpace(20.h),
 
+              // Category List
               Align(
                 alignment: Alignment.centerLeft,
                 child: SizedBox(
@@ -142,18 +147,16 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                             var data = model?.data?[index];
                             return InkWell(
                               onTap: () {
-                                categoryWiseThemeRxObj
-                                    .categoryWiseThemeRx(categoryId: data?.id!)
-                                    .waitingForFuture()
-                                    .then((success) {
-                                      if (success) {
-                                        NavigationService.navigateToWithArgs(
-                                          Routes.exceriseSeeScreen,
-                                          {"categoryType": "theme_workout"},
-                                        );
-                                      }
-                                    });
+                                NavigationService.navigateToWithArgs(
+                                  Routes.exceriseSeeScreen,
+                                  {
+                                    "categoryType": "theme_workout",
+                                    "categoryId": data?.id,
+                                    "type": "category_id_base_theme",
+                                  },
+                                );
                               },
+
                               child: Padding(
                                 padding: EdgeInsets.only(right: 20.w),
                                 child: Column(
@@ -212,7 +215,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                     onTap: () {
                       NavigationService.navigateToWithArgs(
                         Routes.exceriseSeeScreen,
-                        {"categoryType": "theme_workout"},
+                        {"categoryType": "theme_workout", "type": "all_theme"},
                       );
                     },
                     child: Text(
@@ -221,7 +224,6 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                           .copyWith(
                             color: const Color(0xFFF97316),
                             fontSize: 14.sp,
-
                             fontWeight: FontWeight.w500,
                           ),
                     ),
@@ -230,54 +232,109 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
               ),
               UIHelper.verticalSpace(20.h),
 
-              GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10.w,
-                  mainAxisSpacing: 10.h,
-                  childAspectRatio: 158 / 131,
-                ),
-                itemCount: workoutThemeList.length,
-                itemBuilder: (context, index) {
-                  var data = workoutThemeList[index];
-
-                  return AnimationConfiguration.staggeredGrid(
-                    position: 2,
-                    duration: const Duration(milliseconds: 500),
-                    columnCount: 2,
-                    child: ScaleAnimation(
-                      child: FadeInAnimation(
-                        child: InkWell(
-                          onTap: () {
-                            NavigationService.navigateTo(Routes.videoScreen);
-                          },
-                          child: Container(
-                            alignment: Alignment.bottomLeft,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(data["icon"]),
-                              ),
+              StreamBuilder<CategoryWiseThemeResponseModel>(
+                stream: categoryWiseThemeRxObj.categoryWiseThemeRxStream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return WaitingWidget();
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      "someting went wrong",
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                          .copyWith(
+                            color: const Color(0xFFF97316),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w800,
+                          ),
+                    );
+                  } else if (!snapshot.hasData ||
+                      snapshot.data!.data!.isEmpty) {
+                    return Center(
+                      child: Text(
+                        "Theme Workout data \n not availabe",
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                            .copyWith(
+                              color: const Color(0xFFF97316),
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w800,
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.only(bottom: 20, left: 10.w),
-                              child: Text(
-                                data["title"],
-                                style: TextFontStyle
-                                    .headLine16cFFFFFFWorkSansW600
-                                    .copyWith(
-                                      color: Colors.white,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w700,
+                      ),
+                    );
+                  } else if (snapshot.hasData) {
+                    CategoryWiseThemeResponseModel? model = snapshot.data;
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10.w,
+                        mainAxisSpacing: 10.h,
+                        childAspectRatio: 158 / 131,
+                      ),
+                      itemCount:
+                          (model?.data?.length ?? 0) > 4
+                              ? 4
+                              : (model?.data?.length ?? 0),
+
+                      itemBuilder: (context, index) {
+                        var data = model?.data?[index];
+
+                        return AnimationConfiguration.staggeredGrid(
+                          position: 2,
+                          duration: const Duration(milliseconds: 500),
+                          columnCount: 2,
+                          child: ScaleAnimation(
+                            child: FadeInAnimation(
+                              child: InkWell(
+                                onTap: () {
+                                  // NavigationService.navigateTo(
+                                  //   Routes.videoScreen,
+                                  // );
+                                },
+
+                                child: Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(15.r),
+                                      child: CustomCachedNetworkImage(
+                                        imageUrl: data?.image ?? "",
+                                        width: double.infinity,
+                                        height: 131.h,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
+
+                                    Positioned(
+                                      bottom: 10.h,
+                                      left: 10.w,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                          bottom: 20.h,
+                                          left: 10.w,
+                                        ),
+                                        child: Text(
+                                          data?.name ?? "",
+                                          style: TextFontStyle
+                                              .headLine16cFFFFFFWorkSansW600
+                                              .copyWith(
+                                                color: Colors.white,
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  );
+                        );
+                      },
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
                 },
               ),
 
@@ -304,18 +361,48 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                       countIcon: 1,
                       icon: Assets.images.image1807.path,
                       title: 'Beginner',
+                      onTap: () {
+                        NavigationService.navigateToWithArgs(
+                          Routes.exceriseSeeScreen,
+                          {
+                            "trainingLevel": "Beginner",
+                            "categoryType": "theme_workout",
+                            "type": "beginner_level",
+                          },
+                        );
+                      },
                     ),
 
                     TrainingLevelCardWidget(
                       countIcon: 2,
                       icon: Assets.images.image1807.path,
                       title: 'Intermediate',
+                      onTap: () {
+                        NavigationService.navigateToWithArgs(
+                          Routes.exceriseSeeScreen,
+                          {
+                            "trainingLevel": "Intermediate",
+                            "categoryType": "theme_workout",
+                            "type": "intermediate_level",
+                          },
+                        );
+                      },
                     ),
 
                     TrainingLevelCardWidget(
                       countIcon: 3,
                       icon: Assets.images.image1807.path,
                       title: 'Advance',
+                      onTap: () {
+                        NavigationService.navigateToWithArgs(
+                          Routes.exceriseSeeScreen,
+                          {
+                            "trainingLevel": "Advance",
+                            "categoryType": "theme_workout",
+                            "type": "advance_level",
+                          },
+                        );
+                      },
                     ),
                   ],
                 ),
