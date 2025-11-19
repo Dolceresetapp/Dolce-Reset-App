@@ -105,7 +105,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: SizedBox(
-                  height: 100.h,
+                  height: 150.h,
                   child: StreamBuilder<CategoryResponseModel>(
                     stream: categoryRxObj.categoryRxStream,
                     builder: (context, snapshot) {
@@ -160,7 +160,6 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                               child: Padding(
                                 padding: EdgeInsets.only(right: 20.w),
                                 child: Column(
-                                  spacing: 10.h,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     ClipOval(
@@ -171,6 +170,8 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                     ),
+
+                                    UIHelper.verticalSpace(8.h),
 
                                     Text(
                                       data?.name ?? "",
@@ -183,6 +184,27 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                                             color: const Color(0xFF2E2E2E),
                                             fontSize: 14.sp,
                                             fontWeight: FontWeight.w600,
+                                          ),
+                                    ),
+
+                                    UIHelper.verticalSpace(4.h),
+                                    Text(
+                                      // (data?.workOut == null ||
+                                      //         data!.workOut == 0)
+                                      //     ? ""
+                                      //     :
+                                      "${data?.workOut ?? 0} Workouts",
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextFontStyle
+                                          .headLine16cFFFFFFWorkSansW600
+                                          .copyWith(
+                                            color: const Color(
+                                              0xFF2E2E2E,
+                                            ).withValues(alpha: 0.4),
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w300,
                                           ),
                                     ),
                                   ],
@@ -285,47 +307,39 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                           columnCount: 2,
                           child: ScaleAnimation(
                             child: FadeInAnimation(
-                              child: InkWell(
-                                onTap: () {
-                                  // NavigationService.navigateTo(
-                                  //   Routes.videoScreen,
-                                  // );
-                                },
+                              child: Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(15.r),
+                                    child: CustomCachedNetworkImage(
+                                      imageUrl: data?.image ?? "",
+                                      width: double.infinity,
+                                      height: 131.h,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
 
-                                child: Stack(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(15.r),
-                                      child: CustomCachedNetworkImage(
-                                        imageUrl: data?.image ?? "",
-                                        width: double.infinity,
-                                        height: 131.h,
-                                        fit: BoxFit.cover,
+                                  Positioned(
+                                    bottom: 10.h,
+                                    left: 10.w,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: 20.h,
+                                        left: 10.w,
+                                      ),
+                                      child: Text(
+                                        data?.name ?? "",
+                                        style: TextFontStyle
+                                            .headLine16cFFFFFFWorkSansW600
+                                            .copyWith(
+                                              color: Colors.white,
+                                              fontSize: 16.sp,
+                                              fontWeight: FontWeight.w700,
+                                            ),
                                       ),
                                     ),
-
-                                    Positioned(
-                                      bottom: 10.h,
-                                      left: 10.w,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          bottom: 20.h,
-                                          left: 10.w,
-                                        ),
-                                        child: Text(
-                                          data?.name ?? "",
-                                          style: TextFontStyle
-                                              .headLine16cFFFFFFWorkSansW600
-                                              .copyWith(
-                                                color: Colors.white,
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),

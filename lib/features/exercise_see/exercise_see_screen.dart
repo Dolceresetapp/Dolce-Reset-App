@@ -235,7 +235,6 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                                     child: Padding(
                                       padding: EdgeInsets.only(right: 20.w),
                                       child: Column(
-                                        spacing: 10.h,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
@@ -247,6 +246,8 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                                               fit: BoxFit.fill,
                                             ),
                                           ),
+
+                                          UIHelper.verticalSpace(8.h),
 
                                           Text(
                                             data?.name ?? "",
@@ -261,6 +262,27 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                                                   ),
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.w600,
+                                                ),
+                                          ),
+
+                                          UIHelper.verticalSpace(4.h),
+                                          Text(
+                                            // (data?.workOut == null ||
+                                            //         data!.workOut == 0)
+                                            //     ? ""
+                                            //     :
+                                            "${data?.workOut ?? 0} Workouts",
+                                            textAlign: TextAlign.center,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextFontStyle
+                                                .headLine16cFFFFFFWorkSansW600
+                                                .copyWith(
+                                                  color: const Color(
+                                                    0xFF2E2E2E,
+                                                  ).withValues(alpha: 0.4),
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w300,
                                                 ),
                                           ),
                                         ],
