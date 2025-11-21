@@ -37,6 +37,7 @@ dependencies:
   dotted_line: ^3.2.3
   flutter:
     sdk: flutter
+  flutter_rating: ^2.0.2
   flutter_ruler: ^0.0.1
   flutter_screenutil: ^5.9.3
   flutter_staggered_animations: ^1.1.1

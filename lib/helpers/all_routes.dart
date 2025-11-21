@@ -10,6 +10,7 @@ import '../features/authentication/reset_password/reset_password_screen.dart';
 import '../features/authentication/sign_up/sign_up_screen.dart';
 import '../features/authentication/signin/sign_in_screen.dart';
 import '../features/authentication/signup_otp/signup_otp_screen.dart';
+import '../features/cusom_plan_ready/custom_plan_ready_screen.dart';
 import '../features/download_countdown/download_countdown_screen.dart';
 import '../features/download_progress/download_progress_screen.dart';
 import '../features/exercise_see/exercise_see_screen.dart';
@@ -39,6 +40,9 @@ import '../features/onboarding/presentation/onboarding_screen_7.dart';
 import '../features/onboarding/presentation/onboarding_screen_8.dart';
 import '../features/onboarding/presentation/onboarding_screen_9.dart';
 import '../features/onboarding/presentation/one_time_onboarding/onboard_screen_1.dart';
+import '../features/plan_ready/plan_ready_screen.dart';
+import '../features/rating/rating_screen.dart';
+import '../features/rewiring_benefits/rewiring_benefit_screen.dart';
 import '../features/video/video_screen.dart';
 import '../loading.dart';
 import '../navigation_screen.dart';
@@ -121,6 +125,10 @@ final class Routes {
   static const String oneTimeOnboardingScreen = '/oneTimeOnboardingScreen';
 
   static const String exceriseSeeScreen = '/exceriseSeeScreen';
+  static const String rewiringBenefitScreen = '/rewiringBenefitScreen';
+  static const String ratingScreen = '/ratingScreen';
+  static const String planReadyScreen = '/planReadyScreen';
+  static const String customPlanReadyScreen = '/customPlanReadyScreen';
 }
 
 //
@@ -131,6 +139,31 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case Routes.customPlanReadyScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: CustomPlanReadyScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(builder: (context) => CustomPlanReadyScreen());
+      case Routes.planReadyScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: PlanReadyScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(builder: (context) => PlanReadyScreen());
+      case Routes.ratingScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(widget: RatingScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => RatingScreen());
+      case Routes.rewiringBenefitScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: RewiringBenefitScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(builder: (context) => RewiringBenefitScreen());
       case Routes.exceriseSeeScreen:
         final args = settings.arguments as Map;
         return Platform.isAndroid

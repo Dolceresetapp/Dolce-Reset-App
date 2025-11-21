@@ -35,9 +35,7 @@ class OnboardingScreen17 extends StatefulWidget {
 
   final DateTime selectedDate;
 
-  
   final double bmi;
-
 
   final String onboard12;
 
@@ -62,11 +60,7 @@ class OnboardingScreen17 extends StatefulWidget {
 
     required this.selectedDate,
 
-
-
-     required this.bmi,
-
-    
+    required this.bmi,
 
     required this.onboard12,
 
@@ -249,12 +243,11 @@ class _OnboardingScreen17State extends State<OnboardingScreen17> {
                   if (success) {
                     ToastUtil.showShortToast("User info saved successfully");
                     NavigationService.navigateToReplacement(
-                      Routes.navigationScreen,
+                      Routes.ratingScreen,
                     );
 
-                     appData.write(kKeyIsOnboarding, false);
+                    appData.write(kKeyIsOnboarding, false);
                   }
-
                 });
           },
           child: Text(

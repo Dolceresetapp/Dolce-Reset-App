@@ -305,6 +305,15 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/Card (1).png
+  AssetGenImage get card1 => const AssetGenImage('assets/images/Card (1).png');
+
+  /// File path: assets/images/Card (2).png
+  AssetGenImage get card2 => const AssetGenImage('assets/images/Card (2).png');
+
+  /// File path: assets/images/Card.png
+  AssetGenImage get card => const AssetGenImage('assets/images/Card.png');
+
   /// File path: assets/images/Container.png
   AssetGenImage get container =>
       const AssetGenImage('assets/images/Container.png');
@@ -381,6 +390,13 @@ class $AssetsImagesGen {
   /// File path: assets/images/biceps.png
   AssetGenImage get biceps => const AssetGenImage('assets/images/biceps.png');
 
+  /// File path: assets/images/button.png
+  AssetGenImage get button => const AssetGenImage('assets/images/button.png');
+
+  /// File path: assets/images/button1111.png
+  AssetGenImage get button1111 =>
+      const AssetGenImage('assets/images/button1111.png');
+
   /// File path: assets/images/chevron right.png
   AssetGenImage get chevronRight =>
       const AssetGenImage('assets/images/chevron right.png');
@@ -394,6 +410,9 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/frame.png
   AssetGenImage get frame => const AssetGenImage('assets/images/frame.png');
+
+  /// File path: assets/images/group.png
+  AssetGenImage get group => const AssetGenImage('assets/images/group.png');
 
   /// File path: assets/images/image (1).png
   AssetGenImage get image1 =>
@@ -416,6 +435,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/image22.png
   AssetGenImage get image22 => const AssetGenImage('assets/images/image22.png');
+
+  /// File path: assets/images/image_copy.png
+  AssetGenImage get imageCopy =>
+      const AssetGenImage('assets/images/image_copy.png');
 
   /// File path: assets/images/images232.png
   AssetGenImage get images232 =>
@@ -457,11 +480,23 @@ class $AssetsImagesGen {
   /// File path: assets/images/oboard6.png
   AssetGenImage get oboard6 => const AssetGenImage('assets/images/oboard6.png');
 
+  /// File path: assets/images/on1 copy.png
+  AssetGenImage get on1Copy =>
+      const AssetGenImage('assets/images/on1 copy.png');
+
   /// File path: assets/images/on1.png
   AssetGenImage get on1 => const AssetGenImage('assets/images/on1.png');
 
+  /// File path: assets/images/on2 copy.png
+  AssetGenImage get on2Copy =>
+      const AssetGenImage('assets/images/on2 copy.png');
+
   /// File path: assets/images/on2.png
   AssetGenImage get on2 => const AssetGenImage('assets/images/on2.png');
+
+  /// File path: assets/images/on3 copy.png
+  AssetGenImage get on3Copy =>
+      const AssetGenImage('assets/images/on3 copy.png');
 
   /// File path: assets/images/on3.png
   AssetGenImage get on3 => const AssetGenImage('assets/images/on3.png');
@@ -548,6 +583,9 @@ class $AssetsImagesGen {
   AssetGenImage get pnboard11 =>
       const AssetGenImage('assets/images/pnboard11.png');
 
+  /// File path: assets/images/rating.png
+  AssetGenImage get rating => const AssetGenImage('assets/images/rating.png');
+
   /// File path: assets/images/reduce_pain.png
   AssetGenImage get reducePain =>
       const AssetGenImage('assets/images/reduce_pain.png');
@@ -569,6 +607,9 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+    card1,
+    card2,
+    card,
     container,
     frame1,
     frame10,
@@ -589,16 +630,20 @@ class $AssetsImagesGen {
     abs,
     backPosture,
     biceps,
+    button,
+    button1111,
     chevronRight,
     food,
     fooodddd,
     frame,
+    group,
     image1,
     image2,
     image3,
     image1807,
     image,
     image22,
+    imageCopy,
     images232,
     intoShape,
     leg,
@@ -610,8 +655,11 @@ class $AssetsImagesGen {
     noboard122,
     noboard123,
     oboard6,
+    on1Copy,
     on1,
+    on2Copy,
     on2,
+    on3Copy,
     on3,
     on4,
     on5,
@@ -634,6 +682,7 @@ class $AssetsImagesGen {
     onboard53,
     onboarding3,
     pnboard11,
+    rating,
     reducePain,
     shoulders,
     slep,

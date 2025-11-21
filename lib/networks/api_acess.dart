@@ -20,12 +20,18 @@ import '../features/excerises/data/rx_post_theme/model/category_wise_theme_respo
 import '../features/excerises/data/rx_post_theme/rx.dart';
 import '../features/onboarding/data/model/onboarding_response_model.dart';
 import '../features/onboarding/data/rx_post_onboard/rx.dart';
+import '../features/rating/data/model/rating_response_model.dart';
+import '../features/rating/data/rx_get_rating/rx.dart';
 import '../features/settings/data/rx_post_logout/rx.dart';
 import '../features/video/data/model/theme_wise_video_response_model.dart';
 import '../features/video/data/rx_get_video/rx.dart';
 
 //
 
+RatingRx ratingRxObj = RatingRx(
+  empty: RatingResponseModel(),
+  dataFetcher: BehaviorSubject<RatingResponseModel>(),
+);
 ThemeWiseVideoRx themeWiseVideoRxObj = ThemeWiseVideoRx(
   empty: ThemeWiseVideoResponseModel(),
   dataFetcher: BehaviorSubject<ThemeWiseVideoResponseModel>(),

@@ -29,6 +29,7 @@ final class Endpoints {
   static String forgetPasswordOtp() => "/otp-token";
   static String resetPassword() => "/reset-password";
   static String logout() => "/logout";
+  static String reviews() => "/reviews";
 
   // onboading
   static String onboardUserInfo() => "/user/info";

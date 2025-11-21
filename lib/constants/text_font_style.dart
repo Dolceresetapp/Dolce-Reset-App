@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../gen/colors.gen.dart';
 
 class TextFontStyle {
@@ -9,10 +10,16 @@ class TextFontStyle {
 
   //new
 
+  static final headLine16cFFFFFFWorkSansThinW600 = GoogleFonts.workSans(
+    color: Colors.white,
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w400,
+    fontStyle: FontStyle.normal,
+  );
+
   static final headLine16cFFFFFFWorkSansW600 = GoogleFonts.workSans(
     color: Colors.white,
     fontSize: 16.sp,
-
     fontWeight: FontWeight.w600,
   );
 
