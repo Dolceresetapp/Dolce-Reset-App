@@ -181,6 +181,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/lock locked.svg
   String get lockLocked => 'assets/icons/lock locked.svg';
 
+  /// File path: assets/icons/lock.png
+  AssetGenImage get lock => const AssetGenImage('assets/icons/lock.png');
+
   /// File path: assets/icons/logos.svg
   String get logos => 'assets/icons/logos.svg';
 
@@ -189,6 +192,13 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/logos_facebook.svg
   String get logosFacebook => 'assets/icons/logos_facebook.svg';
+
+  /// File path: assets/icons/noti.png
+  AssetGenImage get noti => const AssetGenImage('assets/icons/noti.png');
+
+  /// File path: assets/icons/premium_icon.png
+  AssetGenImage get premiumIcon =>
+      const AssetGenImage('assets/icons/premium_icon.png');
 
   /// File path: assets/icons/ques.svg
   String get ques => 'assets/icons/ques.svg';
@@ -284,9 +294,12 @@ class $AssetsIconsGen {
     infoCircle,
     lactose,
     lockLocked,
+    lock,
     logos,
     logos2,
     logosFacebook,
+    noti,
+    premiumIcon,
     ques,
     questionMarkCircle,
     rightArrows,
@@ -411,6 +424,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/frame.png
   AssetGenImage get frame => const AssetGenImage('assets/images/frame.png');
 
+  /// File path: assets/images/frame_bell_icon.png
+  AssetGenImage get frameBellIcon =>
+      const AssetGenImage('assets/images/frame_bell_icon.png');
+
   /// File path: assets/images/group.png
   AssetGenImage get group => const AssetGenImage('assets/images/group.png');
 
@@ -460,6 +477,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/lostt_weight.png
   AssetGenImage get losttWeight =>
       const AssetGenImage('assets/images/lostt_weight.png');
+
+  /// File path: assets/images/mask.png
+  AssetGenImage get mask => const AssetGenImage('assets/images/mask.png');
 
   /// File path: assets/images/no_image_available.png
   AssetGenImage get noImageAvailable =>
@@ -636,6 +656,7 @@ class $AssetsImagesGen {
     food,
     fooodddd,
     frame,
+    frameBellIcon,
     group,
     image1,
     image2,
@@ -650,6 +671,7 @@ class $AssetsImagesGen {
     legs,
     logo,
     losttWeight,
+    mask,
     noImageAvailable,
     noboard121,
     noboard122,

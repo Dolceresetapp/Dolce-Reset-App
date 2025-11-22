@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gritti_app/features/authentication/sign_up/sign_up_screen.dart';
 import 'package:gritti_app/features/get_started/get_started_screen.dart';
-import 'package:gritti_app/navigation_screen.dart';
+import 'package:gritti_app/features/rating/rating_screen.dart';
+
 import 'constants/app_constants.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
@@ -50,7 +51,7 @@ class _LoadingState extends State<Loading> {
           //? OnboardingScreen1()
           //: (appData.read(kKeyIsLoggedIn) && (!appData.read(kKeyIsOnboarding)))
           : appData.read(kKeyIsLoggedIn)
-          ? NavigationScreen()
+          ? RatingScreen()
           : SignUpScreen();
     }
   }

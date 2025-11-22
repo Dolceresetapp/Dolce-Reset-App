@@ -128,15 +128,12 @@ class _RatingScreenState extends State<RatingScreen> {
 
                               children: [
                                 // Avatar
-                                Expanded(
-                                  flex: 1,
-                                  child: ClipOval(
-                                    child: CustomCachedNetworkImage(
-                                      imageUrl: data?.image ?? "",
-                                      width: 43.w,
-                                      height: 43.h,
-                                      fit: BoxFit.cover,
-                                    ),
+                                ClipOval(
+                                  child: CustomCachedNetworkImage(
+                                    imageUrl: data?.image ?? "",
+                                    width: 43.w,
+                                    height: 43.h,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
 
@@ -156,14 +153,13 @@ class _RatingScreenState extends State<RatingScreen> {
                                         ),
                                   ),
                                 ),
-
+                                UIHelper.horizontalSpace(10.w),
                                 // Rating
-                                Expanded(
-                                  flex: 1,
-                                  child: StarRating(
-                                    rating: data?.rating?.toDouble() ?? 0.0,
-                                    allowHalfRating: true,
-                                  ),
+                                StarRating(
+                                  starCount: 5,
+                                  color: Color(0xFFFDBB2E),
+                                  rating: data?.rating?.toDouble() ?? 0.0,
+                                  allowHalfRating: true,
                                 ),
                               ],
                             ),

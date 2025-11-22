@@ -16,6 +16,7 @@ import '../features/download_progress/download_progress_screen.dart';
 import '../features/exercise_see/exercise_see_screen.dart';
 import '../features/exercise_video/exercise_video_screen.dart';
 import '../features/food_analyzer/food_analyzer_screen.dart';
+import '../features/free_trial/free_trial_screen.dart';
 import '../features/get_started/get_started_screen.dart';
 import '../features/great_job/great_job_screen.dart';
 import '../features/meal_result/meal_result_screen.dart';
@@ -40,9 +41,11 @@ import '../features/onboarding/presentation/onboarding_screen_7.dart';
 import '../features/onboarding/presentation/onboarding_screen_8.dart';
 import '../features/onboarding/presentation/onboarding_screen_9.dart';
 import '../features/onboarding/presentation/one_time_onboarding/onboard_screen_1.dart';
+import '../features/payment_free/payment_free_screen.dart';
 import '../features/plan_ready/plan_ready_screen.dart';
 import '../features/rating/rating_screen.dart';
 import '../features/rewiring_benefits/rewiring_benefit_screen.dart';
+import '../features/trial_continue/presentation/trial_continue_screen.dart';
 import '../features/video/video_screen.dart';
 import '../loading.dart';
 import '../navigation_screen.dart';
@@ -129,6 +132,9 @@ final class Routes {
   static const String ratingScreen = '/ratingScreen';
   static const String planReadyScreen = '/planReadyScreen';
   static const String customPlanReadyScreen = '/customPlanReadyScreen';
+  static const String paymentFreeScreen = '/paymentFreeScreen';
+  static const String freeTrialScreen = '/freeTrialScreen';
+  static const String trialContinueScreen = '/trialContinueScreen';
 }
 
 //
@@ -139,6 +145,27 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case Routes.trialContinueScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: TrialContinueScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(builder: (context) => TrialContinueScreen());
+      case Routes.freeTrialScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: FreeTrialScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(builder: (context) => FreeTrialScreen());
+      case Routes.paymentFreeScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: PaymentFreeScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(builder: (context) => PaymentFreeScreen());
       case Routes.customPlanReadyScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(

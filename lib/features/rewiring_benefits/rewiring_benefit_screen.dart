@@ -62,7 +62,7 @@ class _RewiringBenefitScreenState extends State<RewiringBenefitScreen> {
 
             CustomButton(
               onPressed: () {
-                NavigationService.navigateTo(Routes.chefBoardingScreen2);
+                NavigationService.navigateTo(Routes.paymentFreeScreen);
               },
               child: Row(
                 spacing: 10.w,

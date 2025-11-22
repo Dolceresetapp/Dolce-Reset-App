@@ -29,9 +29,10 @@ class _CustomPlanReadyScreenState extends State<CustomPlanReadyScreen> {
             children: [
               UIHelper.verticalSpace(10.h),
               Align(
-                alignment: Alignment.center,
+                alignment: Alignment.topCenter,
                 child: Text(
                   "${appData.read(kKeyName)} , we have a custom plan \n ready for you ! Are you Ready?",
+                  textAlign: TextAlign.center,
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: Color(0xFF8359F6),
                     fontSize: 20.sp,
@@ -56,7 +57,11 @@ class _CustomPlanReadyScreenState extends State<CustomPlanReadyScreen> {
                 onTap: () {
                   NavigationService.navigateTo(Routes.rewiringBenefitScreen);
                 },
-                child: Image.asset(Assets.images.button.path, height: 65.h),
+                child: Image.asset(
+                  Assets.images.button.path,
+                  height: 65.h,
+                  fit: BoxFit.cover,
+                ),
               ),
 
               UIHelper.verticalSpace(20.h),
