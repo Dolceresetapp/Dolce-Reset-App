@@ -45,6 +45,7 @@ import '../features/onboarding/presentation/one_time_onboarding/onboard_screen_1
 import '../features/payment_free/payment_free_screen.dart';
 import '../features/plan_ready/plan_ready_screen.dart';
 import '../features/rating/rating_screen.dart';
+import '../features/ready/ready_screen.dart';
 import '../features/rewiring_benefits/rewiring_benefit_screen.dart';
 import '../features/trial_continue/presentation/trial_continue_screen.dart';
 import '../features/video/video_screen.dart';
@@ -137,6 +138,7 @@ final class Routes {
   static const String freeTrialScreen = '/freeTrialScreen';
   static const String trialContinueScreen = '/trialContinueScreen';
   static const String dynamicWorkoutScreen = '/dynamicWorkoutScreen';
+  static const String readyScreen = '/readyScreen';
 }
 
 //
@@ -147,6 +149,16 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case Routes.readyScreen:
+        final args = settings.arguments as Map;
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: ReadyScreen(id: args["id"]),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => ReadyScreen(id: args["id"]),
+            );
       case Routes.trialContinueScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(

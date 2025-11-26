@@ -12,6 +12,7 @@ import 'package:gritti_app/helpers/ui_helpers.dart';
 import '../../../common_widget/custom_network_image.dart';
 import '../../../common_widget/waiting_widget.dart';
 import '../../../networks/api_acess.dart';
+import '../data/rx_get_my_workout/model/my_workout_response_model.dart';
 import '../widgets/active_workout_widget.dart';
 import '../widgets/profile_section_widget.dart';
 import '../widgets/training_level_card_widget.dart';
@@ -31,6 +32,8 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
     categoryRxObj.categoryRx();
 
     themeRxObj.themeRx();
+
+    myWorkoutRxObj.myWorkoutRx();
   }
 
   @override
@@ -465,28 +468,65 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
 
               UIHelper.verticalSpace(16.h),
 
-              ListView.builder(
-                itemCount: 10,
-
-                shrinkWrap: true,
-
-                padding: EdgeInsets.zero,
-
-                itemBuilder: (_, index) {
-                  return InkWell(
-                    onTap: () {
-                      NavigationService.navigateTo(Routes.videoScreen);
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 12.h),
-                      child: ActiveWorkoutWidget(
-                        icon: Assets.images.abs.path,
-                        title: "Pushups For Beginners & Beyond",
-                        text: "Upper Body",
-                        time: "20 min",
+              StreamBuilder<MyWorkoutResponseModel>(
+                stream: myWorkoutRxObj.myWorkoutRxStream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return WaitingWidget();
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      "someting went wrong",
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                          .copyWith(
+                            color: const Color(0xFFF97316),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w800,
+                          ),
+                    );
+                  } else if (!snapshot.hasData ||
+                      snapshot.data!.activeWorkouts == null ||
+                      snapshot.data!.activeWorkouts!.isEmpty) {
+                    return Center(
+                      child: Text(
+                        "My Workout  \n not available",
+                        textAlign: TextAlign.center,
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                            .copyWith(
+                              color: const Color(0xFFF97316),
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w800,
+                            ),
                       ),
-                    ),
-                  );
+                    );
+                  } else if (snapshot.hasData) {
+                    return ListView.builder(
+                      itemCount: snapshot.data?.activeWorkouts?.length,
+
+                      shrinkWrap: true,
+
+                      padding: EdgeInsets.zero,
+
+                      itemBuilder: (_, index) {
+                        var data = snapshot.data?.activeWorkouts?[index];
+                        return InkWell(
+                          onTap: () {
+                            NavigationService.navigateTo(Routes.videoScreen);
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 12.h),
+                            child: ActiveWorkoutWidget(
+                              image: data?.image ?? "",
+                              title: data?.title ?? "",
+                              kcal: data?.calories.toString() ?? "",
+                              time: data?.minutes.toString() ?? "",
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
                 },
               ),
 

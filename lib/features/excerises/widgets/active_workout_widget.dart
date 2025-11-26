@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gritti_app/common_widget/custom_network_image.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 
 class ActiveWorkoutWidget extends StatelessWidget {
-  final String icon;
+  final String image;
   final String title;
   final String time;
-  final String text;
+  final String kcal;
   const ActiveWorkoutWidget({
     super.key,
-    required this.icon,
+    required this.image,
     required this.title,
     required this.time,
-    required this.text,
+    required this.kcal,
   });
 
   @override
@@ -35,8 +36,8 @@ class ActiveWorkoutWidget extends StatelessWidget {
         children: [
           Expanded(
             flex: 1,
-            child: Image.asset(
-              Assets.images.frame4.path,
+            child: CustomCachedNetworkImage(
+              imageUrl: image,
               width: 88.w,
               height: 88.h,
               fit: BoxFit.contain,
@@ -89,7 +90,7 @@ class ActiveWorkoutWidget extends StatelessWidget {
                     ),
 
                     Text(
-                      text,
+                      kcal,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600

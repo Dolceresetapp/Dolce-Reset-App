@@ -6,6 +6,7 @@ import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
+import '../../helpers/all_routes.dart';
 import '../../networks/api_acess.dart';
 import 'data/model/dynamic_workout_response_model.dart';
 
@@ -153,7 +154,12 @@ class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
                           itemBuilder: (_, index) {
                             final data = model.data![index];
                             return InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                NavigationService.navigateToWithArgs(
+                                  Routes.readyScreen,
+                                  {"id": data.id},
+                                );
+                              },
                               child: Padding(
                                 padding: EdgeInsets.symmetric(vertical: 10.h),
                                 child: Row(

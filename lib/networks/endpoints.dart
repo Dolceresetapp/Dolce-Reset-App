@@ -64,4 +64,8 @@ final class Endpoints {
 
   static String themeWiseVideo({required int themeId}) =>
       "/themes_wise_video/$themeId";
+
+  static String workoutVideo({required int id}) => "/workoutWiseVideos/$id";
+  static String myWorkout() => "/work_out_list";
 }
+// https://admin.dolcereset.com/api/work_out_list
