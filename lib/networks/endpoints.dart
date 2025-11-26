@@ -43,29 +43,23 @@ final class Endpoints {
     return "/category";
   }
 
-  static String categoryWiseTheme({
-    int? categoryId,
-    String? type,
-    String? search,
-  }) {
-    String endpoint = "/category_wise_themes";
-    List<String> queryParams = [];
-
-    if (categoryId != null) {
-      queryParams.add("category_id=$categoryId");
-    }
-    if (type != null && type.isNotEmpty) {
-      queryParams.add("type=$type");
-    }
-
+  static String theme({String? search}) {
     if (search != null && search.isNotEmpty) {
-      queryParams.add("name=$search");
+      return "/themes?search=$search";
     }
+    return "/themes";
+  }
 
-    if (queryParams.isNotEmpty) {
-      endpoint += "?${queryParams.join("&")}";
+  static String dynamicWorkout({String? type, int? id, String? levelType}) {
+    if (type == "body_part_exercise" && id != null) {
+      return "/categoryWiseWorkouts/$id";
+    } else if (type == "theme_workout" && id != null) {
+      return "/themeWiseWorkouts/$id";
+    } else if (type == "training_level" && levelType != null) {
+      return "/trainingLevelWiseWorkouts?type=$levelType";
+    } else {
+      return "";
     }
-    return endpoint;
   }
 
   static String themeWiseVideo({required int themeId}) =>

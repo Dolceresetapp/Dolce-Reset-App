@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:gritti_app/common_widget/custom_text_field.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/features/excerises/data/rx_get_category/model/category_response_model.dart';
-import 'package:gritti_app/features/excerises/data/rx_post_theme/model/category_wise_theme_response_model.dart';
+import 'package:gritti_app/features/excerises/data/rx_get_theme/model/theme_response_model.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
@@ -25,26 +24,59 @@ class ExceriseScreen extends StatefulWidget {
 }
 
 class _ExceriseScreenState extends State<ExceriseScreen> {
-  // Theme Workout List
-  List<Map<String, dynamic>> workoutThemeList = [
-    {"icon": Assets.images.rectangle34624225.path, "title": "Wall \n pilates"},
-    {"icon": Assets.images.rectangle34624226.path, "title": "Mat \n pilates"},
-    {"icon": Assets.images.rectangle34624229.path, "title": "Full \n Body"},
-    {"icon": Assets.images.rectangle34624227.path, "title": "Bed \n workout"},
-  ];
-
   @override
   void initState() {
     super.initState();
 
     categoryRxObj.categoryRx();
 
-    categoryWiseThemeRxObj.categoryWiseThemeRx();
+    themeRxObj.themeRx();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      //   centerTitle: true,
+
+      //   // Center Logo
+      //   title: SvgPicture.asset(
+      //     Assets.icons.logos,
+      //     fit: BoxFit.contain,
+      //     height: 28.h,
+      //   ),
+
+      //   // Left Profile Image
+      //   leading: Padding(
+      //     padding: EdgeInsets.only(left: 16.w),
+      //     child: ClipOval(
+      //       child: SizedBox(
+      //         width: 32.w,
+      //         height: 32.w,
+      //         child: CustomCachedNetworkImage(
+      //           imageUrl: "https://your-image-url.com",
+      //           fit: BoxFit.cover,
+      //           width: 40.w,
+      //           height: 32.w,
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+
+      //   // Right Notification Icon
+      //   actions: [
+      //     Padding(
+      //       padding: EdgeInsets.only(right: 16.w),
+      //       child: SvgPicture.asset(
+      //         Assets.icons.icoddn, // notification icon
+      //         height: 24.h,
+      //         width: 24.w,
+      //       ),
+      //     ),
+      //   ],
+      // ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -52,18 +84,11 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              UIHelper.verticalSpace(10.h),
+              //   UIHelper.verticalSpace(10.h),
               ProfileSectionWidget(avatar: ''),
-              UIHelper.verticalSpace(20.h),
+              UIHelper.verticalSpace(30.h),
 
-              CustomTextField(
-                prefixIcon: Assets.icons.icon1,
-                readOnly: true,
-                hintText: "Search for a workout...",
-              ),
-
-              UIHelper.verticalSpace(16.h),
-
+              // Body parts Exercise
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -105,7 +130,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: SizedBox(
-                  height: 150.h,
+                  height: 115.h,
                   child: StreamBuilder<CategoryResponseModel>(
                     stream: categoryRxObj.categoryRxStream,
                     builder: (context, snapshot) {
@@ -148,11 +173,10 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                             return InkWell(
                               onTap: () {
                                 NavigationService.navigateToWithArgs(
-                                  Routes.exceriseSeeScreen,
+                                  Routes.dynamicWorkoutScreen,
                                   {
-                                    "categoryType": "theme_workout",
-                                    "categoryId": data?.id,
-                                    "type": "category_id_base_theme",
+                                    "type": "body_part_exercise",
+                                    "id": data?.id,
                                   },
                                 );
                               },
@@ -254,8 +278,9 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
               ),
               UIHelper.verticalSpace(20.h),
 
-              StreamBuilder<CategoryWiseThemeResponseModel>(
-                stream: categoryWiseThemeRxObj.categoryWiseThemeRxStream,
+              /// Theme
+              StreamBuilder<ThemeResponseModel>(
+                stream: themeRxObj.themeRxStream,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return WaitingWidget();
@@ -273,7 +298,8 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                       snapshot.data!.data!.isEmpty) {
                     return Center(
                       child: Text(
-                        "Theme Workout data \n not availabe",
+                        "Theme \n not available",
+                        textAlign: TextAlign.center,
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                             .copyWith(
                               color: const Color(0xFFF97316),
@@ -283,7 +309,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                       ),
                     );
                   } else if (snapshot.hasData) {
-                    CategoryWiseThemeResponseModel? model = snapshot.data;
+                    ThemeResponseModel? model = snapshot.data;
                     return GridView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
@@ -307,39 +333,49 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                           columnCount: 2,
                           child: ScaleAnimation(
                             child: FadeInAnimation(
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(15.r),
-                                    child: CustomCachedNetworkImage(
-                                      imageUrl: data?.image ?? "",
-                                      width: double.infinity,
-                                      height: 131.h,
-                                      fit: BoxFit.cover,
+                              child: InkWell(
+                                onTap: () {
+                                  NavigationService.navigateToWithArgs(
+                                    Routes.dynamicWorkoutScreen,
+                                    {"type": "theme_workout", "id": data?.id},
+                                  );
+                                },
+                                child: Stack(
+                                  children: [
+                                    // Immage
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(15.r),
+                                      child: CustomCachedNetworkImage(
+                                        imageUrl: data?.image ?? "",
+                                        width: double.infinity,
+                                        height: 131.h,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
 
-                                  Positioned(
-                                    bottom: 10.h,
-                                    left: 10.w,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                        bottom: 20.h,
-                                        left: 10.w,
-                                      ),
-                                      child: Text(
-                                        data?.name ?? "",
-                                        style: TextFontStyle
-                                            .headLine16cFFFFFFWorkSansW600
-                                            .copyWith(
-                                              color: Colors.white,
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.w700,
-                                            ),
+                                    // Theme Name
+                                    Positioned(
+                                      bottom: 10.h,
+                                      left: 10.w,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                          bottom: 20.h,
+                                          left: 10.w,
+                                        ),
+                                        child: Text(
+                                          data?.name ?? "",
+                                          style: TextFontStyle
+                                              .headLine16cFFFFFFWorkSansW600
+                                              .copyWith(
+                                                color: Colors.white,
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -377,27 +413,22 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                       title: 'Beginner',
                       onTap: () {
                         NavigationService.navigateToWithArgs(
-                          Routes.exceriseSeeScreen,
-                          {
-                            "trainingLevel": "Beginner",
-                            "categoryType": "theme_workout",
-                            "type": "beginner_level",
-                          },
+                          Routes.dynamicWorkoutScreen,
+                          {"type": "training_level", "levelType": "beginner"},
                         );
                       },
                     ),
-
+                    // beginner,advance,intermediate
                     TrainingLevelCardWidget(
                       countIcon: 2,
                       icon: Assets.images.image1807.path,
                       title: 'Intermediate',
                       onTap: () {
                         NavigationService.navigateToWithArgs(
-                          Routes.exceriseSeeScreen,
+                          Routes.dynamicWorkoutScreen,
                           {
-                            "trainingLevel": "Intermediate",
-                            "categoryType": "theme_workout",
-                            "type": "intermediate_level",
+                            "type": "training_level",
+                            "levelType": "intermediate",
                           },
                         );
                       },
@@ -409,12 +440,8 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                       title: 'Advance',
                       onTap: () {
                         NavigationService.navigateToWithArgs(
-                          Routes.exceriseSeeScreen,
-                          {
-                            "trainingLevel": "Advance",
-                            "categoryType": "theme_workout",
-                            "type": "advance_level",
-                          },
+                          Routes.dynamicWorkoutScreen,
+                          {"type": "training_level", "levelType": "advance"},
                         );
                       },
                     ),

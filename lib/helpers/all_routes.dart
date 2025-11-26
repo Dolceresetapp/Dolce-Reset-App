@@ -13,6 +13,7 @@ import '../features/authentication/signup_otp/signup_otp_screen.dart';
 import '../features/cusom_plan_ready/custom_plan_ready_screen.dart';
 import '../features/download_countdown/download_countdown_screen.dart';
 import '../features/download_progress/download_progress_screen.dart';
+import '../features/dynamic_workout/dynamic_workout_screen.dart';
 import '../features/exercise_see/exercise_see_screen.dart';
 import '../features/exercise_video/exercise_video_screen.dart';
 import '../features/food_analyzer/food_analyzer_screen.dart';
@@ -135,6 +136,7 @@ final class Routes {
   static const String paymentFreeScreen = '/paymentFreeScreen';
   static const String freeTrialScreen = '/freeTrialScreen';
   static const String trialContinueScreen = '/trialContinueScreen';
+  static const String dynamicWorkoutScreen = '/dynamicWorkoutScreen';
 }
 
 //
@@ -191,13 +193,34 @@ final class RouteGenerator {
               settings: settings,
             )
             : CupertinoPageRoute(builder: (context) => RewiringBenefitScreen());
+      case Routes.dynamicWorkoutScreen:
+        final args = settings.arguments as Map;
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: DynamicWorkoutScreen(
+                type: args["type"],
+
+                id: args["id"],
+                levelType: args["levelType"],
+              ),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder:
+                  (context) => DynamicWorkoutScreen(
+                    type: args["type"],
+
+                    id: args["id"],
+                    levelType: args["levelType"],
+                  ),
+            );
       case Routes.exceriseSeeScreen:
         final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
               widget: ExceriseSeeScreen(
                 categoryType: args["categoryType"],
-                categoryId: args["categoryId"],
+
                 trainingLevel: args["trainingLevel"],
                 type: args["type"],
               ),
@@ -207,7 +230,7 @@ final class RouteGenerator {
               builder:
                   (context) => ExceriseSeeScreen(
                     categoryType: args["categoryType"],
-                    categoryId: args["categoryId"],
+
                     trainingLevel: args["trainingLevel"],
                     type: args["type"],
                   ),

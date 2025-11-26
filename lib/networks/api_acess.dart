@@ -16,8 +16,10 @@ import '../features/authentication/signin/data/rx_post_sign_in/rx.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp/model/signup_otp_response_model.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp/rx.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp_resend/rx.dart';
-import '../features/excerises/data/rx_post_theme/model/category_wise_theme_response_model.dart';
-import '../features/excerises/data/rx_post_theme/rx.dart';
+import '../features/dynamic_workout/data/model/dynamic_workout_response_model.dart';
+import '../features/dynamic_workout/data/rx_get/rx.dart';
+import '../features/excerises/data/rx_get_theme/model/theme_response_model.dart';
+import '../features/excerises/data/rx_get_theme/rx.dart';
 import '../features/onboarding/data/model/onboarding_response_model.dart';
 import '../features/onboarding/data/rx_post_onboard/rx.dart';
 import '../features/rating/data/model/rating_response_model.dart';
@@ -28,6 +30,10 @@ import '../features/video/data/rx_get_video/rx.dart';
 
 //
 
+DynamicWorkoutRx dynamicWorkoutRxObj = DynamicWorkoutRx(
+  empty: DynamicWorkoutResponseModel(),
+  dataFetcher: BehaviorSubject<DynamicWorkoutResponseModel>(),
+);
 RatingRx ratingRxObj = RatingRx(
   empty: RatingResponseModel(),
   dataFetcher: BehaviorSubject<RatingResponseModel>(),
@@ -37,9 +43,9 @@ ThemeWiseVideoRx themeWiseVideoRxObj = ThemeWiseVideoRx(
   dataFetcher: BehaviorSubject<ThemeWiseVideoResponseModel>(),
 );
 
-CategoryWiseThemeRx categoryWiseThemeRxObj = CategoryWiseThemeRx(
-  empty: CategoryWiseThemeResponseModel(),
-  dataFetcher: BehaviorSubject<CategoryWiseThemeResponseModel>(),
+ThemeRx themeRxObj = ThemeRx(
+  empty: ThemeResponseModel(),
+  dataFetcher: BehaviorSubject<ThemeResponseModel>(),
 );
 
 CategoryRx categoryRxObj = CategoryRx(

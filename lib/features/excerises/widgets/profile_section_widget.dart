@@ -6,7 +6,6 @@ import 'package:gritti_app/gen/assets.gen.dart';
 import '../../../common_widget/custom_network_image.dart';
 
 class ProfileSectionWidget extends StatelessWidget {
-
   final String avatar;
   const ProfileSectionWidget({super.key, required this.avatar});
 
@@ -18,8 +17,8 @@ class ProfileSectionWidget extends StatelessWidget {
         ClipOval(
           child: CustomCachedNetworkImage(
             imageUrl: avatar,
-            width: 32.w,
-            height: 32.h,
+            width: 42.w,
+            height: 42.h,
           ),
         ),
 

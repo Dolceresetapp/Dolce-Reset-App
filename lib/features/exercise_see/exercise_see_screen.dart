@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -17,12 +15,10 @@ import '../../../common_widget/waiting_widget.dart';
 import '../../../networks/api_acess.dart';
 import '../../common_widget/custom_svg_asset.dart';
 import '../../helpers/all_routes.dart';
-import '../excerises/data/rx_post_theme/model/category_wise_theme_response_model.dart';
+import '../excerises/data/rx_get_theme/model/theme_response_model.dart';
 
 class ExceriseSeeScreen extends StatefulWidget {
   String? categoryType;
-
-  int? categoryId;
 
   String? type;
 
@@ -30,7 +26,7 @@ class ExceriseSeeScreen extends StatefulWidget {
   ExceriseSeeScreen({
     super.key,
     this.categoryType,
-    this.categoryId,
+
     this.trainingLevel,
 
     this.type,
@@ -45,47 +41,16 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
 
   @override
   void dispose() {
-    searchControler.dispose();
     categoryRxObj.categoryRx();
+    themeRxObj.themeRx();
+    searchControler.dispose();
+
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-
-    // When User click see all then this api will call to fetch all category
-    if (widget.categoryType == "body_part_exercise" &&
-        widget.type == "all_category") {
-      log("======================================All Category Called");
-      categoryRxObj.categoryRx();
-    } else if (widget.categoryId != null &&
-        widget.type == "category_id_base_theme") {
-      log("======================================Category Id Called");
-      categoryWiseThemeRxObj.categoryWiseThemeRx(categoryId: widget.categoryId);
-    } else if (widget.categoryType == "theme_workout" &&
-        widget.type == "all_theme") {
-      log("=====================================All Theme Workout Called");
-      // All theme workout
-      categoryWiseThemeRxObj.categoryWiseThemeRx();
-    } else if (widget.trainingLevel != null &&
-        widget.trainingLevel == "Beginner" &&
-        widget.type == "beginner_level") {
-      log("=====================================Beginner raining Level Called");
-      categoryWiseThemeRxObj.categoryWiseThemeRx(type: "beginner");
-    } else if (widget.trainingLevel != null &&
-        widget.trainingLevel == "Intermediate" &&
-        widget.type == "intermediate_level") {
-      log(
-        "=====================================Intermediate Training Level Called",
-      );
-      categoryWiseThemeRxObj.categoryWiseThemeRx(type: "intermediate");
-    } else if (widget.trainingLevel != null &&
-        widget.trainingLevel == "Advance" &&
-        widget.type == "advance_level") {
-      log("=====================================Advance Training Level Called");
-      categoryWiseThemeRxObj.categoryWiseThemeRx(type: "advance");
-    }
   }
 
   @override
@@ -129,15 +94,18 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                 onFieldSubmitted: (value) {
                   if (widget.categoryType == "body_part_exercise") {
                     categoryRxObj.categoryRx(search: value).waitingForFuture();
-                    searchControler.clear();
                   } else if (widget.categoryType == "theme_workout") {
-                    categoryWiseThemeRxObj
-                        .categoryWiseThemeRx(
-                          categoryId: widget.categoryId,
-                          search: value,
-                        )
-                        .waitingForFuture();
-                    searchControler.clear();
+                    themeRxObj.themeRx(search: value).waitingForFuture();
+                  }
+                },
+                // WHEN USER CLEARS THE SEARCH BOX → FETCH AGAIN
+                onChanged: (value) {
+                  if (value.isEmpty) {
+                    if (widget.categoryType == "body_part_exercise") {
+                      categoryRxObj.categoryRx();
+                    } else if (widget.categoryType == "theme_workout") {
+                      themeRxObj.themeRx();
+                    }
                   }
                 },
               ),
@@ -190,7 +158,7 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                           snapshot.data!.data!.isEmpty) {
                         return Center(
                           child: Text(
-                            "Category data \n not availabe",
+                            "Category \n not availabe",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                                 .copyWith(
                                   color: const Color(0xFFF97316),
@@ -206,10 +174,10 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4,
-                                crossAxisSpacing: 10.w,
-                                mainAxisSpacing: 10.h,
-                                childAspectRatio: 70 / 96,
+                                crossAxisCount: 3,
+                                crossAxisSpacing: 8.w,
+                                mainAxisSpacing: 8.h,
+                                childAspectRatio: 70 / 100,
                               ),
                           itemCount: model?.data?.length,
                           itemBuilder: (context, index) {
@@ -218,22 +186,21 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                             return AnimationConfiguration.staggeredGrid(
                               position: index,
                               duration: const Duration(milliseconds: 500),
-                              columnCount: 4,
+                              columnCount: 3,
                               child: ScaleAnimation(
                                 child: FadeInAnimation(
                                   child: InkWell(
                                     onTap: () {
                                       NavigationService.navigateToWithArgs(
-                                        Routes.exceriseSeeScreen,
+                                        Routes.dynamicWorkoutScreen,
                                         {
-                                          "categoryType": "theme_workout",
-                                          "categoryId": data?.id,
-                                          "type": "category_id_base_theme",
+                                          "type": "body_part_exercise",
+                                          "id": data?.id,
                                         },
                                       );
                                     },
                                     child: Padding(
-                                      padding: EdgeInsets.only(right: 20.w),
+                                      padding: EdgeInsets.only(right: 16.w),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
@@ -327,8 +294,8 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
               UIHelper.verticalSpace(20.h),
 
               widget.categoryType == "theme_workout"
-                  ? StreamBuilder<CategoryWiseThemeResponseModel>(
-                    stream: categoryWiseThemeRxObj.categoryWiseThemeRxStream,
+                  ? StreamBuilder<ThemeResponseModel>(
+                    stream: themeRxObj.themeRxStream,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: WaitingWidget());
@@ -347,6 +314,7 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                         return Center(
                           child: Text(
                             "Theme \n not availabe",
+                            textAlign: TextAlign.center,
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                                 .copyWith(
                                   color: const Color(0xFFF97316),
@@ -356,7 +324,7 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                           ),
                         );
                       } else if (snapshot.hasData) {
-                        CategoryWiseThemeResponseModel? model = snapshot.data;
+                        ThemeResponseModel? model = snapshot.data;
                         return GridView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
@@ -379,12 +347,12 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                                 child: FadeInAnimation(
                                   child: InkWell(
                                     onTap: () {
-                                      log(
-                                        "=====================================Theme Taped me",
-                                      );
                                       NavigationService.navigateToWithArgs(
-                                        Routes.videoScreen,
-                                        {"themeId": data?.id},
+                                        Routes.dynamicWorkoutScreen,
+                                        {
+                                          "type": "theme_workout",
+                                          "id": data?.id,
+                                        },
                                       );
                                     },
 
