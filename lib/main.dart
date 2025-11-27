@@ -20,7 +20,8 @@ import 'networks/dio/dio.dart';
 //Future<void> backgroundHandler(RemoteMessage message) async {}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = "pk_test_51ReqwVPDus5Inpom946CpZJ839v8LandcGNRmku71XxO9xxAtoTQu9FV1BAm9KOzYZayv9DhMfLS0J6KMqK73VLg0044KYKdBM";
+  Stripe.publishableKey =
+      "pk_test_51ReqwVPDus5Inpom946CpZJ839v8LandcGNRmku71XxO9xxAtoTQu9FV1BAm9KOzYZayv9DhMfLS0J6KMqK73VLg0044KYKdBM";
   await Stripe.instance.applySettings();
   await GetStorage.init();
   diSetup();

@@ -67,6 +67,9 @@ final class Endpoints {
 
   static String workoutVideo({required int id}) => "/workoutWiseVideos/$id";
   static String myWorkout() => "/work_out_list";
-  static String plan() => "/plans";
+  static String plan() => "/plans/app";
+   static String paymentSheet() => "/payment/stripe/app/checkout";
+
+    static String subscription() => "/payment/stripe/app/trail";
 }
 // https://admin.dolcereset.com/api/work_out_list

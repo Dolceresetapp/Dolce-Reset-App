@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -11,7 +13,7 @@ import '../../../common_widget/custom_button.dart';
 import '../../../constants/text_font_style.dart';
 import '../../../helpers/ui_helpers.dart';
 import '../../../networks/api_acess.dart';
-import '../data/model/plan_response_model.dart';
+import '../data/rx_get_plan/model/plan_response_model.dart';
 
 class TrialContinueScreen extends StatefulWidget {
   const TrialContinueScreen({super.key});
@@ -43,7 +45,7 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
     await Stripe.instance.initPaymentSheet(
       paymentSheetParameters: SetupPaymentSheetParameters(
         paymentIntentClientSecret: paymentIntentClientSecret,
-        merchantDisplayName: 'Travelling App',
+        merchantDisplayName: 'Fitness App',
       ),
     );
     await Stripe.instance
@@ -107,8 +109,6 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
                   ),
                 );
               } else if (snapshot.hasData) {
-                final dataList = snapshot.data?.data ?? [];
-                final plans = dataList.length > 1 ? dataList.sublist(1) : [];
                 return Column(
                   children: [
                     UIHelper.verticalSpace(20.h),
@@ -136,7 +136,7 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
                       height: 150.h,
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
-                        itemCount: plans.length,
+                        itemCount: snapshot.data!.data!.length,
                         separatorBuilder: (_, _) => SizedBox(width: 20.w),
                         itemBuilder: (context, index) {
                           final plan = snapshot.data?.data?[index];
@@ -179,7 +179,7 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
                                           ),
                                     ),
                                     Text(
-                                      plan!.price.toString(),
+                                      "${plan?.price.toString() ?? ""} / ${plan?.interval ?? ""}",
                                       style: TextFontStyle
                                           .headLine16cFFFFFFWorkSansW600
                                           .copyWith(
@@ -348,7 +348,18 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
 
                     CustomButton(
                       onPressed: () {
-                        stripePaymentSheet("seti_1SY30mPDus5InpomKePULxdx_secret_TV37cZRuH6xjhct8ghkvVS47eZO63b8");
+                        paymentmentSheetRxObj.paymentmentSheetRx(
+                          email: 'fajla1@gmail.com',
+                          planId: 2,
+                        );
+
+                        log(
+                          "Client Secret Key========================================= ${paymentmentSheetRxObj.clientSecret ?? ""} ",
+                        );
+
+                        stripePaymentSheet(
+                          paymentmentSheetRxObj.clientSecret ?? "",
+                        );
                         // NavigationService.navigateTo(Routes.freeTrialScreen);
                       },
                       child: Row(

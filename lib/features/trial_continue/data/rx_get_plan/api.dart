@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import '../../../../../../../networks/dio/dio.dart';
 import '../../../../../../../networks/endpoints.dart';
 import '../../../../../../../networks/exception_handler/data_source.dart';
-import '../model/plan_response_model.dart';
+import 'model/plan_response_model.dart';
 
 final class PlanApi {
   static final PlanApi _singleton = PlanApi._internal();

@@ -9,18 +9,27 @@ import '../../../../../../helpers/all_routes.dart';
 import '../../../../../../helpers/navigation_service.dart';
 import '../../../../../../networks/stream_cleaner.dart';
 import 'api.dart';
-import 'model/plan_response_model.dart';
+import 'model/payment_sheet_response_model.dart';
 
-final class PlanRx extends RxResponseInt<PlanResponseModel> {
-  final api = PlanApi.instance;
+final class PaymentmentSheetRx
+    extends RxResponseInt<PaymentSheetResponseModel> {
+  String? clientSecret;
+  final api = PaymentmentSheetApi.instance;
 
-  PlanRx({required super.empty, required super.dataFetcher});
+  PaymentmentSheetRx({required super.empty, required super.dataFetcher});
 
-  ValueStream<PlanResponseModel> get planRxStream => dataFetcher.stream;
+  ValueStream<PaymentSheetResponseModel> get paymentmentSheetRxStream =>
+      dataFetcher.stream;
 
-  Future<bool> planRx() async {
+  Future<bool> paymentmentSheetRx({
+    required String email,
+    required int planId,
+  }) async {
     try {
-      PlanResponseModel data = await api.planApi();
+      PaymentSheetResponseModel data = await api.paymentmentSheetApi(
+        email: email,
+        planId: planId,
+      );
       handleSuccessWithReturn(data);
       return true;
     } catch (error) {
@@ -29,7 +38,8 @@ final class PlanRx extends RxResponseInt<PlanResponseModel> {
   }
 
   @override
-  handleSuccessWithReturn(PlanResponseModel data) {
+  handleSuccessWithReturn(PaymentSheetResponseModel data) {
+    clientSecret = data.data?.intent?.clientSecret ?? "";
     dataFetcher.sink.add(data);
     return true;
   }
