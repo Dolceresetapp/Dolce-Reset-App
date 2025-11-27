@@ -4,6 +4,7 @@ import 'package:gritti_app/features/get_started/get_started_screen.dart';
 import 'package:gritti_app/navigation_screen.dart';
 
 import 'constants/app_constants.dart';
+import 'features/trial_continue/presentation/trial_continue_screen.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
 import 'networks/dio/dio.dart';
@@ -51,7 +52,7 @@ class _LoadingState extends State<Loading> {
           //? OnboardingScreen1()
           //: (appData.read(kKeyIsLoggedIn) && (!appData.read(kKeyIsOnboarding)))
           : appData.read(kKeyIsLoggedIn)
-          ? NavigationScreen()
+          ? TrialContinueScreen()
           : SignUpScreen();
     }
   }

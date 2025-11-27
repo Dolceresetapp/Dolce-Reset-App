@@ -29,10 +29,18 @@ import '../features/rating/data/rx_get_rating/rx.dart';
 import '../features/ready/data/model/workout_video_response_model.dart';
 import '../features/ready/data/rx_get/rx.dart';
 import '../features/settings/data/rx_post_logout/rx.dart';
+import '../features/trial_continue/data/model/plan_response_model.dart';
+import '../features/trial_continue/data/rx_get_plan/rx.dart';
 import '../features/video/data/model/theme_wise_video_response_model.dart';
 import '../features/video/data/rx_get_video/rx.dart';
 
 //
+
+PlanRx plannRxObj = PlanRx(
+  empty: PlanResponseModel(),
+  dataFetcher: BehaviorSubject<PlanResponseModel>(),
+);
+
 
 MyWorkoutRx myWorkoutRxObj = MyWorkoutRx(
   empty: MyWorkoutResponseModel(),

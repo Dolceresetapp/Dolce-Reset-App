@@ -208,8 +208,9 @@ class _OnboardingScreen17State extends State<OnboardingScreen17> {
         child: CustomButton(
           onPressed: () async {
             Uint8List? signatureBytes = await _controller.toPngBytes();
+
             if (signatureBytes == null) {
-              ToastUtil.showErrorShortToast("Please sign before submitting");
+              ToastUtil.showShortToast("Please sign before finishing");
               return;
             }
 
