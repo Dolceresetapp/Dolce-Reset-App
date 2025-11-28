@@ -259,13 +259,14 @@ final class RouteGenerator {
             );
 
       case Routes.exerciseVideoScreen:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const ExerciseVideoScreen(),
+              widget: ExerciseVideoScreen(id: args["id"]),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const ExerciseVideoScreen(),
+              builder: (context) => ExerciseVideoScreen(id: args["id"]),
             );
 
       case Routes.downloadCountdownScreen:

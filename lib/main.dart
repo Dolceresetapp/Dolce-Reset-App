@@ -6,10 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:gritti_app/loading.dart';
 import 'package:provider/provider.dart';
 
 import '/helpers/all_routes.dart';
-import 'features/exercise_video/exercise_video_screen.dart';
 import 'gen/colors.gen.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
@@ -87,7 +87,7 @@ class UtillScreenMobile extends StatelessWidget {
             onGenerateRoute: RouteGenerator.generateRoute,
 
             // app package Name :  //  com.dolceresetltd.app
-            home: ExerciseVideoScreen(),
+            home: Loading(),
 
             // all theme get api
           ),

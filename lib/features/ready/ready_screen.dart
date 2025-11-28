@@ -237,9 +237,14 @@ class _ReadyScreenState extends State<ReadyScreen> {
 
                     CustomButton(
                       onPressed: () {
-                        NavigationService.navigateTo(
-                          Routes.downloadProgressScreen,
+                        NavigationService.navigateToWithArgs(
+                          Routes.exerciseVideoScreen,
+                          {"id": widget.id},
                         );
+
+                        // NavigationService.navigateTo(
+                        //   Routes.downloadProgressScreen,
+                        // );
                       },
                       text: "Start",
                     ),

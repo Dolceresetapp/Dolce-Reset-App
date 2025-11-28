@@ -37,16 +37,19 @@ dependencies:
   dotted_line: ^3.2.3
   flutter:
     sdk: flutter
+  flutter_html: ^3.0.0
   flutter_rating: ^2.0.2
   flutter_ruler: ^0.0.1
   flutter_screenutil: ^5.9.3
   flutter_staggered_animations: ^1.1.1
+  flutter_stripe: ^12.1.1
   flutter_svg: ^2.2.0
   fluttertoast: ^9.0.0
   get: ^4.7.2
   get_it: ^9.0.5
   get_storage: ^2.1.1
   google_fonts: ^6.2.1
+  html: ^0.15.6
   image_picker: ^1.1.2
   internet_connection_checker: ^3.0.1
   intl: ^0.20.2
@@ -65,7 +68,6 @@ dependencies:
   timer_button: ^2.3.3
   url_launcher: ^6.3.1
   video_player: ^2.10.0
-  flutter_stripe: ^12.1.1
 
 dev_dependencies:
   build_runner: null

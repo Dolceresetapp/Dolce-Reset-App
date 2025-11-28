@@ -175,6 +175,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/info-circle.svg
   String get infoCircle => 'assets/icons/info-circle.svg';
 
+  /// File path: assets/icons/info.svg
+  String get info => 'assets/icons/info.svg';
+
   /// File path: assets/icons/lactose.svg
   String get lactose => 'assets/icons/lactose.svg';
 
@@ -192,6 +195,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/logos_facebook.svg
   String get logosFacebook => 'assets/icons/logos_facebook.svg';
+
+  /// File path: assets/icons/music.svg
+  String get music => 'assets/icons/music.svg';
 
   /// File path: assets/icons/next.svg
   String get next => 'assets/icons/next.svg';
@@ -245,6 +251,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/wheat.svg
   String get wheat => 'assets/icons/wheat.svg';
+
+  /// File path: assets/icons/zoom.svg
+  String get zoom => 'assets/icons/zoom.svg';
 
   /// List of all assets
   List<dynamic> get values => [
@@ -301,12 +310,14 @@ class $AssetsIconsGen {
     image1807,
     image,
     infoCircle,
+    info,
     lactose,
     lockLocked,
     lock,
     logos,
     logos2,
     logosFacebook,
+    music,
     next,
     noti,
     pause,
@@ -324,6 +335,7 @@ class $AssetsIconsGen {
     waterGlass,
     weightScale,
     wheat,
+    zoom,
   ];
 }
 
