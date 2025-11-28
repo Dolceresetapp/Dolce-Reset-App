@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gritti_app/features/authentication/sign_up/sign_up_screen.dart';
 import 'package:gritti_app/features/get_started/get_started_screen.dart';
-import 'package:gritti_app/navigation_screen.dart';
 
 import 'constants/app_constants.dart';
 import 'features/trial_continue/presentation/trial_continue_screen.dart';

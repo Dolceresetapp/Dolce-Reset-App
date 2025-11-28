@@ -193,12 +193,21 @@ class $AssetsIconsGen {
   /// File path: assets/icons/logos_facebook.svg
   String get logosFacebook => 'assets/icons/logos_facebook.svg';
 
+  /// File path: assets/icons/next.svg
+  String get next => 'assets/icons/next.svg';
+
   /// File path: assets/icons/noti.png
   AssetGenImage get noti => const AssetGenImage('assets/icons/noti.png');
+
+  /// File path: assets/icons/pause.svg
+  String get pause => 'assets/icons/pause.svg';
 
   /// File path: assets/icons/premium_icon.png
   AssetGenImage get premiumIcon =>
       const AssetGenImage('assets/icons/premium_icon.png');
+
+  /// File path: assets/icons/previous.svg
+  String get previous => 'assets/icons/previous.svg';
 
   /// File path: assets/icons/ques.svg
   String get ques => 'assets/icons/ques.svg';
@@ -298,8 +307,11 @@ class $AssetsIconsGen {
     logos,
     logos2,
     logosFacebook,
+    next,
     noti,
+    pause,
     premiumIcon,
+    previous,
     ques,
     questionMarkCircle,
     rightArrows,
@@ -420,9 +432,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/fooodddd.png
   AssetGenImage get fooodddd =>
       const AssetGenImage('assets/images/fooodddd.png');
-
-  /// File path: assets/images/frame.png
-  AssetGenImage get frame => const AssetGenImage('assets/images/frame.png');
 
   /// File path: assets/images/frame_bell_icon.png
   AssetGenImage get frameBellIcon =>
@@ -599,6 +608,14 @@ class $AssetsImagesGen {
   AssetGenImage get onboarding3 =>
       const AssetGenImage('assets/images/onboarding_3.png');
 
+  /// File path: assets/images/pause-button.png
+  AssetGenImage get pauseButton =>
+      const AssetGenImage('assets/images/pause-button.png');
+
+  /// File path: assets/images/play-button.png
+  AssetGenImage get playButton =>
+      const AssetGenImage('assets/images/play-button.png');
+
   /// File path: assets/images/pnboard11.png
   AssetGenImage get pnboard11 =>
       const AssetGenImage('assets/images/pnboard11.png');
@@ -655,7 +672,6 @@ class $AssetsImagesGen {
     chevronRight,
     food,
     fooodddd,
-    frame,
     frameBellIcon,
     group,
     image1,
@@ -703,6 +719,8 @@ class $AssetsImagesGen {
     onboard52,
     onboard53,
     onboarding3,
+    pauseButton,
+    playButton,
     pnboard11,
     rating,
     reducePain,

@@ -51,6 +51,7 @@ class _ReadyScreenState extends State<ReadyScreen> {
       ),
 
       bottomSheet: Container(
+        clipBehavior: Clip.hardEdge,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 32.h),
         width: 1.sw,
         height: 0.6.sh,
@@ -93,154 +94,157 @@ class _ReadyScreenState extends State<ReadyScreen> {
                 ),
               );
             } else if (snapshot.hasData) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Text(
-                      "Ready?",
-                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                          .copyWith(
-                            color: const Color(0xFF27272A),
-                            fontSize: 50.sp,
-                            fontWeight: FontWeight.w800,
-                          ),
+              return SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Text(
+                        "Ready?",
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                            .copyWith(
+                              color: const Color(0xFF27272A),
+                              fontSize: 50.sp,
+                              fontWeight: FontWeight.w800,
+                            ),
+                      ),
                     ),
-                  ),
 
-                  UIHelper.verticalSpace(16.h),
+                    UIHelper.verticalSpace(16.h),
 
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: 0.45.sw,
+                    Align(
                       alignment: Alignment.center,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10.w,
-                        vertical: 4.h,
-                      ),
-                      decoration: ShapeDecoration(
-                        color: const Color(0xFF27272A),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
+                      child: Container(
+                        width: 0.45.sw,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.w,
+                          vertical: 4.h,
                         ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        spacing: 10.w,
-                        children: [
-                          // icon
-                          Image.asset(
-                            Assets.icons.clock.path,
-                            width: 12.w,
-                            height: 12.h,
+                        decoration: ShapeDecoration(
+                          color: const Color(0xFF27272A),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
-
-                          Text(
-                            "${snapshot.data?.minutes ?? ""} min",
-                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                                .copyWith(
-                                  color: Colors.white,
-                                  fontSize: 14.sp,
-
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ),
-
-                          Image.asset(
-                            Assets.icons.firePng.path,
-                            width: 12.w,
-                            height: 12.h,
-                          ),
-                          Text(
-                            "${snapshot.data?.totalCal ?? ""} Kcal",
-                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                                .copyWith(
-                                  color: Colors.white,
-                                  fontSize: 14.sp,
-
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  UIHelper.verticalSpace(24.h),
-
-                  ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: snapshot.data?.data?.length,
-                    itemBuilder: (_, index) {
-                      var data = snapshot.data?.data?[index];
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 6.h),
+                        ),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           spacing: 10.w,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            // Image
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20.r),
-                              child: CustomCachedNetworkImage(
-                                imageUrl: data?.thumbnail ?? "",
-                                width: 60.w,
-                                height: 60.h,
-                                fit: BoxFit.cover,
-                              ),
+                            // icon
+                            Image.asset(
+                              Assets.icons.clock.path,
+                              width: 12.w,
+                              height: 12.h,
                             ),
 
-                            Column(
-                              spacing: 8.h,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Text(
+                              "${snapshot.data?.minutes ?? ""} min",
+                              style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                                  .copyWith(
+                                    color: Colors.white,
+                                    fontSize: 14.sp,
 
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  data?.title ?? "",
-                                  style: TextFontStyle
-                                      .headLine16cFFFFFFWorkSansW600
-                                      .copyWith(
-                                        color: const Color(0xFF27272A),
-                                        fontSize: 18.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
 
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
+                            Image.asset(
+                              Assets.icons.firePng.path,
+                              width: 12.w,
+                              height: 12.h,
+                            ),
+                            Text(
+                              "${snapshot.data?.totalCal ?? ""} Kcal",
+                              style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                                  .copyWith(
+                                    color: Colors.white,
+                                    fontSize: 14.sp,
 
-                                Text(
-                                  "${data?.seconds ?? ""} seconds",
-                                  style: TextFontStyle
-                                      .headLine16cFFFFFFWorkSansW600
-                                      .copyWith(
-                                        color: const Color(0xFF27272A),
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
-                              ],
+                                    fontWeight: FontWeight.w500,
+                                  ),
                             ),
                           ],
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
 
-                  UIHelper.verticalSpace(24.h),
+                    UIHelper.verticalSpace(24.h),
 
-                  CustomButton(
-                    onPressed: () {
-                      NavigationService.navigateTo(
-                        Routes.downloadProgressScreen,
-                      );
-                    },
-                    text: "Start",
-                  ),
-                ],
+                    ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: snapshot.data?.data?.length,
+                      itemBuilder: (_, index) {
+                        var data = snapshot.data?.data?[index];
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 6.h),
+                          child: Row(
+                            spacing: 10.w,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              // Image
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(20.r),
+                                child: CustomCachedNetworkImage(
+                                  imageUrl: data?.thumbnail ?? "",
+                                  width: 60.w,
+                                  height: 60.h,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+
+                              Column(
+                                spacing: 8.h,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    data?.title ?? "",
+                                    style: TextFontStyle
+                                        .headLine16cFFFFFFWorkSansW600
+                                        .copyWith(
+                                          color: const Color(0xFF27272A),
+                                          fontSize: 18.sp,
+
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+
+                                  Text(
+                                    "${data?.seconds ?? ""} seconds",
+                                    style: TextFontStyle
+                                        .headLine16cFFFFFFWorkSansW600
+                                        .copyWith(
+                                          color: const Color(0xFF27272A),
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+
+                    UIHelper.verticalSpace(24.h),
+
+                    CustomButton(
+                      onPressed: () {
+                        NavigationService.navigateTo(
+                          Routes.downloadProgressScreen,
+                        );
+                      },
+                      text: "Start",
+                    ),
+                  ],
+                ),
               );
             } else {
               return SizedBox.shrink();

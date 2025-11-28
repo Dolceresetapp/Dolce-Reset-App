@@ -41,37 +41,74 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
     plannRxObj.planRx();
   }
 
-  Future<void> stripePaymentSheet(String paymentIntentClientSecret) async {
-    await Stripe.instance.initPaymentSheet(
-      paymentSheetParameters: SetupPaymentSheetParameters(
-        paymentIntentClientSecret: paymentIntentClientSecret,
-        merchantDisplayName: 'Fitness App',
-      ),
-    );
-    await Stripe.instance
-        .presentPaymentSheet()
-        .then((value) {
-          if (value == null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'Payment Success',
-                  style: TextStyle(fontSize: 18.sp, color: Colors.white),
-                ),
-              ),
-            );
-          }
-        })
-        .catchError((e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Payment Failed',
-                style: TextStyle(fontSize: 18.sp, color: Colors.red),
-              ),
-            ),
-          );
-        });
+  Future<void> stripePaymentSheet(String clientSecret) async {
+    try {
+      // Auto-detect intent type
+      final isSetupIntent = clientSecret.startsWith('seti_');
+      final isPaymentIntent = clientSecret.startsWith('pi_');
+
+      print(
+        "Client Secret Type: ${isSetupIntent
+            ? 'Setup Intent'
+            : isPaymentIntent
+            ? 'Payment Intent'
+            : 'Unknown'}",
+      );
+
+      if (isSetupIntent) {
+        // Handle Setup Intent
+        await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+            setupIntentClientSecret: clientSecret,
+            merchantDisplayName: 'Fitness App',
+          ),
+        );
+      } else if (isPaymentIntent) {
+        // Handle Payment Intent
+        await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+            paymentIntentClientSecret: clientSecret,
+            merchantDisplayName: 'Fitness App',
+          ),
+        );
+      } else {
+        throw Exception('Invalid client secret format');
+      }
+
+      await Stripe.instance.presentPaymentSheet();
+
+      // Success
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            isSetupIntent ? 'Payment Method Saved' : 'Payment Successful',
+            style: TextStyle(fontSize: 18.sp, color: Colors.white),
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } on StripeException catch (e) {
+      print("Stripe Error: ${e.error.localizedMessage}");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Failed: ${e.error.localizedMessage}',
+            style: TextStyle(fontSize: 18.sp, color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (e) {
+      print("Error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Operation Failed',
+            style: TextStyle(fontSize: 18.sp, color: Colors.red),
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -347,20 +384,21 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
                     UIHelper.verticalSpace(20.h),
 
                     CustomButton(
-                      onPressed: () {
-                        paymentmentSheetRxObj.paymentmentSheetRx(
+                      onPressed: () async {
+                        await paymentmentSheetRxObj.paymentmentSheetRx(
                           email: 'fajla1@gmail.com',
                           planId: 2,
                         );
 
                         log(
-                          "Client Secret Key========================================= ${paymentmentSheetRxObj.clientSecret ?? ""} ",
+                          "Client Secret Key: ${paymentmentSheetRxObj.clientSecret}",
                         );
 
-                        stripePaymentSheet(
-                          paymentmentSheetRxObj.clientSecret ?? "",
-                        );
-                        // NavigationService.navigateTo(Routes.freeTrialScreen);
+                        if (paymentmentSheetRxObj.clientSecret != null) {
+                          stripePaymentSheet(
+                            paymentmentSheetRxObj.clientSecret!,
+                          );
+                        }
                       },
                       child: Row(
                         spacing: 10.w,
