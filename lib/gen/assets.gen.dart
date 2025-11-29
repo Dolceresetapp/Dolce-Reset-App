@@ -438,6 +438,10 @@ class $AssetsImagesGen {
   AssetGenImage get chevronRight =>
       const AssetGenImage('assets/images/chevron right.png');
 
+  /// File path: assets/images/fireIocn.png
+  AssetGenImage get fireIocn =>
+      const AssetGenImage('assets/images/fireIocn.png');
+
   /// File path: assets/images/food.png
   AssetGenImage get food => const AssetGenImage('assets/images/food.png');
 
@@ -491,6 +495,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/legs.png
   AssetGenImage get legs => const AssetGenImage('assets/images/legs.png');
+
+  /// File path: assets/images/like_icon.png
+  AssetGenImage get likeIcon =>
+      const AssetGenImage('assets/images/like_icon.png');
 
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
@@ -646,6 +654,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/slep.png
   AssetGenImage get slep => const AssetGenImage('assets/images/slep.png');
 
+  /// File path: assets/images/watchicon.png
+  AssetGenImage get watchicon =>
+      const AssetGenImage('assets/images/watchicon.png');
+
   /// File path: assets/images/whole_body.png
   AssetGenImage get wholeBody =>
       const AssetGenImage('assets/images/whole_body.png');
@@ -682,6 +694,7 @@ class $AssetsImagesGen {
     button,
     button1111,
     chevronRight,
+    fireIocn,
     food,
     fooodddd,
     frameBellIcon,
@@ -697,6 +710,7 @@ class $AssetsImagesGen {
     intoShape,
     leg,
     legs,
+    likeIcon,
     logo,
     losttWeight,
     mask,
@@ -738,6 +752,7 @@ class $AssetsImagesGen {
     reducePain,
     shoulders,
     slep,
+    watchicon,
     wholeBody,
     womensBg,
   ];

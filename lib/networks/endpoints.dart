@@ -71,5 +71,7 @@ final class Endpoints {
    static String paymentSheet() => "/payment/stripe/app/checkout";
 
     static String subscription() => "/payment/stripe/app/trail";
+
+        static String activeWorkoutSave() => "/active_workouts/save";
 }
 // https://admin.dolcereset.com/api/work_out_list

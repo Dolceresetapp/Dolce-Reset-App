@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gritti_app/common_widget/videos_bar_widegt.dart';
 import 'package:gritti_app/common_widget/waiting_widget.dart';
 import 'package:gritti_app/features/exercise_video/full_screen_video.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
@@ -11,8 +10,11 @@ import 'package:video_player/video_player.dart';
 
 import '../../common_widget/custom_app_bar.dart';
 import '../../constants/text_font_style.dart';
+import '../../helpers/all_routes.dart';
+import '../../helpers/navigation_service.dart';
 import '../../networks/api_acess.dart';
 import '../ready/data/model/workout_video_response_model.dart';
+import 'progress_bar_widget.dart';
 
 class ExerciseVideoScreen extends StatefulWidget {
   final int id;
@@ -143,7 +145,15 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: VideosBarWidget(currentStep: 1, maxSteps: 5),
+        title: ProgressBarWidget(
+          onTap: () {
+            NavigationService.navigateToWithArgs(Routes.videoSnapScreen, {
+              "id": widget.id,
+              "duration": videoList[currentIndex].seconds,
+              "kcal": videoList[currentIndex].title ?? "",
+            });
+          },
+        ),
       ),
 
       body: StreamBuilder<WorkoutWiseVideoResponseModel>(

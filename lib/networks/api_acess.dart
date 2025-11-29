@@ -22,6 +22,8 @@ import '../features/excerises/data/rx_get_my_workout/model/my_workout_response_m
 import '../features/excerises/data/rx_get_my_workout/rx.dart';
 import '../features/excerises/data/rx_get_theme/model/theme_response_model.dart';
 import '../features/excerises/data/rx_get_theme/rx.dart';
+import '../features/exercise_video/data/model/workour_save_response_model.dart';
+import '../features/exercise_video/data/rx_post_sign_in/rx.dart';
 import '../features/onboarding/data/model/onboarding_response_model.dart';
 import '../features/onboarding/data/rx_post_onboard/rx.dart';
 import '../features/rating/data/model/rating_response_model.dart';
@@ -37,6 +39,14 @@ import '../features/trial_continue/data/rx_post_subscription/model/subscription_
 import '../features/trial_continue/data/rx_post_subscription/rx.dart';
 import '../features/video/data/model/theme_wise_video_response_model.dart';
 import '../features/video/data/rx_get_video/rx.dart';
+
+
+
+ActiveWorkoutSaveRx activeWorkoutSaveRxObj = ActiveWorkoutSaveRx(
+  empty: ActiveWorkoutResponseModel(),
+  dataFetcher: BehaviorSubject<ActiveWorkoutResponseModel>(),
+);
+
 
 SubscriptionRx subscriptionRxObj = SubscriptionRx(
   empty: SubscriptionResponseModel(),

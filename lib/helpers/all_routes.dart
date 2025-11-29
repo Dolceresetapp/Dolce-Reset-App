@@ -49,6 +49,8 @@ import '../features/ready/ready_screen.dart';
 import '../features/rewiring_benefits/rewiring_benefit_screen.dart';
 import '../features/trial_continue/presentation/trial_continue_screen.dart';
 import '../features/video/video_screen.dart';
+import '../features/video_congrats/video_congrats_screen.dart';
+import '../features/video_snap/video_snap_screen.dart';
 import '../loading.dart';
 import '../navigation_screen.dart';
 
@@ -139,6 +141,10 @@ final class Routes {
   static const String trialContinueScreen = '/trialContinueScreen';
   static const String dynamicWorkoutScreen = '/dynamicWorkoutScreen';
   static const String readyScreen = '/readyScreen';
+
+  static const String videoSnapScreen = '/videoSnapScreen';
+
+    static const String videoCongratsScreen = '/videoCongratsScreen';
 }
 
 //
@@ -149,6 +155,33 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
+
+       case Routes.videoCongratsScreen:
+       
+
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: VideoCongratsScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => VideoCongratsScreen(),
+            );
+
+
+
+      case Routes.videoSnapScreen:
+        final args = settings.arguments as Map;
+
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: VideoSnapScreen(id: args["id"], duration: args["duration"], kcal: args["kcal"],),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => VideoSnapScreen(id: args["id"], duration: args["duration"], kcal:args["kcal"]),
+            );
+
       case Routes.readyScreen:
         final args = settings.arguments as Map;
         return Platform.isAndroid
