@@ -111,6 +111,127 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
     }
   }
 
+  Future<void> confirmPayment(String clientSecret) async {
+    try {
+      // 1. Initialize Payment Sheet with PaymentIntent
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret:
+              clientSecret, // Use PaymentIntent client secret
+          merchantDisplayName: 'Fitness App',
+          // Optional: Customize appearance
+          // style: ThemeMode.light,
+          // googlePay: PaymentSheetGooglePay(merchantCountryCode: "US"),
+          // testEnv: true,
+        ),
+      );
+
+      // 2. Present Payment Sheet for immediate payment
+      await Stripe.instance.presentPaymentSheet();
+
+      // 3. Payment successful - no need for second API call
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Payment successful!")));
+
+      // 4. Handle success (redirect, update UI, etc.)
+      //  final successToken = const Uuid().v4();
+      // Navigate to success screen
+    } on StripeException catch (e) {
+      print("Stripe Error: ${e.error.localizedMessage}");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Payment failed: ${e.error.localizedMessage}")),
+      );
+    } catch (e) {
+      print("Exception: $e");
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+    } finally {
+      //setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> processManualPayment(String clientSecret) async {
+    final userEmail = "fajla1@gmail.com";
+    try {
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          setupIntentClientSecret: clientSecret,
+          merchantDisplayName: 'Fitness App',
+        ),
+      );
+      await Stripe.instance
+          .presentPaymentSheet()
+          .then((value) {
+            if (value == null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Payment Success',
+                    style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                  ),
+                ),
+              );
+            }
+          })
+          .catchError((e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Payment Failed',
+                  style: TextStyle(fontSize: 18.sp, color: Colors.red),
+                ),
+              ),
+            );
+          });
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+  // Future<void> processManualPayment(String clientSecret) async {
+  //   try {
+  //     // 1. Get user data
+  //     final userEmail = "fajla1@gmail.com";
+
+  //     // 2. Create payment method manually
+  //     final paymentMethod = await Stripe.instance.createPaymentMethod(
+  //       params: PaymentMethodParams.card(
+  //         paymentMethodData: PaymentMethodData(
+  //           billingDetails: BillingDetails(email: userEmail),
+  //         ),
+  //       ),
+  //     );
+
+  //     // 3. Confirm payment with the created payment method
+  //     final paymentIntentResult = await Stripe.instance.confirmPayment(
+  //       paymentIntentClientSecret: clientSecret,
+  //       data: PaymentMethodParams.cardFromMethodId(
+  //         paymentMethodData: PaymentMethodDataCardFromMethod(
+  //           paymentMethodId: paymentMethod.id, // ✅ Correct parameter structure
+  //         ),
+  //       ),
+  //     );
+
+  //     if (paymentIntentResult.status == PaymentIntentsStatus.Succeeded) {
+  //       print("Payment successful!");
+  //       ScaffoldMessenger.of(
+  //         context,
+  //       ).showSnackBar(const SnackBar(content: Text("Payment successful!")));
+  //     } else {
+  //       print("Payment failed or canceled");
+  //       ScaffoldMessenger.of(
+  //         context,
+  //       ).showSnackBar(const SnackBar(content: Text("Payment failed")));
+  //     }
+  //   } catch (e) {
+  //     print("Error: $e");
+  //     ScaffoldMessenger.of(
+  //       context,
+  //     ).showSnackBar(SnackBar(content: Text("Error: $e")));
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -386,7 +507,7 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
                     CustomButton(
                       onPressed: () async {
                         await paymentmentSheetRxObj.paymentmentSheetRx(
-                          email: 'fajla1@gmail.com',
+                          email: 'testuser@gmail.com',
                           planId: 2,
                         );
 
@@ -394,11 +515,15 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
                           "Client Secret Key: ${paymentmentSheetRxObj.clientSecret}",
                         );
 
-                        if (paymentmentSheetRxObj.clientSecret != null) {
+                       // if (paymentmentSheetRxObj.clientSecret != null) {
                           stripePaymentSheet(
-                            paymentmentSheetRxObj.clientSecret!,
+                            // paymentmentSheetRxObj.clientSecret!,
+                            'seti_1SYp0RPDus5InpomqeZlqgwB_secret_TVqhUaQYaorj4xDubvZqbOCa871Q5a1',
                           );
-                        }
+                          // processManualPayment(
+                          //   paymentmentSheetRxObj.clientSecret!,
+                          // );
+                       // }
                       },
                       child: Row(
                         spacing: 10.w,

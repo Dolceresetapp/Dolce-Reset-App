@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,8 +11,10 @@ import 'package:gritti_app/helpers/ui_helpers.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../common_widget/custom_app_bar.dart';
+import '../../common_widget/custom_button.dart';
 import '../../constants/text_font_style.dart';
 import '../../helpers/all_routes.dart';
+import '../../helpers/loading_helper.dart';
 import '../../helpers/navigation_service.dart';
 import '../../networks/api_acess.dart';
 import '../ready/data/model/workout_video_response_model.dart';
@@ -31,6 +35,9 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
   int currentIndex = 0;
   List videoList = [];
 
+  int totalCal = 0;
+  int minutes = 0;
+
   // Load API and first video inside
   @override
   void initState() {
@@ -40,6 +47,10 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
     workoutVideoRxObj.workoutVideoRxStream.listen((apiResult) {
       if (apiResult.data != null && mounted) {
         videoList = apiResult.data!;
+
+        totalCal = apiResult.totalCal ?? 0;
+
+        minutes = apiResult.minutes ?? 0;
 
         _initializeVideo(videoList[currentIndex].videos);
       }
@@ -140,6 +151,132 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
     }
   }
 
+  //
+
+  void showFullBlurBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent, // Required
+      builder: (context) {
+        return DraggableScrollableSheet(
+          initialChildSize: 0.95, // Full screen
+          minChildSize: 0.20, // Force full height
+          maxChildSize: 0.95, // Prevent dragging
+          builder: (_, controller) {
+            return ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(25.r)),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 20, // stronger blur
+                  sigmaY: 20,
+                ),
+                child: Container(
+                  padding: EdgeInsets.all(20.sp),
+                  decoration: BoxDecoration(
+                    // ignore: deprecated_member_use
+                    color: Colors.white.withOpacity(0.25), // Glass effect
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(25.r),
+                    ),
+                    // ignore: deprecated_member_use
+                    border: Border.all(color: Colors.white.withOpacity(0.3)),
+                  ),
+                  child: Column(
+                    children: [
+                      // Drag bar
+                      Container(
+                        width: 60,
+                        height: 6,
+                        margin: EdgeInsets.only(bottom: 20),
+                        decoration: BoxDecoration(
+                          // ignore: deprecated_member_use
+                          color: Colors.white.withOpacity(0.6),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+
+                      // Your content starts here
+                      Expanded(
+                        child: SingleChildScrollView(
+                          controller: controller,
+                          child: Column(
+                            children: [
+                              Text(
+                                'Hand in there! \n You got this!',
+                                style: TextFontStyle
+                                    .headLine16cFFFFFFWorkSansW600
+                                    .copyWith(
+                                      fontWeight: FontWeight.w900,
+                                      color: Colors.black,
+                                      fontSize: 30.sp,
+                                    ),
+                              ),
+                              UIHelper.verticalSpace(20.h),
+
+                              CustomButton(
+                                onPressed: () {
+                                  NavigationService.goBack;
+                                },
+                                child: Row(
+                                  spacing: 10.w,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Keep Exercising",
+                                      style:
+                                          TextFontStyle
+                                              .headLine16cFFFFFFWorkSansW600,
+                                    ),
+
+                                    SvgPicture.asset(
+                                      Assets.icons.arrowRight,
+                                      width: 20.w,
+                                      height: 20.h,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              UIHelper.verticalSpace(20.h),
+
+                              CustomButton(
+                                color: Color(0xFFAE47FF),
+                                onPressed: () {
+                                  activeWorkoutSaveRxObj
+                                      .activeWorkoutSaveRx(listId: widget.id)
+                                      .waitingForFuture()
+                                      .then((success) {
+                                        if (success) {
+                                          NavigationService.navigateTo(
+                                            Routes.videoCongratsScreen,
+                                          );
+                                        }
+                                      });
+                                },
+                                text: "Finish Workout",
+                              ),
+
+                              // ElevatedButton(
+                              //   onPressed: () => Navigator.pop(context),
+                              //   child: Text("Close"),
+                              // ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,11 +284,12 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
         backgroundColor: Colors.white,
         title: ProgressBarWidget(
           onTap: () {
-            NavigationService.navigateToWithArgs(Routes.videoSnapScreen, {
-              "id": widget.id,
-              "duration": videoList[currentIndex].seconds,
-              "kcal": videoList[currentIndex].title ?? "",
-            });
+            showFullBlurBottomSheet(context);
+            // NavigationService.navigateToWithArgs(Routes.videoSnapScreen, {
+            //   "id": widget.id,
+            //   "duration": minutes,
+            //   "kcal": totalCal,
+            // });
           },
         ),
       ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
+
 import 'common_widget/custom_svg_asset.dart';
+import 'constants/text_font_style.dart';
 import 'features/chef/presentation/chef_screen.dart';
 import 'features/excerises/presentation/excerise_screen.dart';
 import 'features/motivation/presentation/motivation_screen.dart';
-import 'constants/text_font_style.dart';
 import 'features/settings/presentation/settings_screen.dart';
 import 'gen/assets.gen.dart';
 
