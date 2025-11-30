@@ -1,34 +1,30 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
-
 import '../../../../../../../helpers/toast.dart';
 import '../../../../../../../networks/rx_base.dart';
 import '../../../../../../helpers/all_routes.dart';
 import '../../../../../../helpers/navigation_service.dart';
 import '../../../../../../networks/stream_cleaner.dart';
 import 'api.dart';
-import 'model/payment_sheet_response_model.dart';
+import 'model/confirm_subscription_response_model.dart';
 
-final class PaymentmentSheetRx
-    extends RxResponseInt<PaymentSheetResponseModel> {
-  String? clientSecret;
-  String? paymentIntentId;
-  final api = PaymentmentSheetApi.instance;
+final class ConfirmSubscriptionRx
+    extends RxResponseInt<ConfirmSubscriptionResponseModel> {
+  final api = ConfirmSubscriptionApi.instance;
 
-  PaymentmentSheetRx({required super.empty, required super.dataFetcher});
+  ConfirmSubscriptionRx({required super.empty, required super.dataFetcher});
 
-  ValueStream<PaymentSheetResponseModel> get paymentmentSheetRxStream =>
+  ValueStream<ConfirmSubscriptionResponseModel> get paymentmentSheetRxStream =>
       dataFetcher.stream;
 
-  Future<bool> paymentmentSheetRx({
-    required String email,
+  Future<bool> confirmSubscriptionRx({
+    required String paymentIntentId,
     required int planId,
   }) async {
     try {
-      PaymentSheetResponseModel data = await api.paymentmentSheetApi(
-        email: email,
+      ConfirmSubscriptionResponseModel data = await api.confirmSubscriptionApi(
+        paymentIntentId: paymentIntentId,
         planId: planId,
       );
       handleSuccessWithReturn(data);
@@ -39,10 +35,7 @@ final class PaymentmentSheetRx
   }
 
   @override
-  handleSuccessWithReturn(PaymentSheetResponseModel data) {
-    clientSecret = data.clientSecret ?? "";
-
-    paymentIntentId = data.paymentIntentId ?? "";
+  handleSuccessWithReturn(ConfirmSubscriptionResponseModel data) {
     dataFetcher.sink.add(data);
     return true;
   }

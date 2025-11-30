@@ -5,6 +5,9 @@ const String kKeyAccessToken = 'access_token';
 const String kKeyIsLoggedIn = 'is_logged_in';
 const String kKeyIsFirstTime = 'kKeyIsFirstTime';
 
+// payemnt method
+const String kKeyPaymentMethod = 'kKeyPaymentMethod';
+
 const String kKeyIsOnboarding = 'kKeyIsOnboarding';
 
 // inch and cm

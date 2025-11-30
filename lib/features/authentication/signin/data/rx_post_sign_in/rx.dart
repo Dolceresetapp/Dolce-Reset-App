@@ -41,8 +41,10 @@ final class SignInRx extends RxResponseInt<SignInResponseModel> {
   handleSuccessWithReturn(SignInResponseModel data) {
     appData.write(kKeyAccessToken, data.token);
     appData.write(kKeyID, data.data?.id);
-    appData.write(kKeyName, data.data?.name ?? "Rabbi");
+    appData.write(kKeyName, data.data?.name);
     appData.write(kKeyEmail, data.data?.email);
+
+    appData.write(kKeyPaymentMethod, data.data?.paymentMethod);
     appData.write(kKeyIsLoggedIn, true);
     DioSingleton.instance.update(appData.read(kKeyAccessToken));
     dataFetcher.sink.add(data);

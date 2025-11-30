@@ -73,5 +73,7 @@ final class Endpoints {
     static String subscription() => "/payment/stripe/app/trail";
 
         static String activeWorkoutSave() => "/active_workouts/save";
+
+           static String completeSubscription() => "/payment/stripe/confirm-subscription";
 }
 // https://admin.dolcereset.com/api/work_out_list

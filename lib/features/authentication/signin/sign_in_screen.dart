@@ -196,7 +196,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           .then((success) {
                             if (success) {
                               NavigationService.navigateToReplacement(
-                                Routes.navigationScreen,
+                                Routes.onboardingScreen1,
                               );
                             }
                           });

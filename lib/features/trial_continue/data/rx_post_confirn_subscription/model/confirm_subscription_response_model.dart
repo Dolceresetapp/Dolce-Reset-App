@@ -1,28 +1,28 @@
 import 'dart:convert';
 
-class PaymentSheetResponseModel {
+class ConfirmSubscriptionResponseModel {
     String? clientSecret;
     String? paymentIntentId;
 
-    PaymentSheetResponseModel({
+    ConfirmSubscriptionResponseModel({
         this.clientSecret,
         this.paymentIntentId,
     });
 
-    PaymentSheetResponseModel copyWith({
+    ConfirmSubscriptionResponseModel copyWith({
         String? clientSecret,
         String? paymentIntentId,
     }) => 
-        PaymentSheetResponseModel(
+        ConfirmSubscriptionResponseModel(
             clientSecret: clientSecret ?? this.clientSecret,
             paymentIntentId: paymentIntentId ?? this.paymentIntentId,
         );
 
-    factory PaymentSheetResponseModel.fromRawJson(String str) => PaymentSheetResponseModel.fromJson(json.decode(str));
+    factory ConfirmSubscriptionResponseModel.fromRawJson(String str) => ConfirmSubscriptionResponseModel.fromJson(json.decode(str));
 
     String toRawJson() => json.encode(toJson());
 
-    factory PaymentSheetResponseModel.fromJson(Map<String, dynamic> json) => PaymentSheetResponseModel(
+    factory ConfirmSubscriptionResponseModel.fromJson(Map<String, dynamic> json) => ConfirmSubscriptionResponseModel(
         clientSecret: json["client_secret"],
         paymentIntentId: json["payment_intent_id"],
     );

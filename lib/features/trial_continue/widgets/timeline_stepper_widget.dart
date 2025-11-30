@@ -5,7 +5,9 @@ import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
 class TimelineStepperWidget extends StatelessWidget {
-  const TimelineStepperWidget({super.key});
+
+  final  String date3Days;
+  const TimelineStepperWidget({super.key, required this.date3Days});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +72,7 @@ class TimelineStepperWidget extends StatelessWidget {
 
               _stepText(
                 "In 3 Days - Billing Starts",
-                "You'll be charged on 14 Aug 2025 unless you cancel anytime before",
+                "You'll be charged on $date3Days unless you cancel anytime before",
               ),
             ],
           ),

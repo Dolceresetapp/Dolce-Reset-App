@@ -200,7 +200,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                appData.read(kKeyName) ?? "",
+                appData.read(kKeyName) ?? "Rabby",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   color: const Color(0xFF27272A),
                   fontSize: 24.sp,
