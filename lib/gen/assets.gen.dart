@@ -654,6 +654,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/slep.png
   AssetGenImage get slep => const AssetGenImage('assets/images/slep.png');
 
+  /// File path: assets/images/ss.png
+  AssetGenImage get ss => const AssetGenImage('assets/images/ss.png');
+
   /// File path: assets/images/watchicon.png
   AssetGenImage get watchicon =>
       const AssetGenImage('assets/images/watchicon.png');
@@ -752,6 +755,7 @@ class $AssetsImagesGen {
     reducePain,
     shoulders,
     slep,
+    ss,
     watchicon,
     wholeBody,
     womensBg,

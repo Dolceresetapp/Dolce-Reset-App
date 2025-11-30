@@ -9,6 +9,7 @@ import '../../common_widget/custom_button.dart';
 import '../../constants/text_font_style.dart';
 import '../../helpers/all_routes.dart';
 import '../../helpers/navigation_service.dart';
+import 'loss_widget.dart';
 
 class PlanReadyScreen extends StatefulWidget {
   const PlanReadyScreen({super.key});
@@ -64,16 +65,110 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
 
               UIHelper.verticalSpace(10.h),
 
-              SizedBox(
+              Container(
                 width: 1.sw,
-                height: 250.h,
-                child: Image.asset(
-                  Assets.images.imageCopy.path,
 
-                  fit: BoxFit.fitWidth,
+                padding: EdgeInsetsDirectional.all(16.sp),
+                decoration: BoxDecoration(
+                  color: Color(0xFFE2448B).withValues(alpha: 0.5),
+                  borderRadius: BorderRadius.circular(25.r),
+                ),
+                child: Container(
+                  padding: EdgeInsetsDirectional.symmetric(
+                    horizontal: 16.w,
+                    vertical: 20.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFFF0073),
+                    borderRadius: BorderRadius.circular(25.r),
+                  ),
+
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Current",
+                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                          ),
+                          Text(
+                            "Objective",
+                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                          ),
+                        ],
+                      ),
+
+                      UIHelper.verticalSpace(16.h),
+
+                      // Middle
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "65kg",
+                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                                .copyWith(fontSize: 30.sp),
+                          ),
+
+                          Image.asset(
+                            Assets.images.ss.path,
+                            width: 40.w,
+                            height: 40.h,
+                            fit: BoxFit.contain,
+                          ),
+
+                          Text(
+                            "60kg",
+                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                                .copyWith(fontSize: 30.sp),
+                          ),
+                        ],
+                      ),
+                      UIHelper.verticalSpace(4.h),
+                      //Bmi
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Body Mass Index 23.9",
+                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                                .copyWith(fontSize: 12.sp),
+                          ),
+                          Text(
+                            "Body Mass Index  22.4",
+                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                                .copyWith(fontSize: 12.sp),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
+              UIHelper.verticalSpace(30.h),
+
+              Row(
+                spacing: 16.w,
+                children: [
+                  LossWidget(subtitle: "Weight Loss", title: "60kg"),
+                  LossWidget(subtitle: "Days For Feel Better", title: "30"),
+                  LossWidget(subtitle: "Everyday", title: "15min"),
+                ],
+              ),
+
+              // SizedBox(
+              //   width: 1.sw,
+              //   height: 250.h,
+              //   child: Image.asset(
+              //     Assets.images.imageCopy.path,
+
+              //     fit: BoxFit.fitWidth,
+              //   ),
+              // ),
               CarouselSlider.builder(
                 itemCount: 3,
                 carouselController: carouselController,

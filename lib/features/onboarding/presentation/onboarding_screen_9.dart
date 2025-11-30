@@ -3,17 +3,16 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gritti_app/features/onboarding/widgets/onbaording8_widget/ibs_widget.dart';
-import 'package:gritti_app/features/onboarding/widgets/onbaording8_widget/kg_widget.dart';
+import 'package:ruler_slider/ruler_slider.dart';
 
 import '../../../common_widget/app_bar_widget.dart';
 import '../../../common_widget/custom_app_bar.dart';
 import '../../../common_widget/custom_button.dart';
 import '../../../constants/text_font_style.dart';
 import '../../../gen/assets.gen.dart';
-import '../../../gen/colors.gen.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
+import '../../../helpers/ui_helpers.dart';
 
 class OnboardingScreen9 extends StatefulWidget {
   final String onboard1;
@@ -44,25 +43,8 @@ class OnboardingScreen9 extends StatefulWidget {
   State<OnboardingScreen9> createState() => _OnboardingScreen9State();
 }
 
-class _OnboardingScreen9State extends State<OnboardingScreen9>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  double ibsValue = 120.0;
-
+class _OnboardingScreen9State extends State<OnboardingScreen9> {
   double kgValue = 80.0;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,93 +55,107 @@ class _OnboardingScreen9State extends State<OnboardingScreen9>
         backgroundColor: Colors.white,
         title: AppBarWidget(currentStep: 7),
       ),
-      body: DefaultTabController(
-        length: 2,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
-          child: SafeArea(
-            child: Column(
-              spacing: 30.h,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "What is your target weight?",
-                  textAlign: TextAlign.center,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
+        physics: BouncingScrollPhysics(),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
 
-                  style: TextFontStyle.headline30c27272AtyleWorkSansW700
-                      .copyWith(
-                        color: const Color(0xFF27272A),
-                        fontSize: 30,
-
-                        fontWeight: FontWeight.w700,
-                      ),
+            children: [
+              Text(
+                "What is your target weight?",
+                textAlign: TextAlign.center,
+                style: TextFontStyle.headline30c27272AtyleWorkSansW700.copyWith(
+                  color: const Color(0xFF27272A),
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700,
                 ),
-                // TabBar : Tabs
-                Container(
-                  // Unselected Background Color
-                  height: 55.h,
-                  padding: EdgeInsets.all(4.sp),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF4F4F5),
-                    borderRadius: BorderRadius.circular(14.r),
-                  ),
-                  child: TabBar(
-                    controller: _tabController,
-                    padding: EdgeInsets.zero,
-                    labelPadding: EdgeInsets.zero,
+              ),
+              UIHelper.verticalSpace(30.h),
+              Align(
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      kgValue.toStringAsFixed(0).toString(),
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                          .copyWith(
+                            color: const Color(0xFF27272A),
+                            fontSize: 96.sp,
 
-                    // Text styles
-                    labelStyle: TextFontStyle.headline30c27272AtyleWorkSansW700
-                        .copyWith(
-                          color: const Color(0xFF27272A),
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                    unselectedLabelStyle: TextFontStyle
-                        .headline30c27272AtyleWorkSansW700
-                        .copyWith(
-                          color: const Color(0xFF52525B),
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-
-                    // Tab indicator
-                    indicator: BoxDecoration(
-                      color: AppColors.cFFFFFF,
-                      borderRadius: BorderRadius.circular(7.r),
+                            fontWeight: FontWeight.w700,
+                          ),
                     ),
-                    tabs: const [Tab(text: "Ibs"), Tab(text: "Kg")],
-                  ),
-                ),
 
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      IbsWidget(ibsValue: ibsValue),
-                      KgWidget(kgValue: kgValue),
-                    ],
-                  ),
+                    SizedBox(
+                      height: 45.h,
+                      child: Text(
+                        'kg',
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                            .copyWith(
+                              color: const Color(0xFF52525B),
+                              fontSize: 30.sp,
+                              fontWeight: FontWeight.w200,
+                            ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+
+              UIHelper.verticalSpace(20.h),
+
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
+                child: RulerSlider(
+                  minValue: 30.0,
+                  maxValue: 200.0,
+                  initialValue: kgValue,
+                  rulerHeight: 140.h,
+                  selectedBarColor: Colors.blue,
+                  unselectedBarColor: Colors.grey,
+                  tickSpacing: 10.0,
+                  valueTextStyle: TextStyle(color: Colors.red, fontSize: 18),
+                  onChanged: (double value) {
+                    setState(() {
+                      kgValue = value;
+                    });
+                  },
+                  showFixedBar: false,
+                  fixedBarColor: Colors.green,
+                  fixedBarWidth: 3.0,
+                  fixedBarHeight: 40.0,
+                  showFixedLabel: false,
+
+                  scrollSensitivity: 5.0,
+                  enableSnapping: true,
+                  majorTickInterval: 4,
+                  labelInterval: 10,
+                  labelVerticalOffset: 30.h,
+                  showBottomLabels: true,
+                  labelTextStyle: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                      .copyWith(
+                        color: const Color(0xFF52525B),
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                  majorTickHeight: 30.0,
+                  minorTickHeight: 10.0,
+                ),
+              ),
+            ],
           ),
         ),
       ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            int selectedTab = _tabController.index;
-
-            final onboard9TargetWeightValue =
-                selectedTab == 0 ? ibsValue : kgValue;
-            final onboard9TargetWeightUnit = selectedTab == 0 ? "ibs" : "kg";
-
-            // ---------------------------
-            // DATA IS VALID → GO NEXT
-            // ---------------------------
             NavigationService.navigateToWithArgs(Routes.onboardingScreen10, {
               "onboard1": widget.onboard1,
               "onboard2": widget.onboard2,
@@ -171,8 +167,8 @@ class _OnboardingScreen9State extends State<OnboardingScreen9>
               "onboard8WeightUnit": widget.onboard8WeightUnit,
               "onboard8WeightValue": widget.onboard8WeightValue,
 
-              "onboard9TargetWeightValue": onboard9TargetWeightValue,
-              "onboard9TargetWeightUnit": onboard9TargetWeightUnit,
+              "onboard9TargetWeightValue": kgValue,
+              "onboard9TargetWeightUnit": "kg",
             });
           },
           child: Row(
