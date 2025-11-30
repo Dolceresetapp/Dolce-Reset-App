@@ -221,7 +221,7 @@ class _OnboardingScreen17State extends State<OnboardingScreen17> {
                   userId: appData.read(kKeyID).toString(),
                   age: DateFormat('yyyy-MM-dd').format(widget.selectedDate),
                   bmi: widget.bmi.toString(),
-                  bodyPartFocus: widget.onboard2, // 84
+                  bodyPartFocus: widget.onboard2, // 84 screen number
                   bodySatisfaction: widget.onboard15, // 97
 
                   celebrationPlan: widget.onboard13, // 95

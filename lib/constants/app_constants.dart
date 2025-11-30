@@ -1,5 +1,3 @@
-
-
 const String kKeyID = 'id';
 const String kKeyName = 'name';
 const String kKeyEmail = 'email';
@@ -7,12 +5,19 @@ const String kKeyAccessToken = 'access_token';
 const String kKeyIsLoggedIn = 'is_logged_in';
 const String kKeyIsFirstTime = 'kKeyIsFirstTime';
 
-const String kKeyIsOnboarding = 'kKeyIsOnboarding'; 
+const String kKeyIsOnboarding = 'kKeyIsOnboarding';
 
+// inch and cm
+const String kKeyonboard7HeightValue = 'kKeyonboard7HeightValue';
+const String kKeyonboard7HeightUnit = 'onboard7HeightUnit';
 
+//  Cuurnt Kg
+const String kKeyonboard8HeightValue = 'kKeyonboard8HeightValue';
+const String kKeyonboard8HeightUnit = 'onboard8HeightUnit';
 
-
-
+// Target Kg
+const String kKeyonboard9HeightValue = 'kKeyonboard9HeightValue';
+const String kKeyonboard9HeightUnit = 'onboard9HeightUnit';
 
 const String kImageUrl = 'imageUrl';
 // Keys
@@ -24,7 +29,6 @@ const String kKeyStringData = 'string_data';
 const String kKeyMessage = 'message';
 const String kKeyData = 'data';
 const String kKeyCode = 'code';
-
 
 const String kPhone = 'phone_number';
 const String kKeySelectedLocation = 'selected_location';
@@ -65,7 +69,7 @@ const String kKeycategoriesID = 'categoriesId';
 const String kKeyproductID = 'productId';
 const String kKeyShopSlug = 'shop_slug';
 const String kKeyRestaurantID = 'productId';
-const String kKeyIsExploring = 'exploring'; 
+const String kKeyIsExploring = 'exploring';
 const String kKeyIsFirst = 'is_first_time';
 
 //order statuses
@@ -101,5 +105,3 @@ class DefaultValue {
   static const double kDefaultDouble = 0.0;
   static const String kDefaultString = '';
 }
-
-

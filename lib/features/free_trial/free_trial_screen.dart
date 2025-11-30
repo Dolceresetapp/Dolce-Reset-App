@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
-import 'package:msh_checkbox/msh_checkbox.dart';
 
 import '../../common_widget/custom_button.dart';
+import '../../common_widget/custom_svg_asset.dart';
 import '../../constants/text_font_style.dart';
 import '../../helpers/all_routes.dart';
 import '../../helpers/navigation_service.dart';
@@ -36,6 +36,26 @@ class _FreeTrialScreenState extends State<FreeTrialScreen> {
           child: Column(
             children: [
               UIHelper.verticalSpace(20.h),
+
+              InkWell(
+                onTap: () {
+                  NavigationService.goBack;
+                },
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.w),
+                    child: CustomSvgAsset(
+                      width: 20.w,
+                      height: 20.h,
+                      color: Color(0xFF27272A),
+                      fit: BoxFit.contain,
+                      assetName: Assets.icons.icon,
+                    ),
+                  ),
+                ),
+              ),
+              UIHelper.verticalSpace(20.h),
               Align(
                 alignment: Alignment.topCenter,
                 child: Text(
@@ -58,36 +78,35 @@ class _FreeTrialScreenState extends State<FreeTrialScreen> {
                 fit: BoxFit.contain,
               ),
 
-              UIHelper.verticalSpace(50.h),
+              // UIHelper.verticalSpace(50.h),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 10.w,
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   spacing: 10.w,
 
-                children: [
-                  MSHCheckbox(
-                    style: MSHCheckboxStyle.fillScaleCheck,
-                    size: 20.sp,
-                    value: isChecked,
-                    onChanged: (value) => toogleChange(value),
-                    colorConfig: MSHColorConfig.fromCheckedUncheckedDisabled(
-                      checkedColor: Color(0xFFF566A9),
-                      uncheckedColor: Color(0xFFD4D4D8),
-                    ),
-                  ),
+              //   children: [
+              //     MSHCheckbox(
+              //       style: MSHCheckboxStyle.fillScaleCheck,
+              //       size: 20.sp,
+              //       value: isChecked,
+              //       onChanged: (value) => toogleChange(value),
+              //       colorConfig: MSHColorConfig.fromCheckedUncheckedDisabled(
+              //         checkedColor: Color(0xFFF566A9),
+              //         uncheckedColor: Color(0xFFD4D4D8),
+              //       ),
+              //     ),
 
-                  Text(
-                    "No payment Due now",
-                    textAlign: TextAlign.center,
-                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                      color: const Color(0xFF000000),
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ],
-              ),
-
+              //     Text(
+              //       "No payment Due now",
+              //       textAlign: TextAlign.center,
+              //       style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+              //         color: const Color(0xFF000000),
+              //         fontSize: 14.sp,
+              //         fontWeight: FontWeight.w800,
+              //       ),
+              //     ),
+              //   ],
+              // ),
               UIHelper.verticalSpace(20.h),
 
               CustomButton(

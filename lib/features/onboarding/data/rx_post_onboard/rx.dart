@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
+import 'package:gritti_app/constants/app_constants.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../../helpers/toast.dart';
@@ -9,6 +10,7 @@ import '../../../../../../networks/rx_base.dart';
 import '../../../../../helpers/all_routes.dart';
 import '../../../../../helpers/navigation_service.dart';
 import '../../../../../networks/stream_cleaner.dart';
+import '../../../../helpers/di.dart';
 import '../model/onboarding_response_model.dart';
 import 'api.dart';
 
@@ -68,6 +70,18 @@ final class OnboardingRx extends RxResponseInt<OnboardingResponseModel> {
 
   @override
   handleSuccessWithReturn(OnboardingResponseModel data) {
+    // inch and cm
+    appData.write(kKeyonboard7HeightValue, data.data?.height);
+    appData.write(kKeyonboard7HeightUnit, data.data?.heightIn);
+
+    //  Cuurnt Kg
+    appData.write(kKeyonboard8HeightValue, data.data?.currentWeight);
+    appData.write(kKeyonboard8HeightUnit, data.data?.currentWeightIn);
+
+    // Target Kg
+    appData.write(kKeyonboard9HeightValue, data.data?.targetWeight);
+    appData.write(kKeyonboard9HeightUnit, data.data?.targetWeightIn);
+
     dataFetcher.sink.add(data);
     return true;
   }

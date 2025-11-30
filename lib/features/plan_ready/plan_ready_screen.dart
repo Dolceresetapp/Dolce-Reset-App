@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/di.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
 import '../../common_widget/custom_button.dart';
+import '../../constants/app_constants.dart';
 import '../../constants/text_font_style.dart';
 import '../../helpers/all_routes.dart';
 import '../../helpers/navigation_service.dart';
@@ -21,6 +25,81 @@ class PlanReadyScreen extends StatefulWidget {
 class _PlanReadyScreenState extends State<PlanReadyScreen> {
   CarouselSliderController carouselController = CarouselSliderController();
   int currentIndex = 0;
+
+  // Current Weight BMI
+
+  double? gCurrentWeightKg;
+  double? gTargetWeightKg;
+  double? gHeightMeters;
+
+  double? gCurrentBMI;
+  double? gTargetBMI;
+
+  double? gWeightDifference; // current - target
+
+  @override
+  void initState() {
+    super.initState();
+    calculateBMI();
+  }
+
+  void calculateBMI() {
+    // Height (in onboarding7)
+    var heightUnit = appData.read(kKeyonboard7HeightUnit); // inch/cm
+    var heightValue =
+        double.tryParse("${appData.read(kKeyonboard7HeightValue)}") ?? 0;
+
+    // Current Weight (onboarding8)
+    appData.read(kKeyonboard8HeightUnit); // kg
+    var currentWeightValue =
+        double.tryParse("${appData.read(kKeyonboard8HeightValue)}") ?? 0;
+
+    // Target Weight (onboarding9)
+    appData.read(kKeyonboard9HeightUnit); // kg
+    var targetWeightValue =
+        double.tryParse("${appData.read(kKeyonboard9HeightValue)}") ?? 0;
+
+    // Convert height to meters
+    double heightMeters;
+    if (heightUnit == "cm") {
+      heightMeters = heightValue / 100;
+    } else if (heightUnit == "inch") {
+      heightMeters = heightValue * 2.54 / 100;
+    } else {
+      heightMeters = 0;
+    }
+
+    gHeightMeters = heightMeters;
+
+    // Convert weight to kg (already kg for both current & target)
+    gCurrentWeightKg = currentWeightValue;
+    gTargetWeightKg = targetWeightValue;
+
+    // Calculate BMI: kg / m²
+    double? currentBmi;
+    double? targetBmi;
+
+    if (heightMeters > 0) {
+      currentBmi = gCurrentWeightKg! / (heightMeters * heightMeters);
+      targetBmi = gTargetWeightKg! / (heightMeters * heightMeters);
+    }
+
+    gCurrentBMI = currentBmi;
+    gTargetBMI = targetBmi;
+
+    // Weight difference (current - target)
+    gWeightDifference = gCurrentWeightKg! - gTargetWeightKg!;
+
+    // Debug
+    log("HeightMeters: $gHeightMeters");
+    log("CurrentWeightKg: $gCurrentWeightKg");
+    log("TargetWeightKg: $gTargetWeightKg");
+    log("CurrentBMI: $gCurrentBMI");
+    log("TargetBMI: $gTargetBMI");
+    log("Weight Difference: $gWeightDifference");
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +146,6 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
 
               Container(
                 width: 1.sw,
-
                 padding: EdgeInsetsDirectional.all(16.sp),
                 decoration: BoxDecoration(
                   color: Color(0xFFE2448B).withValues(alpha: 0.5),
@@ -108,7 +186,7 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "65kg",
+                            "${gCurrentWeightKg?.toStringAsFixed(0)} kg",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                                 .copyWith(fontSize: 30.sp),
                           ),
@@ -121,7 +199,7 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                           ),
 
                           Text(
-                            "60kg",
+                            "${gTargetWeightKg?.toStringAsFixed(0)} kg",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                                 .copyWith(fontSize: 30.sp),
                           ),
@@ -133,12 +211,12 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Body Mass Index 23.9",
+                            "Body Mass Index ${gCurrentBMI?.toStringAsFixed(2)}.",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                                 .copyWith(fontSize: 12.sp),
                           ),
                           Text(
-                            "Body Mass Index  22.4",
+                            "Body Mass Index ${gTargetBMI?.toStringAsFixed(2)}",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                                 .copyWith(fontSize: 12.sp),
                           ),
@@ -154,7 +232,10 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
               Row(
                 spacing: 16.w,
                 children: [
-                  LossWidget(subtitle: "Weight Loss", title: "60kg"),
+                  LossWidget(
+                    subtitle: "Weight Loss",
+                    title: "${gWeightDifference?.toStringAsFixed(0)} kg",
+                  ),
                   LossWidget(subtitle: "Days For Feel Better", title: "30"),
                   LossWidget(subtitle: "Everyday", title: "15min"),
                 ],
