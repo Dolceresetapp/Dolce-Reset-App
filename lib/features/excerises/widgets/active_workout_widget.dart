@@ -33,6 +33,7 @@ class ActiveWorkoutWidget extends StatelessWidget {
       child: Row(
         spacing: 12.w,
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             flex: 1,
@@ -47,6 +48,8 @@ class ActiveWorkoutWidget extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 8.h,
               children: [
                 Text(
@@ -66,7 +69,7 @@ class ActiveWorkoutWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      time,
+                      "$time min",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600
@@ -90,7 +93,7 @@ class ActiveWorkoutWidget extends StatelessWidget {
                     ),
 
                     Text(
-                      kcal,
+                      "$kcal kcal",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600

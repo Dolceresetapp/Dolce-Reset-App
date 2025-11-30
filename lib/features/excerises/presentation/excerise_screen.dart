@@ -510,7 +510,10 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                         var data = snapshot.data?.activeWorkouts?[index];
                         return InkWell(
                           onTap: () {
-                            NavigationService.navigateTo(Routes.videoScreen);
+                            NavigationService.navigateToWithArgs(
+                              Routes.exerciseVideoScreen,
+                              {"id": data?.id},
+                            );
                           },
                           child: Padding(
                             padding: EdgeInsets.only(bottom: 12.h),

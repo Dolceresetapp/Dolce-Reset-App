@@ -155,24 +155,22 @@ final class RouteGenerator {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.videoCongratsScreen:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: VideoCongratsScreen(),
+              widget: VideoCongratsScreen(
+                duration: args["duration"],
+                kcal: args["kcal"],
+              ),
               settings: settings,
             )
-            : CupertinoPageRoute(builder: (context) => VideoCongratsScreen());
-
-      // case Routes.videoSnapScreen:
-      //   final args = settings.arguments as Map;
-
-      //   return Platform.isAndroid
-      //       ? _FadedTransitionRoute(
-      //         widget: VideoSnapScreen(id: args["id"], duration: args["duration"], kcal: args["kcal"],),
-      //         settings: settings,
-      //       )
-      //       : CupertinoPageRoute(
-      //         builder: (context) => VideoSnapScreen(id: args["id"], duration: args["duration"], kcal:args["kcal"]),
-      //       );
+            : CupertinoPageRoute(
+              builder:
+                  (context) => VideoCongratsScreen(
+                    duration: args["duration"],
+                    kcal: args["kcal"],
+                  ),
+            );
 
       case Routes.readyScreen:
         final args = settings.arguments as Map;

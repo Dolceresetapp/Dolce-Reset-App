@@ -160,16 +160,16 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
       backgroundColor: Colors.transparent, // Required
       builder: (context) {
         return DraggableScrollableSheet(
-          initialChildSize: 0.95, // Full screen
+          initialChildSize: 0.60, // Full screen
           minChildSize: 0.20, // Force full height
-          maxChildSize: 0.95, // Prevent dragging
+          maxChildSize: 0.60, // Prevent dragging
           builder: (_, controller) {
             return ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(25.r)),
               child: BackdropFilter(
                 filter: ImageFilter.blur(
-                  sigmaX: 20, // stronger blur
-                  sigmaY: 20,
+                  sigmaX: 10, // stronger blur
+                  sigmaY: 10,
                 ),
                 child: Container(
                   padding: EdgeInsets.all(20.sp),
@@ -197,73 +197,69 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
                       ),
 
                       // Your content starts here
-                      Expanded(
-                        child: SingleChildScrollView(
-                          controller: controller,
-                          child: Column(
-                            children: [
-                              Text(
-                                'Hand in there! \n You got this!',
-                                style: TextFontStyle
-                                    .headLine16cFFFFFFWorkSansW600
-                                    .copyWith(
-                                      fontWeight: FontWeight.w900,
-                                      color: Colors.black,
-                                      fontSize: 30.sp,
-                                    ),
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            UIHelper.verticalSpace(30.h),
+                            Text(
+                              'Hand in there! \n You got this!',
+                              style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                                  .copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.black,
+                                    fontSize: 30.sp,
+                                  ),
+                            ),
+                            UIHelper.verticalSpace(30.h),
+
+                            CustomButton(
+                              onPressed: () {
+                                NavigationService.goBack;
+                              },
+                              child: Row(
+                                spacing: 10.w,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Keep Exercising",
+                                    style:
+                                        TextFontStyle
+                                            .headLine16cFFFFFFWorkSansW600,
+                                  ),
+
+                                  SvgPicture.asset(
+                                    Assets.icons.arrowRight,
+                                    width: 20.w,
+                                    height: 20.h,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ],
                               ),
-                              UIHelper.verticalSpace(20.h),
+                            ),
 
-                              CustomButton(
-                                onPressed: () {
-                                  NavigationService.goBack;
-                                },
-                                child: Row(
-                                  spacing: 10.w,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Keep Exercising",
-                                      style:
-                                          TextFontStyle
-                                              .headLine16cFFFFFFWorkSansW600,
-                                    ),
+                            UIHelper.verticalSpace(20.h),
 
-                                    SvgPicture.asset(
-                                      Assets.icons.arrowRight,
-                                      width: 20.w,
-                                      height: 20.h,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              UIHelper.verticalSpace(20.h),
-
-                              CustomButton(
-                                color: Color(0xFFAE47FF),
-                                onPressed: () {
-                                  activeWorkoutSaveRxObj
-                                      .activeWorkoutSaveRx(listId: widget.id)
-                                      .waitingForFuture()
-                                      .then((success) {
-                                        if (success) {
-                                          NavigationService.navigateTo(
-                                            Routes.videoCongratsScreen,
-                                          );
-                                        }
-                                      });
-                                },
-                                text: "Finish Workout",
-                              ),
-
-                              // ElevatedButton(
-                              //   onPressed: () => Navigator.pop(context),
-                              //   child: Text("Close"),
-                              // ),
-                            ],
-                          ),
+                            CustomButton(
+                              color: Color(0xFFAE47FF),
+                              onPressed: () {
+                                activeWorkoutSaveRxObj
+                                    .activeWorkoutSaveRx(listId: widget.id)
+                                    .waitingForFuture()
+                                    .then((success) {
+                                      if (success) {
+                                        NavigationService.navigateToWithArgs(
+                                          Routes.videoCongratsScreen,
+                                          {
+                                            "duration": minutes,
+                                            "kcal": totalCal,
+                                          },
+                                        );
+                                      }
+                                    });
+                              },
+                              text: "Finish Workout",
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -284,12 +280,10 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
         backgroundColor: Colors.white,
         title: ProgressBarWidget(
           onTap: () {
+            if (_controller != null && _controller!.value.isPlaying) {
+              _controller!.pause(); // Pause video before showing bottom sheet
+            }
             showFullBlurBottomSheet(context);
-            // NavigationService.navigateToWithArgs(Routes.videoSnapScreen, {
-            //   "id": widget.id,
-            //   "duration": minutes,
-            //   "kcal": totalCal,
-            // });
           },
         ),
       ),

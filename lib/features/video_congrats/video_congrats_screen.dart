@@ -3,12 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/all_routes.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
+
 import '../../common_widget/custom_button.dart';
 import '../../helpers/navigation_service.dart';
 
 class VideoCongratsScreen extends StatefulWidget {
-  const VideoCongratsScreen({super.key});
+  final int duration;
+  final int kcal;
+  const VideoCongratsScreen({
+    super.key,
+    required this.duration,
+    required this.kcal,
+  });
 
   @override
   State<VideoCongratsScreen> createState() => _VideoCongratsScreenState();
@@ -60,8 +68,16 @@ class _VideoCongratsScreenState extends State<VideoCongratsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildIcon(Assets.images.watchicon.path, "30", "Minute"),
-                  _buildIcon(Assets.images.frameBellIcon.path, "158", "kcal"),
+                  _buildIcon(
+                    icon: Assets.images.watchicon.path,
+                    title: widget.duration.toString(),
+                    subtitle: "Minute",
+                  ),
+                  _buildIcon(
+                    icon: Assets.images.frameBellIcon.path,
+                    title: widget.kcal.toString(),
+                    subtitle: "kcal",
+                  ),
                 ],
               ),
 
@@ -69,7 +85,9 @@ class _VideoCongratsScreenState extends State<VideoCongratsScreen> {
 
               CustomButton(
                 onPressed: () {
-                  NavigationService.goBack;
+                  NavigationService.navigateToReplacement(
+                    Routes.navigationScreen,
+                  );
                 },
                 child: Row(
                   spacing: 10.w,
@@ -97,7 +115,11 @@ class _VideoCongratsScreenState extends State<VideoCongratsScreen> {
   }
 }
 
-Widget _buildIcon(String icon, String duration, String nutrition) {
+Widget _buildIcon({
+  required String icon,
+  required String title,
+  required String subtitle,
+}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -105,7 +127,7 @@ Widget _buildIcon(String icon, String duration, String nutrition) {
       Image.asset(Assets.images.watchicon.path, width: 70.w, height: 70.h),
 
       Text(
-        duration,
+        title,
         style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
           color: Colors.black,
           fontWeight: FontWeight.w800,
@@ -114,7 +136,7 @@ Widget _buildIcon(String icon, String duration, String nutrition) {
       ),
 
       Text(
-        nutrition,
+        subtitle,
         style: TextFontStyle.headLine16cFFFFFFWorkSansThinW600.copyWith(
           color: Colors.black,
         ),
