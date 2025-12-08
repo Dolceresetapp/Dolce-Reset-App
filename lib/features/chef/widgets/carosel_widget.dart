@@ -88,7 +88,7 @@ class CaroselWidget extends StatelessWidget {
                 ),
 
                 FoodCaloriesWidget(
-                  icon: Assets.icons.firesSimple,
+                  icon: Assets.icons.protine,
                   foodCalories: protein,
                   title: 'Protein',
                 ),

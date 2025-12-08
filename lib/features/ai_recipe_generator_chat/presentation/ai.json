@@ -1,0 +1,33 @@
+{
+    "success": true,
+    "prompt": "beef Kichuri",
+    "data": [
+        {
+            "meal": "Salmon and Quinoa Bowl",
+            "description": "A flavorful and protein-rich bowl featuring grilled salmon and quinoa, perfect for a balanced meal.",
+            "ingredients": [
+                "1 salmon fillet",
+                "1/2 cup quinoa",
+                "1 cup mixed vegetables (such as bell peppers, zucchini, and carrots)",
+                "1 tablespoon olive oil",
+                "1/2 teaspoon garlic powder",
+                "1/2 teaspoon paprika",
+                "Salt and pepper to taste",
+                "Fresh lemon wedges for serving"
+            ],
+            "steps": [
+                "Cook quinoa according to package instructions.",
+                "Season the salmon fillet with garlic powder, paprika, salt, and pepper.",
+                "Heat olive oil in a pan over medium heat and grill the salmon for about 4-5 minutes per side until cooked through.",
+                "In the same pan, stir-fry the mixed vegetables until tender.",
+                "To assemble, place cooked quinoa in a bowl, top with grilled salmon and mixed vegetables.",
+                "Serve with fresh lemon wedges on the side."
+            ],
+            "time_min": 25,
+            "calories": 400,
+            "protein_g": 30,
+            "image_url": "https://admin.dolcereset.com/recipes/6936998d1f3a4.png"
+        }
+    ],
+    "response_type": "json"
+}

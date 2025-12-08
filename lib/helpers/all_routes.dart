@@ -326,11 +326,11 @@ final class RouteGenerator {
       case Routes.aiReceipeGeneratorChatScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const AiReceipeGeneratorChatScreen(),
+              widget: AiReceipeGeneratorChatScreen(),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const AiReceipeGeneratorChatScreen(),
+              builder: (context) => AiReceipeGeneratorChatScreen(),
             );
 
       case Routes.aiReceipeGeneratorScreen:

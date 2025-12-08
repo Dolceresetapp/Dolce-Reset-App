@@ -3,6 +3,8 @@ import 'package:gritti_app/features/excerises/data/rx_get_category/rx.dart';
 import 'package:gritti_app/features/settings/data/model/logout_response_model.dart';
 import 'package:rxdart/subjects.dart';
 
+import '../features/ai_recipe_generator/data/model/ai_generate_response_model.dart';
+import '../features/ai_recipe_generator/data/rx_post_generate/rx.dart';
 import '../features/authentication/forget_otp/data/model/forget_password_otp_response_model.dart';
 import '../features/authentication/forget_otp/data/rx_post_forget_password_otp/rx.dart';
 import '../features/authentication/forget_password/data/model/forget_password_response_model.dart';
@@ -45,6 +47,11 @@ import '../features/trial_continue/data/rx_post_subscription/model/subscription_
 import '../features/trial_continue/data/rx_post_subscription/rx.dart';
 import '../features/video/data/model/theme_wise_video_response_model.dart';
 import '../features/video/data/rx_get_video/rx.dart';
+
+AiGenerateRx aiGenerateRxStreamObj = AiGenerateRx(
+  empty: AiGenerateResponseModel(),
+  dataFetcher: BehaviorSubject<AiGenerateResponseModel>(),
+);
 
 AiReceipeRx aiReceipeRxObj = AiReceipeRx(
   empty: AiReceipeResponseModel(),

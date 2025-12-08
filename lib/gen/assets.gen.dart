@@ -62,6 +62,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Polygon.svg
   String get polygon => 'assets/icons/Polygon.svg';
 
+  /// File path: assets/icons/Span.png
+  AssetGenImage get span => const AssetGenImage('assets/icons/Span.png');
+
   /// File path: assets/icons/Text.svg
   String get text => 'assets/icons/Text.svg';
 
@@ -151,6 +154,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/gallery.svg
   String get gallery => 'assets/icons/gallery.svg';
 
+  /// File path: assets/icons/handle.png
+  AssetGenImage get handle => const AssetGenImage('assets/icons/handle.png');
+
   /// File path: assets/icons/health plus alt.svg
   String get healthPlusAlt => 'assets/icons/health plus alt.svg';
 
@@ -215,6 +221,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/previous.svg
   String get previous => 'assets/icons/previous.svg';
 
+  /// File path: assets/icons/protine.svg
+  String get protine => 'assets/icons/protine.svg';
+
   /// File path: assets/icons/ques.svg
   String get ques => 'assets/icons/ques.svg';
 
@@ -229,6 +238,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/sound on.svg
   String get soundOn => 'assets/icons/sound on.svg';
+
+  /// File path: assets/icons/timer.png
+  AssetGenImage get timer => const AssetGenImage('assets/icons/timer.png');
 
   /// File path: assets/icons/transport rocket diagonal.svg
   String get transportRocketDiagonal =>
@@ -273,6 +285,7 @@ class $AssetsIconsGen {
     or,
     polygon1,
     polygon,
+    span,
     text,
     vector1,
     vector2,
@@ -302,6 +315,7 @@ class $AssetsIconsGen {
     firesSimple,
     fish,
     gallery,
+    handle,
     healthPlusAlt,
     icRoundPlus,
     image1,
@@ -323,11 +337,13 @@ class $AssetsIconsGen {
     pause,
     premiumIcon,
     previous,
+    protine,
     ques,
     questionMarkCircle,
     rightArrows,
     ruler,
     soundOn,
+    timer,
     transportRocketDiagonal,
     trash,
     upload,
