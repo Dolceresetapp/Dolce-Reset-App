@@ -35,6 +35,7 @@ class _AiReceipeGeneratorChatScreenState
     super.dispose();
   }
 
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,18 +169,33 @@ class _AiReceipeGeneratorChatScreenState
 
                 // Input field (takes remaining space)
                 Expanded(
-                  child: CustomTextField(
-                    controller: inputController,
-                    hintStyle: TextFontStyle.text14c3B3F4BPoppinsW500.copyWith(
-                      color: const Color(0xFFCCCCCC),
-                      fontSize: 14.sp,
+                  child: Form(
+                    key: _formKey,
+                    autovalidateMode: AutovalidateMode.onUnfocus,
+                    child: CustomTextField(
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.done,
+                      controller: inputController,
+                      hintStyle: TextFontStyle.text14c3B3F4BPoppinsW500
+                          .copyWith(
+                            color: const Color(0xFFCCCCCC),
+                            fontSize: 14.sp,
 
-                      fontWeight: FontWeight.w400,
-                    ),
-                    hintText: "Type ingredients you have...",
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 12.w,
-                      vertical: 12.h,
+                            fontWeight: FontWeight.w400,
+                          ),
+                      hintText: "Type ingredients you have...",
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 12.h,
+                      ),
+
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "required filled";
+                        }
+
+                        return null;
+                      },
                     ),
                   ),
                 ),
@@ -188,12 +204,19 @@ class _AiReceipeGeneratorChatScreenState
 
                 // Send button
                 CustomButton(
-                  onPressed: () {
-                    aiGenerateRxStreamObj
-                        .aiGenerateRx(prompt: inputController.text.toString())
-                        .waitingForFuture();
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      bool isSuccess =
+                          await aiGenerateRxStreamObj
+                              .aiGenerateRx(
+                                prompt: inputController.text.toString(),
+                              )
+                              .waitingForFuture();
 
-                    inputController.clear();
+                      if (isSuccess) {
+                        inputController.clear();
+                      }
+                    }
                   },
                   minWidth: 0,
                   padding: EdgeInsets.symmetric(
