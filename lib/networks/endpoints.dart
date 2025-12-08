@@ -68,12 +68,15 @@ final class Endpoints {
   static String workoutVideo({required int id}) => "/workoutWiseVideos/$id";
   static String myWorkout() => "/work_out_list";
   static String plan() => "/plans/app";
-   static String paymentSheet() => "/payment/stripe/app/checkout";
+  static String paymentSheet() => "/payment/stripe/app/checkout";
 
-    static String subscription() => "/payment/stripe/app/trail";
+  static String subscription() => "/payment/stripe/app/trail";
 
-        static String activeWorkoutSave() => "/active_workouts/save";
+  static String activeWorkoutSave() => "/active_workouts/save";
 
-           static String completeSubscription() => "/payment/stripe/confirm-subscription";
+  static String completeSubscription() =>
+      "/payment/stripe/confirm-subscription";
+
+  static String nutrationStore() => "/nutration/store";
 }
 // https://admin.dolcereset.com/api/work_out_list

@@ -10,6 +10,7 @@ import 'package:gritti_app/helpers/ui_helpers.dart';
 import '../../../../common_widget/app_bar_widget2.dart';
 import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/navigation_service.dart';
+import '../../../../helpers/toast.dart';
 import '../../widgets/tile_card_widget.dart';
 
 class ChefBoardingScreen1 extends StatefulWidget {
@@ -25,13 +26,17 @@ class _ChefBoardingScreen1State extends State<ChefBoardingScreen1> {
 
     {"image": Assets.images.intoShape.path, "title": "Get back into shape"},
 
-    {"image": Assets.images.slep.path, "title": "Improve sleep/energy"},
+    {"image": Assets.images.slep.path, "title": "Maintaince"},
 
-    {"image": Assets.images.reducePain.path, "title": "Reduce pain/stiffness"},
+    {
+      "image": Assets.images.reducePain.path,
+      "title": "Eat as clean and healthy posssible",
+    },
   ];
 
   int? selectedIndex;
 
+  String? selectedText;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,6 +83,7 @@ class _ChefBoardingScreen1State extends State<ChefBoardingScreen1> {
                         selectedIndex = null;
                       } else {
                         selectedIndex = index;
+                        selectedText = data["title"];
                       }
                     });
                   },
@@ -92,7 +98,13 @@ class _ChefBoardingScreen1State extends State<ChefBoardingScreen1> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateTo(Routes.chefBoardingScreen2);
+            if (selectedIndex == null) {
+              ToastUtil.showErrorShortToast("Please select an item.");
+            } else {
+              NavigationService.navigateToWithArgs(Routes.chefBoardingScreen2, {
+                "chefBoarding1": selectedText,
+              });
+            }
           },
           child: Row(
             spacing: 10.w,

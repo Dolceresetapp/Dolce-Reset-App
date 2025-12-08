@@ -434,6 +434,9 @@ class $AssetsImagesGen {
   AssetGenImage get button1111 =>
       const AssetGenImage('assets/images/button1111.png');
 
+  /// File path: assets/images/car.png
+  AssetGenImage get car => const AssetGenImage('assets/images/car.png');
+
   /// File path: assets/images/chevron right.png
   AssetGenImage get chevronRight =>
       const AssetGenImage('assets/images/chevron right.png');
@@ -486,6 +489,9 @@ class $AssetsImagesGen {
   AssetGenImage get images232 =>
       const AssetGenImage('assets/images/images232.png');
 
+  /// File path: assets/images/intense.png
+  AssetGenImage get intense => const AssetGenImage('assets/images/intense.png');
+
   /// File path: assets/images/into_shape.png
   AssetGenImage get intoShape =>
       const AssetGenImage('assets/images/into_shape.png');
@@ -495,6 +501,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/legs.png
   AssetGenImage get legs => const AssetGenImage('assets/images/legs.png');
+
+  /// File path: assets/images/light_walk.png
+  AssetGenImage get lightWalk =>
+      const AssetGenImage('assets/images/light_walk.png');
 
   /// File path: assets/images/like_icon.png
   AssetGenImage get likeIcon =>
@@ -509,6 +519,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/mask.png
   AssetGenImage get mask => const AssetGenImage('assets/images/mask.png');
+
+  /// File path: assets/images/moderate.png
+  AssetGenImage get moderate =>
+      const AssetGenImage('assets/images/moderate.png');
 
   /// File path: assets/images/no_image_available.png
   AssetGenImage get noImageAvailable =>
@@ -632,6 +646,9 @@ class $AssetsImagesGen {
   AssetGenImage get pauseButton =>
       const AssetGenImage('assets/images/pause-button.png');
 
+  /// File path: assets/images/pes.png
+  AssetGenImage get pes => const AssetGenImage('assets/images/pes.png');
+
   /// File path: assets/images/play-button.png
   AssetGenImage get playButton =>
       const AssetGenImage('assets/images/play-button.png');
@@ -647,6 +664,9 @@ class $AssetsImagesGen {
   AssetGenImage get reducePain =>
       const AssetGenImage('assets/images/reduce_pain.png');
 
+  /// File path: assets/images/sen.png
+  AssetGenImage get sen => const AssetGenImage('assets/images/sen.png');
+
   /// File path: assets/images/shoulders.png
   AssetGenImage get shoulders =>
       const AssetGenImage('assets/images/shoulders.png');
@@ -656,6 +676,13 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/ss.png
   AssetGenImage get ss => const AssetGenImage('assets/images/ss.png');
+
+  /// File path: assets/images/veg.png
+  AssetGenImage get veg => const AssetGenImage('assets/images/veg.png');
+
+  /// File path: assets/images/vegetian.png
+  AssetGenImage get vegetian =>
+      const AssetGenImage('assets/images/vegetian.png');
 
   /// File path: assets/images/watchicon.png
   AssetGenImage get watchicon =>
@@ -696,6 +723,7 @@ class $AssetsImagesGen {
     biceps,
     button,
     button1111,
+    car,
     chevronRight,
     fireIocn,
     food,
@@ -710,13 +738,16 @@ class $AssetsImagesGen {
     image22,
     imageCopy,
     images232,
+    intense,
     intoShape,
     leg,
     legs,
+    lightWalk,
     likeIcon,
     logo,
     losttWeight,
     mask,
+    moderate,
     noImageAvailable,
     noboard121,
     noboard122,
@@ -749,13 +780,17 @@ class $AssetsImagesGen {
     onboard53,
     onboarding3,
     pauseButton,
+    pes,
     playButton,
     pnboard11,
     rating,
     reducePain,
+    sen,
     shoulders,
     slep,
     ss,
+    veg,
+    vegetian,
     watchicon,
     wholeBody,
     womensBg,

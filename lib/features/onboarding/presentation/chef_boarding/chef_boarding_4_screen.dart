@@ -10,10 +10,19 @@ import 'package:gritti_app/helpers/ui_helpers.dart';
 import '../../../../common_widget/app_bar_widget2.dart';
 import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/navigation_service.dart';
+import '../../../../helpers/toast.dart';
 import '../../widgets/tile_card_widget.dart';
 
 class ChefBoardingScreen4 extends StatefulWidget {
-  const ChefBoardingScreen4({super.key});
+  final String chefBoarding1;
+  final String chefBoarding2;
+  final String chefBoarding3;
+  const ChefBoardingScreen4({
+    super.key,
+    required this.chefBoarding1,
+    required this.chefBoarding2,
+    required this.chefBoarding3,
+  });
 
   @override
   State<ChefBoardingScreen4> createState() => _ChefBoardingScreen4State();
@@ -21,23 +30,30 @@ class ChefBoardingScreen4 extends StatefulWidget {
 
 class _ChefBoardingScreen4State extends State<ChefBoardingScreen4> {
   List<Map<String, dynamic>> dataList = [
-    {"image": Assets.images.losttWeight.path, "title": "Lose Weight"},
+    {"image": Assets.images.sen.path, "title": "Sedentary"},
 
-    {"image": Assets.images.intoShape.path, "title": "Get back into shape"},
+    {"image": Assets.images.lightWalk.path, "title": "Light (e.g., walking)"},
 
-    {"image": Assets.images.slep.path, "title": "Improve sleep/energy"},
+    {
+      "image": Assets.images.moderate.path,
+      "title": "Moderate (e.g., workouts 2-3 times a week)",
+    },
 
-    {"image": Assets.images.reducePain.path, "title": "Reduce pain/stiffness"},
+    {
+      "image": Assets.images.intense.path,
+      "title": "Intense (e.g., daily workouts)",
+    },
   ];
 
   int? selectedIndex;
+  String? selectedText;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget2(currentStep: 1),
+        title: AppBarWidget2(currentStep: 4),
       ),
 
       body: SingleChildScrollView(
@@ -78,6 +94,7 @@ class _ChefBoardingScreen4State extends State<ChefBoardingScreen4> {
                         selectedIndex = null;
                       } else {
                         selectedIndex = index;
+                        selectedText = data["title"];
                       }
                     });
                   },
@@ -92,7 +109,16 @@ class _ChefBoardingScreen4State extends State<ChefBoardingScreen4> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateTo(Routes.chefBoardingScreen5);
+            if (selectedIndex == null) {
+              ToastUtil.showErrorShortToast("Please select an item.");
+            } else {
+              NavigationService.navigateToWithArgs(Routes.chefBoardingScreen5, {
+                "chefBoarding1": widget.chefBoarding1,
+                "chefBoarding2": widget.chefBoarding2,
+                "chefBoarding3": widget.chefBoarding3,
+                "chefBoarding4": selectedText,
+              });
+            }
           },
           child: Row(
             spacing: 10.w,

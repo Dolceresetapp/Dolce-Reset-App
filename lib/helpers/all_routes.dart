@@ -382,42 +382,75 @@ final class RouteGenerator {
             );
 
       case Routes.chefBoardingScreen2:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const ChefBoardingScreen2(),
+              widget: ChefBoardingScreen2(chefBoarding1: args["chefBoarding1"]),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const ChefBoardingScreen2(),
+              builder:
+                  (context) =>
+                      ChefBoardingScreen2(chefBoarding1: args["chefBoarding1"]),
             );
 
       case Routes.chefBoardingScreen3:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const ChefBoardingScreen3(),
+              widget: ChefBoardingScreen3(
+                chefBoarding1: args["chefBoarding1"],
+                chefBoarding2: args["chefBoarding2"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const ChefBoardingScreen3(),
+              builder:
+                  (context) => ChefBoardingScreen3(
+                    chefBoarding1: args["chefBoarding1"],
+                    chefBoarding2: args["chefBoarding2"],
+                  ),
             );
       case Routes.chefBoardingScreen4:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const ChefBoardingScreen4(),
+              widget: ChefBoardingScreen4(
+                chefBoarding1: args["chefBoarding1"],
+                chefBoarding2: args["chefBoarding2"],
+                chefBoarding3: args["chefBoarding3"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const ChefBoardingScreen4(),
+              builder:
+                  (context) => ChefBoardingScreen4(
+                    chefBoarding1: args["chefBoarding1"],
+                    chefBoarding2: args["chefBoarding2"],
+                    chefBoarding3: args["chefBoarding3"],
+                  ),
             );
 
       case Routes.chefBoardingScreen5:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const ChefBoardingScreen5(),
+              widget: ChefBoardingScreen5(
+                chefBoarding1: args["chefBoarding1"],
+                chefBoarding2: args["chefBoarding2"],
+                chefBoarding3: args["chefBoarding3"],
+                chefBoarding4: args["chefBoarding4"],
+              ),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const ChefBoardingScreen5(),
+              builder:
+                  (context) => ChefBoardingScreen5(
+                    chefBoarding1: args["chefBoarding1"],
+                    chefBoarding2: args["chefBoarding2"],
+                    chefBoarding3: args["chefBoarding3"],
+                    chefBoarding4: args["chefBoarding4"],
+                  ),
             );
 
       case Routes.getStartedScreen:

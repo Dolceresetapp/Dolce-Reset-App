@@ -54,35 +54,39 @@ class SignInResponseModel {
 
 class Data {
   int? id;
-  String? name;
   dynamic avatar;
+  String? name;
   String? email;
   int? userInfo;
   int? paymentMethod;
+  int? isNutration;
 
   Data({
     this.id,
-    this.name,
     this.avatar,
+    this.name,
     this.email,
     this.userInfo,
     this.paymentMethod,
+    this.isNutration,
   });
 
   Data copyWith({
     int? id,
-    String? name,
     dynamic avatar,
+    String? name,
     String? email,
     int? userInfo,
     int? paymentMethod,
+    int? isNutration,
   }) => Data(
     id: id ?? this.id,
-    name: name ?? this.name,
     avatar: avatar ?? this.avatar,
+    name: name ?? this.name,
     email: email ?? this.email,
     userInfo: userInfo ?? this.userInfo,
     paymentMethod: paymentMethod ?? this.paymentMethod,
+    isNutration: isNutration ?? this.isNutration,
   );
 
   factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
@@ -91,19 +95,21 @@ class Data {
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     id: json["id"],
-    name: json["name"],
     avatar: json["avatar"],
+    name: json["name"],
     email: json["email"],
     userInfo: json["user_info"],
     paymentMethod: json["Payment_method"],
+    isNutration: json["is_nutration"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "name": name,
     "avatar": avatar,
+    "name": name,
     "email": email,
     "user_info": userInfo,
     "Payment_method": paymentMethod,
+    "is_nutration": isNutration,
   };
 }

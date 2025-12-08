@@ -26,6 +26,8 @@ import '../features/exercise_video/data/model/workour_save_response_model.dart';
 import '../features/exercise_video/data/rx_post_sign_in/rx.dart';
 import '../features/onboarding/data/model/onboarding_response_model.dart';
 import '../features/onboarding/data/rx_post_onboard/rx.dart';
+import '../features/onboarding/presentation/chef_boarding/data/model/chef_response_model.dart';
+import '../features/onboarding/presentation/chef_boarding/data/rx_post_chef/rx.dart';
 import '../features/rating/data/model/rating_response_model.dart';
 import '../features/rating/data/rx_get_rating/rx.dart';
 import '../features/ready/data/model/workout_video_response_model.dart';
@@ -42,21 +44,20 @@ import '../features/trial_continue/data/rx_post_subscription/rx.dart';
 import '../features/video/data/model/theme_wise_video_response_model.dart';
 import '../features/video/data/rx_get_video/rx.dart';
 
-
-
+ChefRx chefRxObj = ChefRx(
+  empty: ChefResponseModel(),
+  dataFetcher: BehaviorSubject<ChefResponseModel>(),
+);
 
 ConfirmSubscriptionRx confirmSubscriptionRxObj = ConfirmSubscriptionRx(
   empty: ConfirmSubscriptionResponseModel(),
   dataFetcher: BehaviorSubject<ConfirmSubscriptionResponseModel>(),
 );
 
-
-
 ActiveWorkoutSaveRx activeWorkoutSaveRxObj = ActiveWorkoutSaveRx(
   empty: ActiveWorkoutResponseModel(),
   dataFetcher: BehaviorSubject<ActiveWorkoutResponseModel>(),
 );
-
 
 SubscriptionRx subscriptionRxObj = SubscriptionRx(
   empty: SubscriptionResponseModel(),

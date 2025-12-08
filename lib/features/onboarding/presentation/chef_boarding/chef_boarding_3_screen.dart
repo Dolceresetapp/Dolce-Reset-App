@@ -13,23 +13,19 @@ import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/navigation_service.dart';
 
 class ChefBoardingScreen3 extends StatefulWidget {
-  const ChefBoardingScreen3({super.key});
+  final String chefBoarding1;
+  final String chefBoarding2;
+  const ChefBoardingScreen3({
+    super.key,
+    required this.chefBoarding1,
+    required this.chefBoarding2,
+  });
 
   @override
   State<ChefBoardingScreen3> createState() => _ChefBoardingScreen3State();
 }
 
 class _ChefBoardingScreen3State extends State<ChefBoardingScreen3> {
-  List<Map<String, dynamic>> dataList = [
-    {"image": Assets.images.losttWeight.path, "title": "Lose Weight"},
-
-    {"image": Assets.images.intoShape.path, "title": "Get back into shape"},
-
-    {"image": Assets.images.slep.path, "title": "Improve sleep/energy"},
-
-    {"image": Assets.images.reducePain.path, "title": "Reduce pain/stiffness"},
-  ];
-
   final _controller = TextEditingController();
 
   @override
@@ -38,12 +34,13 @@ class _ChefBoardingScreen3State extends State<ChefBoardingScreen3> {
     super.dispose();
   }
 
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget2(currentStep: 1),
+        title: AppBarWidget2(currentStep: 3),
       ),
 
       body: SingleChildScrollView(
@@ -78,10 +75,20 @@ class _ChefBoardingScreen3State extends State<ChefBoardingScreen3> {
 
             UIHelper.verticalSpace(16.h),
 
-            CustomTextField(
-              controller: _controller,
-              maxLines: 5,
-              hintText: "Type your answer. \n (ex. Lactose , Gluten etc)",
+            Form(
+              key: _formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: CustomTextField(
+                controller: _controller,
+                maxLines: 5,
+                hintText: "Type your answer. \n (ex. Lactose , Gluten etc)",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "required filled";
+                  }
+                  return null;
+                },
+              ),
             ),
           ],
         ),
@@ -91,7 +98,15 @@ class _ChefBoardingScreen3State extends State<ChefBoardingScreen3> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateTo(Routes.chefBoardingScreen4);
+            if (!_formKey.currentState!.validate()) {
+              return;
+            } else {
+              NavigationService.navigateToWithArgs(Routes.chefBoardingScreen4, {
+                "chefBoarding1": widget.chefBoarding1,
+                "chefBoarding2": widget.chefBoarding2,
+                "chefBoarding3": _controller.text.trim().toString(),
+              });
+            }
           },
           child: Row(
             spacing: 10.w,
