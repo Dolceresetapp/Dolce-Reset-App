@@ -142,7 +142,7 @@ class _AiReceipeGeneratorChatScreenState
                               stepData: stepsData,
                               image: data?.imageUrl ?? "",
 
-                              title: data?.meal ?? "",
+                              title: data?.description ?? "",
 
                               kcal: '${data?.calories.toString()} kcal',
                               protine: '${data?.proteinG.toString()} g',
