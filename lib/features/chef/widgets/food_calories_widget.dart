@@ -27,7 +27,7 @@ class FoodCaloriesWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           spacing: 10.w,
           children: [
-            SvgPicture.asset(icon, height: 24.h, width: 24.w),
+            SvgPicture.asset(icon, height: 20.h, width: 20.w),
             Text(
               foodCalories,
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(

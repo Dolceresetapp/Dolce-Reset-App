@@ -16,6 +16,8 @@ import '../features/authentication/signin/data/rx_post_sign_in/rx.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp/model/signup_otp_response_model.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp/rx.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp_resend/rx.dart';
+import '../features/chef/data/model/ai_receipe_response_model.dart';
+import '../features/chef/data/rx_get_receipe/rx.dart';
 import '../features/dynamic_workout/data/model/dynamic_workout_response_model.dart';
 import '../features/dynamic_workout/data/rx_get/rx.dart';
 import '../features/excerises/data/rx_get_my_workout/model/my_workout_response_model.dart';
@@ -43,6 +45,11 @@ import '../features/trial_continue/data/rx_post_subscription/model/subscription_
 import '../features/trial_continue/data/rx_post_subscription/rx.dart';
 import '../features/video/data/model/theme_wise_video_response_model.dart';
 import '../features/video/data/rx_get_video/rx.dart';
+
+AiReceipeRx aiReceipeRxObj = AiReceipeRx(
+  empty: AiReceipeResponseModel(),
+  dataFetcher: BehaviorSubject<AiReceipeResponseModel>(),
+);
 
 ChefRx chefRxObj = ChefRx(
   empty: ChefResponseModel(),

@@ -4,6 +4,7 @@ const String kKeyEmail = 'email';
 const String kKeyAccessToken = 'access_token';
 const String kKeyIsLoggedIn = 'is_logged_in';
 const String kKeyIsFirstTime = 'kKeyIsFirstTime';
+const String kKeyIsNutration = 'kKeyIsNutration';
 
 // payemnt method
 const String kKeyPaymentMethod = 'kKeyPaymentMethod';

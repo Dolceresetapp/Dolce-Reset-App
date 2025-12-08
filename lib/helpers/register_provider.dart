@@ -1,4 +1,6 @@
 import 'package:provider/provider.dart';
+
+import '../provider/chef_provider.dart';
 import '../provider/login_provider.dart';
 import '../provider/otp_provider.dart';
 import '../provider/reset_password_provider.dart';
@@ -8,15 +10,15 @@ var providers = [
   //New
   ChangeNotifierProvider<LoginProvider>(create: ((context) => LoginProvider())),
 
+  ChangeNotifierProvider<ChefProvider>(create: ((context) => ChefProvider())),
+
   ChangeNotifierProvider<SignupProvider>(
     create: ((context) => SignupProvider()),
   ),
 
-   ChangeNotifierProvider<OtpProvider>(
-    create: ((context) => OtpProvider()),
-  ),
+  ChangeNotifierProvider<OtpProvider>(create: ((context) => OtpProvider())),
 
-    ChangeNotifierProvider<ResetPasswordProvider>(
+  ChangeNotifierProvider<ResetPasswordProvider>(
     create: ((context) => ResetPasswordProvider()),
   ),
 ];

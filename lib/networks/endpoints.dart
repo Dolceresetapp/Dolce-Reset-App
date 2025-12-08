@@ -78,5 +78,7 @@ final class Endpoints {
       "/payment/stripe/confirm-subscription";
 
   static String nutrationStore() => "/nutration/store";
+  static String nutrationRecipes() => "/nutration/recipes";
 }
+
 // https://admin.dolcereset.com/api/work_out_list

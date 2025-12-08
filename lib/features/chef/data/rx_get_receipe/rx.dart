@@ -1,9 +1,6 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:gritti_app/constants/app_constants.dart';
-import 'package:gritti_app/helpers/di.dart';
-import 'package:gritti_app/networks/dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../../helpers/toast.dart';
@@ -11,49 +8,33 @@ import '../../../../../../networks/rx_base.dart';
 import '../../../../../helpers/all_routes.dart';
 import '../../../../../helpers/navigation_service.dart';
 import '../../../../../networks/stream_cleaner.dart';
-import '../model/sign_in_response_model.dart';
+import '../model/ai_receipe_response_model.dart';
 import 'api.dart';
 
-final class SignInRx extends RxResponseInt<SignInResponseModel> {
-  final api = SignInApi.instance;
+final class AiReceipeRx extends RxResponseInt<AiReceipeResponseModel> {
+  final api = AiReceipeApi.instance;
 
-  SignInRx({required super.empty, required super.dataFetcher});
+  AiReceipeRx({required super.empty, required super.dataFetcher});
 
-  ValueStream<SignInResponseModel> get signupRxStream => dataFetcher.stream;
+  ValueStream<AiReceipeResponseModel> get aiReceipeRxStream =>
+      dataFetcher.stream;
 
-  Future<bool> signInRx({
-    required String email,
-    required String password,
-  }) async {
+  Future<AiReceipeResponseModel> aiReceipeRx() async {
     try {
-      SignInResponseModel data = await api.signInApi(
-        email: email,
-        password: password,
-      );
+      AiReceipeResponseModel data = await api.aiReceipeApi();
       handleSuccessWithReturn(data);
-      return true;
+      return data;
     } catch (error) {
       return handleErrorWithReturn(error);
     }
   }
 
   @override
-  handleSuccessWithReturn(SignInResponseModel data) {
-    appData.write(kKeyAccessToken, data.token);
-    appData.write(kKeyID, data.data?.id);
-    appData.write(kKeyName, data.data?.name);
-    appData.write(kKeyEmail, data.data?.email);
-
-    appData.write(kKeyIsNutration, data.data?.isNutration ?? 0);
-
-    appData.write(kKeyPaymentMethod, data.data?.paymentMethod);
-    appData.write(kKeyIsLoggedIn, true);
-    DioSingleton.instance.update(appData.read(kKeyAccessToken));
+  handleSuccessWithReturn(AiReceipeResponseModel data) {
     dataFetcher.sink.add(data);
-    return true;
+    return data;
   }
 
-  // is_nutration
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
