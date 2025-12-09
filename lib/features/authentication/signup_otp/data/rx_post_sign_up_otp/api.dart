@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import '../../../../../../networks/dio/dio.dart';
 import '../../../../../../networks/endpoints.dart';
 import '../../../../../../networks/exception_handler/data_source.dart';
-import 'model/signup_otp_response_model.dart';
+import 'model/signup_otp_verify_response_model.dart';
 
 final class SignupOtpApi {
   static final SignupOtpApi _singleton = SignupOtpApi._internal();
@@ -13,7 +13,7 @@ final class SignupOtpApi {
 
   static SignupOtpApi get instance => _singleton;
 
-  Future<SignupResendOtpResponseModel> signupOtpApi({
+  Future<SignupOtpVerifyResponseModel> signupOtpApi({
     required String email,
     required String otp,
   }) async {
@@ -22,8 +22,8 @@ final class SignupOtpApi {
 
       Response response = await postHttp(Endpoints.signUpEmailVerify(), data);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        SignupResendOtpResponseModel data =
-            SignupResendOtpResponseModel.fromRawJson(
+        SignupOtpVerifyResponseModel data =
+            SignupOtpVerifyResponseModel.fromRawJson(
               json.encode(response.data),
             );
         return data;

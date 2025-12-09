@@ -5,6 +5,10 @@ const String kKeyAccessToken = 'access_token';
 const String kKeyIsLoggedIn = 'is_logged_in';
 const String kKeyIsFirstTime = 'kKeyIsFirstTime';
 const String kKeyIsNutration = 'kKeyIsNutration';
+const String kKeyAvar = 'email';
+const String kKeyMessage = 'kKeyMessage';
+
+const String kKeyUsrInfo = 'kKeyUsrInfo';
 
 // payemnt method
 const String kKeyPaymentMethod = 'kKeyPaymentMethod';
@@ -30,7 +34,7 @@ const String kKeySelectedProfile = 'selected_profile';
 const String kKeyJsonObject = 'json_object';
 const String kKeyJsonArray = 'json_array';
 const String kKeyStringData = 'string_data';
-const String kKeyMessage = 'message';
+
 const String kKeyData = 'data';
 const String kKeyCode = 'code';
 

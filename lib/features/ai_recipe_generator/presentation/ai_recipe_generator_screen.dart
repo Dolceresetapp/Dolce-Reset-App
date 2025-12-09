@@ -71,7 +71,7 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            NavigationService.goBack;
+            NavigationService.navigateToReplacement(Routes.navigationScreen);
           },
           child: Padding(
             padding: EdgeInsets.all(14.sp),
@@ -111,7 +111,7 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
             UIHelper.verticalSpace(60.h),
 
             Text(
-              "Enter the ingredients  \n your have in your home",
+              "What ingredients do you have right now?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 30.sp,
@@ -122,126 +122,124 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
 
             UIHelper.verticalSpace(30.h),
 
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(16.sp),
-              clipBehavior: Clip.antiAlias,
-              decoration: ShapeDecoration(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 1.w, color: const Color(0xFFD4D4D8)),
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-              ),
+            // Container(
+            //   width: double.infinity,
+            //   padding: EdgeInsets.all(16.sp),
+            //   clipBehavior: Clip.antiAlias,
+            //   decoration: ShapeDecoration(
+            //     color: Colors.white,
+            //     shape: RoundedRectangleBorder(
+            //       side: BorderSide(width: 1.w, color: const Color(0xFFD4D4D8)),
+            //       borderRadius: BorderRadius.circular(20.r),
+            //     ),
+            //   ),
 
-              child: Text(
-                "Enter ingredients...",
-                textAlign: TextAlign.center,
-                style: TextFontStyle.headline30c27272AtyleWorkSansW700.copyWith(
-                  color: const Color(0xFF52525B).withValues(alpha: 0.6),
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
+            //   child: Text(
+            //     "Enter ingredients...",
+            //     textAlign: TextAlign.center,
+            //     style: TextFontStyle.headline30c27272AtyleWorkSansW700.copyWith(
+            //       color: const Color(0xFF52525B).withValues(alpha: 0.6),
+            //       fontSize: 16.sp,
+            //       fontWeight: FontWeight.w400,
+            //     ),
+            //   ),
+            // ),
 
-            UIHelper.verticalSpace(10.h),
+            // UIHelper.verticalSpace(10.h),
 
-            GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.w,
-                childAspectRatio: 118 / 32,
-                mainAxisSpacing: 8.h,
-              ),
-              itemCount: dataList.length,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (_, index) {
-                var data = dataList[index];
-                return InkWell(
-                  onTap: () async {
-                    bool isSuccess =
-                        await aiGenerateRxStreamObj
-                            .aiGenerateRx(prompt: data["text"])
-                            .waitingForFuture();
+            // GridView.builder(
+            //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            //     crossAxisCount: 2,
+            //     crossAxisSpacing: 8.w,
+            //     childAspectRatio: 118 / 32,
+            //     mainAxisSpacing: 8.h,
+            //   ),
+            //   itemCount: dataList.length,
+            //   shrinkWrap: true,
+            //   physics: NeverScrollableScrollPhysics(),
+            //   itemBuilder: (_, index) {
+            //     var data = dataList[index];
+            //     return InkWell(
+            //       onTap: () async {
+            //         bool isSuccess =
+            //             await aiGenerateRxStreamObj
+            //                 .aiGenerateRx(prompt: data["text"])
+            //                 .waitingForFuture();
 
-                    if (isSuccess) {
-                      NavigationService.navigateTo(
-                        Routes.aiReceipeGeneratorChatScreen,
-                      );
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.w,
-                      vertical: 6.h,
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 1.w, color: Color(0xFFD4D4D8)),
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      spacing: 8.w,
-                      children: [
-                        SvgPicture.asset(
-                          data["icon"],
-                          width: 16.w,
-                          height: 16,
-                          fit: BoxFit.contain,
-                        ),
+            //         if (isSuccess) {
+            //           NavigationService.navigateTo(
+            //             Routes.aiReceipeGeneratorChatScreen,
+            //           );
+            //         }
+            //       },
+            //       child: Container(
+            //         padding: EdgeInsets.symmetric(
+            //           horizontal: 12.w,
+            //           vertical: 6.h,
+            //         ),
+            //         clipBehavior: Clip.antiAlias,
+            //         decoration: ShapeDecoration(
+            //           shape: RoundedRectangleBorder(
+            //             side: BorderSide(width: 1.w, color: Color(0xFFD4D4D8)),
+            //             borderRadius: BorderRadius.circular(12.r),
+            //           ),
+            //         ),
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           spacing: 8.w,
+            //           children: [
+            //             SvgPicture.asset(
+            //               data["icon"],
+            //               width: 16.w,
+            //               height: 16,
+            //               fit: BoxFit.contain,
+            //             ),
 
-                        Text(
-                          data["text"],
-                          textAlign: TextAlign.center,
-                          style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                              .copyWith(
-                                color: const Color(0xFF52525B),
-                                fontSize: 14.sp,
+            //             Text(
+            //               data["text"],
+            //               textAlign: TextAlign.center,
+            //               style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+            //                   .copyWith(
+            //                     color: const Color(0xFF52525B),
+            //                     fontSize: 14.sp,
 
-                                fontWeight: FontWeight.w500,
-                              ),
-                        ),
+            //                     fontWeight: FontWeight.w500,
+            //                   ),
+            //             ),
 
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              dataList.removeAt(index);
-                            });
-                          },
-                          child: SvgPicture.asset(
-                            data["cross_icon"],
-                            width: 16.w,
-                            height: 16,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+            //             InkWell(
+            //               onTap: () {
+            //                 setState(() {
+            //                   dataList.removeAt(index);
+            //                 });
+            //               },
+            //               child: SvgPicture.asset(
+            //                 data["cross_icon"],
+            //                 width: 16.w,
+            //                 height: 16,
+            //                 fit: BoxFit.contain,
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     );
+            //   },
+            // ),
 
-            dataList.isEmpty
-                ? SizedBox(height: 10.h)
-                : UIHelper.verticalSpace(30.h),
-
+            // dataList.isEmpty
+            //     ? SizedBox(height: 10.h)
+            //     : UIHelper.verticalSpace(30.h),
             Form(
               key: _formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: CustomTextField(
                 controller: textController,
-                maxLines: 5,
+                maxLines: 10,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "please type your question??";
                   }
-
                   return null;
                 },
                 hintText: "Do you have any question about food?",
@@ -253,35 +251,39 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
                     ),
               ),
             ),
-            UIHelper.verticalSpace(30.h),
-            CustomButton(
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  bool isSuccess =
-                      await aiGenerateRxStreamObj
-                          .aiGenerateRx(prompt: textController.text.toString())
-                          .waitingForFuture();
-
-                  if (isSuccess) {
-                    NavigationService.navigateTo(
-                      Routes.aiReceipeGeneratorChatScreen,
-                    );
-                  }
-                }
-              },
-              child: Row(
-                spacing: 10.w,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Generate Recipes",
-                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
-                  ),
-                  SvgPicture.asset(Assets.icons.arrowRight),
-                ],
-              ),
-            ),
           ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+      floatingActionButton: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+        child: CustomButton(
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              bool isSuccess =
+                  await aiGenerateRxStreamObj
+                      .aiGenerateRx(prompt: textController.text.toString())
+                      .waitingForFuture();
+
+              if (isSuccess) {
+                NavigationService.navigateTo(
+                  Routes.aiReceipeGeneratorChatScreen,
+                );
+              }
+            }
+          },
+          child: Row(
+            spacing: 10.w,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Generate Recipes",
+                style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+              ),
+              SvgPicture.asset(Assets.icons.arrowRight),
+            ],
+          ),
         ),
       ),
     );

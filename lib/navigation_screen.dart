@@ -9,6 +9,7 @@ import 'features/excerises/presentation/excerise_screen.dart';
 import 'features/motivation/presentation/motivation_screen.dart';
 import 'features/settings/presentation/settings_screen.dart';
 import 'gen/assets.gen.dart';
+import 'networks/api_acess.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -25,6 +26,13 @@ class _NavigationScreenState extends State<NavigationScreen> {
     MotivationScreen(),
     SettingsScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    motivationCoachRxObj.motivationCoachRx(prompt: "Hello");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

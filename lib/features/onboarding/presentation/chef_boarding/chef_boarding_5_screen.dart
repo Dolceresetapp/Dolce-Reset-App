@@ -66,7 +66,7 @@ class _ChefBoardingScreen5State extends State<ChefBoardingScreen5> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "Do you have any food or ingredient that you don't lile ?",
+              "Do you have any food or ingredient that you don't like ?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,

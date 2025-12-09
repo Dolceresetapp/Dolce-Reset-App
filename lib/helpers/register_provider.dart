@@ -1,3 +1,4 @@
+import 'package:gritti_app/provider/motivation_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/chef_provider.dart';
@@ -20,5 +21,9 @@ var providers = [
 
   ChangeNotifierProvider<ResetPasswordProvider>(
     create: ((context) => ResetPasswordProvider()),
+  ),
+
+  ChangeNotifierProvider<MotivationProvider>(
+    create: ((context) => MotivationProvider()),
   ),
 ];

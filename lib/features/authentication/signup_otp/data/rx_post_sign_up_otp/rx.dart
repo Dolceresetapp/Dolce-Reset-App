@@ -12,19 +12,19 @@ import '../../../../../helpers/all_routes.dart';
 import '../../../../../helpers/navigation_service.dart';
 import '../../../../../networks/stream_cleaner.dart';
 import 'api.dart';
-import 'model/signup_otp_response_model.dart';
+import 'model/signup_otp_verify_response_model.dart';
 
-final class SignupOtpRx extends RxResponseInt<SignupResendOtpResponseModel> {
+final class SignupOtpRx extends RxResponseInt<SignupOtpVerifyResponseModel> {
   final api = SignupOtpApi.instance;
 
   SignupOtpRx({required super.empty, required super.dataFetcher});
 
-  ValueStream<SignupResendOtpResponseModel> get signupRxStream =>
+  ValueStream<SignupOtpVerifyResponseModel> get signupRxStream =>
       dataFetcher.stream;
 
   Future<bool> signupOtpRx({required String email, required String otp}) async {
     try {
-      SignupResendOtpResponseModel data = await api.signupOtpApi(
+      SignupOtpVerifyResponseModel data = await api.signupOtpApi(
         email: email,
         otp: otp,
       );
@@ -36,10 +36,16 @@ final class SignupOtpRx extends RxResponseInt<SignupResendOtpResponseModel> {
   }
 
   @override
-  handleSuccessWithReturn(SignupResendOtpResponseModel data) {
+  handleSuccessWithReturn(SignupOtpVerifyResponseModel data) {
     appData.write(kKeyID, data.data?.id);
-    appData.write(kKeyName, data.data?.name);
-    appData.write(kKeyEmail, data.data?.email);
+    appData.write(kKeyAvar, data.data?.avatar ?? "");
+    appData.write(kKeyName, data.data?.name ?? "");
+    appData.write(kKeyEmail, data.data?.email ?? "");
+
+    appData.write(kKeyUsrInfo, data.data?.userInfo ?? 0);
+    appData.write(kKeyPaymentMethod, data.data?.paymentMethod ?? 0);
+    appData.write(kKeyIsNutration, data.data?.isNutration ?? 0);
+
     appData.write(kKeyAccessToken, data.token);
     appData.write(kKeyIsLoggedIn, true);
     DioSingleton.instance.update(appData.read(kKeyAccessToken));

@@ -1,26 +1,28 @@
 import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
+
 import '../../../../../../helpers/toast.dart';
 import '../../../../../../networks/rx_base.dart';
 import '../../../../../helpers/all_routes.dart';
 import '../../../../../helpers/navigation_service.dart';
 import '../../../../../networks/stream_cleaner.dart';
-import '../rx_post_sign_up_otp/model/signup_otp_response_model.dart';
+import '../rx_post_sign_up_otp/model/signup_otp_verify_response_model.dart';
 import 'api.dart';
 
 final class SignupResendOtpRx
-    extends RxResponseInt<SignupResendOtpResponseModel> {
+    extends RxResponseInt<SignupOtpVerifyResponseModel> {
   final api = SignupResendOtpApi.instance;
 
   SignupResendOtpRx({required super.empty, required super.dataFetcher});
 
-  ValueStream<SignupResendOtpResponseModel> get signupRxStream =>
+  ValueStream<SignupOtpVerifyResponseModel> get signupRxStream =>
       dataFetcher.stream;
 
   Future<bool> signupResendOtpRx({required String email}) async {
     try {
-      SignupResendOtpResponseModel data = await api.signupResendOtpApi(email: email);
+      SignupOtpVerifyResponseModel data = await api.signupResendOtpApi(email: email);
       handleSuccessWithReturn(data);
       return true;
     } catch (error) {
@@ -29,7 +31,7 @@ final class SignupResendOtpRx
   }
 
   @override
-  handleSuccessWithReturn(SignupResendOtpResponseModel data) {
+  handleSuccessWithReturn(SignupOtpVerifyResponseModel data) {
     dataFetcher.sink.add(data);
     return true;
   }

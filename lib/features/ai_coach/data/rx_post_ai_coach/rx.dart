@@ -2,8 +2,6 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:gritti_app/constants/app_constants.dart';
-import 'package:gritti_app/helpers/di.dart';
-import 'package:gritti_app/networks/dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../../helpers/toast.dart';
@@ -11,25 +9,21 @@ import '../../../../../../networks/rx_base.dart';
 import '../../../../../helpers/all_routes.dart';
 import '../../../../../helpers/navigation_service.dart';
 import '../../../../../networks/stream_cleaner.dart';
-import '../model/sign_in_response_model.dart';
+import '../../../../helpers/di.dart';
+import '../model/coach_response_model.dart';
 import 'api.dart';
 
-final class SignInRx extends RxResponseInt<SignInResponseModel> {
-  final api = SignInApi.instance;
+final class MotivationCoachRx extends RxResponseInt<CoachResponseModel> {
+  final api = MotivationCoachApi.instance;
 
-  SignInRx({required super.empty, required super.dataFetcher});
+  MotivationCoachRx({required super.empty, required super.dataFetcher});
 
-  ValueStream<SignInResponseModel> get signupRxStream => dataFetcher.stream;
+  ValueStream<CoachResponseModel> get motivationCoachRxStream =>
+      dataFetcher.stream;
 
-  Future<bool> signInRx({
-    required String email,
-    required String password,
-  }) async {
+  Future<bool> motivationCoachRx({required String prompt}) async {
     try {
-      SignInResponseModel data = await api.signInApi(
-        email: email,
-        password: password,
-      );
+      CoachResponseModel data = await api.motivationCoachApi(prompt: prompt);
       handleSuccessWithReturn(data);
       return true;
     } catch (error) {
@@ -38,23 +32,12 @@ final class SignInRx extends RxResponseInt<SignInResponseModel> {
   }
 
   @override
-  handleSuccessWithReturn(SignInResponseModel data) {
-    appData.write(kKeyAccessToken, data.token);
-    appData.write(kKeyID, data.data?.id);
-    appData.write(kKeyName, data.data?.name ?? "");
-    appData.write(kKeyEmail, data.data?.email ?? "");
-    appData.write(kKeyAvar, data.data?.avatar ?? "");
-
-    appData.write(kKeyIsNutration, data.data?.isNutration ?? 0);
-
-    appData.write(kKeyPaymentMethod, data.data?.paymentMethod);
-    appData.write(kKeyIsLoggedIn, true);
-    DioSingleton.instance.update(appData.read(kKeyAccessToken));
+  handleSuccessWithReturn(CoachResponseModel data) {
+    appData.write(kKeyMessage, data.message ?? "");
     dataFetcher.sink.add(data);
     return true;
   }
 
-  // is_nutration
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {

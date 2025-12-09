@@ -80,6 +80,8 @@ final class Endpoints {
   static String nutrationStore() => "/nutration/store";
   static String nutrationRecipes() => "/nutration/recipes";
   static String aiGenerate() => "/nutration/chat";
+
+  static String motivationChat() => "/motivation/chat";
 }
 
 // https://admin.dolcereset.com/api/work_out_list

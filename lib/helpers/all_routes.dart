@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 
+import '../features/ai_coach/presentation/ai_coach_screen.dart';
 import '../features/ai_recipe_generator/presentation/ai_recipe_generator_screen.dart';
 import '../features/ai_recipe_generator_chat/presentation/ai_receipe_generator_chat_screen.dart';
 import '../features/authentication/forget_otp/forget_otp_screen.dart';
@@ -144,6 +145,8 @@ final class Routes {
   static const String videoSnapScreen = '/videoSnapScreen';
 
   static const String videoCongratsScreen = '/videoCongratsScreen';
+
+  static const String aICoachScreen = '/aICoachScreen';
 }
 
 //
@@ -154,6 +157,11 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case Routes.aICoachScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(widget: AICoachScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => AICoachScreen());
+
       case Routes.videoCongratsScreen:
         final args = settings.arguments as Map;
         return Platform.isAndroid
