@@ -1,0 +1,4 @@
+storePassword=dolcereset#123
+keyPassword=dolcereset#123
+keyAlias=upload
+storeFile=/home/root1/dolcereset-keystore.jks
