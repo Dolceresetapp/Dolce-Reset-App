@@ -82,6 +82,10 @@ final class Endpoints {
   static String aiGenerate() => "/nutration/chat";
 
   static String motivationChat() => "/motivation/chat";
+
+  static String scanCode({required int scanCode}) => "/barcode/$scanCode";
+
+  static String checkHealth() => "/food_scanner/checkHealth";
 }
 
 // https://admin.dolcereset.com/api/work_out_list

@@ -20,6 +20,8 @@ import '../features/authentication/signin/data/rx_post_sign_in/rx.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp/model/signup_otp_verify_response_model.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp/rx.dart';
 import '../features/authentication/signup_otp/data/rx_post_sign_up_otp_resend/rx.dart';
+import '../features/barcode/data/model/scan_response_model.dart';
+import '../features/barcode/data/rx_get_/rx.dart';
 import '../features/chef/data/model/ai_receipe_response_model.dart';
 import '../features/chef/data/rx_get_receipe/rx.dart';
 import '../features/dynamic_workout/data/model/dynamic_workout_response_model.dart';
@@ -30,6 +32,8 @@ import '../features/excerises/data/rx_get_theme/model/theme_response_model.dart'
 import '../features/excerises/data/rx_get_theme/rx.dart';
 import '../features/exercise_video/data/model/workour_save_response_model.dart';
 import '../features/exercise_video/data/rx_post_sign_in/rx.dart';
+import '../features/meal_result/data/model/meal_result_response_model.dart';
+import '../features/meal_result/data/rx_post_meal/rx.dart';
 import '../features/onboarding/data/model/onboarding_response_model.dart';
 import '../features/onboarding/data/rx_post_onboard/rx.dart';
 import '../features/onboarding/presentation/chef_boarding/data/model/chef_response_model.dart';
@@ -49,6 +53,22 @@ import '../features/trial_continue/data/rx_post_subscription/model/subscription_
 import '../features/trial_continue/data/rx_post_subscription/rx.dart';
 import '../features/video/data/model/theme_wise_video_response_model.dart';
 import '../features/video/data/rx_get_video/rx.dart';
+//
+
+// ScanBarcodeRx scanBarcodeRxObj = ScanBarcodeRx(
+//   empty: ScanResonseModel(),
+//   dataFetcher: BehaviorSubject<ScanResonseModel>(),
+// );
+
+MealResultRx mealResultRxObj = MealResultRx(
+  empty: MealResponseModel(),
+  dataFetcher: BehaviorSubject<MealResponseModel>(),
+);
+
+ScanBarcodeRx scanBarcodeRxObj = ScanBarcodeRx(
+  empty: ScanResonseModel(),
+  dataFetcher: BehaviorSubject<ScanResonseModel>(),
+);
 
 MotivationCoachRx motivationCoachRxObj = MotivationCoachRx(
   empty: CoachResponseModel(),

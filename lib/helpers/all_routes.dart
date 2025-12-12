@@ -11,6 +11,7 @@ import '../features/authentication/reset_password/reset_password_screen.dart';
 import '../features/authentication/sign_up/sign_up_screen.dart';
 import '../features/authentication/signin/sign_in_screen.dart';
 import '../features/authentication/signup_otp/signup_otp_screen.dart';
+import '../features/barcode/barcode_scanner_screen.dart';
 import '../features/cusom_plan_ready/custom_plan_ready_screen.dart';
 import '../features/download_countdown/download_countdown_screen.dart';
 import '../features/download_progress/download_progress_screen.dart';
@@ -147,6 +148,8 @@ final class Routes {
   static const String videoCongratsScreen = '/videoCongratsScreen';
 
   static const String aICoachScreen = '/aICoachScreen';
+
+  static const String barcodeScannerScreen = '/barcodeScannerScreen';
 }
 
 //
@@ -157,6 +160,14 @@ final class RouteGenerator {
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case Routes.barcodeScannerScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: BarcodeScannerScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(builder: (context) => BarcodeScannerScreen());
+
       case Routes.aICoachScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(widget: AICoachScreen(), settings: settings)
@@ -360,13 +371,15 @@ final class RouteGenerator {
             : CupertinoPageRoute(builder: (context) => const GreatJobScreen());
 
       case Routes.mealResultScreen:
+        final args = settings.arguments as Map;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const MealResultScreen(),
+              widget: MealResultScreen(response: args["response"]),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const MealResultScreen(),
+              builder:
+                  (context) => MealResultScreen(response: args["response"]),
             );
 
       case Routes.foodAnalyzerScreen:

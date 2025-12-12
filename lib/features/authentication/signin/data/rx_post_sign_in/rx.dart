@@ -32,7 +32,8 @@ final class SignInRx extends RxResponseInt<SignInResponseModel> {
       );
       handleSuccessWithReturn(data);
       return true;
-    } catch (error) {
+    } catch (error, s) {
+      log("stack ============================================: $s");
       return handleErrorWithReturn(error);
     }
   }

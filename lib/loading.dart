@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gritti_app/features/authentication/sign_up/sign_up_screen.dart';
-import 'package:gritti_app/features/get_started/get_started_screen.dart';
 
 import 'constants/app_constants.dart';
-import 'features/onboarding/presentation/onboarding_screen_1.dart';
-import 'features/trial_continue/presentation/trial_continue_screen.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
 import 'navigation_screen.dart';
@@ -45,17 +42,17 @@ class _LoadingState extends State<Loading> {
     if (_isLoading) {
       return const SplashScreen();
     } else {
-      return appData.read(kKeyIsFirstTime)
-          ? GetStartedScreen()
-          : (appData.read(kKeyIsLoggedIn) && appData.read(kKeyUsrInfo) == 0)
-          ? OnboardingScreen1()
-          : (appData.read(kKeyIsLoggedIn) &&
-              appData.read(kKeyUsrInfo) == 1 &&
-              appData.read(kKeyPaymentMethod) == 0)
-          ? TrialContinueScreen()
-          : (appData.read(kKeyIsLoggedIn) &&
-              appData.read(kKeyUsrInfo) == 1 &&
-              appData.read(kKeyPaymentMethod) == 1)
+      return appData.read(kKeyIsLoggedIn)
+          // ? GetStartedScreen()
+          // : (appData.read(kKeyIsLoggedIn) && appData.read(kKeyUsrInfo) == 0)
+          // ? OnboardingScreen1()
+          // : (appData.read(kKeyIsLoggedIn) &&
+          //     appData.read(kKeyUsrInfo) == 1 &&
+          //     appData.read(kKeyPaymentMethod) == 0)
+          // ? TrialContinueScreen()
+          // : (appData.read(kKeyIsLoggedIn) &&
+          //     appData.read(kKeyUsrInfo) == 1 &&
+          //     appData.read(kKeyPaymentMethod) == 1)
           ? NavigationScreen()
           : SignUpScreen();
     }
