@@ -94,6 +94,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
               MealResponseModel? model = asyncSnapshot.data;
 
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   UIHelper.verticalSpace(50.h),
 
@@ -115,6 +116,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
 
                   Text(
                     "Product name : ${model?.data?.productName ?? ""}",
+                    textAlign: TextAlign.start,
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
                       fontSize: 16.sp,
@@ -126,6 +128,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
 
                   Text(
                     "Brand name : ${model?.data?.brand ?? ""}",
+                    textAlign: TextAlign.start,
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
                       fontSize: 16.sp,
@@ -149,7 +152,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
                     model?.data?.verdict ?? "",
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
-                      fontSize: 30.sp,
+                      fontSize: 16.sp,
 
                       fontWeight: FontWeight.w800,
                     ),
@@ -158,10 +161,10 @@ class _MealResultScreenState extends State<MealResultScreen> {
 
                   UIHelper.verticalSpace(8.h),
                   Text(
-                    "Reason  : ${model?.data?.reason ?? ""}",
+                    "Reason:${model?.data?.reason ?? ""}",
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
-                      fontSize: 30.sp,
+                      fontSize: 16.sp,
 
                       fontWeight: FontWeight.w800,
                     ),
@@ -170,10 +173,10 @@ class _MealResultScreenState extends State<MealResultScreen> {
 
                   UIHelper.verticalSpace(8.h),
                   Text(
-                    "Details  : ${model?.data?.details ?? ""}",
+                    "Details: ${model?.data?.details ?? ""}",
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
-                      fontSize: 30.sp,
+                      fontSize: 16.sp,
 
                       fontWeight: FontWeight.w800,
                     ),
@@ -237,57 +240,83 @@ class _MealResultScreenState extends State<MealResultScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Column(
-                              spacing: 20.h,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 8.w,
-                                    vertical: 4.h,
-                                  ),
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: ShapeDecoration(
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                        width: 1.w,
+                            /// LEFT CONTENT
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8.w,
+                                      vertical: 4.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
                                         color: const Color(0xFFD4D4D8),
                                       ),
                                       borderRadius: BorderRadius.circular(8.r),
                                     ),
+                                    child: Text(
+                                      "Category : ${data?.category ?? ""}",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextFontStyle
+                                          .headLine16cFFFFFFWorkSansW600
+                                          .copyWith(
+                                            color: const Color(0xFF52525B),
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                    ),
                                   ),
-                                  child: Text(
-                                    "Category : ${data?.category ?? ""}",
+
+                                  SizedBox(height: 8.h),
+
+                                  Text(
+                                    data?.name ?? "",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextFontStyle
                                         .headLine16cFFFFFFWorkSansW600
                                         .copyWith(
-                                          color: const Color(0xFF52525B),
-                                          fontSize: 12.sp,
+                                          color: const Color(0xFF27272A),
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                  ),
 
+                                  SizedBox(height: 8.h),
+
+                                  Text(
+                                    data?.whyBetter ?? "",
+                                    maxLines: 5,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextFontStyle
+                                        .headLine16cFFFFFFWorkSansW600
+                                        .copyWith(
+                                          color: const Color(0xFF27272A),
+                                          fontSize: 14.sp,
                                           fontWeight: FontWeight.w500,
                                         ),
                                   ),
-                                ),
-
-                                Text(
-                                  data?.name ?? "",
-                                  style: TextFontStyle
-                                      .headLine16cFFFFFFWorkSansW600
-                                      .copyWith(
-                                        color: const Color(0xFF27272A),
-                                        fontSize: 16.sp,
-
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
 
+                            SizedBox(width: 16.w),
+
+                            /// RIGHT IMAGE
                             Expanded(
-                              child: CustomCachedNetworkImage(
-                                imageUrl: data?.imageUrl ?? "",
-                                width: 138.w,
-                                height: 158.h,
-                                fit: BoxFit.contain,
+                              flex: 1,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10.r),
+                                child: CustomCachedNetworkImage(
+                                  imageUrl: data?.imageUrl ?? "",
+                                  height: 158.h,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                             ),
                           ],
@@ -316,7 +345,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
                     ),
                   ),
 
-                  UIHelper.verticalSpaceMediumLarge,
+                  UIHelper.verticalSpaceSemiLarge,
                 ],
               );
             } else {

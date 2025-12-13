@@ -19,7 +19,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   Widget _barcodePreview(Barcode? value) {
     if (value == null) {
       return const Text(
-        'Scan something!',
+        'Scan Food Barcode',
         overflow: TextOverflow.fade,
         style: TextStyle(color: Colors.white),
       );
@@ -72,7 +72,6 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Simple Mobile Scanner')),
       backgroundColor: Colors.black,
       body: Stack(
         children: [
