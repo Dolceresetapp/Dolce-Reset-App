@@ -4,10 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../common_widget/custom_svg_asset.dart';
 import '../../constants/text_font_style.dart';
 import '../../gen/assets.gen.dart';
-import '../../helpers/navigation_service.dart';
 
 class ProgressBarWidget extends StatelessWidget {
-
   final VoidCallback onTap;
   const ProgressBarWidget({super.key, required this.onTap});
 
@@ -19,9 +17,10 @@ class ProgressBarWidget extends StatelessWidget {
       children: [
         // Back Icon
         InkWell(
-          onTap: () {
-            NavigationService.goBack;
-          },
+          onTap: onTap,
+          // onTap: () {
+          //   NavigationService.goBack;
+          // },
           child: Align(
             alignment: Alignment.topLeft,
             child: CustomSvgAsset(
@@ -58,6 +57,4 @@ class ProgressBarWidget extends StatelessWidget {
       ],
     );
   }
-
-  
 }

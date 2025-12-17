@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:auto_animated/auto_animated.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -10,6 +11,7 @@ import 'package:gritti_app/loading.dart';
 import 'package:provider/provider.dart';
 
 import '/helpers/all_routes.dart';
+import 'firebase_options.dart';
 import 'gen/colors.gen.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
@@ -23,6 +25,7 @@ void main() async {
   Stripe.publishableKey =
       "pk_test_51ReqwVPDus5Inpom946CpZJ839v8LandcGNRmku71XxO9xxAtoTQu9FV1BAm9KOzYZayv9DhMfLS0J6KMqK73VLg0044KYKdBM";
   await Stripe.instance.applySettings();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
   diSetup();
   initiInternetChecker();

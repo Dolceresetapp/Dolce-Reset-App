@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:ui';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,10 +40,46 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
   int totalCal = 0;
   int minutes = 0;
 
+  AudioPlayer? _audioPlayer;
+
+  // Count down
+  bool _showCountdown = true;
+  int _countdown = 5;
+  Timer? _countdownTimer;
+
+  // CREATE COUNTDOWN FUNCTION
+
+  void _startCountdown() {
+    _countdownTimer?.cancel();
+
+    setState(() {
+      _showCountdown = true;
+      _countdown = 5;
+    });
+
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_countdown == 1) {
+        timer.cancel();
+        setState(() {
+          _showCountdown = false;
+        });
+        _controller?.play();
+      } else {
+        setState(() {
+          _countdown--;
+        });
+      }
+    });
+  }
+
   // Load API and first video inside
   @override
   void initState() {
     super.initState();
+
+    _audioPlayer = AudioPlayer();
+    // Start countdown
+    _startCountdown();
     workoutVideoRxObj.workoutVideoRx(id: widget.id);
 
     workoutVideoRxObj.workoutVideoRxStream.listen((apiResult) {
@@ -58,22 +96,53 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
   }
 
   // Initialize video controller for any index
+
   void _initializeVideo(String url) {
     _controller?.dispose();
 
     _controller = VideoPlayerController.networkUrl(Uri.parse(url))
       ..initialize().then((_) {
         setState(() {});
-        _controller!.play();
 
-        // Auto play next video when current ends
+        // Do not auto play
+
+        _controller!.pause();
+
+        // auto next
         _controller!.addListener(() {
-          if (_controller!.value.position >= _controller!.value.duration) {
+          if (_controller!.value.isInitialized &&
+              _controller!.value.position >=
+                  _controller!.value.duration -
+                      const Duration(milliseconds: 200)) {
             _playNext();
           }
         });
+
+        // // Auto play next video when current ends
+        // _controller!.addListener(() {
+        //   if (_controller!.value.position >= _controller!.value.duration) {
+        //     _playNext();
+        //   }
+        // });
       });
   }
+
+  // void _initializeVideo(String url) {
+  //   _controller?.dispose();
+
+  //   _controller = VideoPlayerController.networkUrl(Uri.parse(url))
+  //     ..initialize().then((_) {
+  //       setState(() {});
+  //       _controller!.play();
+
+  //       // Auto play next video when current ends
+  //       _controller!.addListener(() {
+  //         if (_controller!.value.position >= _controller!.value.duration) {
+  //           _playNext();
+  //         }
+  //       });
+  //     });
+  // }
 
   // Add NEXT and PREVIOUS functions
   void _playNext() {
@@ -96,7 +165,9 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
 
   @override
   void dispose() {
+    _audioPlayer?.dispose();
     _controller?.dispose();
+    _countdownTimer?.cancel();
     super.dispose();
   }
 
@@ -108,6 +179,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
       MaterialPageRoute(
         builder:
             (_) => FullScreenVideoPlayer(
+              onPrevious: _playPrevious,
               controller: _controller!,
               currentIndex: currentIndex,
               totalVideos: videoList.length,
@@ -298,9 +370,9 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
           } else if (snapshot.hasData) {
             return Column(
               children: [
-                // VIDEO AREA with stack (unchanged)
+                // VIDEO AREA with stack
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Stack(
                     children: [
                       _controller == null || !_controller!.value.isInitialized
@@ -309,7 +381,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
                             fit: BoxFit.cover,
                             child: SizedBox(
                               width: 1.sw,
-                              height: 0.7.sh,
+                              height: .5.sh,
                               child: AspectRatio(
                                 aspectRatio:
                                     (_controller!.value.isInitialized &&
@@ -327,6 +399,27 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
                               ),
                             ),
                           ),
+
+                      //
+
+                      /// COUNTDOWN OVERLAY
+                      if (_showCountdown)
+                        Positioned.fill(
+                          child: Container(
+                            color: Colors.black.withValues(alpha: .6),
+                            alignment: Alignment.center,
+                            child: AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 300),
+                              child: Text(
+                                '$_countdown',
+                                key: ValueKey(_countdown),
+                                style: TextFontStyle
+                                    .headLine16cFFFFFFWorkSansW600
+                                    .copyWith(fontSize: 80.sp),
+                              ),
+                            ),
+                          ),
+                        ),
 
                       // Zoom Icon
                       Positioned(
@@ -347,15 +440,232 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
                       Positioned(
                         right: 20.w,
                         top: 80.h,
-                        child: SvgPicture.asset(
-                          Assets.icons.music,
-                          width: 40.w,
-                          height: 40.h,
-                          fit: BoxFit.cover,
+                        child: InkWell(
+                          onTap: () async {
+                            if (_controller != null &&
+                                _controller!.value.isPlaying) {
+                              _controller!
+                                  .pause(); // Pause video before showing bottom sheet
+                            }
+
+                            showModalBottomSheet(
+                              context: context,
+                              backgroundColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10.r),
+                                  topRight: Radius.circular(10.r),
+                                ),
+                              ),
+                              builder: (_) {
+                                return Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 20.w,
+                                    vertical: 20.h,
+                                  ),
+                                  width: 1.sw,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10.r),
+                                      topRight: Radius.circular(10.r),
+                                    ),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: IconButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            // Navigator.pop(
+                                            //   context,
+                                            // ); // close bottom sheet
+                                          },
+                                          icon: Icon(
+                                            Icons.cancel,
+                                            size: 30.sp,
+                                            color: Color(0xFFF566A9),
+                                          ),
+                                        ),
+                                      ),
+
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: BouncingScrollPhysics(),
+                                        padding: EdgeInsets.zero,
+                                        itemCount:
+                                            snapshot
+                                                .data
+                                                ?.data?[currentIndex]
+                                                .music
+                                                ?.length ??
+                                            0,
+                                        itemBuilder: (_, index) {
+                                          var data =
+                                              snapshot
+                                                  .data
+                                                  ?.data?[currentIndex]
+                                                  .music?[index];
+
+                                          if (data == null) {
+                                            return Text(
+                                              "Music not available here",
+                                              style: TextFontStyle
+                                                  .headLine16cFFFFFFWorkSansW600
+                                                  .copyWith(
+                                                    color: Colors.black,
+                                                  ),
+                                            );
+                                          } else {
+                                            return Container(
+                                              margin: EdgeInsets.only(
+                                                bottom: 10.h,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: Color(
+                                                  0xFFF566A9,
+                                                ).withOpacity(0.4),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.r),
+                                              ),
+                                              child: ListTile(
+                                                title: Text(data.title ?? ""),
+                                                trailing: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: IconButton(
+                                                    onPressed: () async {
+                                                      if (_audioPlayer !=
+                                                          null) {
+                                                        await _audioPlayer!
+                                                            .stop();
+                                                      }
+                                                      await _audioPlayer?.play(
+                                                        UrlSource(
+                                                          data.musicFile ?? '',
+                                                        ),
+                                                        volume: 1.0,
+                                                      );
+                                                    },
+                                                    icon: Icon(Icons.add),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+
+                                      // ListView.builder(
+                                      //   shrinkWrap: true,
+                                      //   physics: BouncingScrollPhysics(),
+                                      //   padding: EdgeInsets.zero,
+                                      //   itemCount:
+                                      //       snapshot
+                                      //           .data
+                                      //           ?.data?[currentIndex]
+                                      //           .music
+                                      //           ?.length,
+                                      //   itemBuilder: (_, index) {
+                                      //     var data =
+                                      //         snapshot
+                                      //             .data
+                                      //             ?.data?[currentIndex]
+                                      //             .music?[index];
+                                      //     if (snapshot
+                                      //                 .data
+                                      //                 ?.data?[currentIndex]
+                                      //                 .music ==
+                                      //             null ||
+                                      //         snapshot
+                                      //             .data!
+                                      //             .data![currentIndex]
+                                      //             .music!
+                                      //             .isEmpty) {
+                                      //       return Text(
+                                      //         "Music not available here",
+                                      //         style: TextFontStyle
+                                      //             .headLine16cFFFFFFWorkSansW600
+                                      //             .copyWith(
+                                      //               color: Colors.black,
+                                      //             ),
+                                      //       );
+                                      //     } else {
+                                      //       return Container(
+                                      //         margin: EdgeInsets.only(
+                                      //           bottom: 10.h,
+                                      //         ),
+                                      //         decoration: BoxDecoration(
+                                      //           color: Color(
+                                      //             0xFFF566A9,
+                                      //           ).withValues(alpha: 0.4),
+                                      //           borderRadius:
+                                      //               BorderRadius.circular(10.r),
+                                      //         ),
+                                      //         child: ListTile(
+                                      //           title: Text(
+                                      //             data?.title.toString() ?? "",
+                                      //           ),
+
+                                      //           trailing: Container(
+                                      //             decoration: BoxDecoration(
+                                      //               color: Colors.white,
+                                      //               shape: BoxShape.circle,
+                                      //             ),
+
+                                      //             child: AnimatedContainer(
+                                      //               duration: Duration(
+                                      //                 milliseconds: 200,
+                                      //               ),
+
+                                      //               child: IconButton(
+                                      //                 onPressed: () async {
+                                      //                   await _audioPlayer
+                                      //                       ?.stop();
+                                      //                   data?.musicFile =
+                                      //                       data.musicFile;
+                                      //                   await _audioPlayer?.play(
+                                      //                     UrlSource(
+                                      //                       data?.musicFile ??
+                                      //                           '',
+                                      //                     ),
+                                      //                     volume: 1.0,
+                                      //                   );
+                                      //                 },
+                                      //                 icon: Icon(Icons.add),
+                                      //               ),
+                                      //             ),
+                                      //           ),
+                                      //         ),
+                                      //       );
+                                      //     }
+                                      //   },
+                                      // ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+
+                            // Resume video after closing bottom sheet
+                            if (_controller != null &&
+                                !_controller!.value.isPlaying) {
+                              _controller!.play();
+                            }
+                          },
+                          child: SvgPicture.asset(
+                            Assets.icons.music,
+                            width: 40.w,
+                            height: 40.h,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
 
-                      // Video Info Icon
                       // Video Info Icon
                       Positioned(
                         right: 20.w,

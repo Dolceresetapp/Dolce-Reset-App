@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "385306573264",
+    "project_id": "dolceresetapp-982cd",
+    "storage_bucket": "dolceresetapp-982cd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385306573264:android:fca8db16a37e2a0442a1d5",
+        "android_client_info": {
+          "package_name": "com.dolceresetltd.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCW0GGohjP0Ga_64Tm-jq5TIm-gfKg8Rc0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

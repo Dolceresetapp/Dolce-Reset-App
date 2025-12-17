@@ -5,6 +5,12 @@
 <key>NSCameraUsageDescription</key>
 <string>This app needs camera access to scan Bar codes</string>
 
+
+<!-- Audio recording permission -->
+<key>NSMicrophoneUsageDescription</key>
+<string>We need access to your microphone for speech-to-text functionality.</string>
+
+
 <key>NSPhotoLibraryUsageDescription</key>
 <string>This app needs photos access to get Bar code from photo library</string>
 	<key>CFBundleDevelopmentRegion</key>

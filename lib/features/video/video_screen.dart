@@ -23,7 +23,7 @@ class VideoScreen extends StatefulWidget {
 class _VideoScreenState extends State<VideoScreen> {
   late VideoPlayerController _controller;
 
-  bool isVideoLoading = false; // ⬅️ Track video loading
+  bool isVideoLoading = false; //  Track video loading
   String? firstVideoUrl;
 
   @override
