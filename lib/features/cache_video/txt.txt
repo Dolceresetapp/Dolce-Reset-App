@@ -1,0 +1,120 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
+
+import '../../provider/cache_video_provider.dart';
+
+class CacheVideoScreen extends StatefulWidget {
+  final int id;
+  const CacheVideoScreen({super.key, required this.id});
+  @override
+  State<CacheVideoScreen> createState() => _CacheVideoScreenState();
+}
+
+class _CacheVideoScreenState extends State<CacheVideoScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CacheVideoProvider>().getData(widget.id);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<CacheVideoProvider>(
+      builder: (context, provider, child) {
+        return Scaffold(
+          appBar: AppBar(title: const Text('Cached Video Player')),
+          body: PageView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: provider.data.length,
+            onPageChanged: provider.onPageChanged,
+            itemBuilder: (context, index) {
+              if (index == provider.currentIndex &&
+                  provider.controller != null &&
+                  provider.controller!.value.isInitialized) {
+                return AspectRatio(
+                  aspectRatio: provider.controller!.value.aspectRatio,
+                  child: VideoPlayer(provider.controller!),
+                );
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
+//
+
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:video_player/video_player.dart';
+
+import '../features/ready/data/model/workout_video_response_model.dart';
+import '../networks/api_acess.dart';
+
+class CacheVideoProvider extends ChangeNotifier {
+  List<Datum> data = [];
+
+  VideoPlayerController? _controller;
+  VideoPlayerController? get controller => _controller;
+
+  int currentIndex = 0;
+
+  /// Fetch API data
+  Future<void> getData(int videoId) async {
+    final response = await workoutVideoRxObj.workoutVideoRx(id: videoId);
+    data = response.data ?? [];
+
+    if (data.isNotEmpty) {
+      await _loadVideo(0);
+      _preloadNext(0);
+    }
+
+    notifyListeners();
+  }
+
+  /// Load & play current video (with cache)
+  Future<void> _loadVideo(int index) async {
+    _controller?.dispose();
+
+    final String videoUrl = data[index].videos ?? '';
+
+    File file = await DefaultCacheManager().getSingleFile(videoUrl);
+
+    _controller = VideoPlayerController.file(file)
+      ..initialize().then((_) {
+        _controller!
+          ..setLooping(true)
+          ..play();
+        notifyListeners();
+      });
+  }
+
+  /// Preload next video (cache only – no controller)
+  void _preloadNext(int index) {
+    if (index + 1 < data.length) {
+      final nextUrl = data[index + 1].videos ?? '';
+      DefaultCacheManager().getSingleFile(nextUrl);
+    }
+  }
+
+  /// Call this from PageView onPageChanged
+  Future<void> onPageChanged(int index) async {
+    currentIndex = index;
+    await _loadVideo(index);
+    _preloadNext(index);
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+}

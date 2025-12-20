@@ -503,6 +503,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                       itemCount: snapshot.data?.activeWorkouts?.length,
 
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
 
                       padding: EdgeInsets.zero,
 

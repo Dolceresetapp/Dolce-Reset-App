@@ -243,7 +243,7 @@ class _ReadyScreenState extends State<ReadyScreen> {
                         // );
 
                           NavigationService.navigateToWithArgs(
-                          Routes.cacheVideoScreen,
+                          Routes.exerciseVideoScreen,  // cacheVideoScreen
                           {"id": widget.id},
                         );
 

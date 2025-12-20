@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:video_player/video_player.dart';
@@ -11,54 +9,67 @@ class CacheVideoProvider extends ChangeNotifier {
   List<Datum> data = [];
 
   VideoPlayerController? _controller;
-  VideoPlayerController? get controller => _controller;
+  Future<void>? _initializeFuture;
 
   int currentIndex = 0;
 
-  /// Fetch API data
+  VideoPlayerController? get controller => _controller;
+
+  bool get isPlaying => _controller?.value.isPlaying ?? false;
+
+  // 🔥 Fetch API data
   Future<void> getData(int videoId) async {
     final response = await workoutVideoRxObj.workoutVideoRx(id: videoId);
     data = response.data ?? [];
 
     if (data.isNotEmpty) {
       await _loadVideo(0);
-      _preloadNext(0);
     }
+    notifyListeners();
+  }
+
+  // 🎬 Load video by index
+  Future<void> _loadVideo(int index) async {
+    // Dispose previous
+    await _controller?.pause();
+    await _controller?.dispose();
+
+    final url = data[index].videos!;
+    final file = await DefaultCacheManager().getSingleFile(url);
+
+    _controller = VideoPlayerController.file(file);
+    _initializeFuture = _controller!.initialize().then((_) {
+      _controller!
+        ..setLooping(true)
+        ..play();
+    });
+
+    currentIndex = index;
+    notifyListeners();
+  }
+
+  // ▶️ ⏸ Play / Pause
+  void playPause() {
+    if (_controller == null) return;
+
+    _controller!.value.isPlaying ? _controller!.pause() : _controller!.play();
 
     notifyListeners();
   }
 
-  /// Load & play current video (with cache)
-  Future<void> _loadVideo(int index) async {
-    _controller?.dispose();
-
-    final String videoUrl = data[index].videos ?? '';
-
-    File file = await DefaultCacheManager().getSingleFile(videoUrl);
-
-    _controller = VideoPlayerController.file(file)
-      ..initialize().then((_) {
-        _controller!
-          ..setLooping(true)
-          ..play();
-        notifyListeners();
-      });
+  // ⏭ Next
+  Future<void> next() async {
+    if (currentIndex >= data.length - 1) return;
+    await _loadVideo(currentIndex + 1);
   }
 
-  /// Preload next video (cache only – no controller)
-  void _preloadNext(int index) {
-    if (index + 1 < data.length) {
-      final nextUrl = data[index + 1].videos ?? '';
-      DefaultCacheManager().getSingleFile(nextUrl);
-    }
+  // ⏮ Previous
+  Future<void> previous() async {
+    if (currentIndex <= 0) return;
+    await _loadVideo(currentIndex - 1);
   }
 
-  /// Call this from PageView onPageChanged
-  Future<void> onPageChanged(int index) async {
-    currentIndex = index;
-    await _loadVideo(index);
-    _preloadNext(index);
-  }
+  Future<void> waitForInit() => _initializeFuture ?? Future.value();
 
   @override
   void dispose() {
