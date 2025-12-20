@@ -20,11 +20,13 @@ final class WorkoutVideoRx
   ValueStream<WorkoutWiseVideoResponseModel> get workoutVideoRxStream =>
       dataFetcher.stream;
 
-  Future<bool> workoutVideoRx({required int id}) async {
+  Future<WorkoutWiseVideoResponseModel> workoutVideoRx({
+    required int id,
+  }) async {
     try {
       WorkoutWiseVideoResponseModel data = await api.workoutVideoApi(id: id);
       handleSuccessWithReturn(data);
-      return true;
+      return data;
     } catch (error) {
       return handleErrorWithReturn(error);
     }
@@ -33,7 +35,7 @@ final class WorkoutVideoRx
   @override
   handleSuccessWithReturn(WorkoutWiseVideoResponseModel data) {
     dataFetcher.sink.add(data);
-    return true;
+    return data;
   }
 
   @override

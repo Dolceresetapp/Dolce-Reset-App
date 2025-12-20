@@ -1,3 +1,4 @@
+import 'package:gritti_app/provider/cache_video_provider.dart';
 import 'package:gritti_app/provider/motivation_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -25,5 +26,9 @@ var providers = [
 
   ChangeNotifierProvider<MotivationProvider>(
     create: ((context) => MotivationProvider()),
+  ),
+
+   ChangeNotifierProvider<CacheVideoProvider>(
+    create: ((context) => CacheVideoProvider()),
   ),
 ];

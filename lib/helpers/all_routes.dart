@@ -12,6 +12,7 @@ import '../features/authentication/sign_up/sign_up_screen.dart';
 import '../features/authentication/signin/sign_in_screen.dart';
 import '../features/authentication/signup_otp/signup_otp_screen.dart';
 import '../features/barcode/barcode_scanner_screen.dart';
+import '../features/cache_video/cache_video_screen.dart';
 import '../features/cusom_plan_ready/custom_plan_ready_screen.dart';
 import '../features/download_countdown/download_countdown_screen.dart';
 import '../features/download_progress/download_progress_screen.dart';
@@ -50,7 +51,6 @@ import '../features/rating/rating_screen.dart';
 import '../features/ready/ready_screen.dart';
 import '../features/rewiring_benefits/rewiring_benefit_screen.dart';
 import '../features/trial_continue/presentation/trial_continue_screen.dart';
-import '../features/video/video_screen.dart';
 import '../features/video_congrats/video_congrats_screen.dart';
 import '../loading.dart';
 import '../navigation_screen.dart';
@@ -150,6 +150,8 @@ final class Routes {
   static const String aICoachScreen = '/aICoachScreen';
 
   static const String barcodeScannerScreen = '/barcodeScannerScreen';
+
+  static const String cacheVideoScreen = '/cacheVideoScreen';
 }
 
 //
@@ -159,7 +161,19 @@ final class RouteGenerator {
   static RouteGenerator get instanc => _routeGenerator;
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
+    // CacheVideoScreen
     switch (settings.name) {
+      case Routes.cacheVideoScreen:
+        final args = settings.arguments as Map;
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: CacheVideoScreen(id: args["id"]),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => CacheVideoScreen(id: args["id"]),
+            );
+
       case Routes.barcodeScannerScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
@@ -331,16 +345,16 @@ final class RouteGenerator {
               builder: (context) => const DownloadProgressScreen(),
             );
 
-      case Routes.videoScreen:
-        final args = settings.arguments as Map;
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-              widget: VideoScreen(themeId: args["themeId"]),
-              settings: settings,
-            )
-            : CupertinoPageRoute(
-              builder: (context) => VideoScreen(themeId: args["themeId"]),
-            );
+      // case Routes.videoScreen:
+      //   final args = settings.arguments as Map;
+      //   return Platform.isAndroid
+      //       ? _FadedTransitionRoute(
+      //         widget: VideoScreen(themeId: args["themeId"]),
+      //         settings: settings,
+      //       )
+      //       : CupertinoPageRoute(
+      //         builder: (context) => VideoScreen(themeId: args["themeId"]),
+      //       );
 
       case Routes.aiReceipeGeneratorChatScreen:
         return Platform.isAndroid

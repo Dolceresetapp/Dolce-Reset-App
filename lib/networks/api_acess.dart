@@ -51,8 +51,6 @@ import '../features/trial_continue/data/rx_post_payment_sheet/model/payment_shee
 import '../features/trial_continue/data/rx_post_payment_sheet/rx.dart';
 import '../features/trial_continue/data/rx_post_subscription/model/subscription_response_model.dart';
 import '../features/trial_continue/data/rx_post_subscription/rx.dart';
-import '../features/video/data/model/theme_wise_video_response_model.dart';
-import '../features/video/data/rx_get_video/rx.dart';
 //
 
 // ScanBarcodeRx scanBarcodeRxObj = ScanBarcodeRx(
@@ -131,10 +129,10 @@ RatingRx ratingRxObj = RatingRx(
   empty: RatingResponseModel(),
   dataFetcher: BehaviorSubject<RatingResponseModel>(),
 );
-ThemeWiseVideoRx themeWiseVideoRxObj = ThemeWiseVideoRx(
-  empty: ThemeWiseVideoResponseModel(),
-  dataFetcher: BehaviorSubject<ThemeWiseVideoResponseModel>(),
-);
+// ThemeWiseVideoRx themeWiseVideoRxObj = ThemeWiseVideoRx(
+//   empty: ThemeWiseVideoResponseModel(),
+//   dataFetcher: BehaviorSubject<ThemeWiseVideoResponseModel>(),
+// );
 
 ThemeRx themeRxObj = ThemeRx(
   empty: ThemeResponseModel(),

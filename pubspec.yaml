@@ -40,6 +40,7 @@ dependencies:
   firebase_core: ^4.2.1
   flutter:
     sdk: flutter
+  flutter_cache_manager: ^3.4.1
   flutter_html: ^3.0.0
   flutter_rating: ^2.0.2
   flutter_ruler: ^0.0.1
@@ -70,7 +71,6 @@ dependencies:
   shimmer: ^3.0.0
   signature: ^6.3.0
   smooth_page_indicator: ^1.2.1
-  speech_to_text: ^7.3.0
   stylish_bottom_bar: ^1.1.1
   timer_button: ^2.3.3
   url_launcher: ^6.3.1

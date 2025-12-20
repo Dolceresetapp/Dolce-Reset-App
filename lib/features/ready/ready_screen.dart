@@ -236,9 +236,14 @@ class _ReadyScreenState extends State<ReadyScreen> {
                     UIHelper.verticalSpace(24.h),
 
                     CustomButton(
-                      onPressed: () {
-                        NavigationService.navigateToWithArgs(
-                          Routes.exerciseVideoScreen,
+                      onPressed: () { 
+                        // NavigationService.navigateToWithArgs(
+                        //   Routes.exerciseVideoScreen,
+                        //   {"id": widget.id},
+                        // );
+
+                          NavigationService.navigateToWithArgs(
+                          Routes.cacheVideoScreen,
                           {"id": widget.id},
                         );
 

@@ -526,7 +526,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
                                               decoration: BoxDecoration(
                                                 color: Color(
                                                   0xFFF566A9,
-                                                ).withOpacity(0.4),
+                                                ).withValues(alpha: 0.4),
                                                 borderRadius:
                                                     BorderRadius.circular(10.r),
                                               ),
