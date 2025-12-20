@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -14,10 +15,22 @@ import '../../../helpers/ui_helpers.dart';
 import '../../../networks/api_acess.dart';
 
 class ShowBottomWidget extends StatelessWidget {
-  const ShowBottomWidget({super.key});
+  final int totalCal;
+  final int minutes;
+  final int listId;
+  const ShowBottomWidget({
+    super.key,
+    required this.totalCal,
+    required this.minutes,
+        required this.listId,
+  });
 
   @override
   Widget build(BuildContext context) {
+    log(
+      "minute adsssssssssss =====================================: ${minutes}",
+    );
+    log("totalCal sdfgsdfg =================================: ${totalCal}");
     return DraggableScrollableSheet(
       initialChildSize: 0.60, // Full screen
       minChildSize: 0.20, // Force full height
@@ -99,16 +112,14 @@ class ShowBottomWidget extends StatelessWidget {
                           color: Color(0xFFAE47FF),
                           onPressed: () {
                             activeWorkoutSaveRxObj
-                                .activeWorkoutSaveRx(listId: 5) //'widget.id')
+                                .activeWorkoutSaveRx(listId: listId,
+                                )
                                 .waitingForFuture()
                                 .then((success) {
                                   if (success) {
                                     NavigationService.navigateToWithArgs(
                                       Routes.videoCongratsScreen,
-                                      {
-                                        "duration": 'minutes',
-                                        "kcal": 'totalCal',
-                                      },
+                                      {"duration": minutes, "kcal": totalCal},
                                     );
                                   }
                                 });

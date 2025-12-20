@@ -157,7 +157,11 @@ class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
                               onTap: () {
                                 NavigationService.navigateToWithArgs(
                                   Routes.readyScreen,
-                                  {"id": data.id},
+                                  {"id": data.id,
+                                  
+                                  },
+
+
                                 );
                               },
                               child: Padding(
