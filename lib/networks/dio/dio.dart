@@ -4,6 +4,7 @@ import '/helpers/di.dart';
 import '../../constants/app_constants.dart';
 import '../endpoints.dart';
 import 'log.dart';
+import 'cache_interceptor.dart';
 
 final class DioSingleton {
   static final DioSingleton _singleton = DioSingleton._internal();
@@ -17,14 +18,16 @@ final class DioSingleton {
   void create() {
     BaseOptions options = BaseOptions(
         baseUrl: url,
-        connectTimeout: const Duration(milliseconds: 100000),
-        receiveTimeout: const Duration(milliseconds: 100000),
+        connectTimeout: const Duration(milliseconds: 30000),
+        receiveTimeout: const Duration(milliseconds: 30000),
         headers: {
           NetworkConstants.ACCEPT: NetworkConstants.ACCEPT_TYPE,
           NetworkConstants.ACCEPT_LANGUAGE: appData.read(kKeyCountryCode) ?? "pt",
           NetworkConstants.APP_KEY: NetworkConstants.APP_KEY_VALUE,
         });
-    dio = Dio(options)..interceptors.add(Logger());
+    dio = Dio(options);
+    dio.interceptors.add(CacheInterceptor());
+    dio.interceptors.add(Logger());
   }
 
   void update(String auth) {
@@ -40,10 +43,12 @@ final class DioSingleton {
         NetworkConstants.APP_KEY: NetworkConstants.APP_KEY_VALUE,
         NetworkConstants.AUTHORIZATION: "Bearer $auth",
       },
-      connectTimeout: const Duration(milliseconds: 100000),
-      receiveTimeout: const Duration(milliseconds: 100000),
+      connectTimeout: const Duration(milliseconds: 30000),
+      receiveTimeout: const Duration(milliseconds: 30000),
     );
-    dio = Dio(options)..interceptors.add(Logger());
+    dio = Dio(options);
+    dio.interceptors.add(CacheInterceptor());
+    dio.interceptors.add(Logger());
   }
 
   void updateLanguage(String countryCode) {
@@ -59,10 +64,12 @@ final class DioSingleton {
         NetworkConstants.APP_KEY: NetworkConstants.APP_KEY_VALUE,
         NetworkConstants.AUTHORIZATION: "Bearer ${appData.read(kKeyAccessToken)} ",
       },
-      connectTimeout: const Duration(milliseconds: 100000),
-      receiveTimeout: const Duration(milliseconds: 100000),
+      connectTimeout: const Duration(milliseconds: 30000),
+      receiveTimeout: const Duration(milliseconds: 30000),
     );
-    dio = Dio(options)..interceptors.add(Logger());
+    dio = Dio(options);
+    dio.interceptors.add(CacheInterceptor());
+    dio.interceptors.add(Logger());
   }
 }
 
