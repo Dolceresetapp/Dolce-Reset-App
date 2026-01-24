@@ -27,25 +27,36 @@ class DynamicWorkoutScreen extends StatefulWidget {
 }
 
 class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
+  bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    setState(() => _isLoading = true);
 
     if (widget.type == "body_part_exercise" && widget.id != null) {
-      dynamicWorkoutRxObj.dynamicWorkoutRx(
+      await dynamicWorkoutRxObj.dynamicWorkoutRx(
         type: "body_part_exercise",
         id: widget.id,
       );
     } else if (widget.type == "theme_workout" && widget.id != null) {
-      dynamicWorkoutRxObj.dynamicWorkoutRx(
+      await dynamicWorkoutRxObj.dynamicWorkoutRx(
         type: "theme_workout",
         id: widget.id,
       );
     } else if (widget.type == "training_level" && widget.levelType != null) {
-      dynamicWorkoutRxObj.dynamicWorkoutRx(
+      await dynamicWorkoutRxObj.dynamicWorkoutRx(
         type: "training_level",
         levelType: widget.levelType,
       );
+    }
+
+    if (mounted) {
+      setState(() => _isLoading = false);
     }
   }
 
@@ -58,12 +69,15 @@ class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
           StreamBuilder<DynamicWorkoutResponseModel>(
             stream: dynamicWorkoutRxObj.dynamicWorkoutRxStream,
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+              // Show loading while fetching
+              if (_isLoading) {
                 return const WaitingWidget();
-              } else if (snapshot.hasError) {
+              }
+
+              if (snapshot.hasError) {
                 return Center(
                   child: Text(
-                    "Something went wrong",
+                    "Errore di connessione",
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFFF97316),
                       fontSize: 16.sp,
@@ -71,25 +85,17 @@ class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
                     ),
                   ),
                 );
-              } else if (snapshot.data == null ||
+              }
+
+              if (snapshot.data == null ||
                   snapshot.data!.data == null ||
                   snapshot.data!.data!.isEmpty) {
-                // Empty data message
-                return Center(
-                  child: Text(
-                    "Data \n not available",
-                    textAlign: TextAlign.center,
-                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                      color: const Color(0xFFF97316),
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                );
-              } else {
-                // Data available
-                DynamicWorkoutResponseModel model = snapshot.data!;
-                return SingleChildScrollView(
+                return const WaitingWidget();
+              }
+
+              // Data available
+              final model = snapshot.data!;
+              return SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
@@ -103,10 +109,32 @@ class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
                             fit: BoxFit.cover,
                           ),
 
+                          // White gradient overlay at bottom
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            child: Container(
+                              height: 200.h,
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                  colors: [
+                                    Colors.white,
+                                    Colors.white,
+                                    Color(0x00FFFFFF),
+                                  ],
+                                  stops: [0.0, 0.45, 1.0],
+                                ),
+                              ),
+                            ),
+                          ),
+
                           // Title
                           Positioned(
                             left: 20.w,
-                            bottom: 30.h,
+                            bottom: 18.h,
                             child: SafeArea(
                               child: Text(
                                 model.categoryName ?? "",
@@ -123,7 +151,7 @@ class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
                           // Total Workouts
                           Positioned(
                             left: 20.w,
-                            bottom: 10.h,
+                            bottom: 0,
                             child: SafeArea(
                               child: Text(
                                 "${model.totalWorkouts ?? 0} Workouts",
@@ -135,8 +163,6 @@ class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
                           ),
                         ],
                       ),
-
-                      UIHelper.verticalSpace(20.h),
 
                       // Workout List
                       Padding(
@@ -270,7 +296,6 @@ class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
                     ],
                   ),
                 );
-              }
             },
           ),
 

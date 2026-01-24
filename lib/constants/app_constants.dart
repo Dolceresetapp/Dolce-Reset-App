@@ -1,6 +1,7 @@
 const String kKeyID = 'id';
 const String kKeyName = 'name';
 const String kKeyEmail = 'email';
+const String kKeyAvatar = 'avatar';
 const String kKeyAccessToken = 'access_token';
 const String kKeyIsLoggedIn = 'is_logged_in';
 const String kKeyIsFirstTime = 'kKeyIsFirstTime';
@@ -26,6 +27,12 @@ const String kKeyonboard8HeightUnit = 'onboard8HeightUnit';
 // Target Kg
 const String kKeyonboard9HeightValue = 'kKeyonboard9HeightValue';
 const String kKeyonboard9HeightUnit = 'onboard9HeightUnit';
+
+// Wellness Goals
+const String kKeyBodyPartFocus = 'bodyPartFocus';
+const String kKeyDreamBody = 'dreamBody';
+const String kKeyUrgentImprovement = 'urgentImprovement';
+const String kKeyTryingDuration = 'tryingDuration';
 
 const String kImageUrl = 'imageUrl';
 // Keys

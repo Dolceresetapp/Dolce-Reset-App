@@ -86,6 +86,18 @@ final class Endpoints {
   static String scanCode({required int scanCode}) => "/barcode/$scanCode";
 
   static String checkHealth() => "/food_scanner/checkHealth";
+
+  // Settings
+  static String updateProfile() => "/update-profile";
+  static String updateAvatar() => "/update-avatar";
+  static String updatePassword() => "/password/update";
+  static String deleteAccount() => "/delete-profile";
+  static String updateHeightWeight() => "/height_weight/update";
+  static String getHeightWeight() => "/get_height_weight";
+  static String getFaqs() => "/faq";
+  static String getMe() => "/me";
+  static String subscriptionInfo() => "/subscription/info";
+  static String billingPortal() => "/billing-portal";
 }
 
 // https://admin.dolcereset.com/api/work_out_list

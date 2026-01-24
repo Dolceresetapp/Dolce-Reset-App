@@ -52,6 +52,12 @@ import '../features/ready/ready_screen.dart';
 import '../features/rewiring_benefits/rewiring_benefit_screen.dart';
 import '../features/trial_continue/presentation/trial_continue_screen.dart';
 import '../features/video_congrats/video_congrats_screen.dart';
+import '../features/settings/presentation/profile_settings_screen.dart';
+import '../features/settings/presentation/change_password_screen.dart';
+import '../features/settings/presentation/faqs_screen.dart';
+import '../features/settings/presentation/units_metrics_screen.dart';
+import '../features/settings/presentation/notifications_screen.dart';
+import '../features/settings/presentation/wellness_goals_screen.dart';
 import '../loading.dart';
 import '../navigation_screen.dart';
 
@@ -152,6 +158,14 @@ final class Routes {
   static const String barcodeScannerScreen = '/barcodeScannerScreen';
 
   static const String cacheVideoScreen = '/cacheVideoScreen';
+
+  // Settings
+  static const String profileSettingsScreen = '/profileSettingsScreen';
+  static const String changePasswordScreen = '/changePasswordScreen';
+  static const String faqsScreen = '/faqsScreen';
+  static const String unitsMetricsScreen = '/unitsMetricsScreen';
+  static const String notificationsScreen = '/notificationsScreen';
+  static const String wellnessGoalsScreen = '/wellnessGoalsScreen';
 }
 
 //
@@ -172,6 +186,67 @@ final class RouteGenerator {
             )
             : CupertinoPageRoute(
               builder: (context) => CacheVideoScreen(id: args["id"]),
+            );
+
+      // Settings screens
+      case Routes.profileSettingsScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const ProfileSettingsScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const ProfileSettingsScreen(),
+            );
+
+      case Routes.changePasswordScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const ChangePasswordScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const ChangePasswordScreen(),
+            );
+
+      case Routes.faqsScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const FaqsScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const FaqsScreen(),
+            );
+
+      case Routes.unitsMetricsScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const UnitsMetricsScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const UnitsMetricsScreen(),
+            );
+
+      case Routes.notificationsScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const NotificationsScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const NotificationsScreen(),
+            );
+
+      case Routes.wellnessGoalsScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const WellnessGoalsScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const WellnessGoalsScreen(),
             );
 
       case Routes.barcodeScannerScreen:

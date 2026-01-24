@@ -15,11 +15,22 @@ class ProfileSectionWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ClipOval(
-          child: CustomCachedNetworkImage(
-            imageUrl: avatar,
-            width: 42.w,
-            height: 42.h,
-          ),
+          child: avatar.isEmpty
+              ? Container(
+                  width: 42.w,
+                  height: 42.h,
+                  color: const Color(0xFFE5E5E5),
+                  child: Icon(
+                    Icons.person,
+                    size: 26.sp,
+                    color: const Color(0xFF9CA3AF),
+                  ),
+                )
+              : CustomCachedNetworkImage(
+                  imageUrl: avatar,
+                  width: 42.w,
+                  height: 42.h,
+                ),
         ),
 
         SvgPicture.asset(Assets.icons.logos),

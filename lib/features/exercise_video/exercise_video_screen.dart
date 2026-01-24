@@ -16,11 +16,11 @@ import '../../common_widget/custom_app_bar.dart';
 import '../../common_widget/custom_button.dart';
 import '../../constants/text_font_style.dart';
 import '../../helpers/all_routes.dart';
-import '../../helpers/loading_helper.dart';
 import '../../helpers/navigation_service.dart';
 import '../../networks/api_acess.dart';
 import '../ready/data/model/workout_video_response_model.dart';
 import 'progress_bar_widget.dart';
+import 'workout_control_bar.dart';
 
 class ExerciseVideoScreen extends StatefulWidget {
   final int id;
@@ -30,7 +30,8 @@ class ExerciseVideoScreen extends StatefulWidget {
   State<ExerciseVideoScreen> createState() => _ExerciseVideoScreenState();
 }
 
-class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
+class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
+    with WidgetsBindingObserver {
   // Add variables for list & index
   VideoPlayerController? _controller;
 
@@ -76,6 +77,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
 
     _audioPlayer = AudioPlayer();
     // Start countdown
@@ -165,10 +167,36 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
 
   @override
   void dispose() {
-    _audioPlayer?.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    _controller?.pause();
     _controller?.dispose();
+    _audioPlayer?.stop();
+    _audioPlayer?.dispose();
     _countdownTimer?.cancel();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
+      _controller?.pause();
+      _audioPlayer?.pause();
+    }
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return '$minutes:$seconds';
+  }
+
+  void _stopAll() {
+    _controller?.pause();
+    _audioPlayer?.stop();
+    _countdownTimer?.cancel();
   }
 
   void _enterFullScreen() {
@@ -314,20 +342,19 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
                             CustomButton(
                               color: Color(0xFFAE47FF),
                               onPressed: () {
+                                _stopAll();
+                                // Save in background (don't wait, no loading)
                                 activeWorkoutSaveRxObj
                                     .activeWorkoutSaveRx(listId: widget.id)
-                                    .waitingForFuture()
-                                    .then((success) {
-                                      if (success) {
-                                        NavigationService.navigateToWithArgs(
-                                          Routes.videoCongratsScreen,
-                                          {
-                                            "duration": minutes,
-                                            "kcal": totalCal,
-                                          },
-                                        );
-                                      }
-                                    });
+                                    .catchError((_) => false);
+                                // Navigate immediately
+                                NavigationService.navigateToWithArgs(
+                                  Routes.videoCongratsScreen,
+                                  {
+                                    "duration": "$minutes:00",
+                                    "kcal": totalCal,
+                                  },
+                                );
                               },
                               text: "Finish Workout",
                             ),
@@ -665,6 +692,34 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
 
                 UIHelper.verticalSpace(20.sp),
 
+                // TIMER
+                ValueListenableBuilder(
+                  valueListenable: _controller ?? ValueNotifier(null),
+                  builder: (context, value, child) {
+                    if (_controller == null || !_controller!.value.isInitialized) {
+                      return Text(
+                        "00:00",
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 48.sp,
+                        ),
+                      );
+                    }
+                    final remaining = _controller!.value.duration - _controller!.value.position;
+                    return Text(
+                      _formatDuration(remaining),
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 48.sp,
+                      ),
+                    );
+                  },
+                ),
+
+                UIHelper.verticalSpace(8.sp),
+
                 // TITLE
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -675,55 +730,57 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
                     overflow: TextOverflow.ellipsis,
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20.sp,
                     ),
+                  ),
+                ),
+
+                UIHelper.verticalSpace(4.sp),
+
+                // STEP INDICATOR
+                Text(
+                  "STEP ${currentIndex + 1}/${videoList.length}",
+                  style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                    color: const Color(0xFF9CA3AF),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14.sp,
                   ),
                 ),
 
                 UIHelper.verticalSpace(20.sp),
 
-                // FIXED BUTTON ROW
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Row(
-                    spacing: 16.w,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _tappButton(
-                        icon: Assets.icons.previous,
-                        onTap: _playPrevious,
-                      ),
+                // WORKOUT CONTROL BAR WITH PROGRESS
+                ValueListenableBuilder(
+                  valueListenable: _controller ?? ValueNotifier(null),
+                  builder: (context, value, child) {
+                    double progress = 0.0;
+                    bool isPlaying = false;
 
-                      InkWell(
-                        onTap: () {
-                          if (_controller == null) return;
+                    if (_controller != null && _controller!.value.isInitialized) {
+                      final position = _controller!.value.position.inMilliseconds;
+                      final duration = _controller!.value.duration.inMilliseconds;
+                      if (duration > 0) {
+                        progress = position / duration;
+                      }
+                      isPlaying = _controller!.value.isPlaying;
+                    }
 
-                          setState(() {
-                            _controller!.value.isPlaying
-                                ? _controller!.pause()
-                                : _controller!.play();
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(10.sp),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF566A9),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Image.asset(
-                            _controller != null && _controller!.value.isPlaying
-                                ? Assets.images.pauseButton.path
-                                : Assets.images.playButton.path,
-                            width: 48.w,
-                            height: 48.h,
-                          ),
-                        ),
-                      ),
-
-                      _tappButton(icon: Assets.icons.next, onTap: _playNext),
-                    ],
-                  ),
+                    return WorkoutControlBar(
+                      progress: progress,
+                      isPlaying: isPlaying,
+                      onPrevious: _playPrevious,
+                      onPlayPause: () {
+                        if (_controller == null) return;
+                        setState(() {
+                          _controller!.value.isPlaying
+                              ? _controller!.pause()
+                              : _controller!.play();
+                        });
+                      },
+                      onNext: _playNext,
+                    );
+                  },
                 ),
 
                 UIHelper.verticalSpace(30.h),
@@ -736,16 +793,4 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen> {
       ),
     );
   }
-}
-
-Widget _tappButton({required VoidCallback onTap, required String icon}) {
-  return InkWell(
-    onTap: onTap,
-    child: SvgPicture.asset(
-      icon,
-      width: 64.w,
-      height: 64.h,
-      fit: BoxFit.contain,
-    ),
-  );
 }

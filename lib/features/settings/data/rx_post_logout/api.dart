@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:gritti_app/constants/app_constants.dart';
+import 'package:gritti_app/helpers/di.dart';
 
 import '../../../../../../networks/dio/dio.dart';
 import '../../../../../../networks/endpoints.dart';
@@ -15,7 +17,10 @@ final class LogoutApi {
 
   Future<LogoutResponseModel> logoutApi() async {
     try {
-      Response response = await postHttp(Endpoints.logout());
+      final deviceId = appData.read(kKeyDeviceID);
+      Response response = await postHttp(Endpoints.logout(), {
+        'device_id': deviceId,
+      });
       if (response.statusCode == 200 || response.statusCode == 201) {
         LogoutResponseModel data = LogoutResponseModel.fromRawJson(
           json.encode(response.data),

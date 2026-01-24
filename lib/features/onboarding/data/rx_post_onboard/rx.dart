@@ -82,6 +82,12 @@ final class OnboardingRx extends RxResponseInt<OnboardingResponseModel> {
     appData.write(kKeyonboard9HeightValue, data.data?.targetWeight);
     appData.write(kKeyonboard9HeightUnit, data.data?.targetWeightIn);
 
+    // Wellness Goals
+    appData.write(kKeyBodyPartFocus, data.data?.bodyPartFocus);
+    appData.write(kKeyDreamBody, data.data?.dreamBody);
+    appData.write(kKeyUrgentImprovement, data.data?.urgentImprovement);
+    appData.write(kKeyTryingDuration, data.data?.tryingDuration);
+
     dataFetcher.sink.add(data);
     return true;
   }

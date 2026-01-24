@@ -38,7 +38,7 @@ final class SignupOtpRx extends RxResponseInt<SignupOtpVerifyResponseModel> {
   @override
   handleSuccessWithReturn(SignupOtpVerifyResponseModel data) {
     appData.write(kKeyID, data.data?.id);
-    appData.write(kKeyAvar, data.data?.avatar ?? "");
+    appData.write(kKeyAvatar, data.data?.avatar ?? "");
     appData.write(kKeyName, data.data?.name ?? "");
     appData.write(kKeyEmail, data.data?.email ?? "");
 

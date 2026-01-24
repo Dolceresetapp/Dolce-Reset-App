@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gritti_app/helpers/navigation_service.dart';
 
 class InfoWidget extends StatelessWidget {
   final String description;
@@ -28,10 +27,8 @@ class InfoWidget extends StatelessWidget {
             Align(
               alignment: Alignment.topRight,
               child: IconButton(
-                onPressed: () {
-                  NavigationService.goBack;
-                },
-                icon: Icon(Icons.cancel, size: 30.sp, color: Color(0xFFF566A9)),
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(Icons.cancel, size: 30.sp, color: const Color(0xFFF566A9)),
               ),
             ),
             Html(

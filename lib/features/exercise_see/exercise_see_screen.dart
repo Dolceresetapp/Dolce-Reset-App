@@ -356,41 +356,57 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                                       );
                                     },
 
-                                    child: Stack(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            15.r,
-                                          ),
-                                          child: CustomCachedNetworkImage(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(15.r),
+                                      child: Stack(
+                                        children: [
+                                          // Image
+                                          CustomCachedNetworkImage(
                                             imageUrl: data?.image ?? "",
                                             width: double.infinity,
                                             height: 131.h,
                                             fit: BoxFit.cover,
                                           ),
-                                        ),
 
-                                        Positioned(
-                                          bottom: 10.h,
-                                          left: 10.w,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                              bottom: 20.h,
-                                              left: 10.w,
+                                          // White gradient overlay
+                                          Positioned(
+                                            left: 0,
+                                            right: 0,
+                                            bottom: 0,
+                                            child: Container(
+                                              height: 80.h,
+                                              decoration: const BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.bottomCenter,
+                                                  end: Alignment.topCenter,
+                                                  colors: [
+                                                    Colors.white,
+                                                    Colors.white,
+                                                    Color(0x00FFFFFF),
+                                                  ],
+                                                  stops: [0.0, 0.45, 1.0],
+                                                ),
+                                              ),
                                             ),
+                                          ),
+
+                                          // Theme Name
+                                          Positioned(
+                                            bottom: 18.h,
+                                            left: 12.w,
                                             child: Text(
                                               data?.name ?? "",
                                               style: TextFontStyle
                                                   .headLine16cFFFFFFWorkSansW600
                                                   .copyWith(
-                                                    color: Colors.white,
+                                                    color: const Color(0xFF27272A),
                                                     fontSize: 16.sp,
                                                     fontWeight: FontWeight.w700,
                                                   ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

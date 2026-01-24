@@ -64,12 +64,23 @@ class _MotivationScreenState extends State<MotivationScreen> {
                       children: [
                         // Profile Image
                         ClipOval(
-                          child: CustomCachedNetworkImage(
-                            imageUrl: appData.read(kKeyAvar) ?? "",
-                            width: 36.w,
-                            height: 36.h,
-                            fit: BoxFit.cover,
-                          ),
+                          child: (appData.read(kKeyAvatar) ?? "").isEmpty
+                              ? Container(
+                                  width: 36.w,
+                                  height: 36.h,
+                                  color: const Color(0xFFE5E5E5),
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 22.sp,
+                                    color: const Color(0xFF9CA3AF),
+                                  ),
+                                )
+                              : CustomCachedNetworkImage(
+                                  imageUrl: appData.read(kKeyAvatar) ?? "",
+                                  width: 36.w,
+                                  height: 36.h,
+                                  fit: BoxFit.cover,
+                                ),
                         ),
 
                         Text(

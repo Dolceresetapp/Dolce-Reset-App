@@ -37,20 +37,21 @@ final class CategoryRx extends RxResponseInt<CategoryResponseModel> {
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
-      if (error.response!.statusCode == 400) {
-        ToastUtil.showShortToast(error.response!.data["message"]);
+      final message = error.response?.data?["message"]?.toString() ?? "Errore di connessione";
+      final statusCode = error.response?.statusCode;
+
+      if (statusCode == 401) {
+        ToastUtil.showShortToast(message);
+        totalDataClean();
+        NavigationService.navigateToReplacement(Routes.signInScreen);
       } else {
-        if (error.response!.statusCode == 401) {
-          ToastUtil.showShortToast(error.response!.data["message"]);
-          totalDataClean();
-          NavigationService.navigateToReplacement(Routes.signInScreen);
-        } else {
-          ToastUtil.showShortToast(error.response!.data["message"]);
-        }
+        ToastUtil.showShortToast(message);
       }
       log(error.toString());
       dataFetcher.sink.addError(error);
-      return false;
+    } else {
+      log('Non-Dio error: $error');
     }
+    return false;
   }
 }

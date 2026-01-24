@@ -183,25 +183,21 @@ class _SignInScreenState extends State<SignInScreen> {
                   onPressed: () {
                     if (!_formKey.currentState!.validate()) {
                       return;
-                    } else if (!ischecked) {
-                      ToastUtil.showShortToast("Please check your box!!");
-                    } else {
-                      signInRxObj
-                          .signInRx(
-                            email: _emailController.text.trim().toString(),
-                            password:
-                                _passwordController.text.trim().toString(),
-                          )
-                          .waitingForFuture()
-                          .then((success) {
-                            if (success) {
-                              NavigationService.navigateToReplacement(
-                                //    Routes.onboardingScreen1,
-                                Routes.navigationScreen,
-                              );
-                            }
-                          });
                     }
+                    signInRxObj
+                        .signInRx(
+                          email: _emailController.text.trim().toString(),
+                          password:
+                              _passwordController.text.trim().toString(),
+                        )
+                        .waitingForFuture()
+                        .then((success) {
+                          if (success) {
+                            NavigationService.navigateToReplacement(
+                              Routes.navigationScreen,
+                            );
+                          }
+                        });
                   },
                   child: Row(
                     spacing: 10.w,

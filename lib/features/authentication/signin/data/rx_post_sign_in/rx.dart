@@ -44,7 +44,7 @@ final class SignInRx extends RxResponseInt<SignInResponseModel> {
     appData.write(kKeyID, data.data?.id);
     appData.write(kKeyName, data.data?.name ?? "");
     appData.write(kKeyEmail, data.data?.email ?? "");
-    appData.write(kKeyAvar, data.data?.avatar ?? "");
+    appData.write(kKeyAvatar, data.data?.avatar ?? "");
 
     appData.write(kKeyIsNutration, data.data?.isNutration ?? 0);
 

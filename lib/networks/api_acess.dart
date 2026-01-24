@@ -43,6 +43,14 @@ import '../features/rating/data/rx_get_rating/rx.dart';
 import '../features/ready/data/model/workout_video_response_model.dart';
 import '../features/ready/data/rx_get/rx.dart';
 import '../features/settings/data/rx_post_logout/rx.dart';
+import '../features/settings/data/rx_update_profile/rx.dart';
+import '../features/settings/data/rx_change_password/rx.dart';
+import '../features/settings/data/rx_faq/rx.dart';
+import '../features/settings/data/rx_units_metrics/rx.dart';
+import '../features/settings/data/rx_delete_account/rx.dart';
+import '../features/settings/data/rx_update_avatar/rx.dart';
+import '../features/settings/data/rx_wellness_goals/rx.dart';
+import '../features/settings/data/rx_subscription/rx.dart' show SubscriptionManagementRx;
 import '../features/trial_continue/data/rx_get_plan/model/plan_response_model.dart';
 import '../features/trial_continue/data/rx_get_plan/rx.dart';
 import '../features/trial_continue/data/rx_post_confirn_subscription/model/confirm_subscription_response_model.dart';
@@ -188,3 +196,13 @@ LogoutRx logoutRxObj = LogoutRx(
   empty: LogoutResponseModel(),
   dataFetcher: BehaviorSubject<LogoutResponseModel>(),
 );
+
+// Settings
+UpdateProfileRx updateProfileRxObj = UpdateProfileRx();
+UpdateAvatarRx updateAvatarRxObj = UpdateAvatarRx();
+ChangePasswordRx changePasswordRxObj = ChangePasswordRx();
+FaqRx faqRxObj = FaqRx();
+UnitsMetricsRx unitsMetricsRxObj = UnitsMetricsRx();
+DeleteAccountRx deleteAccountRxObj = DeleteAccountRx();
+WellnessGoalsRx wellnessGoalsRxObj = WellnessGoalsRx();
+SubscriptionManagementRx subscriptionManagementRxObj = SubscriptionManagementRx();

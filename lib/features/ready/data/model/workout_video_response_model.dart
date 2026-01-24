@@ -69,6 +69,7 @@ class Datum {
   int? seconds;
   String? descriptions;
   String? videos;
+  String? voiceoverText; // Text for TTS voiceover instructions
   List<Music>? music;
 
   Datum({
@@ -78,6 +79,7 @@ class Datum {
     this.seconds,
     this.descriptions,
     this.videos,
+    this.voiceoverText,
     this.music,
   });
 
@@ -88,6 +90,7 @@ class Datum {
     int? seconds,
     String? descriptions,
     String? videos,
+    String? voiceoverText,
     List<Music>? music,
   }) => Datum(
     id: id ?? this.id,
@@ -96,6 +99,7 @@ class Datum {
     seconds: seconds ?? this.seconds,
     descriptions: descriptions ?? this.descriptions,
     videos: videos ?? this.videos,
+    voiceoverText: voiceoverText ?? this.voiceoverText,
     music: music ?? this.music,
   );
 
@@ -110,6 +114,7 @@ class Datum {
     seconds: json["seconds"],
     descriptions: json["descriptions"],
     videos: json["videos"],
+    voiceoverText: json["voiceover_text"],
     music:
         json["music"] == null
             ? []
@@ -123,6 +128,7 @@ class Datum {
     "seconds": seconds,
     "descriptions": descriptions,
     "videos": videos,
+    "voiceover_text": voiceoverText,
     "music":
         music == null ? [] : List<dynamic>.from(music!.map((x) => x.toJson())),
   };
