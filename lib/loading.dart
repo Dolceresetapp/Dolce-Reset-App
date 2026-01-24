@@ -8,6 +8,7 @@ import 'navigation_screen.dart';
 import 'networks/api_acess.dart';
 import 'networks/dio/dio.dart';
 import 'splash_screen.dart';
+import 'services/preload_service.dart';
 
 final class Loading extends StatefulWidget {
   const Loading({super.key});
@@ -27,6 +28,10 @@ class _LoadingState extends State<Loading> {
 
   Future<void> loadInitialData() async {
     await setInitValue();
+
+    // Always preload public data (doesn't require login)
+    preloadService.preloadEssentialData();
+
     bool isLoggedIn = appData.read(kKeyIsLoggedIn) ?? false;
 
     if (isLoggedIn) {
