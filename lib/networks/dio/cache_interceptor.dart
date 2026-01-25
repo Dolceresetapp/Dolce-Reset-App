@@ -11,6 +11,7 @@ class CacheInterceptor extends Interceptor {
 
   // Endpoints that should be cached
   static const List<String> cacheableEndpoints = [
+    '/me',
     '/category',
     '/themes',
     '/categoryWiseWorkouts',
@@ -22,6 +23,9 @@ class CacheInterceptor extends Interceptor {
     '/my_active_workouts',
     '/music',
     '/user_music',
+    '/page/home',
+    '/plans',
+    '/faq',
   ];
 
   String _getCacheKey(RequestOptions options) {

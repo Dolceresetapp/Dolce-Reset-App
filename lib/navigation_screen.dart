@@ -10,6 +10,7 @@ import 'features/motivation/presentation/motivation_screen.dart';
 import 'features/settings/presentation/settings_screen.dart';
 import 'gen/assets.gen.dart';
 import 'networks/api_acess.dart';
+import 'services/preload_service.dart';
 
 class NavigationScreen extends StatefulWidget {
   final int initialIndex;
@@ -26,6 +27,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
   void initState() {
     super.initState();
     currentIndex = widget.initialIndex;
+
+    // Preload all authenticated data in background for instant UX
+    preloadService.preloadAuthenticatedData();
+
     motivationCoachRxObj.motivationCoachRx(prompt: "Hello");
   }
 
