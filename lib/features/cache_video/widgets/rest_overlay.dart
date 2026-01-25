@@ -119,7 +119,7 @@ class _RestOverlayState extends State<RestOverlay>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black.withValues(alpha:0.6),
+      color: Colors.black.withOpacity(0.6),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
         child: SafeArea(
@@ -149,7 +149,7 @@ class _RestOverlayState extends State<RestOverlay>
     return Text(
       "RIPOSO",
       style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-        color: Colors.white.withValues(alpha:0.7),
+        color: Colors.white.withOpacity(0.7),
         fontSize: 14.sp,
         fontWeight: FontWeight.w600,
         letterSpacing: 3,
@@ -171,7 +171,7 @@ class _RestOverlayState extends State<RestOverlay>
               child: CircularProgressIndicator(
                 value: 1,
                 strokeWidth: 6.w,
-                color: Colors.white.withValues(alpha:0.2),
+                color: Colors.white.withOpacity(0.2),
               ),
             ),
             // Progress circle
@@ -243,7 +243,7 @@ class _RestOverlayState extends State<RestOverlay>
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(
-          color: Colors.white.withValues(alpha:0.2),
+          color: Colors.white.withOpacity(0.2),
           width: 2,
         ),
       ),
@@ -259,7 +259,7 @@ class _RestOverlayState extends State<RestOverlay>
                 ),
               )
             : Container(
-                color: Colors.black.withValues(alpha:0.3),
+                color: Colors.black.withOpacity(0.3),
                 child: Center(
                   child: CircularProgressIndicator(
                     color: _accentColor,
@@ -282,7 +282,7 @@ class _RestOverlayState extends State<RestOverlay>
           borderRadius: BorderRadius.circular(30.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha:0.2),
+              color: Colors.black.withOpacity(0.2),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),

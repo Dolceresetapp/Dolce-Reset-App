@@ -307,7 +307,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
                 // Loading overlay during transition
                 if (_isTransitioning)
                   Container(
-                    color: Colors.black.withValues(alpha: 0.7),
+                    color: Colors.black.withOpacity(0.7),
                     child: const Center(
                       child: CircularProgressIndicator(color: _accentColor),
                     ),
@@ -320,7 +320,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.6),
+                      color: Colors.black.withOpacity(0.6),
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: Row(
@@ -372,7 +372,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
                       width: 44,
                       height: 44,
                       decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.6),
+                        color: Colors.black.withOpacity(0.6),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
@@ -405,7 +405,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
                                 colors: [
-                                  Colors.black.withValues(alpha: 0.8),
+                                  Colors.black.withOpacity(0.8),
                                   Colors.transparent,
                                 ],
                               ),
@@ -425,7 +425,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: _accentColor.withValues(alpha: 0.5),
+                                    color: _accentColor.withOpacity(0.5),
                                     blurRadius: 25,
                                     spreadRadius: 5,
                                   ),
@@ -488,7 +488,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
                                           Container(
                                             height: 5,
                                             decoration: BoxDecoration(
-                                              color: Colors.white.withValues(alpha: 0.3),
+                                              color: Colors.white.withOpacity(0.3),
                                               borderRadius: BorderRadius.circular(3),
                                             ),
                                           ),
@@ -553,7 +553,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
         : "Prossimo esercizio";
 
     return Container(
-      color: Colors.black.withValues(alpha: 0.9),
+      color: Colors.black.withOpacity(0.9),
       child: SafeArea(
         child: Row(
           children: [
@@ -568,7 +568,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
                     Text(
                       "RIPOSO",
                       style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.5),
+                        color: Colors.white.withOpacity(0.5),
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 4,
@@ -588,7 +588,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
                             child: CircularProgressIndicator(
                               value: 1,
                               strokeWidth: 6,
-                              color: Colors.white.withValues(alpha: 0.15),
+                              color: Colors.white.withOpacity(0.15),
                             ),
                           ),
                           if (_restProgressController != null)
@@ -662,7 +662,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.3),
+                              color: Colors.black.withOpacity(0.3),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -697,12 +697,12 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.15),
+                    color: Colors.white.withOpacity(0.15),
                     width: 2,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.5),
+                      color: Colors.black.withOpacity(0.5),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
@@ -720,7 +720,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
                           ),
                         )
                       : Container(
-                          color: Colors.black.withValues(alpha: 0.5),
+                          color: Colors.black.withOpacity(0.5),
                           child: const Center(
                             child: CircularProgressIndicator(color: _accentColor, strokeWidth: 3),
                           ),
@@ -745,16 +745,16 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
         width: 52,
         height: 52,
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: enabled ? 0.2 : 0.1),
+          color: Colors.white.withOpacity(enabled ? 0.2 : 0.1),
           shape: BoxShape.circle,
           border: Border.all(
-            color: Colors.white.withValues(alpha: enabled ? 0.3 : 0.1),
+            color: Colors.white.withOpacity(enabled ? 0.3 : 0.1),
             width: 1,
           ),
         ),
         child: Icon(
           icon,
-          color: Colors.white.withValues(alpha: enabled ? 1.0 : 0.3),
+          color: Colors.white.withOpacity(enabled ? 1.0 : 0.3),
           size: 30,
         ),
       ),

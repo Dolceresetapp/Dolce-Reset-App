@@ -380,13 +380,15 @@ final class RouteGenerator {
             );
 
       case Routes.navigationScreen:
+        final args = settings.arguments as Map?;
+        final initialIndex = args?["index"] as int? ?? 0;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const NavigationScreen(),
+              widget: NavigationScreen(initialIndex: initialIndex),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const NavigationScreen(),
+              builder: (context) => NavigationScreen(initialIndex: initialIndex),
             );
 
       case Routes.exerciseVideoScreen:

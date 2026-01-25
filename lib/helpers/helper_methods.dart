@@ -743,3 +743,14 @@ double calculateCompletionPercentage({
   double percentage = (completedCourses * totalCourses) / 100;
   return percentage;
 }
+
+/// Returns the user's avatar URL with a fallback to a default avatar
+/// if the stored avatar is empty or null
+String getUserAvatar() {
+  final avatar = appData.read(kKeyAvatar);
+  if (avatar == null || avatar.toString().isEmpty) {
+    final name = appData.read(kKeyName) ?? 'User';
+    return 'https://ui-avatars.com/api/?name=${Uri.encodeComponent(name)}&background=767EFF&color=fff&size=200';
+  }
+  return avatar.toString();
+}

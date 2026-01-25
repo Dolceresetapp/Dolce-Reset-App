@@ -34,6 +34,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
     with WidgetsBindingObserver {
   // Add variables for list & index
   VideoPlayerController? _controller;
+  VideoPlayerController? _nextController; // Preload next video
 
   int currentIndex = 0;
   List videoList = [];
@@ -98,7 +99,6 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
   }
 
   // Initialize video controller for any index
-
   void _initializeVideo(String url) {
     _controller?.dispose();
 
@@ -107,8 +107,10 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
         setState(() {});
 
         // Do not auto play
-
         _controller!.pause();
+
+        // Preload next video for smooth transition
+        _preloadNextVideo();
 
         // auto next
         _controller!.addListener(() {
@@ -119,14 +121,17 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
             _playNext();
           }
         });
-
-        // // Auto play next video when current ends
-        // _controller!.addListener(() {
-        //   if (_controller!.value.position >= _controller!.value.duration) {
-        //     _playNext();
-        //   }
-        // });
       });
+  }
+
+  // Preload next video in background
+  void _preloadNextVideo() {
+    if (currentIndex < videoList.length - 1) {
+      _nextController?.dispose();
+      _nextController = VideoPlayerController.networkUrl(
+        Uri.parse(videoList[currentIndex + 1].videos),
+      )..initialize(); // Just initialize, don't play
+    }
   }
 
   // void _initializeVideo(String url) {
@@ -152,7 +157,34 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
       setState(() {
         currentIndex++;
       });
-      _initializeVideo(videoList[currentIndex].videos);
+
+      // Use preloaded controller if available for smooth transition
+      if (_nextController != null && _nextController!.value.isInitialized) {
+        _controller?.dispose();
+        _controller = _nextController;
+        _nextController = null;
+        setState(() {});
+        _controller!.pause();
+
+        // Add listener for auto next
+        _controller!.addListener(() {
+          if (_controller!.value.isInitialized &&
+              _controller!.value.position >=
+                  _controller!.value.duration -
+                      const Duration(milliseconds: 200)) {
+            _playNext();
+          }
+        });
+
+        // Preload the next one
+        _preloadNextVideo();
+
+        // Restart countdown for next video
+        _startCountdown();
+      } else {
+        _initializeVideo(videoList[currentIndex].videos);
+        _startCountdown();
+      }
     }
   }
 
@@ -162,6 +194,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
         currentIndex--;
       });
       _initializeVideo(videoList[currentIndex].videos);
+      _startCountdown();
     }
   }
 
@@ -170,6 +203,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
     WidgetsBinding.instance.removeObserver(this);
     _controller?.pause();
     _controller?.dispose();
+    _nextController?.dispose();
     _audioPlayer?.stop();
     _audioPlayer?.dispose();
     _countdownTimer?.cancel();
@@ -433,7 +467,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
                       if (_showCountdown)
                         Positioned.fill(
                           child: Container(
-                            color: Colors.black.withValues(alpha: .6),
+                            color: Colors.black.withOpacity(.6),
                             alignment: Alignment.center,
                             child: AnimatedSwitcher(
                               duration: const Duration(milliseconds: 300),
@@ -553,7 +587,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
                                               decoration: BoxDecoration(
                                                 color: Color(
                                                   0xFFF566A9,
-                                                ).withValues(alpha: 0.4),
+                                                ).withOpacity(0.4),
                                                 borderRadius:
                                                     BorderRadius.circular(10.r),
                                               ),

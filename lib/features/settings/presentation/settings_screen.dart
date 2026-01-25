@@ -16,6 +16,7 @@ import 'package:gritti_app/networks/dio/dio.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../networks/api_acess.dart';
+import '../../../helpers/helper_methods.dart';
 import '../widgets/settings_title_widget.dart';
 import '../widgets/settings_toggle_widget.dart';
 import '../widgets/user_info_widget.dart';
@@ -249,30 +250,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  String? _getAvatarUrl() {
-    final avatar = appData.read(kKeyAvatar);
-    if (avatar == null || avatar.toString().isEmpty) return null;
-
-    String avatarUrl = avatar.toString();
-    // If it's a relative path, prepend the base URL
-    if (avatarUrl.startsWith('/')) {
-      avatarUrl = 'https://admin.dolcereset.com$avatarUrl';
-    }
-    return avatarUrl;
+  String _getAvatarUrl() {
+    return getUserAvatar();
   }
 
   Widget _buildAvatarImage() {
     final avatarUrl = _getAvatarUrl();
-
-    if (avatarUrl == null) {
-      return Center(
-        child: Icon(
-          Icons.person,
-          size: 40.sp,
-          color: const Color(0xFF9CA3AF),
-        ),
-      );
-    }
 
     return Image.network(
       avatarUrl,

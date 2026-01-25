@@ -138,7 +138,7 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
             //     "Enter ingredients...",
             //     textAlign: TextAlign.center,
             //     style: TextFontStyle.headline30c27272AtyleWorkSansW700.copyWith(
-            //       color: const Color(0xFF52525B).withValues(alpha: 0.6),
+            //       color: const Color(0xFF52525B).withOpacity(0.6),
             //       fontSize: 16.sp,
             //       fontWeight: FontWeight.w400,
             //     ),
@@ -245,7 +245,7 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
                 hintText: "Do you have any question about food?",
                 hintStyle: TextFontStyle.headline30c27272AtyleWorkSansW700
                     .copyWith(
-                      color: const Color(0xFF52525B).withValues(alpha: 0.6),
+                      color: const Color(0xFF52525B).withOpacity(0.6),
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w100,
                     ),

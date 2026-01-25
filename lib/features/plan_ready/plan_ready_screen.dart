@@ -148,7 +148,7 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                 width: 1.sw,
                 padding: EdgeInsetsDirectional.all(16.sp),
                 decoration: BoxDecoration(
-                  color: Color(0xFFE2448B).withValues(alpha: 0.5),
+                  color: Color(0xFFE2448B).withOpacity(0.5),
                   borderRadius: BorderRadius.circular(25.r),
                 ),
                 child: Container(

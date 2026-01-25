@@ -100,7 +100,7 @@ class RestTimerSheet extends StatelessWidget {
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                             .copyWith(
                           color: isSelected
-                              ? Colors.white.withValues(alpha: 0.8)
+                              ? Colors.white.withOpacity(0.8)
                               : Colors.grey.shade600,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w500,

@@ -6,8 +6,8 @@ import '../../helpers/di.dart';
 /// HTTP Cache Interceptor using GetStorage
 /// Caches GET requests and returns cached data immediately while refreshing in background
 class CacheInterceptor extends Interceptor {
-  // Cache TTL in milliseconds (1 hour)
-  static const int cacheTTL = 3600000;
+  // Cache TTL in milliseconds (6 hours for better UX)
+  static const int cacheTTL = 21600000;
 
   // Endpoints that should be cached
   static const List<String> cacheableEndpoints = [
@@ -18,6 +18,10 @@ class CacheInterceptor extends Interceptor {
     '/trainingLevelWiseWorkouts',
     '/workoutWiseVideos',
     '/circels',
+    '/work_out_list',
+    '/my_active_workouts',
+    '/music',
+    '/user_music',
   ];
 
   String _getCacheKey(RequestOptions options) {

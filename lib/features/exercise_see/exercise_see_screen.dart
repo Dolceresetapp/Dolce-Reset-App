@@ -247,7 +247,7 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                                                 .copyWith(
                                                   color: const Color(
                                                     0xFF2E2E2E,
-                                                  ).withValues(alpha: 0.4),
+                                                  ).withOpacity(0.4),
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.w300,
                                                 ),

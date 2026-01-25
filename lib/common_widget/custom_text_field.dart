@@ -115,7 +115,7 @@ class CustomTextField extends StatelessWidget {
         hintStyle:
             hintStyle ??
             TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-              color: const Color(0xFF27272A).withValues(alpha: 0.8),
+              color: const Color(0xFF27272A).withOpacity(0.8),
               fontSize: 16.sp,
               fontWeight: FontWeight.w100,
             ),

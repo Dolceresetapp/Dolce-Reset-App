@@ -60,7 +60,7 @@ class MusicWidget extends StatelessWidget {
                 return Container(
                   margin: EdgeInsets.only(bottom: 10.h),
                   decoration: BoxDecoration(
-                    color: Color(0xFFF566A9).withValues(alpha: 0.4),
+                    color: Color(0xFFF566A9).withOpacity(0.4),
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: ListTile(

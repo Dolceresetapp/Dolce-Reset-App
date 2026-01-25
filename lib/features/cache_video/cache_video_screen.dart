@@ -243,7 +243,7 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
       width: 44.w,
       height: 44.h,
       decoration: BoxDecoration(
-        color: isActive ? _accentColor : Colors.black.withValues(alpha:0.4),
+        color: isActive ? _accentColor : Colors.black.withOpacity(0.4),
         shape: BoxShape.circle,
       ),
       child: Center(
@@ -406,8 +406,8 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
               height: 40.w,
               decoration: BoxDecoration(
                 color: provider.voiceoverEnabled
-                    ? _accentColor.withValues(alpha: 0.15)
-                    : Colors.grey.withValues(alpha: 0.15),
+                    ? _accentColor.withOpacity(0.15)
+                    : Colors.grey.withOpacity(0.15),
                 shape: BoxShape.circle,
               ),
               child: Icon(

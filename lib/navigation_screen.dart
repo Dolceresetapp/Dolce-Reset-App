@@ -12,26 +12,29 @@ import 'gen/assets.gen.dart';
 import 'networks/api_acess.dart';
 
 class NavigationScreen extends StatefulWidget {
-  const NavigationScreen({super.key});
+  final int initialIndex;
+  const NavigationScreen({super.key, this.initialIndex = 0});
 
   @override
   State<NavigationScreen> createState() => _NavigationScreenState();
 }
 
 class _NavigationScreenState extends State<NavigationScreen> {
-  int currentIndex = 0;
+  late int currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.initialIndex;
+    motivationCoachRxObj.motivationCoachRx(prompt: "Hello");
+  }
+
   final List<Widget> widgetList = [
     ExceriseScreen(),
     ChefScreen(),
     MotivationScreen(),
     SettingsScreen(),
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    motivationCoachRxObj.motivationCoachRx(prompt: "Hello");
-  }
 
   @override
   Widget build(BuildContext context) {

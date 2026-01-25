@@ -11,6 +11,7 @@ import 'package:gritti_app/networks/api_acess.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../constants/app_constants.dart';
+import '../../../helpers/helper_methods.dart';
 
 class ProfileSettingsScreen extends StatefulWidget {
   const ProfileSettingsScreen({super.key});
@@ -293,21 +294,34 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                   shape: BoxShape.circle,
                                   color: Color(0xFFF566A9),
                                 ),
-                                child: CircleAvatar(
-                                  radius: 45.r,
-                                  backgroundColor: const Color(0xFFE5E5E5),
-                                  backgroundImage: _selectedImage != null
-                                      ? FileImage(_selectedImage!)
-                                      : (_currentAvatarUrl != null && _currentAvatarUrl!.isNotEmpty
-                                          ? NetworkImage(_currentAvatarUrl!) as ImageProvider
-                                          : null),
-                                  child: (_selectedImage == null && (_currentAvatarUrl == null || _currentAvatarUrl!.isEmpty))
-                                      ? Icon(
-                                          Icons.person,
-                                          size: 45.sp,
-                                          color: const Color(0xFF9CA3AF),
+                                child: Container(
+                                  width: 90.w,
+                                  height: 90.w,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xFFE5E5E5),
+                                  ),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: _selectedImage != null
+                                      ? Image.file(
+                                          _selectedImage!,
+                                          fit: BoxFit.cover,
+                                          width: 90.w,
+                                          height: 90.w,
                                         )
-                                      : null,
+                                      : Image.network(
+                                          getUserAvatar(),
+                                          fit: BoxFit.cover,
+                                          width: 90.w,
+                                          height: 90.w,
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return Icon(
+                                              Icons.person,
+                                              size: 45.sp,
+                                              color: const Color(0xFF9CA3AF),
+                                            );
+                                          },
+                                        ),
                                 ),
                               ),
                               Positioned(

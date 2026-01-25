@@ -18,6 +18,7 @@ import '../data/rx_get_my_workout/model/my_workout_response_model.dart';
 import '../widgets/active_workout_widget.dart';
 import '../widgets/profile_section_widget.dart';
 import '../widgets/training_level_card_widget.dart';
+import '../../../helpers/helper_methods.dart';
 
 class ExceriseScreen extends StatefulWidget {
   const ExceriseScreen({super.key});
@@ -88,7 +89,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
           child: Column(
             children: [
               //   UIHelper.verticalSpace(10.h),
-              ProfileSectionWidget(avatar: appData.read(kKeyAvatar) ?? ''),
+              ProfileSectionWidget(avatar: getUserAvatar()),
               UIHelper.verticalSpace(30.h),
 
               // Body parts Exercise
@@ -229,7 +230,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                                           .copyWith(
                                             color: const Color(
                                               0xFF2E2E2E,
-                                            ).withValues(alpha: 0.4),
+                                            ).withOpacity(0.4),
                                             fontSize: 12.sp,
                                             fontWeight: FontWeight.w300,
                                           ),

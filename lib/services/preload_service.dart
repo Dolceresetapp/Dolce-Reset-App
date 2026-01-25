@@ -24,7 +24,11 @@ class PreloadService {
     }
 
     try {
-      // Preload public endpoints that don't require auth
+      // First, warm up the server with a lightweight health check
+      // This wakes up Railway from sleep before heavy requests
+      await _warmUpServer();
+
+      // Then preload public endpoints that don't require auth
       await Future.wait([
         _preloadEndpoint('/page/home', 'preload_home'),
         _preloadEndpoint('/plans', 'preload_plans'),
@@ -45,20 +49,46 @@ class PreloadService {
     }
   }
 
+  /// Warm up the server with a lightweight health check
+  /// This helps avoid cold start delays on Railway
+  Future<void> _warmUpServer() async {
+    try {
+      final stopwatch = Stopwatch()..start();
+      await getHttp('/health');
+      stopwatch.stop();
+      if (kDebugMode) {
+        print('[PreloadService] Server warm-up: ${stopwatch.elapsedMilliseconds}ms');
+      }
+    } catch (e) {
+      // Ignore errors - server might not have health endpoint yet
+      if (kDebugMode) {
+        print('[PreloadService] Warm-up failed (ok if old backend): $e');
+      }
+    }
+  }
+
   /// Preload authenticated data after login
+  /// This loads ALL the data needed for the main screens in parallel
   Future<void> preloadAuthenticatedData() async {
     if (kDebugMode) {
       print('[PreloadService] Starting authenticated data preload...');
     }
 
+    final stopwatch = Stopwatch()..start();
+
     try {
+      // Load ALL main screen data in parallel for instant UX
       await Future.wait([
         _preloadEndpoint('/category', 'preload_categories'),
         _preloadEndpoint('/themes', 'preload_themes'),
+        _preloadEndpoint('/work_out_list', 'preload_workouts'),
+        _preloadEndpoint('/me', 'preload_user'),
+        _preloadEndpoint('/music/list', 'preload_music'),
       ]);
 
+      stopwatch.stop();
       if (kDebugMode) {
-        print('[PreloadService] Authenticated data preload completed');
+        print('[PreloadService] Authenticated data preload completed in ${stopwatch.elapsedMilliseconds}ms');
       }
     } catch (e) {
       if (kDebugMode) {

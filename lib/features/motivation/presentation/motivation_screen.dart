@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gritti_app/common_widget/custom_network_image.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
@@ -16,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../../../common_widget/custom_button.dart';
 import '../../../constants/app_constants.dart';
+import '../../../helpers/helper_methods.dart';
 
 class MotivationScreen extends StatefulWidget {
   const MotivationScreen({super.key});
@@ -63,24 +63,38 @@ class _MotivationScreenState extends State<MotivationScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Profile Image
-                        ClipOval(
-                          child: (appData.read(kKeyAvatar) ?? "").isEmpty
-                              ? Container(
-                                  width: 36.w,
-                                  height: 36.h,
-                                  color: const Color(0xFFE5E5E5),
-                                  child: Icon(
+                        GestureDetector(
+                          onTap: () {
+                            NavigationService.navigateToWithArgs(Routes.navigationScreen, {"index": 3});
+                          },
+                          child: Container(
+                            width: 36.w,
+                            height: 36.w,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xFFE5E5E5),
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            child: getUserAvatar().isEmpty
+                                ? Icon(
                                     Icons.person,
                                     size: 22.sp,
                                     color: const Color(0xFF9CA3AF),
+                                  )
+                                : Image.network(
+                                    getUserAvatar(),
+                                    width: 36.w,
+                                    height: 36.w,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Icon(
+                                        Icons.person,
+                                        size: 22.sp,
+                                        color: const Color(0xFF9CA3AF),
+                                      );
+                                    },
                                   ),
-                                )
-                              : CustomCachedNetworkImage(
-                                  imageUrl: appData.read(kKeyAvatar) ?? "",
-                                  width: 36.w,
-                                  height: 36.h,
-                                  fit: BoxFit.cover,
-                                ),
+                          ),
                         ),
 
                         Text(
@@ -162,7 +176,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
 
                               padding: EdgeInsets.all(20.sp),
                               decoration: BoxDecoration(
-                                color: Color(0xFF8b838a).withValues(alpha: 0.7),
+                                color: Color(0xFF8b838a).withOpacity(0.7),
                                 borderRadius: BorderRadius.circular(16.r),
                               ),
                               child: Text(

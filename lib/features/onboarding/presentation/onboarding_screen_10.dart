@@ -110,7 +110,7 @@ class _OnboardingScreen10State extends State<OnboardingScreen10> {
                       ),
                       color: Color(
                         0xFFe5e9ff,
-                      ).withValues(alpha: 0.6), // light background
+                      ).withOpacity(0.6), // light background
                     ),
                   ),
                 ),

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -25,6 +26,9 @@ class VideoCongratsScreen extends StatefulWidget {
 
 class _VideoCongratsScreenState extends State<VideoCongratsScreen>
     with TickerProviderStateMixin {
+  // Success sound
+  AudioPlayer? _audioPlayer;
+
   // Confetti
   late AnimationController _confettiController;
   final List<ConfettiParticle> _particles = [];
@@ -50,6 +54,9 @@ class _VideoCongratsScreenState extends State<VideoCongratsScreen>
   @override
   void initState() {
     super.initState();
+
+    // Play success/celebration sound
+    _playSuccessSound();
 
     // Confetti controller
     _confettiController = AnimationController(
@@ -175,8 +182,24 @@ class _VideoCongratsScreenState extends State<VideoCongratsScreen>
     Color(0xFFA8E6CF), // Mint
   ];
 
+  Future<void> _playSuccessSound() async {
+    try {
+      _audioPlayer = AudioPlayer();
+      // Play celebration sound from local assets
+      await _audioPlayer?.play(
+        AssetSource('sounds/celebration.mp3'),
+        volume: 0.9,
+      );
+    } catch (e) {
+      // Ignore errors - sound is optional
+      debugPrint('Could not play success sound: $e');
+    }
+  }
+
   @override
   void dispose() {
+    _audioPlayer?.stop();
+    _audioPlayer?.dispose();
     _confettiController.dispose();
     _contentController.dispose();
     _pulseController.dispose();
@@ -235,7 +258,7 @@ class _VideoCongratsScreenState extends State<VideoCongratsScreen>
                                     boxShadow: [
                                       BoxShadow(
                                         color: const Color(0xFFF566A9)
-                                            .withValues(alpha: _pulseAnimation.value),
+                                            .withOpacity(_pulseAnimation.value),
                                         blurRadius: 40,
                                         spreadRadius: 10,
                                       ),
@@ -408,7 +431,7 @@ class _VideoCongratsScreenState extends State<VideoCongratsScreen>
         border: Border.all(color: Colors.grey.shade200),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -453,7 +476,7 @@ class _VideoCongratsScreenState extends State<VideoCongratsScreen>
         border: Border.all(color: Colors.grey.shade200),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -519,7 +542,7 @@ class ConfettiPainter extends CustomPainter {
     for (var particle in particles) {
       final opacity = (1 - progress * 0.3).clamp(0.0, 1.0);
       final paint = Paint()
-        ..color = particle.color.withValues(alpha: opacity)
+        ..color = particle.color.withOpacity(opacity)
         ..style = PaintingStyle.fill;
 
       final x = particle.x * size.width +

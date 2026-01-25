@@ -88,7 +88,7 @@ class _ImagePlaceholderState extends State<_ImagePlaceholder>
         return Container(
           width: widget.width,
           height: widget.height,
-          color: Colors.grey.withValues(alpha: _animation.value),
+          color: Colors.grey.withOpacity(_animation.value),
         );
       },
     );
