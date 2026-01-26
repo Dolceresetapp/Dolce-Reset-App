@@ -28,8 +28,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
     super.initState();
     currentIndex = widget.initialIndex;
 
-    // Preload all authenticated data in background for instant UX
-    preloadService.preloadAuthenticatedData();
+    // Deep preload workout details and videos in background
+    preloadService.preloadDeepContent();
 
     motivationCoachRxObj.motivationCoachRx(prompt: "Hello");
   }

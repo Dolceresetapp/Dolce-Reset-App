@@ -8,6 +8,7 @@ import 'package:gritti_app/constants/validation.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
+import 'package:gritti_app/services/preload_service.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widget/custom_button.dart';
@@ -31,6 +32,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _confirmPasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Start preloading in background as soon as user sees signup screen
+    preloadService.preloadOnLoginScreen();
+  }
 
   @override
   void dispose() {

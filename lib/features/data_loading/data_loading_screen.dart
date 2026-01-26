@@ -52,11 +52,12 @@ class _DataLoadingScreenState extends State<DataLoadingScreen>
 
   Future<void> _loadAllData() async {
     try {
+      // Load RxDart streams AND preload all images in parallel
       await Future.wait([
         _loadWithStatus(() => categoryRxObj.categoryRx(), 'Categories'),
         _loadWithStatus(() => themeRxObj.themeRx(), 'Themes'),
         _loadWithStatus(() => myWorkoutRxObj.myWorkoutRx(), 'Workouts'),
-        _loadWithStatus(() => preloadService.preloadAuthenticatedData(), 'Profile'),
+        _loadWithStatus(() => preloadService.preloadAfterLogin(), 'Profile'),
       ]);
 
       setState(() => _status = 'Pronto!');

@@ -1,131 +1,234 @@
 import 'package:flutter/foundation.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import '../networks/dio/dio.dart';
 import '../helpers/di.dart';
 import 'dart:convert';
 
-/// Service to preload and cache data when the app starts
-/// This runs in the background and caches API responses for faster access
+/// Aggressive preloading service that caches everything in background
+/// Strategy: Start preloading on login screen, continue after auth
 class PreloadService {
   static final PreloadService _instance = PreloadService._internal();
   factory PreloadService() => _instance;
   PreloadService._internal();
 
-  bool _isPreloading = false;
-  bool _hasPreloaded = false;
+  bool _isPreloadingPublic = false;
+  bool _isPreloadingAuth = false;
+  bool _isPreloadingDeep = false;
 
-  /// Preload essential data in the background
-  /// Call this when the app starts, even before login
-  Future<void> preloadEssentialData() async {
-    if (_isPreloading || _hasPreloaded) return;
-    _isPreloading = true;
+  /// PHASE 1: Call on login/signup screen
+  /// Warms up server and preloads public content
+  Future<void> preloadOnLoginScreen() async {
+    if (_isPreloadingPublic) return;
+    _isPreloadingPublic = true;
 
-    if (kDebugMode) {
-      print('[PreloadService] Starting background preload...');
-    }
+    if (kDebugMode) print('[Preload] Phase 1: Login screen preload starting...');
 
     try {
-      // First, warm up the server with a lightweight health check
-      // This wakes up Railway from sleep before heavy requests
+      // Warm up server first (Railway cold start)
       await _warmUpServer();
 
-      // Then preload public endpoints that don't require auth
+      // Preload public data in parallel
       await Future.wait([
-        _preloadEndpoint('/page/home', 'preload_home'),
-        _preloadEndpoint('/plans', 'preload_plans'),
-        _preloadEndpoint('/reviews', 'preload_reviews'),
-        _preloadEndpoint('/faq', 'preload_faq'),
+        _preloadEndpoint('/page/home'),
+        _preloadEndpoint('/plans'),
+        _preloadEndpoint('/reviews'),
+        _preloadEndpoint('/faq'),
       ]);
 
-      _hasPreloaded = true;
-      if (kDebugMode) {
-        print('[PreloadService] Background preload completed');
-      }
+      if (kDebugMode) print('[Preload] Phase 1 complete');
     } catch (e) {
-      if (kDebugMode) {
-        print('[PreloadService] Preload error: $e');
-      }
+      if (kDebugMode) print('[Preload] Phase 1 error: $e');
     } finally {
-      _isPreloading = false;
+      _isPreloadingPublic = false;
     }
   }
 
-  /// Warm up the server with a lightweight health check
-  /// This helps avoid cold start delays on Railway
-  Future<void> _warmUpServer() async {
-    try {
-      final stopwatch = Stopwatch()..start();
-      await getHttp('/health');
-      stopwatch.stop();
-      if (kDebugMode) {
-        print('[PreloadService] Server warm-up: ${stopwatch.elapsedMilliseconds}ms');
-      }
-    } catch (e) {
-      // Ignore errors - server might not have health endpoint yet
-      if (kDebugMode) {
-        print('[PreloadService] Warm-up failed (ok if old backend): $e');
-      }
-    }
-  }
+  /// PHASE 2: Call after successful login (in DataLoadingScreen)
+  /// Preloads all main screen data + images
+  Future<void> preloadAfterLogin() async {
+    if (_isPreloadingAuth) return;
+    _isPreloadingAuth = true;
 
-  /// Preload authenticated data after login
-  /// This loads ALL the data needed for the main screens in parallel
-  Future<void> preloadAuthenticatedData() async {
-    if (kDebugMode) {
-      print('[PreloadService] Starting authenticated data preload...');
-    }
-
-    final stopwatch = Stopwatch()..start();
+    if (kDebugMode) print('[Preload] Phase 2: Auth data preload starting...');
 
     try {
-      // Load ALL main screen data in parallel for instant UX
-      await Future.wait([
-        _preloadEndpoint('/category', 'preload_categories'),
-        _preloadEndpoint('/themes', 'preload_themes'),
-        _preloadEndpoint('/work_out_list', 'preload_workouts'),
-        _preloadEndpoint('/me', 'preload_user'),
-        _preloadEndpoint('/music/list', 'preload_music'),
+      // Load core data first
+      final results = await Future.wait([
+        _preloadEndpointWithData('/category'),
+        _preloadEndpointWithData('/themes'),
+        _preloadEndpointWithData('/work_out_list'),
+        _preloadEndpoint('/me'),
+        _preloadEndpoint('/music/list'),
       ]);
 
-      stopwatch.stop();
-      if (kDebugMode) {
-        print('[PreloadService] Authenticated data preload completed in ${stopwatch.elapsedMilliseconds}ms');
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('[PreloadService] Auth preload error: $e');
-      }
-    }
-  }
+      // Extract image URLs and preload them
+      final imageUrls = <String>[];
 
-  /// Preload a single endpoint and cache the response
-  Future<void> _preloadEndpoint(String endpoint, String cacheKey) async {
-    try {
-      final response = await getHttp(endpoint);
-      if (response.statusCode == 200) {
-        // Cache the response
-        final cacheData = jsonEncode({
-          'timestamp': DateTime.now().millisecondsSinceEpoch,
-          'data': response.data,
-        });
-        appData.write('http_cache_${DioSingleton.instance.dio.options.baseUrl}$endpoint', cacheData);
-
-        if (kDebugMode) {
-          print('[PreloadService] Cached: $endpoint');
+      // Categories images
+      if (results[0] != null && results[0]['data'] != null) {
+        for (var item in results[0]['data']) {
+          if (item['image'] != null && item['image'].toString().isNotEmpty) {
+            imageUrls.add(item['image']);
+          }
         }
       }
-    } catch (e) {
-      // Silently fail - this is background preloading
-      if (kDebugMode) {
-        print('[PreloadService] Failed to preload $endpoint: $e');
+
+      // Themes images
+      if (results[1] != null && results[1]['data'] != null) {
+        for (var item in results[1]['data']) {
+          if (item['image'] != null && item['image'].toString().isNotEmpty) {
+            imageUrls.add(item['image']);
+          }
+        }
       }
+
+      // Workouts images
+      if (results[2] != null && results[2]['active_workouts'] != null) {
+        for (var item in results[2]['active_workouts']) {
+          if (item['image'] != null && item['image'].toString().isNotEmpty) {
+            imageUrls.add(item['image']);
+          }
+        }
+      }
+
+      // Preload all images
+      if (imageUrls.isNotEmpty) {
+        await _preloadImages(imageUrls);
+      }
+
+      if (kDebugMode) print('[Preload] Phase 2 complete - ${imageUrls.length} images cached');
+    } catch (e) {
+      if (kDebugMode) print('[Preload] Phase 2 error: $e');
+    } finally {
+      _isPreloadingAuth = false;
     }
   }
 
-  /// Reset preload state (call on logout)
+  /// PHASE 3: Call on main screen (NavigationScreen)
+  /// Deep preloads workout details progressively in background
+  Future<void> preloadDeepContent() async {
+    if (_isPreloadingDeep) return;
+    _isPreloadingDeep = true;
+
+    if (kDebugMode) print('[Preload] Phase 3: Deep preload starting...');
+
+    try {
+      // Get categories and themes to preload their workout lists
+      final categoryData = await _preloadEndpointWithData('/category');
+      final themeData = await _preloadEndpointWithData('/themes');
+
+      // Preload first 3 categories workout lists
+      if (categoryData != null && categoryData['data'] != null) {
+        final categories = categoryData['data'] as List;
+        for (int i = 0; i < categories.length && i < 3; i++) {
+          final id = categories[i]['id'];
+          if (id != null) {
+            await _preloadEndpointWithData('/dynamic_work_out?type=body_part_exercise&id=$id');
+            await Future.delayed(const Duration(milliseconds: 200));
+          }
+        }
+      }
+
+      // Preload first 3 themes workout lists
+      if (themeData != null && themeData['data'] != null) {
+        final themes = themeData['data'] as List;
+        for (int i = 0; i < themes.length && i < 3; i++) {
+          final id = themes[i]['id'];
+          if (id != null) {
+            await _preloadEndpointWithData('/dynamic_work_out?type=theme_workout&id=$id');
+            await Future.delayed(const Duration(milliseconds: 200));
+          }
+        }
+      }
+
+      // Preload training levels
+      await Future.wait([
+        _preloadEndpoint('/dynamic_work_out?type=training_level&level_type=beginner'),
+        _preloadEndpoint('/dynamic_work_out?type=training_level&level_type=intermediate'),
+        _preloadEndpoint('/dynamic_work_out?type=training_level&level_type=advance'),
+      ]);
+
+      if (kDebugMode) print('[Preload] Phase 3 complete');
+    } catch (e) {
+      if (kDebugMode) print('[Preload] Phase 3 error: $e');
+    } finally {
+      _isPreloadingDeep = false;
+    }
+  }
+
+  /// Warm up server (Railway cold start)
+  Future<void> _warmUpServer() async {
+    try {
+      await getHttp('/up');
+      if (kDebugMode) print('[Preload] Server warm-up done');
+    } catch (e) {
+      // Try alternate endpoint
+      try {
+        await getHttp('/api/health');
+      } catch (_) {}
+    }
+  }
+
+  /// Preload endpoint and cache response
+  Future<void> _preloadEndpoint(String endpoint) async {
+    try {
+      await getHttp(endpoint);
+    } catch (e) {
+      if (kDebugMode) print('[Preload] Failed: $endpoint');
+    }
+  }
+
+  /// Preload endpoint and return data for further processing
+  Future<Map<String, dynamic>?> _preloadEndpointWithData(String endpoint) async {
+    try {
+      final response = await getHttp(endpoint);
+      if (response.statusCode == 200 && response.data != null) {
+        return response.data is Map<String, dynamic>
+            ? response.data
+            : null;
+      }
+    } catch (e) {
+      if (kDebugMode) print('[Preload] Failed: $endpoint');
+    }
+    return null;
+  }
+
+  /// Preload images using cache manager
+  Future<void> _preloadImages(List<String> urls) async {
+    final cacheManager = DefaultCacheManager();
+
+    // Load first 6 immediately (visible)
+    final immediate = urls.take(6).toList();
+    await Future.wait(
+      immediate.map((url) => _preloadSingleImage(cacheManager, url)),
+      eagerError: false,
+    );
+
+    // Load rest progressively
+    final rest = urls.skip(6).toList();
+    for (final url in rest) {
+      await _preloadSingleImage(cacheManager, url);
+      await Future.delayed(const Duration(milliseconds: 50));
+    }
+  }
+
+  Future<void> _preloadSingleImage(BaseCacheManager cacheManager, String url) async {
+    if (url.isEmpty) return;
+    try {
+      await cacheManager.downloadFile(url);
+    } catch (e) {
+      // Ignore - background preloading
+    }
+  }
+
+  /// Reset state on logout
   void reset() {
-    _hasPreloaded = false;
+    _isPreloadingPublic = false;
+    _isPreloadingAuth = false;
+    _isPreloadingDeep = false;
   }
 }
 
-/// Global instance for easy access
+/// Global instance
 final preloadService = PreloadService();
