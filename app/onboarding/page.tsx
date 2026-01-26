@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { useUser } from "@clerk/nextjs"
 import { OnboardingIntro } from "@/components/onboarding-intro"
 import { EmotionalQuestion } from "@/components/emotional-question"
-import { PricingPlans } from "@/components/pricing-plans"
+import { SuperwallPaywall } from "@/components/superwall-paywall"
 import { useSupabaseClient } from "@/lib/supabase"
 import { emotionalQuestions } from "@/lib/onboarding-questions"
 import { PlanGeneration } from "@/components/plan-generations"
@@ -123,15 +123,10 @@ export default function OnboardingPage() {
     setShowPricing(true)
   }
 
-  const handlePlanSelection = async (planType: "free" | "premium") => {
+  const handleSkipPaywall = () => {
     // Set onboarding completed cookie
     document.cookie = "onboarding-completed=true; path=/; max-age=31536000" // 1 year
-
-    if (planType === "free") {
-      router.push("/features")
-    } else {
-      router.push("/pricing")
-    }
+    router.push("/features")
   }
 
   const canGoNext = () => {
@@ -161,7 +156,7 @@ export default function OnboardingPage() {
   }
 
   if (showPricing) {
-    return <PricingPlans onPlanSelect={handlePlanSelection} answers={answers} />
+    return <SuperwallPaywall answers={answers} onSkip={handleSkipPaywall} />
   }
 
   if (showPlanGeneration) {
