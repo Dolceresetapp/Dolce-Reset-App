@@ -143,10 +143,19 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                     stream: categoryRxObj.categoryRxStream,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: WaitingWidget());
+                        return Center(
+                          child: Text(
+                            "Caricamento...",
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        );
                       } else if (snapshot.hasError) {
                         return Text(
-                          "someting went wrong",
+                          "Errore di connessione",
                           style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                               .copyWith(
                                 color: const Color(0xFFF97316),
@@ -158,7 +167,7 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                           snapshot.data!.data!.isEmpty) {
                         return Center(
                           child: Text(
-                            "Category \n not availabe",
+                            "Nessuna categoria disponibile",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                                 .copyWith(
                                   color: const Color(0xFFF97316),
@@ -298,10 +307,19 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                     stream: themeRxObj.themeRxStream,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: WaitingWidget());
+                        return Center(
+                          child: Text(
+                            "Caricamento...",
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        );
                       } else if (snapshot.hasError) {
                         return Text(
-                          "someting went wrong",
+                          "Errore di connessione",
                           style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                               .copyWith(
                                 color: const Color(0xFFF97316),
@@ -313,7 +331,7 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
                           snapshot.data!.data!.isEmpty) {
                         return Center(
                           child: Text(
-                            "Theme \n not availabe",
+                            "Nessun tema disponibile",
                             textAlign: TextAlign.center,
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                                 .copyWith(

@@ -17,182 +17,92 @@ class WorkoutControlBar extends StatelessWidget {
     this.onNext,
   });
 
-  // Premium gradient colors - coral to pink for energy
-  static const Color _progressStart = Color(0xFFFF6B6B);
-  static const Color _progressEnd = Color(0xFFF566A9);
-  static const Color _trackColor = Color(0xFFF3F4F6);
-  static const Color _iconDark = Color(0xFF1F2937);
-  static const Color _iconLight = Colors.white;
+  static const Color _progressColor = Color(0xFFF566A9);
+  static const Color _trackColor = Color(0xFFEEEFF3);
 
   @override
   Widget build(BuildContext context) {
     final clampedProgress = progress.clamp(0.0, 1.0);
-    final barWidth = MediaQuery.of(context).size.width - 40.w;
+    final barWidth = MediaQuery.of(context).size.width - 48.w;
 
     return Container(
-      height: 64.h,
-      margin: EdgeInsets.symmetric(horizontal: 20.w),
+      height: 72.h,
+      margin: EdgeInsets.symmetric(horizontal: 24.w),
       decoration: BoxDecoration(
         color: _trackColor,
-        borderRadius: BorderRadius.circular(32.r),
+        borderRadius: BorderRadius.circular(36.r),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFF566A9).withOpacity(0.15),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(32.r),
+        borderRadius: BorderRadius.circular(36.r),
         child: Stack(
           children: [
-            // Progress bar with gradient
+            // Progress bar - simple, no animation jank
             AnimatedContainer(
-              duration: const Duration(milliseconds: 100),
-              curve: Curves.easeOut,
+              duration: const Duration(milliseconds: 50),
               width: barWidth * clampedProgress,
-              height: 64.h,
+              height: 72.h,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [_progressStart, _progressEnd],
-                ),
-                borderRadius: BorderRadius.circular(32.r),
+                color: _progressColor,
+                borderRadius: BorderRadius.circular(36.r),
               ),
             ),
 
-            // Subtle inner glow on progress
-            if (clampedProgress > 0.05)
-              Positioned(
-                left: 0,
-                top: 0,
-                bottom: 0,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 100),
-                  width: barWidth * clampedProgress,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(32.r),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.white.withOpacity(0.25),
-                        Colors.transparent,
-                        Colors.black.withOpacity(0.05),
-                      ],
-                      stops: const [0.0, 0.5, 1.0],
+          // Controls
+          Row(
+            children: [
+              // Previous
+              Expanded(
+                child: GestureDetector(
+                  onTap: onPrevious,
+                  behavior: HitTestBehavior.opaque,
+                  child: Center(
+                    child: Icon(
+                      Icons.skip_previous_rounded,
+                      size: 32.sp,
+                      color: clampedProgress > 0.18 ? Colors.white : Colors.black87,
                     ),
                   ),
                 ),
               ),
-
-            // Controls row
-            Row(
-              children: [
-                // Previous button
-                Expanded(
-                  child: _ControlButton(
-                    onTap: onPrevious,
-                    icon: Icons.skip_previous_rounded,
-                    size: 28.sp,
-                    isOverProgress: clampedProgress > 0.20,
+              // Play/Pause
+              Expanded(
+                flex: 2,
+                child: GestureDetector(
+                  onTap: onPlayPause,
+                  behavior: HitTestBehavior.opaque,
+                  child: Center(
+                    child: Icon(
+                      isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                      size: 44.sp,
+                      color: clampedProgress > 0.5 ? Colors.white : Colors.black87,
+                    ),
                   ),
                 ),
-
-                // Play/Pause button - larger and centered
-                Expanded(
-                  flex: 2,
-                  child: _ControlButton(
-                    onTap: onPlayPause,
-                    icon: isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
-                    size: 40.sp,
-                    isOverProgress: clampedProgress > 0.50,
-                    isMain: true,
+              ),
+              // Next
+              Expanded(
+                child: GestureDetector(
+                  onTap: onNext,
+                  behavior: HitTestBehavior.opaque,
+                  child: Center(
+                    child: Icon(
+                      Icons.skip_next_rounded,
+                      size: 32.sp,
+                      color: clampedProgress > 0.82 ? Colors.white : Colors.black87,
+                    ),
                   ),
                 ),
-
-                // Next button
-                Expanded(
-                  child: _ControlButton(
-                    onTap: onNext,
-                    icon: Icons.skip_next_rounded,
-                    size: 28.sp,
-                    isOverProgress: clampedProgress > 0.80,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ControlButton extends StatefulWidget {
-  final VoidCallback? onTap;
-  final IconData icon;
-  final double size;
-  final bool isOverProgress;
-  final bool isMain;
-
-  const _ControlButton({
-    required this.onTap,
-    required this.icon,
-    required this.size,
-    required this.isOverProgress,
-    this.isMain = false,
-  });
-
-  @override
-  State<_ControlButton> createState() => _ControlButtonState();
-}
-
-class _ControlButtonState extends State<_ControlButton>
-    with SingleTickerProviderStateMixin {
-  bool _isPressed = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final iconColor = widget.isOverProgress
-        ? Colors.white
-        : const Color(0xFF374151);
-
-    return GestureDetector(
-      onTapDown: (_) => setState(() => _isPressed = true),
-      onTapUp: (_) => setState(() => _isPressed = false),
-      onTapCancel: () => setState(() => _isPressed = false),
-      onTap: widget.onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Center(
-        child: AnimatedScale(
-          scale: _isPressed ? 0.85 : 1.0,
-          duration: const Duration(milliseconds: 100),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 150),
-            padding: EdgeInsets.all(widget.isMain ? 8.w : 6.w),
-            decoration: widget.isMain
-                ? BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: widget.isOverProgress
-                        ? Colors.white.withOpacity(0.2)
-                        : Colors.black.withOpacity(0.05),
-                  )
-                : null,
-            child: Icon(
-              widget.icon,
-              size: widget.size,
-              color: iconColor,
-            ),
+              ),
+            ],
           ),
+        ],
         ),
       ),
     );

@@ -18,7 +18,7 @@ class DataLoadingScreen extends StatefulWidget {
 }
 
 class _DataLoadingScreenState extends State<DataLoadingScreen> {
-  String _status = 'Loading your data...';
+  String _status = 'Preparazione del tuo spazio...';
 
   @override
   void initState() {
@@ -28,9 +28,6 @@ class _DataLoadingScreenState extends State<DataLoadingScreen> {
 
   Future<void> _loadAllData() async {
     try {
-      // Load all data in parallel for speed
-      setState(() => _status = 'Loading your workouts...');
-
       await Future.wait([
         _loadWithStatus(() => categoryRxObj.categoryRx(), 'Categories'),
         _loadWithStatus(() => themeRxObj.themeRx(), 'Themes'),
@@ -38,7 +35,7 @@ class _DataLoadingScreenState extends State<DataLoadingScreen> {
         _loadWithStatus(() => preloadService.preloadAuthenticatedData(), 'Profile'),
       ]);
 
-      setState(() => _status = 'Ready!');
+      setState(() => _status = 'Pronto!');
 
       // Small delay to show "Ready!" message
       await Future.delayed(const Duration(milliseconds: 300));

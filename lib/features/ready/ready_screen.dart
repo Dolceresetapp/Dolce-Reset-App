@@ -74,11 +74,20 @@ class _ReadyScreenState extends State<ReadyScreen> {
                   stream: workoutVideoRxObj.workoutVideoRxStream,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return WaitingWidget();
+                      return Center(
+                        child: Text(
+                          "Caricamento...",
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      );
                     } else if (snapshot.hasError) {
                       return Center(
                         child: Text(
-                          "Something went wrong",
+                          "Errore di connessione",
                           style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                             color: const Color(0xFFF97316),
                             fontSize: 16.sp,
@@ -91,7 +100,7 @@ class _ReadyScreenState extends State<ReadyScreen> {
                         snapshot.data!.data!.isEmpty) {
                       return Center(
                         child: Text(
-                          "Data \n not available",
+                          "Nessun dato disponibile",
                           textAlign: TextAlign.center,
                           style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                             color: const Color(0xFFF97316),

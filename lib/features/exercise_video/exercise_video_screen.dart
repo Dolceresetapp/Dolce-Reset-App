@@ -425,9 +425,18 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
         stream: workoutVideoRxObj.workoutVideoRxStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return WaitingWidget();
+            return Center(
+              child: Text(
+                "Caricamento del corso...",
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
           } else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
-            return Center(child: Text("No videos available"));
+            return Center(child: Text("Nessun video disponibile"));
           } else if (snapshot.hasData) {
             return Column(
               children: [
@@ -437,7 +446,16 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
                   child: Stack(
                     children: [
                       _controller == null || !_controller!.value.isInitialized
-                          ? Center(child: CircularProgressIndicator())
+                          ? Center(
+                              child: Text(
+                                "Caricamento...",
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.grey[600],
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            )
                           : FittedBox(
                             fit: BoxFit.cover,
                             child: SizedBox(

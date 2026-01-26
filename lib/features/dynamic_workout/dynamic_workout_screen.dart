@@ -71,7 +71,16 @@ class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
             builder: (context, snapshot) {
               // Show loading while fetching
               if (_isLoading) {
-                return const WaitingWidget();
+                return Center(
+                  child: Text(
+                    "Caricamento...",
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                );
               }
 
               if (snapshot.hasError) {
@@ -90,7 +99,16 @@ class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
               if (snapshot.data == null ||
                   snapshot.data!.data == null ||
                   snapshot.data!.data!.isEmpty) {
-                return const WaitingWidget();
+                return Center(
+                  child: Text(
+                    "Caricamento...",
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                );
               }
 
               // Data available
