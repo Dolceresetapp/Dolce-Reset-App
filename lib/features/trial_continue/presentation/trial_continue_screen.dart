@@ -656,7 +656,7 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
                                         );
 
                                         NavigationService.navigateToReplacement(
-                                          Routes.navigationScreen,
+                                          Routes.dataLoadingScreen,
                                         );
                                       });
                                 }

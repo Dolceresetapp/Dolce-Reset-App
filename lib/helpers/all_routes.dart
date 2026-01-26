@@ -10,6 +10,7 @@ import '../features/authentication/forget_password/forget_passwod._screen.dart';
 import '../features/authentication/reset_password/reset_password_screen.dart';
 import '../features/authentication/sign_up/sign_up_screen.dart';
 import '../features/authentication/signin/sign_in_screen.dart';
+import '../features/data_loading/data_loading_screen.dart';
 import '../features/authentication/signup_otp/signup_otp_screen.dart';
 import '../features/barcode/barcode_scanner_screen.dart';
 import '../features/cache_video/cache_video_screen.dart';
@@ -135,6 +136,7 @@ final class Routes {
   static const String exerciseVideoScreen = '/exerciseVideoScreen';
 
   static const String navigationScreen = '/navigationScreen';
+  static const String dataLoadingScreen = '/dataLoadingScreen';
 
   static const String oneTimeOnboardingScreen = '/oneTimeOnboardingScreen';
 
@@ -389,6 +391,16 @@ final class RouteGenerator {
             )
             : CupertinoPageRoute(
               builder: (context) => NavigationScreen(initialIndex: initialIndex),
+            );
+
+      case Routes.dataLoadingScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const DataLoadingScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const DataLoadingScreen(),
             );
 
       case Routes.exerciseVideoScreen:
