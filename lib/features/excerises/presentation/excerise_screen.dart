@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -14,6 +16,7 @@ import '../../../common_widget/waiting_widget.dart';
 import '../../../constants/app_constants.dart';
 import '../../../helpers/di.dart';
 import '../../../networks/api_acess.dart';
+import '../../../services/image_preloader_service.dart';
 import '../data/rx_get_my_workout/model/my_workout_response_model.dart';
 import '../widgets/active_workout_widget.dart';
 import '../widgets/profile_section_widget.dart';
@@ -28,6 +31,10 @@ class ExceriseScreen extends StatefulWidget {
 }
 
 class _ExceriseScreenState extends State<ExceriseScreen> {
+  StreamSubscription? _categorySub;
+  StreamSubscription? _themeSub;
+  StreamSubscription? _workoutSub;
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +42,36 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
     categoryRxObj.categoryRx();
     themeRxObj.themeRx();
     myWorkoutRxObj.myWorkoutRx();
+
+    // Preload images when data arrives
+    _categorySub = categoryRxObj.categoryRxStream.listen((data) {
+      if (data.data != null) {
+        final urls = data.data!.map((e) => e.image ?? '').where((url) => url.isNotEmpty).toList();
+        imagePreloader.preloadImages(urls, firstBatchSize: 6);
+      }
+    });
+
+    _themeSub = themeRxObj.themeRxStream.listen((data) {
+      if (data.data != null) {
+        final urls = data.data!.map((e) => e.image ?? '').where((url) => url.isNotEmpty).toList();
+        imagePreloader.preloadImages(urls, firstBatchSize: 4);
+      }
+    });
+
+    _workoutSub = myWorkoutRxObj.myWorkoutRxStream.listen((data) {
+      if (data.activeWorkouts != null) {
+        final urls = data.activeWorkouts!.map((e) => e.image ?? '').where((url) => url.isNotEmpty).toList();
+        imagePreloader.preloadImages(urls, firstBatchSize: 3);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _categorySub?.cancel();
+    _themeSub?.cancel();
+    _workoutSub?.cancel();
+    super.dispose();
   }
 
   @override

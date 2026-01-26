@@ -26,8 +26,7 @@ class CustomCachedNetworkImage extends StatelessWidget {
       width: width ?? 80.w,
       height: height ?? 60.h,
       fit: fit ?? BoxFit.cover,
-      // Performance: Use simple placeholder instead of animated Shimmer
-      placeholder: (context, url) => _ImagePlaceholder(
+      placeholder: (context, url) => ShimmerPlaceholder(
         width: width ?? 80.w,
         height: height ?? 60.h,
       ),
@@ -37,27 +36,30 @@ class CustomCachedNetworkImage extends StatelessWidget {
         height: height ?? 60.h,
         fit: fit ?? BoxFit.cover,
       ),
-      fadeInDuration: const Duration(milliseconds: 200),
-      fadeOutDuration: const Duration(milliseconds: 200),
+      fadeInDuration: const Duration(milliseconds: 250),
+      fadeOutDuration: const Duration(milliseconds: 150),
     );
   }
 }
 
-// Lightweight placeholder with subtle pulse animation
-class _ImagePlaceholder extends StatefulWidget {
+/// Elegant shimmer placeholder with gradient animation
+class ShimmerPlaceholder extends StatefulWidget {
   final double width;
   final double height;
+  final BorderRadius? borderRadius;
 
-  const _ImagePlaceholder({
+  const ShimmerPlaceholder({
+    super.key,
     required this.width,
     required this.height,
+    this.borderRadius,
   });
 
   @override
-  State<_ImagePlaceholder> createState() => _ImagePlaceholderState();
+  State<ShimmerPlaceholder> createState() => _ShimmerPlaceholderState();
 }
 
-class _ImagePlaceholderState extends State<_ImagePlaceholder>
+class _ShimmerPlaceholderState extends State<ShimmerPlaceholder>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -66,11 +68,11 @@ class _ImagePlaceholderState extends State<_ImagePlaceholder>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 1500),
       vsync: this,
-    )..repeat(reverse: true);
-    _animation = Tween<double>(begin: 0.3, end: 0.6).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    )..repeat();
+    _animation = Tween<double>(begin: -1.0, end: 2.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOutSine),
     );
   }
 
@@ -88,7 +90,21 @@ class _ImagePlaceholderState extends State<_ImagePlaceholder>
         return Container(
           width: widget.width,
           height: widget.height,
-          color: Colors.grey.withOpacity(_animation.value),
+          decoration: BoxDecoration(
+            borderRadius: widget.borderRadius,
+            gradient: LinearGradient(
+              begin: Alignment(_animation.value - 1, 0),
+              end: Alignment(_animation.value, 0),
+              colors: const [
+                Color(0xFFF5F5F5),
+                Color(0xFFEEEEEE),
+                Color(0xFFE8E8E8),
+                Color(0xFFEEEEEE),
+                Color(0xFFF5F5F5),
+              ],
+              stops: const [0.0, 0.35, 0.5, 0.65, 1.0],
+            ),
+          ),
         );
       },
     );

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gritti_app/common_widget/custom_network_image.dart';
@@ -8,6 +10,7 @@ import 'package:gritti_app/helpers/ui_helpers.dart';
 
 import '../../helpers/all_routes.dart';
 import '../../networks/api_acess.dart';
+import '../../services/image_preloader_service.dart';
 import 'data/model/dynamic_workout_response_model.dart';
 
 class DynamicWorkoutScreen extends StatefulWidget {
@@ -28,11 +31,27 @@ class DynamicWorkoutScreen extends StatefulWidget {
 
 class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
   bool _isLoading = true;
+  StreamSubscription? _dataSub;
 
   @override
   void initState() {
     super.initState();
+
+    // Preload images when data arrives
+    _dataSub = dynamicWorkoutRxObj.dynamicWorkoutRxStream.listen((data) {
+      if (data.data != null) {
+        final urls = data.data!.map((e) => e.image ?? '').where((url) => url.isNotEmpty).toList();
+        imagePreloader.preloadImages(urls, firstBatchSize: 4);
+      }
+    });
+
     _loadData();
+  }
+
+  @override
+  void dispose() {
+    _dataSub?.cancel();
+    super.dispose();
   }
 
   Future<void> _loadData() async {

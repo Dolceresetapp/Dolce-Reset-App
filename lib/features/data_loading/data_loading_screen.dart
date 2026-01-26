@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../gen/assets.gen.dart';
 import '../../helpers/all_routes.dart';
@@ -17,13 +17,37 @@ class DataLoadingScreen extends StatefulWidget {
   State<DataLoadingScreen> createState() => _DataLoadingScreenState();
 }
 
-class _DataLoadingScreenState extends State<DataLoadingScreen> {
+class _DataLoadingScreenState extends State<DataLoadingScreen>
+    with SingleTickerProviderStateMixin {
   String _status = 'Preparazione del tuo spazio...';
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _opacityAnimation;
 
   @override
   void initState() {
     super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _scaleAnimation = Tween<double>(begin: 0.95, end: 1.05).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
+    _opacityAnimation = Tween<double>(begin: 0.7, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
     _loadAllData();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   Future<void> _loadAllData() async {
@@ -69,12 +93,26 @@ class _DataLoadingScreenState extends State<DataLoadingScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Logo or loading animation
-            Lottie.asset(
-              Assets.lottie.loadingSpinner,
-              width: 120.w,
-              height: 120.h,
+            // Animated logo
+            AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                return Transform.scale(
+                  scale: _scaleAnimation.value,
+                  child: Opacity(
+                    opacity: _opacityAnimation.value,
+                    child: SvgPicture.asset(
+                      Assets.icons.logos,
+                      width: 100.w,
+                      height: 100.h,
+                    ),
+                  ),
+                );
+              },
             ),
+            SizedBox(height: 32.h),
+            // Pulsing dots
+            _PulsingDots(),
             SizedBox(height: 24.h),
             Text(
               _status,
@@ -87,6 +125,72 @@ class _DataLoadingScreenState extends State<DataLoadingScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _PulsingDots extends StatefulWidget {
+  @override
+  State<_PulsingDots> createState() => _PulsingDotsState();
+}
+
+class _PulsingDotsState extends State<_PulsingDots>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  double _pulseValue(double value) {
+    if (value < 0.5) {
+      return value * 2;
+    } else {
+      return (1 - value) * 2;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(3, (index) {
+        return AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) {
+            final delay = index * 0.2;
+            final value = (_controller.value + delay) % 1.0;
+            final scale = 0.5 + (0.5 * _pulseValue(value));
+            final opacity = 0.3 + (0.7 * _pulseValue(value));
+
+            return Container(
+              margin: EdgeInsets.symmetric(horizontal: 4.w),
+              child: Transform.scale(
+                scale: scale,
+                child: Container(
+                  width: 10.w,
+                  height: 10.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFFF566A9).withOpacity(opacity),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      }),
     );
   }
 }
