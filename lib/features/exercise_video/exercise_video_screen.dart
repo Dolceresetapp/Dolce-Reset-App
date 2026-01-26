@@ -45,18 +45,20 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
   AudioPlayer? _audioPlayer;
 
   // Count down
-  bool _showCountdown = true;
-  int _countdown = 5;
+  bool _showCountdown = false;
+  bool _isVideoLoading = true;
+  int _countdown = 3;
   Timer? _countdownTimer;
 
-  // CREATE COUNTDOWN FUNCTION
+  // CREATE COUNTDOWN FUNCTION - only starts after video is ready
 
   void _startCountdown() {
     _countdownTimer?.cancel();
 
     setState(() {
+      _isVideoLoading = false;
       _showCountdown = true;
-      _countdown = 5;
+      _countdown = 3;
     });
 
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -81,8 +83,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
     WidgetsBinding.instance.addObserver(this);
 
     _audioPlayer = AudioPlayer();
-    // Start countdown
-    _startCountdown();
+    // Don't start countdown yet - wait for video to load
     workoutVideoRxObj.workoutVideoRx(id: widget.id);
 
     workoutVideoRxObj.workoutVideoRxStream.listen((apiResult) {
@@ -102,8 +103,14 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
   void _initializeVideo(String url) {
     _controller?.dispose();
 
+    setState(() {
+      _isVideoLoading = true;
+      _showCountdown = false;
+    });
+
     _controller = VideoPlayerController.networkUrl(Uri.parse(url))
       ..initialize().then((_) {
+        if (!mounted) return;
         setState(() {});
 
         // Do not auto play
@@ -111,6 +118,9 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
 
         // Preload next video for smooth transition
         _preloadNextVideo();
+
+        // Start countdown NOW that video is ready
+        _startCountdown();
 
         // auto next
         _controller!.addListener(() {
@@ -179,11 +189,11 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
         // Preload the next one
         _preloadNextVideo();
 
-        // Restart countdown for next video
+        // Video already loaded, start countdown immediately
         _startCountdown();
       } else {
+        // Video not preloaded - will show loading then countdown
         _initializeVideo(videoList[currentIndex].videos);
-        _startCountdown();
       }
     }
   }
@@ -193,8 +203,8 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
       setState(() {
         currentIndex--;
       });
+      // Will show loading then countdown
       _initializeVideo(videoList[currentIndex].videos);
-      _startCountdown();
     }
   }
 
@@ -479,10 +489,30 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
                             ),
                           ),
 
-                      //
+                      /// LOADING OVERLAY - shows while video loads
+                      if (_isVideoLoading)
+                        Positioned.fill(
+                          child: Container(
+                            color: Colors.black.withOpacity(.7),
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _LoadingDots(),
+                                SizedBox(height: 16.h),
+                                Text(
+                                  'Caricamento...',
+                                  style: TextFontStyle
+                                      .headLine16cFFFFFFWorkSansW600
+                                      .copyWith(fontSize: 18.sp),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
 
-                      /// COUNTDOWN OVERLAY
-                      if (_showCountdown)
+                      /// COUNTDOWN OVERLAY - shows after video is ready
+                      if (_showCountdown && !_isVideoLoading)
                         Positioned.fill(
                           child: Container(
                             color: Colors.black.withOpacity(.6),
@@ -843,6 +873,73 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
           }
         },
       ),
+    );
+  }
+}
+
+/// Pulsing dots loading indicator
+class _LoadingDots extends StatefulWidget {
+  @override
+  State<_LoadingDots> createState() => _LoadingDotsState();
+}
+
+class _LoadingDotsState extends State<_LoadingDots>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1200),
+      vsync: this,
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  double _pulseValue(double value) {
+    if (value < 0.5) {
+      return value * 2;
+    } else {
+      return (1 - value) * 2;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(3, (index) {
+        return AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) {
+            final delay = index * 0.2;
+            final value = (_controller.value + delay) % 1.0;
+            final scale = 0.5 + (0.5 * _pulseValue(value));
+            final opacity = 0.3 + (0.7 * _pulseValue(value));
+
+            return Container(
+              margin: EdgeInsets.symmetric(horizontal: 4.w),
+              child: Transform.scale(
+                scale: scale,
+                child: Container(
+                  width: 14.w,
+                  height: 14.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFFF566A9).withOpacity(opacity),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      }),
     );
   }
 }
