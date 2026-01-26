@@ -138,32 +138,8 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                   child: StreamBuilder<CategoryResponseModel>(
                     stream: categoryRxObj.categoryRxStream,
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return WaitingWidget();
-                      } else if (snapshot.hasError) {
-                        return Text(
-                          "someting went wrong",
-                          style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                              .copyWith(
-                                color: const Color(0xFFF97316),
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w800,
-                              ),
-                        );
-                      } else if (!snapshot.hasData ||
-                          snapshot.data!.data!.isEmpty) {
-                        return Center(
-                          child: Text(
-                            "Category data \n not availabe",
-                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                                .copyWith(
-                                  color: const Color(0xFFF97316),
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                          ),
-                        );
-                      } else if (snapshot.hasData) {
+                      // Show data first if available (from cache), even while loading
+                      if (snapshot.hasData && snapshot.data!.data != null && snapshot.data!.data!.isNotEmpty) {
                         CategoryResponseModel? model = snapshot.data;
                         return ListView.builder(
                           shrinkWrap: true,
@@ -241,6 +217,8 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                             );
                           },
                         );
+                      } else if (snapshot.connectionState == ConnectionState.waiting) {
+                        return SizedBox(height: 115.h); // Empty space while loading, no spinner
                       } else {
                         return SizedBox.shrink();
                       }
@@ -286,33 +264,8 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
               StreamBuilder<ThemeResponseModel>(
                 stream: themeRxObj.themeRxStream,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return WaitingWidget();
-                  } else if (snapshot.hasError) {
-                    return Text(
-                      "someting went wrong",
-                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                          .copyWith(
-                            color: const Color(0xFFF97316),
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w800,
-                          ),
-                    );
-                  } else if (!snapshot.hasData ||
-                      snapshot.data!.data!.isEmpty) {
-                    return Center(
-                      child: Text(
-                        "Theme \n not available",
-                        textAlign: TextAlign.center,
-                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                            .copyWith(
-                              color: const Color(0xFFF97316),
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w800,
-                            ),
-                      ),
-                    );
-                  } else if (snapshot.hasData) {
+                  // Show data first if available (from cache)
+                  if (snapshot.hasData && snapshot.data!.data != null && snapshot.data!.data!.isNotEmpty) {
                     ThemeResponseModel? model = snapshot.data;
                     return GridView.builder(
                       shrinkWrap: true,
@@ -402,6 +355,8 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                         );
                       },
                     );
+                  } else if (snapshot.connectionState == ConnectionState.waiting) {
+                    return SizedBox(height: 280.h); // Empty space while loading
                   } else {
                     return SizedBox.shrink();
                   }
@@ -488,34 +443,8 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
               StreamBuilder<MyWorkoutResponseModel>(
                 stream: myWorkoutRxObj.myWorkoutRxStream,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return WaitingWidget();
-                  } else if (snapshot.hasError) {
-                    return Text(
-                      "someting went wrong",
-                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                          .copyWith(
-                            color: const Color(0xFFF97316),
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w800,
-                          ),
-                    );
-                  } else if (!snapshot.hasData ||
-                      snapshot.data!.activeWorkouts == null ||
-                      snapshot.data!.activeWorkouts!.isEmpty) {
-                    return Center(
-                      child: Text(
-                        "My Workout  \n not available",
-                        textAlign: TextAlign.center,
-                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600
-                            .copyWith(
-                              color: const Color(0xFFF97316),
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w800,
-                            ),
-                      ),
-                    );
-                  } else if (snapshot.hasData) {
+                  // Show data first if available (from cache)
+                  if (snapshot.hasData && snapshot.data!.activeWorkouts != null && snapshot.data!.activeWorkouts!.isNotEmpty) {
                     return ListView.builder(
                       itemCount: snapshot.data?.activeWorkouts?.length,
 
@@ -545,8 +474,22 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                         );
                       },
                     );
+                  } else if (snapshot.connectionState == ConnectionState.waiting) {
+                    return SizedBox(height: 100.h); // Empty space while loading
                   } else {
-                    return SizedBox.shrink();
+                    // No workouts yet
+                    return Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.h),
+                        child: Text(
+                          "No active workouts yet",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                      ),
+                    );
                   }
                 },
               ),
