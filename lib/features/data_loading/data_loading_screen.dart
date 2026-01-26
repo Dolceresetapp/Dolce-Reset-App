@@ -6,6 +6,7 @@ import '../../gen/assets.gen.dart';
 import '../../helpers/all_routes.dart';
 import '../../helpers/navigation_service.dart';
 import '../../networks/api_acess.dart';
+import '../../services/preload_service.dart';
 
 /// Screen that preloads all data before showing the main app
 /// This ensures instant UX with no loading spinners
@@ -28,13 +29,13 @@ class _DataLoadingScreenState extends State<DataLoadingScreen> {
   Future<void> _loadAllData() async {
     try {
       // Load all data in parallel for speed
-      setState(() => _status = 'Loading categories...');
+      setState(() => _status = 'Loading your workouts...');
 
       await Future.wait([
         _loadWithStatus(() => categoryRxObj.categoryRx(), 'Categories'),
         _loadWithStatus(() => themeRxObj.themeRx(), 'Themes'),
         _loadWithStatus(() => myWorkoutRxObj.myWorkoutRx(), 'Workouts'),
-        _loadWithStatus(() => userInfoRxObj.getUserInfo(), 'Profile'),
+        _loadWithStatus(() => preloadService.preloadAuthenticatedData(), 'Profile'),
       ]);
 
       setState(() => _status = 'Ready!');
