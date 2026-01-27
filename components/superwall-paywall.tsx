@@ -28,12 +28,12 @@ export function SuperwallPaywall({ answers, onSkip }: SuperwallPaywallProps) {
   const handleSubscribe = () => {
     setIsLoading(true)
 
-    // Build Superwall Web Checkout URL
-    const superwallAppUrl = process.env.NEXT_PUBLIC_SUPERWALL_APP_URL || "https://dolcereset.superwall.app"
-    const placementId = process.env.NEXT_PUBLIC_SUPERWALL_PLACEMENT_ID || "onboarding_paywall"
+    // Superwall Web Checkout URL
+    const superwallDomain = "https://httpdolceresetapponlinesign-in.superwall.app"
+    const placementId = "onboarding_paywall"
 
     // Construct the Superwall checkout URL
-    const checkoutUrl = new URL(`${superwallAppUrl}/p/${placementId}`)
+    const checkoutUrl = new URL(`${superwallDomain}/${placementId}`)
 
     // Add custom attributes from onboarding
     if (answers.goal) {
