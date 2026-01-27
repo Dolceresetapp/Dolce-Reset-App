@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Star, Users, CheckCircle } from "lucide-react"
@@ -51,7 +50,6 @@ const progressSteps = [
 
 
 export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
-  const { user } = useUser()
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(0)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
@@ -124,7 +122,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
   if (showResults) {
     const currentBMI = calculateBMI()
     const weightLoss = getWeightLoss()
-    const userName = user?.firstName || "Beautiful"
+    const userName = "Beautiful"
 
     // Get user's actual goals from localStorage
     const getStoredValue = (key: string) => {

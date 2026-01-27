@@ -1,7 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useUser } from "@clerk/nextjs"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -13,7 +12,6 @@ interface SuperwallPaywallProps {
 }
 
 export function SuperwallPaywall({ answers, onSkip }: SuperwallPaywallProps) {
-  const { user } = useUser()
   const [isLoading, setIsLoading] = useState(false)
 
   const premiumFeatures = [
@@ -30,21 +28,12 @@ export function SuperwallPaywall({ answers, onSkip }: SuperwallPaywallProps) {
   const handleSubscribe = () => {
     setIsLoading(true)
 
-    // Build Superwall Web Checkout URL with user data
-    const superwallAppUrl = process.env.NEXT_PUBLIC_SUPERWALL_APP_URL
+    // Build Superwall Web Checkout URL
+    const superwallAppUrl = process.env.NEXT_PUBLIC_SUPERWALL_APP_URL || "https://dolcereset.superwall.app"
     const placementId = process.env.NEXT_PUBLIC_SUPERWALL_PLACEMENT_ID || "onboarding_paywall"
 
     // Construct the Superwall checkout URL
-    // Format: https://yourapp.superwall.app/p/{placement_id}
     const checkoutUrl = new URL(`${superwallAppUrl}/p/${placementId}`)
-
-    // Add user identification params for tracking
-    if (user?.id) {
-      checkoutUrl.searchParams.set("user_id", user.id)
-    }
-    if (user?.emailAddresses?.[0]?.emailAddress) {
-      checkoutUrl.searchParams.set("email", user.emailAddresses[0].emailAddress)
-    }
 
     // Add custom attributes from onboarding
     if (answers.goal) {
@@ -73,7 +62,6 @@ export function SuperwallPaywall({ answers, onSkip }: SuperwallPaywallProps) {
 
         {/* Premium Plan Card */}
         <Card className="mb-6 bg-gradient-to-br from-pink-500 to-rose-500 text-white border-0 shadow-xl animate-slide-up relative overflow-hidden">
-          {/* Decorative elements */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16" />
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 -translate-x-12" />
 
@@ -89,7 +77,6 @@ export function SuperwallPaywall({ answers, onSkip }: SuperwallPaywallProps) {
               </div>
               <h3 className="senior-text-xl font-bold mb-2">Dolce Reset Premium</h3>
 
-              {/* Pricing */}
               <div className="mb-2">
                 <span className="senior-text-sm line-through opacity-70">€9,99/mese</span>
               </div>
@@ -137,7 +124,6 @@ export function SuperwallPaywall({ answers, onSkip }: SuperwallPaywallProps) {
               )}
             </Button>
 
-            {/* Trial info */}
             <p className="text-center text-white/80 text-sm mt-3">
               Prova gratuita di 3 giorni. Cancella quando vuoi.
             </p>
@@ -160,7 +146,7 @@ export function SuperwallPaywall({ answers, onSkip }: SuperwallPaywallProps) {
           </CardContent>
         </Card>
 
-        {/* Skip option (optional) */}
+        {/* Skip option */}
         {onSkip && (
           <div className="text-center mt-6">
             <button

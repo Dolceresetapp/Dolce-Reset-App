@@ -2,15 +2,12 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useUser } from "@clerk/nextjs"
 import { OnboardingIntro } from "@/components/onboarding-intro"
 import { EmotionalQuestion } from "@/components/emotional-question"
 import { SuperwallPaywall } from "@/components/superwall-paywall"
-import { useSupabaseClient } from "@/lib/supabase"
 import { emotionalQuestions } from "@/lib/onboarding-questions"
 import { PlanGeneration } from "@/components/plan-generations"
 import { ConfirmationScreens } from "@/components/confirmation-screen"
-import ConsentNotice from "@/components/agree"
 
 export default function OnboardingPage() {
   const [showIntro, setShowIntro] = useState(true)
@@ -20,8 +17,6 @@ export default function OnboardingPage() {
   const [showPlanGeneration, setShowPlanGeneration] = useState(false)
   const [showPricing, setShowPricing] = useState(false)
   const router = useRouter()
-  const { user } = useUser()
-  const { getSupabaseClient } = useSupabaseClient()
 
   const handleIntroComplete = () => {
     setShowIntro(false)
@@ -46,7 +41,7 @@ export default function OnboardingPage() {
   }
 
   const handleConfirmationComplete = async () => {
-    // Get all data from localStorage as well
+    // Get all data from localStorage
     const getAllStoredData = () => {
       const storedData: Record<string, any> = {}
       if (typeof window !== "undefined") {
@@ -57,10 +52,8 @@ export default function OnboardingPage() {
             const value = localStorage.getItem(key)
             if (value) {
               try {
-                // Try to parse JSON for arrays
                 storedData[cleanKey] = JSON.parse(value)
               } catch {
-                // If not JSON, store as string
                 storedData[cleanKey] = value
               }
             }
@@ -75,22 +68,15 @@ export default function OnboardingPage() {
 
     // Calculate BMI if we have height and weight
     if (finalAnswers.height && finalAnswers.current_weight) {
-      const height = Number.parseFloat(finalAnswers.height) / 100 // Convert cm to m
+      const height = Number.parseFloat(finalAnswers.height) / 100
       const weight = Number.parseFloat(finalAnswers.current_weight)
       const bmi = (weight / (height * height)).toFixed(1)
       finalAnswers.bmi = bmi
     }
 
-    // Save answers to database
-    try {
-      const supabase = await getSupabaseClient()
-      await supabase.from("user_onboarding").insert({
-        user_id: user?.id,
-        answers: finalAnswers,
-        completed_at: new Date().toISOString(),
-      })
-    } catch (error) {
-      console.error("Error saving onboarding data:", error)
+    // Store in localStorage for now
+    if (typeof window !== "undefined") {
+      localStorage.setItem("onboarding_answers", JSON.stringify(finalAnswers))
     }
 
     setAnswers(finalAnswers)
@@ -99,7 +85,6 @@ export default function OnboardingPage() {
   }
 
   const handleConfirmationRestart = () => {
-    // Clear localStorage
     if (typeof window !== "undefined") {
       const keys = Object.keys(localStorage)
       keys.forEach((key) => {
@@ -109,7 +94,6 @@ export default function OnboardingPage() {
       })
     }
 
-    // Reset everything and start onboarding from beginning
     setShowConfirmation(false)
     setShowPlanGeneration(false)
     setShowPricing(false)
@@ -124,9 +108,9 @@ export default function OnboardingPage() {
   }
 
   const handleSkipPaywall = () => {
-    // Set onboarding completed cookie
-    document.cookie = "onboarding-completed=true; path=/; max-age=31536000" // 1 year
-    router.push("/features")
+    document.cookie = "onboarding-completed=true; path=/; max-age=31536000"
+    // Redirect to app download or home
+    router.push("/")
   }
 
   const canGoNext = () => {
@@ -137,10 +121,7 @@ export default function OnboardingPage() {
       return true
     }
 
-    console.log("Current question:", currentQ)
-    console.log("Current answer:", answer)
-
-    if(currentQ.customScreenType === "hurray-screen") {
+    if (currentQ.customScreenType === "hurray-screen") {
       return true
     }
 
@@ -172,7 +153,6 @@ export default function OnboardingPage() {
   }
 
   return (
-    <>
     <EmotionalQuestion
       question={emotionalQuestions[currentQuestion]}
       currentStep={currentQuestion + 1}
@@ -184,7 +164,5 @@ export default function OnboardingPage() {
       onPrevious={handlePrevious}
       canGoNext={canGoNext()}
     />
-    
-    </>
   )
 }
