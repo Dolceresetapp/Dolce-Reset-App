@@ -12,17 +12,17 @@ interface ConfirmationScreensProps {
 const confirmationScreens = [
   {
     id: 1,
-    image: "/accept/first.png",
+    image: "/accept/first.webp",
     alt: "Ready to be more fit and healthier again?",
   },
   {
     id: 2,
-    image: "/accept/second.png",
+    image: "/accept/second.webp",
     alt: "Ready for your friends to ask your secret?",
   },
   {
     id: 3,
-    image: "/accept/third.png",
+    image: "/accept/third.webp",
     alt: "Ready to make them and you proud?",
   },
 ]

@@ -10,37 +10,37 @@ const testimonials = [
     stars: 5,
     text: "Ero convinta fosse la solita app che promette e non mantiene… invece mi sono dovuta ricredere. Allenamenti brevi, piano alimentare semplice e un supporto che ti risponde davvero. Dopo 2 settimane già vedevo la pancia sgonfiarsi.",
     author: "Chiara Lombardi, Verona (34 anni)",
-    image: "/testimonials/29.png",
+    image: "/testimonials/29.webp",
   },
   {
     stars: 5,
     text: "Non sono mai riuscita a seguire diete o programmi complicati. Qui invece è tutto pratico: esercizi rapidi, ricette veloci e la chat di supporto che mi incoraggia. È la prima volta che non mollo dopo la prima settimana.",
     author: "Elena Ferraro, Bari (59 anni)",
-    image: "/testimonials/t2.png",
+    image: "/testimonials/t2.webp",
   },
   {
     stars: 5,
     text: "All’inizio avevo paura fosse tempo perso come le altre volte… e invece finalmente qualcosa che funziona davvero! Non devo pensare a nulla: mi dicono cosa mangiare e quali mini esercizi fare. Sto già perdendo i primi chili.",
     author: "Roberta Colombo, Genova (41 anni)",
-    image: "/testimonials/t3.png",
+    image: "/testimonials/t3.webp",
   },
   {
     stars: 5,
     text: "Non ho tempo né voglia di spaccarmi in palestra. Con questa app faccio movimento in pochi minuti, seguo i pasti facili suggeriti, e quando ho un dubbio scrivo al supporto. Mi sento seguita, non sola.",
     author: "Daniela Romano, Palermo (36 anni)",
-    image: "/testimonials/31.png",
+    image: "/testimonials/31.webp",
   },
   {
     stars: 5,
     text: "Ero scettica, perché a 57 anni pensavo fosse tardi per rimettermi in forma. Invece con i consigli sull’alimentazione e i piccoli allenamenti guidati mi sento più energica ogni giorno. Non serve forza di volontà infinita, è tutto già pronto.",
     author: "Patrizia Greco, Padova (52 anni)",
-    image: "/testimonials/t5.png",
+    image: "/testimonials/t5.webp",
   },
   {
     stars: 5,
     text: "La mia paura era di non riuscire a seguirlo per pigrizia… invece bastano pochi minuti al giorno. Tra ricette facili e mini workout, è diventata la mia nuova routine senza stress.",
     author: "Francesca Moretti, Torino (44 anni)",
-    image: "/testimonials/33.png",
+    image: "/testimonials/33.webp",
   },
 ]
 

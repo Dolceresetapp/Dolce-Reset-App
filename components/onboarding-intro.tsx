@@ -29,7 +29,7 @@ export function OnboardingIntro({ onContinue }: OnboardingIntroProps) {
 
           {/* Rating Card */}
           <div className="flex justify-center items-center w-full">
-            <Image src="/custom/onboarding.png" width={500} height={500} alt="first" className="object-contain" />
+            <Image src="/custom/onboarding.webp" width={500} height={500} alt="first" className="object-contain" />
           </div>
 
           {/* Benefits Preview */}
@@ -59,7 +59,7 @@ export function OnboardingIntro({ onContinue }: OnboardingIntroProps) {
       <div className="flex items-center justify-center min-h-screen p-4">
         <div className="w-full max-w-md animate-fade-in">
           <Image
-            src="/second.png"
+            src="/second.webp"
             width={500}
             height={800}
             alt="Benefits overview"

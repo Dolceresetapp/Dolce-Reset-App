@@ -96,7 +96,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
               {generateCustomOutput()}
             </h1> */}
             <Image
-              src="/custom/beforeafter.png"
+              src="/custom/beforeafter.webp"
               alt="Before and after transformation"
               width={400}
               height={300}
@@ -316,7 +316,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
               Wait until the end — there’s a special gift for you 🎁
             </h1> */}
             <Image
-              src="/custom/gift.png"
+              src="/custom/gift.webp"
               alt="Special Gift"
               width={300}
               height={300}
@@ -349,7 +349,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
               Wait until the end — there’s a special gift for you 🎁
             </h1> */}
             <Image
-              src="/custom/hurray.png"
+              src="/custom/hurray.webp"
               alt="Hurray"
               width={300}
               height={300}
@@ -387,7 +387,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
           <div className="flex flex-col items-center gap-6 max-w-md">
 
             <Image
-              src="/custom/graph.png"
+              src="/custom/graph.webp"
               alt="BMI Graph"
               width={300}
               height={300}
@@ -417,7 +417,7 @@ export function CustomScreen({ type, answers, onContinue }: CustomScreenProps) {
         <div className="flex-1 flex flex-col items-center justify-center p-6" style={{ height: "80vh" }}>
           <div className="flex-1 flex items-center justify-center">
             <Image
-              src="/custom/doctor.png"
+              src="/custom/doctor.webp"
               alt="Doctor Recommendation"
               width={300}
               height={300}

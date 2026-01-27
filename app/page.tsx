@@ -18,9 +18,11 @@ export default function Sales() {
       {/* Hero Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/custom/start.png"
+          src="/custom/start.webp"
           alt="Fitness inspiration"
           fill
+          priority
+          sizes="100vw"
           className="object-cover"
         />
       </div>

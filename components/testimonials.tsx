@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 
-const images = ["/results/r1.png", "/results/r2.png", "/results/r3.png", "/results/r4.png"]
+const images = ["/results/r1.webp", "/results/r2.webp", "/results/r3.webp", "/results/r4.webp"]
 
 export default function AutoSlider() {
   const [currentIndex, setCurrentIndex] = useState(0)

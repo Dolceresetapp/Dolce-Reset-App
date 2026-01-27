@@ -5,7 +5,7 @@ import Image from "next/image"
 export default function LogoMarquee() {
   // Explicitly list your logos (can be .png or .webp)
   const logos = [
-    "/logos/l1.png",
+    "/logos/l1.webp",
     "/logos/l2.webp",
     "/logos/l3.webp",
     "/logos/l4.webp",

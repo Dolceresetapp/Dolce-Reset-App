@@ -264,7 +264,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
           style={{ animationDelay: "0.4s" }}
         >
           <div className="flex -space-x-2">
-            {["t1.png", "t2.png", "t3.png", "t4.png", "t5.png"].map((img, i) => (
+            {["t1.webp", "t2.webp", "t3.webp", "t4.webp", "t5.webp"].map((img, i) => (
               <div
                 key={i}
                 className="w-8 h-8 rounded-full border-2 border-white overflow-hidden flex items-center justify-center"
