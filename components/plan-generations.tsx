@@ -7,7 +7,6 @@ import { Star, Users, CheckCircle } from "lucide-react"
 import SalesPage from "./sales"
 import AutoSlider from "./testimonials"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
 
 interface PlanGenerationProps {
   answers: Record<string, any>
@@ -50,7 +49,6 @@ const progressSteps = [
 
 
 export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
-  const router = useRouter()
   const [currentStep, setCurrentStep] = useState(0)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const [showResults, setShowResults] = useState(false)
@@ -116,7 +114,7 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
   }
 
   const handleContinue = () => {
-    router.push("/checkout")
+    onComplete()
   }
 
   if (showResults) {
