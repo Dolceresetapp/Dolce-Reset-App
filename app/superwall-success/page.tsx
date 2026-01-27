@@ -90,10 +90,10 @@ export default function SuperwallSuccessPage() {
 
               <Button
                 onClick={handleDownloadAndroid}
-                className="w-full h-14 text-lg bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow-lg flex items-center justify-center gap-3"
+                className="w-full h-14 text-lg bg-[#01875f] hover:bg-[#017a56] text-white font-bold rounded-xl shadow-lg flex items-center justify-center gap-3"
               >
                 <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M17.523 2.3a.5.5 0 00-.86-.004L14.76 5.452a9.5 9.5 0 00-5.52 0L7.337 2.296a.5.5 0 00-.86.004c-.054.092-.057.185-.057.185v.03A9.5 9.5 0 003 11.5v.5a9.5 9.5 0 009.5 9.5h0a9.5 9.5 0 009.5-9.5v-.5a9.5 9.5 0 00-3.42-8.985v-.03s-.003-.093-.057-.185zM8.5 11a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm7 0a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+                  <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 010 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.8 8.99l-2.302 2.302-8.634-8.634z"/>
                 </svg>
                 Scarica per Android
               </Button>
