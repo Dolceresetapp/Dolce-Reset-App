@@ -9,7 +9,6 @@ import { Mail, Sparkles, Check, Gift } from "lucide-react"
 
 interface EmailCollectionProps {
   onSubmit: (email: string) => void
-  onSkip?: () => void
 }
 
 const emailDomains = [
@@ -22,7 +21,7 @@ const emailDomains = [
   "@yahoo.com",
 ]
 
-export function EmailCollection({ onSubmit, onSkip }: EmailCollectionProps) {
+export function EmailCollection({ onSubmit }: EmailCollectionProps) {
   const [email, setEmail] = useState("")
   const [showSuggestions, setShowSuggestions] = useState(false)
 
@@ -139,17 +138,6 @@ export function EmailCollection({ onSubmit, onSkip }: EmailCollectionProps) {
           </CardContent>
         </Card>
 
-        {/* Skip option */}
-        {onSkip && (
-          <div className="text-center">
-            <button
-              onClick={onSkip}
-              className="text-gray-500 text-sm underline hover:text-gray-700"
-            >
-              Continua senza email
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )

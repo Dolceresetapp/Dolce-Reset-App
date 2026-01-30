@@ -152,7 +152,7 @@ export default function OnboardingPage() {
   }
 
   if (showEmailCollection) {
-    return <EmailCollection onSubmit={handleEmailSubmit} onSkip={handleSkipPaywall} />
+    return <EmailCollection onSubmit={handleEmailSubmit} />
   }
 
   if (showPlanGeneration) {

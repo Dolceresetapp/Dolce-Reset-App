@@ -34,8 +34,10 @@ export function SuperwallPaywall({ answers, email, onSkip }: SuperwallPaywallPro
     // Construct the Superwall checkout URL
     const checkoutUrl = new URL(`${superwallDomain}/${placementId}`)
 
-    // Pass email as $user_email for Superwall to identify the user
+    // Pass email for Superwall and Stripe prefill
     checkoutUrl.searchParams.set("$user_email", email)
+    checkoutUrl.searchParams.set("email", email)
+    checkoutUrl.searchParams.set("prefill_email", email)
 
     // Add custom attributes from onboarding
     if (answers.goal) {
