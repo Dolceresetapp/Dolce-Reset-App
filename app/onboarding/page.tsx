@@ -112,9 +112,21 @@ export default function OnboardingPage() {
   }
 
   const handleEmailSubmit = (email: string) => {
-    setUserEmail(email)
-    setShowEmailCollection(false)
-    setShowPricing(true) // Show paywall after email
+    // Store email in localStorage for post-payment
+    if (typeof window !== "undefined") {
+      localStorage.setItem("superwall_email", email)
+    }
+
+    // Redirect directly to Superwall checkout
+    const superwallDomain = process.env.NEXT_PUBLIC_SUPERWALL_APP_URL || "https://httpdolceresetapponlinesign-in.superwall.app"
+    const placementId = process.env.NEXT_PUBLIC_SUPERWALL_PLACEMENT_ID || "onboarding_paywall"
+
+    const checkoutUrl = new URL(`${superwallDomain}/${placementId}`)
+    // Superwall params for email prefill in Stripe
+    checkoutUrl.searchParams.set("$email", email)
+    checkoutUrl.searchParams.set("customer_email", email)
+
+    window.location.href = checkoutUrl.toString()
   }
 
   const handleSkipPaywall = () => {
