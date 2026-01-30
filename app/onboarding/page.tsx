@@ -121,12 +121,11 @@ export default function OnboardingPage() {
     const superwallDomain = process.env.NEXT_PUBLIC_SUPERWALL_APP_URL || "https://httpdolceresetapponlinesign-in.superwall.app"
     const placementId = process.env.NEXT_PUBLIC_SUPERWALL_PLACEMENT_ID || "onboarding_paywall"
 
-    const checkoutUrl = new URL(`${superwallDomain}/${placementId}`)
-    // Superwall params for email prefill in Stripe
-    checkoutUrl.searchParams.set("$email", email)
-    checkoutUrl.searchParams.set("customer_email", email)
+    // Superwall Web Checkout with email prefill and lock
+    // Format: domain/placement?email=xxx&lock_email=true
+    const checkoutUrl = `${superwallDomain}/${placementId}?email=${encodeURIComponent(email)}&lock_email=true`
 
-    window.location.href = checkoutUrl.toString()
+    window.location.href = checkoutUrl
   }
 
   const handleSkipPaywall = () => {
