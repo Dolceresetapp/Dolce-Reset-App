@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Crown, Mail, CreditCard, Shield, CheckCircle } from "lucide-react"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
 
 interface PricingDialogProps {
   open: boolean
@@ -29,7 +28,6 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
   const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(false)
-  const router = useRouter()
 
   // Only show dropdown if user typed '@' and suggestions exist
   const suggestions =
@@ -41,40 +39,20 @@ export function PricingDialog({ open, onOpenChange }: PricingDialogProps) {
 
   const handleSubscribe = async () => {
     if (!email || !email.includes("@")) {
-      alert("Please enter a valid email address")
+      alert("Inserisci un indirizzo email valido")
       return
     }
 
     setIsLoading(true)
-    router.push("/payment")
-    onOpenChange(false)
-    return
 
-    try {
-      const response = await fetch("/api/create-subscription-checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
-        }),
-      })
+    // Redirect to Superwall Web Checkout
+    const superwallDomain = process.env.NEXT_PUBLIC_SUPERWALL_APP_URL || "https://httpdolceresetapponlinesign-in.superwall.app"
+    const placementId = process.env.NEXT_PUBLIC_SUPERWALL_PLACEMENT_ID || "onboarding_paywall"
 
-      const data = await response.json()
+    const checkoutUrl = new URL(`${superwallDomain}/${placementId}`)
+    checkoutUrl.searchParams.set("$user_email", email.trim().toLowerCase())
 
-      if (data.url) {
-        window.location.href = data.url
-      } else {
-        throw new Error("Failed to create checkout session")
-      }
-    } catch (error) {
-      console.error("Error:", error)
-      alert("Something went wrong. Please try again.")
-    } finally {
-      setIsLoading(false)
-    }
+    window.location.href = checkoutUrl.toString()
   }
 
   const handleSuggestionClick = (domain: string) => {

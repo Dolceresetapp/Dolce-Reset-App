@@ -114,10 +114,8 @@ export function PlanGeneration({ answers, onComplete }: PlanGenerationProps) {
   }
 
   const handleContinue = () => {
-    // Redirect directly to Superwall checkout
-    const superwallDomain = "https://httpdolceresetapponlinesign-in.superwall.app"
-    const placementId = "onboarding_paywall"
-    window.location.href = `${superwallDomain}/${placementId}`
+    // Continue to signup screen, which then goes to Superwall paywall
+    onComplete()
   }
 
   if (showResults) {

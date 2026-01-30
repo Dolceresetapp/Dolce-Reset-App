@@ -102,9 +102,14 @@ export default function OnboardingPage() {
     setShowIntro(true)
   }
 
+  const handlePaywallEmailSubmit = (email: string) => {
+    // Email is passed to Superwall, account will be created after payment via webhook
+    console.log("User proceeding to payment with email:", email)
+  }
+
   const handlePlanComplete = () => {
     setShowPlanGeneration(false)
-    setShowPricing(true)
+    setShowPricing(true) // Go directly to paywall, account created after payment
   }
 
   const handleSkipPaywall = () => {

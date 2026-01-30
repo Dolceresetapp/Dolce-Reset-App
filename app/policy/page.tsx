@@ -83,7 +83,7 @@ export default function PrivacyPolicy() {
               We process your personal data based on legal bases, including
               Legitimate Interest, Contract, Legal Obligation, and Consent. For
               sensitive data (e.g., health data), explicit consent is required.
-              Purchases involve third-party payment systems (e.g., Stripe).
+              Purchases involve third-party payment systems.
             </p>
 
             <h2 className="text-lg font-bold mb-2">DATA RETENTION</h2>
