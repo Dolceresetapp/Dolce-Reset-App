@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { OnboardingIntro } from "@/components/onboarding-intro"
 import { EmotionalQuestion } from "@/components/emotional-question"
 import { SuperwallPaywall } from "@/components/superwall-paywall"
+import { EmailCollection } from "@/components/email-collection"
 import { emotionalQuestions } from "@/lib/onboarding-questions"
 import { PlanGeneration } from "@/components/plan-generations"
 import { ConfirmationScreens } from "@/components/confirmation-screen"
@@ -15,7 +16,9 @@ export default function OnboardingPage() {
   const [answers, setAnswers] = useState<Record<string, any>>({})
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showPlanGeneration, setShowPlanGeneration] = useState(false)
+  const [showEmailCollection, setShowEmailCollection] = useState(false)
   const [showPricing, setShowPricing] = useState(false)
+  const [userEmail, setUserEmail] = useState("")
   const router = useRouter()
 
   const handleIntroComplete = () => {
@@ -96,20 +99,22 @@ export default function OnboardingPage() {
 
     setShowConfirmation(false)
     setShowPlanGeneration(false)
+    setShowEmailCollection(false)
     setShowPricing(false)
     setCurrentQuestion(0)
     setAnswers({})
     setShowIntro(true)
   }
 
-  const handlePaywallEmailSubmit = (email: string) => {
-    // Email is passed to Superwall, account will be created after payment via webhook
-    console.log("User proceeding to payment with email:", email)
-  }
-
   const handlePlanComplete = () => {
     setShowPlanGeneration(false)
-    setShowPricing(true) // Go directly to paywall, account created after payment
+    setShowEmailCollection(true) // Show email collection after plan
+  }
+
+  const handleEmailSubmit = (email: string) => {
+    setUserEmail(email)
+    setShowEmailCollection(false)
+    setShowPricing(true) // Show paywall after email
   }
 
   const handleSkipPaywall = () => {
@@ -141,8 +146,13 @@ export default function OnboardingPage() {
     return !!answer
   }
 
+  // Render order matters - check states in reverse order of flow
   if (showPricing) {
-    return <SuperwallPaywall answers={answers} onSkip={handleSkipPaywall} />
+    return <SuperwallPaywall answers={answers} email={userEmail} onSkip={handleSkipPaywall} />
+  }
+
+  if (showEmailCollection) {
+    return <EmailCollection onSubmit={handleEmailSubmit} onSkip={handleSkipPaywall} />
   }
 
   if (showPlanGeneration) {

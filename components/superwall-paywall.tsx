@@ -4,44 +4,16 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Check, Crown, Sparkles, Star, Zap, Loader2, Mail } from "lucide-react"
+import { Check, Crown, Sparkles, Star, Zap, Loader2 } from "lucide-react"
 
 interface SuperwallPaywallProps {
   answers: Record<string, any>
+  email: string
   onSkip?: () => void
 }
 
-const emailDomains = [
-  "@gmail.com",
-  "@icloud.com",
-  "@tiscali.it",
-  "@libero.it",
-  "@virgilio.it",
-  "@outlook.com",
-  "@yahoo.com",
-]
-
-export function SuperwallPaywall({ answers, onSkip }: SuperwallPaywallProps) {
+export function SuperwallPaywall({ answers, email, onSkip }: SuperwallPaywallProps) {
   const [isLoading, setIsLoading] = useState(false)
-  const [email, setEmail] = useState("")
-  const [showSuggestions, setShowSuggestions] = useState(false)
-
-  const suggestions =
-    email.includes("@") && showSuggestions
-      ? emailDomains.filter((domain) =>
-        domain.startsWith(email.substring(email.indexOf("@")))
-      )
-      : []
-
-  const handleSuggestionClick = (domain: string) => {
-    const beforeAt = email.substring(0, email.indexOf("@"))
-    setEmail(beforeAt + domain)
-    setShowSuggestions(false)
-  }
-
-  const isValidEmail = email.includes("@") && email.includes(".")
 
   const premiumFeatures = [
     "50+ Esercizi Premium",
@@ -53,14 +25,7 @@ export function SuperwallPaywall({ answers, onSkip }: SuperwallPaywallProps) {
   ]
 
   const handleSubscribe = () => {
-    if (!isValidEmail) return
-
     setIsLoading(true)
-
-    // Store email in localStorage for post-payment account creation
-    if (typeof window !== "undefined") {
-      localStorage.setItem("superwall_email", email.trim().toLowerCase())
-    }
 
     // Superwall Web Checkout URL from environment
     const superwallDomain = process.env.NEXT_PUBLIC_SUPERWALL_APP_URL || "https://httpdolceresetapponlinesign-in.superwall.app"
@@ -70,8 +35,7 @@ export function SuperwallPaywall({ answers, onSkip }: SuperwallPaywallProps) {
     const checkoutUrl = new URL(`${superwallDomain}/${placementId}`)
 
     // Pass email as $user_email for Superwall to identify the user
-    // Account will be created after payment via webhook
-    checkoutUrl.searchParams.set("$user_email", email.trim().toLowerCase())
+    checkoutUrl.searchParams.set("$user_email", email)
 
     // Add custom attributes from onboarding
     if (answers.goal) {
@@ -91,10 +55,10 @@ export function SuperwallPaywall({ answers, onSkip }: SuperwallPaywallProps) {
             <Crown className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-gray-800 mb-2">
-            Il Tuo Piano è Pronto!
+            Sblocca il Tuo Piano
           </h1>
           <p className="text-base text-gray-600">
-            Sblocca il tuo potenziale completo
+            Inizia la tua trasformazione oggi
           </p>
         </div>
 
@@ -129,7 +93,7 @@ export function SuperwallPaywall({ answers, onSkip }: SuperwallPaywallProps) {
             </div>
 
             {/* Features */}
-            <div className="grid grid-cols-2 gap-2 mb-4">
+            <div className="grid grid-cols-2 gap-2 mb-5">
               {premiumFeatures.map((feature) => (
                 <div key={feature} className="flex items-center space-x-2">
                   <div className="w-4 h-4 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
@@ -140,48 +104,10 @@ export function SuperwallPaywall({ answers, onSkip }: SuperwallPaywallProps) {
               ))}
             </div>
 
-            {/* Email Input */}
-            <div className="mb-4 relative">
-              <Label htmlFor="email" className="text-white/90 text-sm mb-2 block">
-                Inserisci la tua email per continuare
-              </Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="La tua email"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value)
-                    setShowSuggestions(true)
-                  }}
-                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                  className="pl-10 h-12 bg-white text-gray-800 border-0 rounded-xl"
-                />
-              </div>
-
-              {/* Email suggestions dropdown */}
-              {suggestions.length > 0 && (
-                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-md">
-                  {suggestions.map((domain) => (
-                    <div
-                      key={domain}
-                      className="px-3 py-2 text-sm text-gray-700 cursor-pointer hover:bg-pink-50"
-                      onClick={() => handleSuggestionClick(domain)}
-                    >
-                      {email.substring(0, email.indexOf("@"))}
-                      {domain}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
             {/* CTA Button */}
             <Button
               onClick={handleSubscribe}
-              disabled={isLoading || !isValidEmail}
+              disabled={isLoading}
               className="w-full h-14 text-lg bg-white text-pink-600 hover:bg-gray-50 font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 disabled:opacity-70 disabled:hover:scale-100"
             >
               {isLoading ? (
