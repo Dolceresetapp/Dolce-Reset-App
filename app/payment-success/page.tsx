@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Check, Lock, Eye, EyeOff, Loader2, PartyPopper, Sparkles } from "lucide-react"
 
-export default function PaymentSuccessPage() {
+function PaymentSuccessContent() {
   const searchParams = useSearchParams()
   const [email, setEmail] = useState("")
   const [name, setName] = useState("")
@@ -78,7 +78,7 @@ export default function PaymentSuccessPage() {
           email: email.trim().toLowerCase(),
           password: password,
           password_confirmation: confirmPassword,
-          from_payment: true, // Flag to indicate this is post-payment signup
+          from_payment: true,
         }),
       })
 
@@ -87,7 +87,6 @@ export default function PaymentSuccessPage() {
       if (!response.ok) {
         // If user already exists (created by webhook), try to update password
         if (data.message?.includes("email") || data.errors?.email) {
-          // Try to set password for existing user
           const updateResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://admin.dolcereset.com'}/api/set-password`, {
             method: "POST",
             headers: {
@@ -104,7 +103,6 @@ export default function PaymentSuccessPage() {
 
           if (updateResponse.ok) {
             setSuccess(true)
-            // Clear stored email
             if (typeof window !== "undefined") {
               localStorage.removeItem("superwall_email")
             }
@@ -118,7 +116,6 @@ export default function PaymentSuccessPage() {
       }
 
       setSuccess(true)
-      // Clear stored email
       if (typeof window !== "undefined") {
         localStorage.removeItem("superwall_email")
       }
@@ -197,14 +194,12 @@ export default function PaymentSuccessPage() {
         {/* Form Card */}
         <Card className="mb-6 border-pink-100 shadow-xl animate-slide-up">
           <CardContent className="p-6 space-y-4">
-            {/* Error message */}
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
                 {error}
               </div>
             )}
 
-            {/* Email (read-only) */}
             <div>
               <Label className="text-sm font-medium text-gray-700 mb-2 block">
                 Email
@@ -217,7 +212,6 @@ export default function PaymentSuccessPage() {
               />
             </div>
 
-            {/* Name Input */}
             <div>
               <Label htmlFor="name" className="text-sm font-medium text-gray-700 mb-2 block">
                 Il tuo nome
@@ -232,7 +226,6 @@ export default function PaymentSuccessPage() {
               />
             </div>
 
-            {/* Password Input */}
             <div>
               <Label htmlFor="password" className="text-sm font-medium text-gray-700 mb-2 block">
                 Crea una password
@@ -257,7 +250,6 @@ export default function PaymentSuccessPage() {
               </div>
             </div>
 
-            {/* Confirm Password Input */}
             <div>
               <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700 mb-2 block">
                 Conferma password
@@ -282,7 +274,6 @@ export default function PaymentSuccessPage() {
               </div>
             </div>
 
-            {/* Submit Button */}
             <Button
               onClick={handleSubmit}
               disabled={isLoading || !password || !confirmPassword}
@@ -303,11 +294,27 @@ export default function PaymentSuccessPage() {
           </CardContent>
         </Card>
 
-        {/* Info */}
         <p className="text-center text-gray-500 text-xs px-4">
           Questi dati ti serviranno per accedere all'app Dolce Reset
         </p>
       </div>
     </div>
+  )
+}
+
+// Loading fallback
+function LoadingFallback() {
+  return (
+    <div className="app-container bg-gradient-to-br from-rose-50 to-pink-50 min-h-screen flex items-center justify-center">
+      <Loader2 className="w-8 h-8 animate-spin text-pink-500" />
+    </div>
+  )
+}
+
+export default function PaymentSuccessPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <PaymentSuccessContent />
+    </Suspense>
   )
 }
