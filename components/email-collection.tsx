@@ -40,13 +40,34 @@ export function EmailCollection({ onSubmit }: EmailCollectionProps) {
 
   const isValidEmail = email.includes("@") && email.includes(".")
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (isValidEmail) {
+      const normalizedEmail = email.trim().toLowerCase()
+
       // Store email for later use
       if (typeof window !== "undefined") {
-        localStorage.setItem("superwall_email", email.trim().toLowerCase())
+        localStorage.setItem("superwall_email", normalizedEmail)
       }
-      onSubmit(email.trim().toLowerCase())
+
+      // Send email to backend for MailerLite (Checkout Abandon group)
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://admin.dolcereset.com'}/api/leads/store`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+          body: JSON.stringify({
+            email: normalizedEmail,
+            source: "web_quiz",
+          }),
+        })
+      } catch (error) {
+        // Don't block the flow if the API call fails
+        console.error("Failed to store lead:", error)
+      }
+
+      onSubmit(normalizedEmail)
     }
   }
 
