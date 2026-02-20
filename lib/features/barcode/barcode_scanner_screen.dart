@@ -19,14 +19,14 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   Widget _barcodePreview(Barcode? value) {
     if (value == null) {
       return const Text(
-        'Scan Food Barcode',
+        'Scansiona codice a barre',
         overflow: TextOverflow.fade,
         style: TextStyle(color: Colors.white),
       );
     }
 
     return Text(
-      value.displayValue ?? 'No display value.',
+      value.displayValue ?? 'Nessun valore rilevato.',
       overflow: TextOverflow.fade,
       style: const TextStyle(color: Colors.white),
     );

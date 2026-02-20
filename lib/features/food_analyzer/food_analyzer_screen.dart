@@ -38,7 +38,7 @@ class _FoodAnalyzerScreenState extends State<FoodAnalyzerScreen> {
             ),
 
             Text(
-              "Food Analyzer Scanner",
+              "Analizzatore Cibo",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 16.sp,
@@ -67,7 +67,7 @@ class _FoodAnalyzerScreenState extends State<FoodAnalyzerScreen> {
             UIHelper.verticalSpace(45.h),
 
             Text(
-              "Check your food is \n healthy or not!",
+              "Controlla se il tuo cibo è \n sano o no!",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 30.sp,
@@ -80,7 +80,7 @@ class _FoodAnalyzerScreenState extends State<FoodAnalyzerScreen> {
             UIHelper.verticalSpace(30.h),
 
             Text(
-              "Scan the barcode on the packaging of your food",
+              "Scansiona il codice a barre sulla confezione del tuo cibo",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: Colors.black,
                 fontSize: 12.sp,
@@ -112,7 +112,7 @@ class _FoodAnalyzerScreenState extends State<FoodAnalyzerScreen> {
                   SvgPicture.asset(Assets.icons.camera),
 
                   Text(
-                    "Scan with AI",
+                    "Scansiona con AI",
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                   ),
                 ],

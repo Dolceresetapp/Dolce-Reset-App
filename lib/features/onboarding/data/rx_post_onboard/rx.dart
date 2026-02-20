@@ -70,6 +70,9 @@ final class OnboardingRx extends RxResponseInt<OnboardingResponseModel> {
 
   @override
   handleSuccessWithReturn(OnboardingResponseModel data) {
+    // Mark onboarding as completed
+    appData.write(kKeyUsrInfo, 1);
+
     // inch and cm
     appData.write(kKeyonboard7HeightValue, data.data?.height);
     appData.write(kKeyonboard7HeightUnit, data.data?.heightIn);

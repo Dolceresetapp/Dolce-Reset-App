@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +31,6 @@ class CacheVideoScreen extends StatefulWidget {
 
 class _CacheVideoScreenState extends State<CacheVideoScreen>
     with WidgetsBindingObserver {
-  AudioPlayer? _audioPlayer;
   bool _showCountdown = true;
   bool _showRestOverlay = false;
   bool _isFinishing = false;
@@ -49,7 +47,6 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      _audioPlayer = AudioPlayer();
       final provider = context.read<CacheVideoProvider>();
       provider.onWorkoutComplete = _onWorkoutComplete;
       provider.onRestNeeded = _onRestNeeded;
@@ -73,9 +70,6 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
     } catch (e) {
       // Provider may already be disposed
     }
-    _audioPlayer?.stop();
-    _audioPlayer?.dispose();
-    _audioPlayer = null;
   }
 
   @override
@@ -86,7 +80,7 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
       try {
         final provider = context.read<CacheVideoProvider>();
         if (provider.isPlaying) provider.playPause();
-        _audioPlayer?.pause();
+        provider.musicPlayer?.pause();
       } catch (e) {
         // Ignore if provider disposed
       }
@@ -131,10 +125,7 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
     final kcal = provider.actualKcal;
     final listId = provider.model.listId ?? 0;
 
-    // Stop audio player immediately
-    _audioPlayer?.stop();
-
-    // Stop provider in background (don't wait)
+    // Stop provider (includes music) in background (don't wait)
     provider.stopAll();
 
     // Save in background (don't wait)
@@ -178,7 +169,6 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
         listId: provider.model.listId ?? 0,
         onStopAll: () async {
           await provider.stopAll();
-          _audioPlayer?.stop();
         },
       ),
     );
@@ -198,17 +188,15 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
     );
   }
 
-  Future<void> _showMusicSheet(CacheVideoProvider provider) async {
+  Future<void> _showMusicSheet() async {
     await showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(10.r)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
-      builder: (_) => MusicWidget(
-        audioPlayer: _audioPlayer,
-        music: provider.music,
-      ),
+      builder: (_) => const MusicWidget(),
     );
   }
 
@@ -272,7 +260,11 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
           return Scaffold(
             backgroundColor: _backgroundColor,
             body: SafeArea(
-              child: CountdownOverlay(onComplete: _onCountdownComplete),
+              child: CountdownOverlay(
+                onComplete: _onCountdownComplete,
+                onDuckMusic: provider.duckMusic,
+                onRestoreMusic: provider.restoreMusic,
+              ),
             ),
           );
         }
@@ -280,21 +272,8 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
         if (controller == null || provider.data.isEmpty) {
           return Scaffold(
             backgroundColor: _backgroundColor,
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CircularProgressIndicator(color: _accentColor),
-                  SizedBox(height: 16.h),
-                  Text(
-                    "Caricamento...",
-                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                      color: _textColor,
-                      fontSize: 16.sp,
-                    ),
-                  ),
-                ],
-              ),
+            body: const Center(
+              child: CircularProgressIndicator(color: _accentColor),
             ),
           );
         }
@@ -330,8 +309,18 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
                   restDuration: provider.restDuration,
                   nextExerciseTitle: provider.data[provider.currentIndex + 1].title ?? "Prossimo esercizio",
                   nextVideoUrl: provider.data[provider.currentIndex + 1].videos,
+                  nextVoiceoverText: provider.data[provider.currentIndex + 1].voiceoverText,
                   onComplete: _onRestComplete,
                   onSkip: _onRestSkip,
+                  voiceoverEnabled: provider.voiceoverEnabled,
+                  onVoiceoverToggle: () {
+                    provider.voiceoverEnabled = !provider.voiceoverEnabled;
+                  },
+                  onVoiceoverPlayed: () {
+                    provider.markVoiceoverPlayedDuringRest();
+                  },
+                  onDuckMusic: provider.duckMusic,
+                  onRestoreMusic: provider.restoreMusic,
                 ),
             ],
           ),
@@ -422,7 +411,7 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
           GestureDetector(
             onTap: () => _showDoneSheet(provider),
             child: Text(
-              "Done",
+              "Fine",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 fontSize: 16.sp,
                 color: _accentColor,
@@ -470,13 +459,15 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
             onTap: _openFullscreen,
             child: IconWidget(icon: Assets.icons.zoom),
           ),
-          SizedBox(height: 16.h),
-          // Music button
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => _showMusicSheet(provider),
-            child: IconWidget(icon: Assets.icons.music),
-          ),
+          // Music button (hidden if course has integrated audio)
+          if (provider.model.musicEnabled != false) ...[
+            SizedBox(height: 16.h),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: _showMusicSheet,
+              child: IconWidget(icon: Assets.icons.music),
+            ),
+          ],
           SizedBox(height: 16.h),
           // Info button
           GestureDetector(
@@ -536,7 +527,7 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
 
   Widget _buildStepIndicator(CacheVideoProvider provider) {
     return Text(
-      "STEP ${provider.currentIndex + 1}/${provider.data.length}",
+      "PASSO ${provider.currentIndex + 1}/${provider.data.length}",
       style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
         color: _grayColor,
         fontWeight: FontWeight.w500,

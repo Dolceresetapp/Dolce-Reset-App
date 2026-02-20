@@ -29,11 +29,11 @@ class OnboardingScreen4 extends StatefulWidget {
 
 class _OnboardingScreen4State extends State<OnboardingScreen4> {
   List<Map<String, dynamic>> dataList = [
-    {"image": Assets.images.onboard41.path, "title": "Slender"},
+    {"image": Assets.images.onboard41.path, "title": "Snella"},
 
-    {"image": Assets.images.onboard42.path, "title": "In the media"},
+    {"image": Assets.images.onboard42.path, "title": "Nella media"},
 
-    {"image": Assets.images.onboard43.path, "title": "strong cuts"},
+    {"image": Assets.images.onboard43.path, "title": "Curve forti"},
   ];
 
   int? selectedIndex;
@@ -56,7 +56,7 @@ class _OnboardingScreen4State extends State<OnboardingScreen4> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "Which option best describes your current physical condition?",
+              "Quale opzione descrive meglio la tua condizione fisica attuale?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -101,7 +101,7 @@ class _OnboardingScreen4State extends State<OnboardingScreen4> {
         child: CustomButton(
           onPressed: () {
             if (selectedIndex == null) {
-              ToastUtil.showErrorShortToast("Please select an item.");
+              ToastUtil.showErrorShortToast("Seleziona un'opzione.");
             } else {
               NavigationService.navigateToWithArgs(Routes.onboardingScreen5, {
                 "onboard1": widget.onboard1,
@@ -115,7 +115,7 @@ class _OnboardingScreen4State extends State<OnboardingScreen4> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

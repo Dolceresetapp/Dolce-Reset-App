@@ -38,20 +38,34 @@ final class AiGenerateRx extends RxResponseInt<AiGenerateResponseModel> {
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
-      if (error.response!.statusCode == 400) {
-        ToastUtil.showShortToast(error.response!.data["message"]);
-      } else {
-        if (error.response!.statusCode == 401) {
-          ToastUtil.showShortToast(error.response!.data["message"]);
+      // Handle timeout errors
+      if (error.type == DioExceptionType.receiveTimeout ||
+          error.type == DioExceptionType.connectionTimeout ||
+          error.type == DioExceptionType.sendTimeout) {
+        ToastUtil.showShortToast("La richiesta ha impiegato troppo tempo. Riprova.");
+        log(error.toString());
+        dataFetcher.sink.addError(error);
+        return false;
+      }
+
+      // Handle response errors (only if response is not null)
+      if (error.response != null) {
+        if (error.response!.statusCode == 400) {
+          ToastUtil.showShortToast(error.response!.data["message"] ?? "Errore");
+        } else if (error.response!.statusCode == 401) {
+          ToastUtil.showShortToast(error.response!.data["message"] ?? "Non autorizzato");
           totalDataClean();
           NavigationService.navigateToReplacement(Routes.signInScreen);
         } else {
-          ToastUtil.showShortToast(error.response!.data["message"]);
+          ToastUtil.showShortToast(error.response!.data?["message"] ?? "Errore del server");
         }
+      } else {
+        ToastUtil.showShortToast("Errore di connessione");
       }
       log(error.toString());
       dataFetcher.sink.addError(error);
       return false;
     }
+    return false;
   }
 }

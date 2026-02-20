@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/common_widget/custom_text_field.dart';
+import 'package:gritti_app/constants/app_constants.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/constants/validation.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/di.dart';
 import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 import 'package:gritti_app/services/preload_service.dart';
@@ -16,6 +18,7 @@ import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
 import '../../../networks/api_acess.dart';
 import '../../../provider/sign_up_provider.dart';
+import '../widgets/logo_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -64,12 +67,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 UIHelper.verticalSpace(40.h),
-                Align(child: Image.asset(Assets.images.frame11.path)),
+                LogoWidget(title: "Crea il tuo account"),
 
                 UIHelper.verticalSpace(50.h),
 
                 Text(
-                  "Name",
+                  "Nome",
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: const Color(0xFF27272A),
                     fontSize: 14.sp,
@@ -82,14 +85,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 CustomTextField(
                   controller: _nameController,
                   validator: nameValidation,
-                  hintText: "Enter your name",
+                  hintText: "Inserisci il tuo nome",
                   keyboardType: TextInputType.emailAddress,
                   prefixIcon: Assets.icons.vector2,
                 ),
 
                 UIHelper.verticalSpace(16.h),
                 Text(
-                  "Email Address",
+                  "Indirizzo Email",
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: const Color(0xFF27272A),
                     fontSize: 14.sp,
@@ -102,7 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 CustomTextField(
                   controller: _emailController,
                   validator: emailValidation,
-                  hintText: "Enter your email address..",
+                  hintText: "Inserisci la tua email...",
                   keyboardType: TextInputType.emailAddress,
                   prefixIcon: Assets.icons.vector2,
                 ),
@@ -152,7 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 //Confirm Password Field
                 Text(
-                  "Confirm Password",
+                  "Conferma Password",
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: const Color(0xFF27272A),
                     fontSize: 14.sp,
@@ -167,7 +170,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       obscureText: !provider.confirmPasswordVisible,
                       keyboardType: TextInputType.visiblePassword,
                       controller: _confirmPasswordController,
-                      hintText: "Confirm Password",
+                      hintText: "Conferma Password",
                       validator:
                           (value) => confirmPasswordValidation(
                             value,
@@ -211,13 +214,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           .waitingForFuture()
                           .then((success) {
                             if (success) {
-                              NavigationService.navigateToWithArgs(
-                                Routes.signupOtpScreen,
-                                {
-                                  "email":
-                                      _emailController.text.trim().toString(),
-                                },
-                              );
+                              bool fromPaywall = appData.read(kKeyFromPaywall) ?? false;
+                              if (fromPaywall) {
+                                // Coming from paywall flow → submit data & cache
+                                appData.write(kKeyFromPaywall, false);
+                                appData.write(kKeyIsOnboarding, true);
+                                NavigationService.navigateToUntilReplacement(
+                                  Routes.cacheLoadingScreen,
+                                );
+                              } else {
+                                // Normal signup flow → go to onboarding
+                                appData.write(kKeyIsOnboarding, true);
+                                NavigationService.navigateToReplacement(
+                                  Routes.onboardingScreen1,
+                                );
+                              }
                             }
                           });
                     }
@@ -227,7 +238,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Sign Up",
+                        "Registrati",
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                       ),
 
@@ -249,7 +260,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: 'I have already ',
+                          text: 'Hai già ',
                           style: TextFontStyle.headline30c27272AtyleWorkSansW700
                               .copyWith(
                                 color: const Color(0xFF52525B),
@@ -266,7 +277,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     Routes.signInScreen,
                                   );
                                 },
-                          text: 'an account',
+                          text: 'un account?',
 
                           style: TextFontStyle.headline30c27272AtyleWorkSansW700
                               .copyWith(

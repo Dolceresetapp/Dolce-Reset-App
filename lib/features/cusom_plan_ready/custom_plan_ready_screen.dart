@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gritti_app/constants/app_constants.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
-import 'package:gritti_app/helpers/di.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 import 'package:intl/intl.dart';
 
@@ -36,7 +34,7 @@ class _CustomPlanReadyScreenState extends State<CustomPlanReadyScreen> {
               Align(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  "${appData.read(kKeyName)} , we have a custom plan \n ready for you ! Are you Ready?",
+                  "Abbiamo un piano personalizzato \n pronto per te! Sei pronta?",
                   textAlign: TextAlign.center,
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: Color(0xFF8359F6),
@@ -49,7 +47,7 @@ class _CustomPlanReadyScreenState extends State<CustomPlanReadyScreen> {
               UIHelper.verticalSpace(10.h),
 
               Text(
-                "You Will Start Feeling Better by: ",
+                "Inizierai a sentirti meglio entro: ",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansThinW600.copyWith(
                   color: Color(0xFF000000),
                   fontSize: 20.sp,
@@ -65,7 +63,7 @@ class _CustomPlanReadyScreenState extends State<CustomPlanReadyScreen> {
                   borderRadius: BorderRadius.circular(14.r),
                 ),
                 child: Text(
-                  "$formattedDate \n 30 days after acutal day",
+                  "$formattedDate \n 30 giorni da oggi",
                   textAlign: TextAlign.center,
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: const Color(0xFFFFFFFF),
@@ -100,7 +98,9 @@ class _CustomPlanReadyScreenState extends State<CustomPlanReadyScreen> {
               // Button
               InkWell(
                 onTap: () {
-                  NavigationService.navigateTo(Routes.rewiringBenefitScreen);
+                  NavigationService.navigateToReplacement(
+                    Routes.rewiringBenefitScreen,
+                  );
                 },
                 child: Image.asset(
                   Assets.images.button1111.path,

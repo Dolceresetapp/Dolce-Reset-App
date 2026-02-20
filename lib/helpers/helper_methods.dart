@@ -74,24 +74,6 @@ Future<void> setInitValue() async {
 
 
     await appData.writeIfNull(kKeyIsFirstTime, true);
-  /*  appData.writeIfNull(kKeyLanguage, kKeyEnglish);
-appData.writeIfNull(kKeyIsFirst, true);
-appData.writeIfNull(kKeyIsLoggedIn, false);
-//codemen
-  await appData.writeIfNull(kKeySelectedLat, 22.818285677915657);
-  await appData.writeIfNull(kKeySelectedLng, 89.5535583794117);
-
-  var deviceInfo = DeviceInfoPlugin();
-  if (Platform.isIOS) {
-    var iosDeviceInfo = await deviceInfo.iosInfo;
-    appData.writeIfNull(
-        kKeyDeviceID, iosDeviceInfo.identifierForVendor); // unique ID on iOS
-  } else if (Platform.isAndroid) {
-    var androidDeviceInfo =
-        await deviceInfo.androidInfo; // unique ID on Android
-    appData.writeIfNull(kKeyDeviceID, androidDeviceInfo.id);
-  } */
-  await Future.delayed(const Duration(seconds: 2));
 }
 
 /* setLocationLatLong(LatLng latLng, {bool? selectedLocation = false}) async {
@@ -227,7 +209,7 @@ void showMaterialDialog(BuildContext context) {
           title: Column(
             children: [
               Text(
-                "Exit",
+                "Esci",
                 textAlign: TextAlign.center,
                 style: TextFontStyle.text16c2F1E19StyleRobotoW600,
               ),
@@ -242,7 +224,7 @@ void showMaterialDialog(BuildContext context) {
               ),
               UIHelper.verticalSpace(16.h),
               Text(
-                "Do you want to exit this app?",
+                "Vuoi uscire dall'app?",
                 textAlign: TextAlign.center,
                 style: TextFontStyle.text16c6C564CStyleRobotoW400,
               ),
@@ -311,7 +293,7 @@ void showMaterialDialog(BuildContext context) {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "Yes",
+                                "Sì",
                                 style: TextFontStyle
                                     .text16c2F1E19StyleRobotoW600
                                     .copyWith(color: AppColors.c2F1E19),
@@ -393,14 +375,14 @@ void showPickImageBottomSheet(
     builder:
         (BuildContext context) => CupertinoActionSheet(
           title: TextStyleExample(
-            name: 'Choose Image',
+            name: 'Scegli immagine',
             style: textTheme.headlineSmall!.copyWith(
               color: Theme.of(context).colorScheme.primary,
               letterSpacing: 0.1,
             ),
           ),
           message: TextStyleExample(
-            name: "Choose an image from your camera or existing gallery.",
+            name: "Scegli un'immagine dalla fotocamera o dalla galleria.",
             style: textTheme.bodyMedium!.copyWith(letterSpacing: 0.1),
           ),
           actions: <Widget>[
@@ -408,7 +390,7 @@ void showPickImageBottomSheet(
             showCameraOption
                 ? CupertinoActionSheetAction(
                   child: TextStyleExample(
-                    name: 'Camera',
+                    name: 'Fotocamera',
                     style: textTheme.titleMedium!.copyWith(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -420,7 +402,7 @@ void showPickImageBottomSheet(
                 : const SizedBox.shrink(),
             CupertinoActionSheetAction(
               child: TextStyleExample(
-                name: 'Gallery',
+                name: 'Galleria',
                 style: textTheme.titleMedium!.copyWith(
                   color: Theme.of(context).colorScheme.secondary,
                 ),
@@ -433,7 +415,7 @@ void showPickImageBottomSheet(
           // A cancel button at the bottom of the modal popup
           cancelButton: CupertinoActionSheetAction(
             child: TextStyleExample(
-              name: 'Close',
+              name: 'Chiudi',
               style: textTheme.titleLarge!.copyWith(
                 color: Colors.grey,
                 letterSpacing: 0.1,
@@ -531,11 +513,11 @@ String getGreetingMessage() {
   final currentHour = DateTime.now().hour;
 
   if (currentHour < 12) {
-    return 'Good Morning';
+    return 'Buongiorno';
   } else if (currentHour < 17) {
-    return 'Good Afternoon';
+    return 'Buon pomeriggio';
   } else {
-    return 'Good Evening';
+    return 'Buonasera';
   }
 }
 
@@ -553,7 +535,7 @@ void showLogoutDialog(BuildContext context) {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Text(
-                  "Are you sure you want to Logout",
+                  "Sei sicuro di voler uscire?",
                   textAlign: TextAlign.center,
                   style: TextFontStyle.headline16c666666tyleMontserratW600
                       .copyWith(color: AppColors.c1E1E1E, fontSize: 16.sp),
@@ -616,7 +598,7 @@ void showLogoutDialog(BuildContext context) {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "Yes",
+                                "Sì",
                                 style: TextFontStyle
                                     .headline16c666666tyleMontserratW700
                                     .copyWith(color: AppColors.c57AE8F),
@@ -650,7 +632,7 @@ void showAccountDeleteDialog(BuildContext context) {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Text(
-                  "Are you sure you want to Delete Account",
+                  "Sei sicuro di voler eliminare l'account?",
                   textAlign: TextAlign.center,
                   style: TextFontStyle.headline16c666666tyleMontserratW600
                       .copyWith(color: AppColors.c1E1E1E, fontSize: 16.sp),
@@ -713,7 +695,7 @@ void showAccountDeleteDialog(BuildContext context) {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "Yes",
+                                "Sì",
                                 style: TextFontStyle
                                     .headline16c666666tyleMontserratW700
                                     .copyWith(color: AppColors.c57AE8F),

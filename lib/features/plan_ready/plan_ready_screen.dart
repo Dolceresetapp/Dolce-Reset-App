@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -23,9 +22,6 @@ class PlanReadyScreen extends StatefulWidget {
 }
 
 class _PlanReadyScreenState extends State<PlanReadyScreen> {
-  CarouselSliderController carouselController = CarouselSliderController();
-  int currentIndex = 0;
-
   // Current Weight BMI
 
   double? gCurrentWeightKg;
@@ -113,7 +109,7 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
             children: [
               UIHelper.verticalSpace(20.h),
               Text(
-                "Your personalized 30- \n day plan is ready!",
+                "Il tuo piano personalizzato\ndi 30 giorni è pronto!",
                 textAlign: TextAlign.center,
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   color: const Color(0xFF000000),
@@ -132,7 +128,7 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                 ),
 
                 child: Text(
-                  "Scientifically designed for your goals",
+                  "Progettato scientificamente per i tuoi obiettivi",
                   textAlign: TextAlign.center,
                   style: TextFontStyle.headLine16cFFFFFFWorkSansThinW600
                       .copyWith(
@@ -169,11 +165,11 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Current",
+                            "Attuale",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                           ),
                           Text(
-                            "Objective",
+                            "Obiettivo",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                           ),
                         ],
@@ -211,12 +207,12 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Body Mass Index ${gCurrentBMI?.toStringAsFixed(2)}.",
+                            "IMC ${gCurrentBMI?.toStringAsFixed(2)}",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                                 .copyWith(fontSize: 12.sp),
                           ),
                           Text(
-                            "Body Mass Index ${gTargetBMI?.toStringAsFixed(2)}",
+                            "IMC ${gTargetBMI?.toStringAsFixed(2)}",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                                 .copyWith(fontSize: 12.sp),
                           ),
@@ -233,54 +229,19 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                 spacing: 16.w,
                 children: [
                   LossWidget(
-                    subtitle: "Weight Loss",
+                    subtitle: "Perdita di peso",
                     title: "${gWeightDifference?.toStringAsFixed(0)} kg",
                   ),
-                  LossWidget(subtitle: "Days For Feel Better", title: "30"),
-                  LossWidget(subtitle: "Everyday", title: "15min"),
+                  LossWidget(subtitle: "Giorni per stare meglio", title: "30"),
+                  LossWidget(subtitle: "Ogni giorno", title: "15min"),
                 ],
               ),
 
-              // SizedBox(
-              //   width: 1.sw,
-              //   height: 250.h,
-              //   child: Image.asset(
-              //     Assets.images.imageCopy.path,
-
-              //     fit: BoxFit.fitWidth,
-              //   ),
-              // ),
-              CarouselSlider.builder(
-                itemCount: 3,
-                carouselController: carouselController,
-                itemBuilder: (context, index, realIndex) {
-                  return Image.asset(
-                    Assets.images.group.path,
-                    width: 1.sw,
-                    fit: BoxFit.fitWidth,
-                  );
-                },
-
-                options: CarouselOptions(
-                  height: 300.h,
-                  aspectRatio: 16 / 9,
-                  viewportFraction: 1,
-                  initialPage: 0,
-                  enableInfiniteScroll: true,
-                  reverse: false,
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 3),
-                  autoPlayAnimationDuration: Duration(milliseconds: 800),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enlargeCenterPage: false,
-                  enlargeFactor: 0.5,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      currentIndex = index;
-                    });
-                  },
-                  scrollDirection: Axis.horizontal,
-                ),
+              Image.asset(
+                Assets.images.group.path,
+                width: 1.sw,
+                height: 300.h,
+                fit: BoxFit.fitWidth,
               ),
 
               UIHelper.verticalSpace(20.h),
@@ -294,7 +255,7 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Start the plan with 3 days  free",
+                      "Inizia il piano con 3 giorni gratis",
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                     ),
 

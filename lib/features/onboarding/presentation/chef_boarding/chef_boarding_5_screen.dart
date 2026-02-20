@@ -66,7 +66,7 @@ class _ChefBoardingScreen5State extends State<ChefBoardingScreen5> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "Do you have any food or ingredient that you don't like ?",
+              "Ci sono cibi o ingredienti che non ti piacciono?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -78,7 +78,7 @@ class _ChefBoardingScreen5State extends State<ChefBoardingScreen5> {
             UIHelper.verticalSpace(16.h),
 
             Text(
-              "In you don't have intolerance just click on the button continue",
+              "Se non hai preferenze, clicca direttamente su continua",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF52525B),
                 fontSize: 16.sp,
@@ -96,10 +96,10 @@ class _ChefBoardingScreen5State extends State<ChefBoardingScreen5> {
               child: CustomTextField(
                 controller: _controller,
                 maxLines: 5,
-                hintText: "Type your answer. \n (ex. Lactose , Gluten etc)",
+                hintText: "Scrivi la tua risposta. \n (es. Cipolle, Funghi ecc.)",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "required filled";
+                    return "Campo obbligatorio";
                   }
                   return null;
                 },
@@ -137,7 +137,7 @@ class _ChefBoardingScreen5State extends State<ChefBoardingScreen5> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

@@ -21,11 +21,12 @@ class CacheInterceptor extends Interceptor {
     '/circels',
     '/work_out_list',
     '/my_active_workouts',
-    '/music',
-    '/user_music',
+    '/music/list',
+    '/user/music',
     '/page/home',
     '/plans',
     '/faq',
+    '/nutration/recipes',
   ];
 
   String _getCacheKey(RequestOptions options) {
@@ -139,6 +140,16 @@ class CacheInterceptor extends Interceptor {
     // Note: GetStorage doesn't have a keys() method, so we track cached keys
     if (kDebugMode) {
       print('[CacheInterceptor] Cache cleared');
+    }
+  }
+
+  /// Invalidate cache for a specific endpoint path (e.g. '/nutration/recipes')
+  static void invalidate(String endpointPath) {
+    final baseUrl = 'https://admin.dolcereset.com/api';
+    final cacheKey = 'http_cache_$baseUrl$endpointPath';
+    appData.remove(cacheKey);
+    if (kDebugMode) {
+      print('[CacheInterceptor] Invalidated cache for: $endpointPath');
     }
   }
 }

@@ -20,7 +20,7 @@ class DownloadCountdownScreen extends StatefulWidget {
 
 class _DownloadCountdownScreenState extends State<DownloadCountdownScreen> {
   int countdown = 3; // Start from 3
-  String message = "Are you ready?";
+  String message = "Sei pronta?";
   Timer? timer;
 
   @override
@@ -47,13 +47,13 @@ class _DownloadCountdownScreenState extends State<DownloadCountdownScreen> {
   void updateMessage() {
     switch (countdown) {
       case 3:
-        message = "Are you ready?";
+        message = "Sei pronta?";
         break;
       case 2:
-        message = "Just do your best";
+        message = "Fai del tuo meglio";
         break;
       case 1:
-        message = "Good luck!";
+        message = "Buona fortuna!";
         break;
     }
   }

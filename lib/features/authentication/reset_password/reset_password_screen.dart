@@ -57,7 +57,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               children: [
                 UIHelper.verticalSpace(40.h),
 
-                LogoWidget(title: "Reset your password"),
+                LogoWidget(title: "Reimposta la tua password"),
 
                 UIHelper.verticalSpace(50.h),
 
@@ -103,7 +103,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 UIHelper.verticalSpace(16.h),
 
                 Text(
-                  "Confirm Password",
+                  "Conferma Password",
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: const Color(0xFF27272A),
                     fontSize: 14.sp,
@@ -119,7 +119,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       obscureText: !provider.confirmPasswordVisible,
                       keyboardType: TextInputType.visiblePassword,
                       controller: _confirmPasswordController,
-                      hintText: "Confirm Password",
+                      hintText: "Conferma Password",
                       validator:
                           (value) => confirmPasswordValidation(
                             value,
@@ -174,7 +174,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Reset Password",
+                        "Reimposta Password",
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                       ),
 

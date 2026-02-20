@@ -48,7 +48,7 @@ class _ForgetOtpScreenState extends State<ForgetOtpScreen> {
             children: [
               UIHelper.verticalSpace(40.h),
 
-              LogoWidget(title: "Verify your Otp "),
+              LogoWidget(title: "Verifica il tuo codice OTP"),
 
               UIHelper.verticalSpace(50.h),
 
@@ -99,10 +99,10 @@ class _ForgetOtpScreenState extends State<ForgetOtpScreen> {
                         validator: (pin) {
                           if (pin == null || pin.isEmpty) {
                             provider.setOtpInvalid(true);
-                            return 'Please enter the OTP';
+                            return 'Inserisci il codice OTP';
                           } else if (pin.length != 4) {
                             provider.setOtpInvalid(true);
-                            return 'The OTP must be 4 digits.';
+                            return 'Il codice OTP deve essere di 4 cifre.';
                           }
                           provider.setOtpInvalid(false);
                           return null;
@@ -118,7 +118,7 @@ class _ForgetOtpScreenState extends State<ForgetOtpScreen> {
               Align(
                 alignment: Alignment.center,
                 child: Text(
-                  "Didn't receive a code?",
+                  "Non hai ricevuto il codice?",
                   style: TextFontStyle.headline30c27272AtyleWorkSansW700
                       .copyWith(
                         fontSize: 15.sp,
@@ -135,8 +135,8 @@ class _ForgetOtpScreenState extends State<ForgetOtpScreen> {
                   builder: (context, timeLeft) {
                     return Text(
                       timeLeft == 0
-                          ? "Send code again"
-                          : "Send code again in ${timeLeft}s",
+                          ? "Invia di nuovo il codice"
+                          : "Invia di nuovo tra ${timeLeft}s",
                       style: TextFontStyle.headline30c27272AtyleWorkSansW700
                           .copyWith(
                             decoration: TextDecoration.underline,
@@ -183,7 +183,7 @@ class _ForgetOtpScreenState extends State<ForgetOtpScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Verified OTP",
+                      "Verifica OTP",
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                     ),
 

@@ -31,11 +31,11 @@ class OnboardingScreen5 extends StatefulWidget {
 
 class _OnboardingScreen5State extends State<OnboardingScreen5> {
   List<Map<String, dynamic>> dataList = [
-    {"image": Assets.images.onboard51.path, "title": "Healthy and fit"},
+    {"image": Assets.images.onboard51.path, "title": "Sana e in forma"},
 
-    {"image": Assets.images.onboard52.path, "title": "Curvy and confident"},
+    {"image": Assets.images.onboard52.path, "title": "Formosa e sicura"},
 
-    {"image": Assets.images.onboard53.path, "title": "Strong and healthy"},
+    {"image": Assets.images.onboard53.path, "title": "Forte e sana"},
   ];
 
   int? selectedIndex;
@@ -56,7 +56,7 @@ class _OnboardingScreen5State extends State<OnboardingScreen5> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "If you think about the ideal body, what would you like it to be like?",
+              "Se pensi al corpo ideale, come vorresti che fosse?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -101,7 +101,7 @@ class _OnboardingScreen5State extends State<OnboardingScreen5> {
         child: CustomButton(
           onPressed: () {
             if (selectedIndex == null) {
-              ToastUtil.showErrorShortToast("Please select an item.");
+              ToastUtil.showErrorShortToast("Seleziona un'opzione.");
             } else {
               NavigationService.navigateToWithArgs(Routes.oneTimeOnboardingScreen, {
                 "onboard1": widget.onboard1,
@@ -116,7 +116,7 @@ class _OnboardingScreen5State extends State<OnboardingScreen5> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

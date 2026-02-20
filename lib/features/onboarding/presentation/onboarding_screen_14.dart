@@ -79,7 +79,7 @@ class _OnboardingScreen14State extends State<OnboardingScreen14> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "You have great potential to smash any finish line",
+              "Hai un grande potenziale per raggiungere qualsiasi traguardo",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -104,7 +104,7 @@ class _OnboardingScreen14State extends State<OnboardingScreen14> {
               TextSpan(
                 children: [
                   TextSpan(
-                    text: 'RESULT: Profile Similar to Ours \n',
+                    text: 'RISULTATO: Profilo Simile al Nostro \n',
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
                       fontSize: 21.sp,
@@ -112,7 +112,7 @@ class _OnboardingScreen14State extends State<OnboardingScreen14> {
                     ),
                   ),
                   TextSpan(
-                    text: 'Successes: Excellent Chances Of \n',
+                    text: 'Successi: Ottime Possibilità di \n',
 
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFFF4349D),
@@ -121,7 +121,7 @@ class _OnboardingScreen14State extends State<OnboardingScreen14> {
                     ),
                   ),
                   TextSpan(
-                    text: 'Achieve Your Goals!',
+                    text: 'Raggiungere i Tuoi Obiettivi!',
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
                       fontSize: 21.sp,
@@ -167,7 +167,7 @@ class _OnboardingScreen14State extends State<OnboardingScreen14> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

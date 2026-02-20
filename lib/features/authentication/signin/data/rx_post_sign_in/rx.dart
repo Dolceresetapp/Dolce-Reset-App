@@ -48,7 +48,20 @@ final class SignInRx extends RxResponseInt<SignInResponseModel> {
 
     appData.write(kKeyIsNutration, data.data?.isNutration ?? 0);
 
-    appData.write(kKeyPaymentMethod, data.data?.paymentMethod);
+    // Don't overwrite these values with 0 if they're already 1
+    // This preserves locally completed onboarding/payment that backend doesn't know about
+    int currentUserInfo = appData.read(kKeyUsrInfo) ?? 0;
+    int backendUserInfo = data.data?.userInfo ?? 0;
+    if (backendUserInfo == 1 || currentUserInfo == 0) {
+      appData.write(kKeyUsrInfo, backendUserInfo);
+    }
+
+    int currentPayment = appData.read(kKeyPaymentMethod) ?? 0;
+    int backendPayment = data.data?.paymentMethod ?? 0;
+    if (backendPayment == 1 || currentPayment == 0) {
+      appData.write(kKeyPaymentMethod, backendPayment);
+    }
+
     appData.write(kKeyIsLoggedIn, true);
     DioSingleton.instance.update(appData.read(kKeyAccessToken));
     dataFetcher.sink.add(data);

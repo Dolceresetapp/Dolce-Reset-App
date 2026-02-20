@@ -50,7 +50,7 @@ class _ChefScreenState extends State<ChefScreen> {
             children: [
               UIHelper.verticalSpace(20.h),
               Text(
-                "Browse Meals",
+                "Esplora i Pasti",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   color: const Color(0xFF27272A),
                   fontSize: 30.sp,
@@ -61,7 +61,7 @@ class _ChefScreenState extends State<ChefScreen> {
 
               UIHelper.verticalSpace(10.h),
               Text(
-                "Explore and log curated meals from us",
+                "Scopri e registra pasti selezionati per te",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   color: const Color(0xFF52525B),
                   fontSize: 16.sp,
@@ -77,7 +77,7 @@ class _ChefScreenState extends State<ChefScreen> {
                 children: [
                   Expanded(
                     child: AiCardWidget(
-                      title: "AI Recipe \n Generator",
+                      title: "Generatore \n Ricette AI",
                       image: Assets.images.rectangle34624174.path,
                       onTap: () {
                         if (appData.read(kKeyIsNutration) == 0) {
@@ -95,7 +95,7 @@ class _ChefScreenState extends State<ChefScreen> {
 
                   Expanded(
                     child: AiCardWidget(
-                      title: "Food Health \n Analyzer",
+                      title: "Analizzatore \n Cibo Salutare",
                       image: Assets.images.rectangle346241741.path,
                       onTap: () {
                         NavigationService.navigateTo(Routes.foodAnalyzerScreen);
@@ -108,7 +108,7 @@ class _ChefScreenState extends State<ChefScreen> {
               UIHelper.verticalSpace(30.h),
 
               Text(
-                "Featured Meal",
+                "Pasto in Evidenza",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   color: const Color(0xFF27272A),
                   fontWeight: FontWeight.w700,
@@ -156,18 +156,18 @@ class _ChefScreenState extends State<ChefScreen> {
                   // aiReceipeList is Null
                   else if (provider.aiReceipeList == null) {
                     return Text(
-                      "No data found.",
+                      "Nessun dato trovato.",
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                           .copyWith(color: Colors.black),
                     );
                   } else if (provider.aiReceipeList!.isEmpty) {
                     return Text(
-                      "Recipes meal haven't any data",
+                      "Nessuna ricetta disponibile",
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                           .copyWith(color: Colors.black),
                     );
                   } else if (provider.aiReceipeList!.isEmpty) {
-                    return Text("Recipes meal havn't any data");
+                    return Text("Nessuna ricetta disponibile");
                   } else {
                     return CarouselSlider.builder(
                       itemCount: provider.aiReceipeList!.length,
@@ -181,6 +181,12 @@ class _ChefScreenState extends State<ChefScreen> {
                           foodCalories: item.calories.toString(),
                           minute: item.timeMin.toString(),
                           protein: item.proteinG.toString(),
+                          onTap: () {
+                            NavigationService.navigateToWithArgs(
+                              Routes.recipeDetailScreen,
+                              {"recipe": item},
+                            );
+                          },
                         );
                       },
 
@@ -192,9 +198,9 @@ class _ChefScreenState extends State<ChefScreen> {
                         enableInfiniteScroll: true,
                         reverse: false,
                         autoPlay: true,
-                        autoPlayInterval: Duration(seconds: 3),
-                        autoPlayAnimationDuration: Duration(milliseconds: 800),
-                        autoPlayCurve: Curves.fastOutSlowIn,
+                        autoPlayInterval: const Duration(seconds: 5),
+                        autoPlayAnimationDuration: const Duration(milliseconds: 1200),
+                        autoPlayCurve: Curves.easeInOutCubic,
                         enlargeCenterPage: false,
                         enlargeFactor: 0.3,
                         onPageChanged: (index, reason) {

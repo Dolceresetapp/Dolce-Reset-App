@@ -21,6 +21,16 @@ class CustomCachedNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Handle empty or invalid URLs
+    if (imageUrl.isEmpty || !imageUrl.startsWith('http')) {
+      return Image.asset(
+        errorImage ?? Assets.images.noImageAvailable.path,
+        width: width ?? 80.w,
+        height: height ?? 60.h,
+        fit: fit ?? BoxFit.cover,
+      );
+    }
+
     return CachedNetworkImage(
       imageUrl: imageUrl,
       width: width ?? 80.w,

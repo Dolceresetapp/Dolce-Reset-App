@@ -11,6 +11,7 @@ import 'features/settings/presentation/settings_screen.dart';
 import 'gen/assets.gen.dart';
 import 'networks/api_acess.dart';
 import 'services/preload_service.dart';
+import 'services/subscription_service.dart';
 
 class NavigationScreen extends StatefulWidget {
   final int initialIndex;
@@ -28,9 +29,17 @@ class _NavigationScreenState extends State<NavigationScreen> {
     super.initState();
     currentIndex = widget.initialIndex;
 
-    // Deep preload workout details and videos in background
-    preloadService.preloadDeepContent();
+    // Sync subscription status with Superwall (fire and forget)
+    subscriptionService.syncSubscriptionStatus();
 
+    // Load all data immediately in background (fire and forget)
+    categoryRxObj.categoryRx();
+    themeRxObj.themeRx();
+    myWorkoutRxObj.myWorkoutRx();
+
+    // Deep preload in background (exercise thumbnails, music)
+    preloadService.preloadExerciseThumbnails();
+    preloadService.preloadAfterLogin();
     motivationCoachRxObj.motivationCoachRx(prompt: "Hello");
   }
 
@@ -61,7 +70,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
         items: [
           _bottomBarItem(
             assetName: Assets.icons.monotoneAdd,
-            label: "Exercises",
+            label: "Esercizi",
             isSelected: currentIndex == 0,
           ),
 
@@ -73,13 +82,13 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
           _bottomBarItem(
             assetName: Assets.icons.transportRocketDiagonal,
-            label: "Motivation",
+            label: "Motivazione",
             isSelected: currentIndex == 2,
           ),
 
           _bottomBarItem(
             assetName: Assets.icons.monotoneAdd1,
-            label: "Settings",
+            label: "Impostazioni",
             isSelected: currentIndex == 3,
           ),
         ],

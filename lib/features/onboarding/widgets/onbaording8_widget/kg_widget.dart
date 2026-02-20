@@ -62,7 +62,7 @@ class _KgWidgetState extends State<KgWidget> {
             rulerHeight: 140.h,
             selectedBarColor: Colors.blue,
             unselectedBarColor: Colors.grey,
-            tickSpacing: 10.0,
+            tickSpacing: 1.0,
             valueTextStyle: TextStyle(color: Colors.red, fontSize: 18),
             onChanged: (double value) {
               setState(() {
@@ -75,10 +75,10 @@ class _KgWidgetState extends State<KgWidget> {
             fixedBarHeight: 40.0,
             showFixedLabel: false,
 
-            scrollSensitivity: 5.0,
+            scrollSensitivity: 1.0,
             enableSnapping: true,
-            majorTickInterval: 4,
-            labelInterval: 10,
+            majorTickInterval: 5,
+            labelInterval: 5,
             labelVerticalOffset: 30.h,
             showBottomLabels: true,
             labelTextStyle: TextFontStyle.headLine16cFFFFFFWorkSansW600

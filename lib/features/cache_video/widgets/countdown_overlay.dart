@@ -5,10 +5,14 @@ import 'package:flutter_tts/flutter_tts.dart';
 
 class CountdownOverlay extends StatefulWidget {
   final VoidCallback onComplete;
+  final Future<void> Function()? onDuckMusic;
+  final Future<void> Function()? onRestoreMusic;
 
   const CountdownOverlay({
     super.key,
     required this.onComplete,
+    this.onDuckMusic,
+    this.onRestoreMusic,
   });
 
   @override
@@ -50,19 +54,20 @@ class _CountdownOverlayState extends State<CountdownOverlay>
 
       await _tts!.setSharedInstance(true);
       await _tts!.setIosAudioCategory(
-        IosTextToSpeechAudioCategory.ambient,
+        IosTextToSpeechAudioCategory.playback,
         [
           IosTextToSpeechAudioCategoryOptions.allowBluetooth,
           IosTextToSpeechAudioCategoryOptions.allowBluetoothA2DP,
           IosTextToSpeechAudioCategoryOptions.mixWithOthers,
+          IosTextToSpeechAudioCategoryOptions.duckOthers,
         ],
         IosTextToSpeechAudioMode.voicePrompt,
       );
 
       await _tts!.setLanguage("it-IT");
-      await _tts!.setSpeechRate(0.45); // Slightly slower for better sync
-      await _tts!.setVolume(1.0);
-      await _tts!.setPitch(1.1); // Slightly higher for energy
+      await _tts!.setSpeechRate(0.42);
+      await _tts!.setVolume(0.85);
+      await _tts!.setPitch(1.15);
 
       // Enable await speak completion for sync
       await _tts!.awaitSpeakCompletion(true);
@@ -76,8 +81,11 @@ class _CountdownOverlayState extends State<CountdownOverlay>
   }
 
   Future<void> _speakSync(String text) async {
+    // Initial countdown always plays regardless of voiceoverEnabled setting
     if (_isDisposed || _tts == null) return;
     try {
+      // Stop any existing speech to avoid overlap
+      await _tts!.stop();
       // This will wait until speech completes
       await _tts!.speak(text);
     } catch (e) {
@@ -86,6 +94,15 @@ class _CountdownOverlayState extends State<CountdownOverlay>
   }
 
   Future<void> _runCountdown() async {
+    // Duck music ONCE at the start of entire countdown
+    await widget.onDuckMusic?.call();
+
+    // Say "Preparati!" first
+    await _speakSync('Preparati!');
+    if (_isDisposed) return;
+    await Future.delayed(const Duration(milliseconds: 500));
+    if (_isDisposed) return;
+
     // Show 3 and speak simultaneously
     _animController.forward();
     await _speakSync('3');
@@ -117,6 +134,9 @@ class _CountdownOverlayState extends State<CountdownOverlay>
     _animController.forward();
     await _speakSync('Via!');
     await Future.delayed(const Duration(milliseconds: 400));
+
+    // Restore music ONCE at the end of entire countdown
+    await widget.onRestoreMusic?.call();
 
     if (mounted && !_isDisposed) {
       widget.onComplete();

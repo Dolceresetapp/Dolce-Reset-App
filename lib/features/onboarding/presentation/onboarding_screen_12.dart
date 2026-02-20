@@ -60,20 +60,20 @@ class _OnboardingScreen12State extends State<OnboardingScreen12> {
   List<Map<String, dynamic>> dataList = [
     {
       "image": Assets.images.noboard121.path,
-      "title": "I have Never tried",
-      "subtitle": "It's my first attempt",
+      "title": "Non ho mai provato",
+      "subtitle": "È il mio primo tentativo",
     },
 
     {
       "image": Assets.images.noboard122.path,
-      "title": "A few months ago",
-      "subtitle": "I just started",
+      "title": "Qualche mese fa",
+      "subtitle": "Ho appena iniziato",
     },
 
     {
       "image": Assets.images.noboard123.path,
-      "title": "A few years ago",
-      "subtitle": "Problem that has been present for years",
+      "title": "Qualche anno fa",
+      "subtitle": "Problema presente da anni",
     },
   ];
 
@@ -97,7 +97,7 @@ class _OnboardingScreen12State extends State<OnboardingScreen12> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "Have you already tried solutions to solve these problems?",
+              "Hai già provato soluzioni per risolvere questi problemi?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -143,7 +143,7 @@ class _OnboardingScreen12State extends State<OnboardingScreen12> {
         child: CustomButton(
           onPressed: () {
             if (selectedIndex == null) {
-              ToastUtil.showErrorShortToast("Please select an item.");
+              ToastUtil.showErrorShortToast("Seleziona un'opzione.");
             } else {
               NavigationService.navigateToWithArgs(Routes.onboardingScreen13, {
                 "onboard1": widget.onboard1,
@@ -172,7 +172,7 @@ class _OnboardingScreen12State extends State<OnboardingScreen12> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

@@ -3,8 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/common_widget/custom_app_bar.dart';
 import 'package:gritti_app/common_widget/custom_button.dart';
+import 'package:gritti_app/constants/app_constants.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/di.dart';
 
 import '../../../common_widget/app_bar_widget.dart';
 import '../../../helpers/all_routes.dart';
@@ -105,7 +107,7 @@ class _OnboardingScreen16State extends State<OnboardingScreen16> {
             Align(
               alignment: Alignment.center,
               child: Text(
-                "To support the quality of the service after the free trial we ask you for a small contribution if you like the app.",
+                "Per supportare la qualità del servizio dopo la prova gratuita, chiediamo un piccolo contributo se ti piace l'app.",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   color: Colors.black,
                   fontWeight: FontWeight.w100,
@@ -120,37 +122,42 @@ class _OnboardingScreen16State extends State<OnboardingScreen16> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: CustomButton(
           onPressed: () {
-            NavigationService.navigateToWithArgs(Routes.onboardingScreen17, {
-              "onboard1": widget.onboard1,
-              "onboard2": widget.onboard2,
-              "onboard4": widget.onboard4,
-              "onboard5": widget.onboard5,
-              "onboard7HeightUnit": widget.onboard7HeightUnit,
-              "onboard7HeightValue": widget.onboard7HeightValue,
+            // Save all onboarding data to GetStorage (pending keys for screen 17)
+            appData.write(kKeyPendingOnboard1, widget.onboard1);
+            appData.write(kKeyPendingOnboard2, widget.onboard2);
+            appData.write(kKeyPendingOnboard4, widget.onboard4);
+            appData.write(kKeyPendingOnboard5, widget.onboard5);
+            appData.write(kKeyPendingOnboard7HeightValue, widget.onboard7HeightValue);
+            appData.write(kKeyPendingOnboard7HeightUnit, widget.onboard7HeightUnit);
+            appData.write(kKeyPendingOnboard8WeightValue, widget.onboard8WeightValue);
+            appData.write(kKeyPendingOnboard8WeightUnit, widget.onboard8WeightUnit);
+            appData.write(kKeyPendingOnboard9TargetWeightValue, widget.onboard9TargetWeightValue);
+            appData.write(kKeyPendingOnboard9TargetWeightUnit, widget.onboard9TargetWeightUnit);
+            appData.write(kKeyPendingSelectedDate, widget.selectedDate.toIso8601String());
+            appData.write(kKeyPendingBmi, widget.bmi);
+            appData.write(kKeyPendingOnboard12, widget.onboard12);
+            appData.write(kKeyPendingOnboard13, widget.onboard13);
+            appData.write(kKeyPendingOnboard15, widget.onboard15);
 
-              "onboard8WeightUnit": widget.onboard8WeightUnit,
-              "onboard8WeightValue": widget.onboard8WeightValue,
+            // Also save to regular keys so PlanReadyScreen can display them
+            appData.write(kKeyonboard7HeightValue, widget.onboard7HeightValue);
+            appData.write(kKeyonboard7HeightUnit, widget.onboard7HeightUnit);
+            appData.write(kKeyonboard8HeightValue, widget.onboard8WeightValue);
+            appData.write(kKeyonboard8HeightUnit, widget.onboard8WeightUnit);
+            appData.write(kKeyonboard9HeightValue, widget.onboard9TargetWeightValue);
+            appData.write(kKeyonboard9HeightUnit, widget.onboard9TargetWeightUnit);
 
-              "onboard9TargetWeightValue": widget.onboard9TargetWeightValue,
-              "onboard9TargetWeightUnit": widget.onboard9TargetWeightUnit,
-
-              "selectedDate": widget.selectedDate,
-
-                 "bmi" : widget.bmi,
-
-              "onboard12": widget.onboard12,
-
-              "onboard13": widget.onboard13,
-
-              "onboard15": widget.onboard15,
-            });
+            // Navigate to signature screen
+            NavigationService.navigateToReplacement(
+              Routes.onboardingScreen17,
+            );
           },
           child: Row(
             spacing: 10.w,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

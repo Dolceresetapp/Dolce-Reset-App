@@ -64,7 +64,7 @@ class _OnboardingScreen9State extends State<OnboardingScreen9> {
 
             children: [
               Text(
-                "What is your target weight?",
+                "Qual è il tuo peso obiettivo?",
                 textAlign: TextAlign.center,
                 style: TextFontStyle.headline30c27272AtyleWorkSansW700.copyWith(
                   color: const Color(0xFF27272A),
@@ -130,8 +130,8 @@ class _OnboardingScreen9State extends State<OnboardingScreen9> {
                   fixedBarHeight: 40.0,
                   showFixedLabel: false,
 
-                  scrollSensitivity: 5.0,
-                  enableSnapping: true,
+                  scrollSensitivity: 1.0,
+                  enableSnapping: false,
                   majorTickInterval: 4,
                   labelInterval: 10,
                   labelVerticalOffset: 30.h,
@@ -176,7 +176,7 @@ class _OnboardingScreen9State extends State<OnboardingScreen9> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

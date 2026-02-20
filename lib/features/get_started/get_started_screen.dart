@@ -55,14 +55,14 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Welcome to the \n Woman Fit!",
+                        "Benvenuta su \n Dolce Reset!",
                         textAlign: TextAlign.center,
                         style: TextFontStyle.headline30c27272AtyleWorkSansW700,
                       ),
                       UIHelper.verticalSpace(16.h),
 
                       Text(
-                        "Intelligent fitness to enhance and grow \n your endurance, anytime anywhere.",
+                        "Fitness intelligente per migliorare \n la tua resistenza, ovunque e sempre.",
                         textAlign: TextAlign.center,
                         style: TextFontStyle.headline30c27272AtyleWorkSansW700
                             .copyWith(
@@ -87,7 +87,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Get Started",
+                              "Inizia",
                               style:
                                   TextFontStyle.headLine16cFFFFFFWorkSansW600,
                             ),

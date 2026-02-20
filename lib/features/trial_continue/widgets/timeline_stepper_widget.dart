@@ -57,22 +57,22 @@ class TimelineStepperWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _stepText(
-                "Today",
-                "Unlock all the app's features like Ai calories scanning and more",
+                "Oggi",
+                "Sblocca tutte le funzionalità dell'app come lo scanner calorie AI e molto altro",
               ),
 
               UIHelper.verticalSpace(40.h),
 
               _stepText(
-                "In 2 Days - Reminder",
-                "We'll send you a reminder that your trial is ending soon",
+                "Tra 2 Giorni - Promemoria",
+                "Ti invieremo un promemoria che la prova sta per terminare",
               ),
 
               UIHelper.verticalSpace(40.h),
 
               _stepText(
-                "In 3 Days - Billing Starts",
-                "You'll be charged on $date3Days unless you cancel anytime before",
+                "Tra 3 Giorni - Inizio Fatturazione",
+                "Ti sarà addebitato il $date3Days a meno che tu non disdica prima",
               ),
             ],
           ),

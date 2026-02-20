@@ -30,7 +30,7 @@ class _PaymentFreeScreenState extends State<PaymentFreeScreen> {
               Align(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  "We want you to try \n Dolce Reset for FREE",
+                  "Vogliamo che provi \n Dolce Reset GRATIS",
                   textAlign: TextAlign.center,
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: const Color(0xFF000000),
@@ -53,7 +53,7 @@ class _PaymentFreeScreenState extends State<PaymentFreeScreen> {
                     left: 0,
                     right: 0,
                     child: Text(
-                      "No payment Due now",
+                      "Nessun pagamento adesso",
                       textAlign: TextAlign.center,
                       style: TextFontStyle.headLine16cFFFFFFWorkSansThinW600
                           .copyWith(
@@ -77,7 +77,7 @@ class _PaymentFreeScreenState extends State<PaymentFreeScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Try for \$0.00",
+                            "Prova a €0,00",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                           ),
 
@@ -98,7 +98,7 @@ class _PaymentFreeScreenState extends State<PaymentFreeScreen> {
                     left: 0,
                     right: 0,
                     child: Text(
-                      "3 days free, then €69.99 per year (€4.75 /mo)",
+                      "3 giorni gratis, poi €69,99 all'anno (€4,75 /mese)",
                       textAlign: TextAlign.center,
                       style: TextFontStyle.headLine16cFFFFFFWorkSansThinW600
                           .copyWith(

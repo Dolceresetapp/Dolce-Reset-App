@@ -38,20 +38,19 @@ final class AiReceipeRx extends RxResponseInt<AiReceipeResponseModel> {
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
-      if (error.response!.statusCode == 400) {
+      if (error.response?.statusCode == 400) {
         ToastUtil.showShortToast(error.response!.data["message"]);
+      } else if (error.response?.statusCode == 401) {
+        ToastUtil.showShortToast(error.response!.data["message"]);
+        totalDataClean();
+        NavigationService.navigateToReplacement(Routes.signInScreen);
       } else {
-        if (error.response!.statusCode == 401) {
-          ToastUtil.showShortToast(error.response!.data["message"]);
-          totalDataClean();
-          NavigationService.navigateToReplacement(Routes.signInScreen);
-        } else {
-          ToastUtil.showShortToast(error.response!.data["message"]);
-        }
+        ToastUtil.showShortToast(error.response?.data?["message"] ?? "Errore");
       }
       log(error.toString());
       dataFetcher.sink.addError(error);
-      return false;
     }
+    // Return empty model instead of bool to fix type error
+    return AiReceipeResponseModel(success: false, message: "Errore", data: []);
   }
 }

@@ -132,7 +132,7 @@ class _AICoachScreenState extends State<AICoachScreen> {
 
                             fontWeight: FontWeight.w400,
                           ),
-                      hintText: "Type ingredients you have...",
+                      hintText: "Inserisci gli ingredienti che hai...",
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 12.w,
                         vertical: 12.h,
@@ -140,7 +140,7 @@ class _AICoachScreenState extends State<AICoachScreen> {
 
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "required filled";
+                          return "Campo obbligatorio";
                         }
 
                         return null;

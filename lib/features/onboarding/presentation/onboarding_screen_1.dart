@@ -22,13 +22,13 @@ class OnboardingScreen1 extends StatefulWidget {
 
 class _OnboardingScreen1State extends State<OnboardingScreen1> {
   List<Map<String, dynamic>> dataList = [
-    {"image": Assets.images.losttWeight.path, "title": "Lose Weight"},
+    {"image": Assets.images.losttWeight.path, "title": "Perdere peso"},
 
-    {"image": Assets.images.intoShape.path, "title": "Get back into shape"},
+    {"image": Assets.images.intoShape.path, "title": "Tornare in forma"},
 
-    {"image": Assets.images.slep.path, "title": "Improve sleep/energy"},
+    {"image": Assets.images.slep.path, "title": "Migliorare sonno/energia"},
 
-    {"image": Assets.images.reducePain.path, "title": "Reduce pain/stiffness"},
+    {"image": Assets.images.reducePain.path, "title": "Ridurre dolore/rigidità"},
   ];
 
   int? selectedIndex;
@@ -40,7 +40,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
     return Scaffold(
       appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        title: AppBarWidget(currentStep: 1, isBackIcon: false),
+        title: AppBarWidget(currentStep: 1, isBackIcon: true),
       ),
 
       body: SingleChildScrollView(
@@ -51,7 +51,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "What do you feel needs immediate improvement in your body?",
+              "Cosa senti che ha bisogno di un miglioramento immediato nel tuo corpo?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -97,7 +97,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
         child: CustomButton(
           onPressed: () {
             if (selectedIndex == null) {
-              ToastUtil.showErrorShortToast("Please select an item.");
+              ToastUtil.showErrorShortToast("Seleziona un'opzione.");
             } else {
               NavigationService.navigateToWithArgs(Routes.onboardingScreen2, {
                 "onboard1": selectedText,
@@ -109,7 +109,7 @@ class _OnboardingScreen1State extends State<OnboardingScreen1> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

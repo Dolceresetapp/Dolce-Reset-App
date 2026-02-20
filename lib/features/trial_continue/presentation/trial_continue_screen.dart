@@ -2,15 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:superwallkit_flutter/superwallkit_flutter.dart';
 import 'package:gritti_app/common_widget/waiting_widget.dart';
-import 'package:gritti_app/constants/app_constants.dart';
 import 'package:gritti_app/features/trial_continue/widgets/timeline_stepper_widget.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
-import 'package:gritti_app/helpers/di.dart';
-import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:intl/intl.dart';
 
@@ -337,7 +334,7 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
               } else if (snapshot.hasError) {
                 return Center(
                   child: Text(
-                    "Something went wrong",
+                    "Qualcosa è andato storto",
                     textAlign: TextAlign.center,
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: Colors.red,
@@ -348,7 +345,7 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
               } else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
                 return Center(
                   child: Text(
-                    "Data is not available",
+                    "Dati non disponibili",
                     textAlign: TextAlign.center,
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: Colors.red,
@@ -363,7 +360,7 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
                     Align(
                       alignment: Alignment.topCenter,
                       child: Text(
-                        "Start your 3-day FREE trial to continue",
+                        "Inizia la tua prova GRATUITA di 3 giorni",
                         textAlign: TextAlign.center,
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                             .copyWith(
@@ -597,83 +594,48 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
                       onPressed: () async {
                         if (selectedIndex == null) {
                           ToastUtil.showErrorShortToast(
-                            "Please select an Package.",
+                            "Seleziona un piano.",
                           );
                         } else {
-                          await paymentmentSheetRxObj.paymentmentSheetRx(
-                            email: appData.read(kKeyEmail),
-                            planId:
-                                selectedIndex!, // selectedIndex == 0 ? 2 : 3,
+                          log("Selected plan ID: $selectedIndex");
+
+                          // Present Superwall paywall with handler
+                          final handler = PaywallPresentationHandler();
+
+                          handler.onPresent((info) {
+                            log("Paywall presented: ${info.identifier}");
+                          });
+
+                          handler.onDismiss((info, result) {
+                            log("Paywall dismissed with result: $result");
+                            // Only navigate if user has active subscription
+                            if (result is PurchasedPaywallResult ||
+                                result is RestoredPaywallResult) {
+                              NavigationService.navigateToReplacement(
+                                Routes.navigationScreen,
+                              );
+                            }
+                            // If declined or closed, user stays on current screen
+                          });
+
+                          handler.onError((error) {
+                            log("Paywall error: $error");
+                            ToastUtil.showErrorShortToast("Errore durante il pagamento");
+                          });
+
+                          handler.onSkip((reason) {
+                            log("Paywall skipped: $reason");
+                            // User already has access, navigate to main app
+                            NavigationService.navigateToReplacement(
+                              Routes.navigationScreen,
+                            );
+                          });
+
+                          await Superwall.shared.registerPlacement(
+                            'campaign_trigger',
+                            params: {'plan_id': selectedIndex.toString()},
+                            handler: handler,
                           );
-
-                          log(
-                            "Client Secret Key: ${paymentmentSheetRxObj.clientSecret}",
-                          );
-
-                          log(
-                            "payment intent id : ${paymentmentSheetRxObj.paymentIntentId}",
-                          );
-
-                          await Stripe.instance.initPaymentSheet(
-                            paymentSheetParameters: SetupPaymentSheetParameters(
-                              paymentIntentClientSecret:
-                                  paymentmentSheetRxObj.clientSecret,
-                              //"pi_3SZ8B0PDus5Inpom1JKeZEzr_secret_1xCO4QpONz63K22IMq6r2Tzpf",
-                              merchantDisplayName: 'Travelling App',
-                            ),
-                          );
-
-                          await Stripe.instance
-                              .presentPaymentSheet()
-                              .then((value) {
-                                if (value == null) {
-                                  confirmSubscriptionRxObj
-                                      .confirmSubscriptionRx(
-                                        paymentIntentId:
-                                            paymentmentSheetRxObj
-                                                .paymentIntentId ??
-                                            "",
-                                        planId: selectedIndex!,
-                                      )
-                                      .waitingForFuture()
-                                      .then((success) {
-                                        log(
-                                          "success ======================================== $success",
-                                        );
-
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              'Payment Success',
-                                              style: TextStyle(
-                                                fontSize: 18.sp,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        );
-
-                                        NavigationService.navigateToReplacement(
-                                          Routes.dataLoadingScreen,
-                                        );
-                                      });
-                                }
-                              })
-                              .catchError((e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'Payment Failed',
-                                      style: TextStyle(
-                                        fontSize: 18.sp,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              });
                         }
 
                         // await Stripe.instance.initPaymentSheet(
@@ -736,7 +698,7 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Continue for FREE",
+                            "Continua GRATIS",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                           ),
 
@@ -753,7 +715,7 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
                     UIHelper.verticalSpace(10.h),
 
                     Text(
-                      "3 days free, then €69.99 per year (€4.75 /mo)",
+                      "3 giorni gratis, poi €69,99 all'anno (€4,75 /mese)",
                       textAlign: TextAlign.center,
                       style: TextFontStyle.headLine16cFFFFFFWorkSansThinW600
                           .copyWith(

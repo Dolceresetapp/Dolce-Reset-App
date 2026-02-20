@@ -62,18 +62,18 @@ class OnboardingScreen13 extends StatefulWidget {
 
 class _OnboardingScreen13State extends State<OnboardingScreen13> {
   List<Map<String, dynamic>> dataList = [
-    {"image": Assets.images.onboard131.path, "title": "have a big party"},
+    {"image": Assets.images.onboard131.path, "title": "Organizzare una grande festa"},
 
-    {"image": Assets.images.onboard132.path, "title": "have a fun trip"},
+    {"image": Assets.images.onboard132.path, "title": "Fare un viaggio divertente"},
 
     {
       "image": Assets.images.onboard133.path,
-      "title": "Going out for a special dinner",
+      "title": "Uscire per una cena speciale",
     },
 
     {
       "image": Assets.images.onboard134.path,
-      "title": "Going out for a special dinner",
+      "title": "Comprarmi qualcosa di speciale",
     },
   ];
 
@@ -97,7 +97,7 @@ class _OnboardingScreen13State extends State<OnboardingScreen13> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "how will you celebrate when you reach your goals?",
+              "Come festeggerai quando raggiungerai i tuoi obiettivi?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -144,7 +144,7 @@ class _OnboardingScreen13State extends State<OnboardingScreen13> {
         child: CustomButton(
           onPressed: () {
             if (selectedIndex == null) {
-              ToastUtil.showErrorShortToast("Please select an item.");
+              ToastUtil.showErrorShortToast("Seleziona un'opzione.");
             } else {
               NavigationService.navigateToWithArgs(Routes.onboardingScreen14, {
               
@@ -180,7 +180,7 @@ class _OnboardingScreen13State extends State<OnboardingScreen13> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

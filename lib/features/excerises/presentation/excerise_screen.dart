@@ -12,9 +12,6 @@ import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
 import '../../../common_widget/custom_network_image.dart';
-import '../../../common_widget/waiting_widget.dart';
-import '../../../constants/app_constants.dart';
-import '../../../helpers/di.dart';
 import '../../../networks/api_acess.dart';
 import '../../../services/image_preloader_service.dart';
 import '../data/rx_get_my_workout/model/my_workout_response_model.dart';
@@ -129,12 +126,12 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
               ProfileSectionWidget(avatar: getUserAvatar()),
               UIHelper.verticalSpace(30.h),
 
-              // Body parts Exercise
+              // Esercizi per Zona
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Body parts Exercise",
+                    "Esercizi per Zona",
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
                       fontSize: 16.sp,
@@ -152,7 +149,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                       );
                     },
                     child: Text(
-                      "See All",
+                      "Vedi Tutto",
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                           .copyWith(
                             color: const Color(0xFFF97316),
@@ -234,7 +231,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                                       //         data!.workOut == 0)
                                       //     ? ""
                                       //     :
-                                      "${data?.workOut ?? 0} Workouts",
+                                      "${data?.workOut ?? 0} Allenamenti",
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
@@ -269,7 +266,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Theme Workout",
+                    "Allenamenti a Tema",
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
                       fontSize: 16.sp,
@@ -284,7 +281,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                       );
                     },
                     child: Text(
-                      "See All",
+                      "Vedi Tutto",
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                           .copyWith(
                             color: const Color(0xFFF97316),
@@ -404,7 +401,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Training Level",
+                  "Livello Allenamento",
                   textAlign: TextAlign.start,
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: const Color(0xFF27272A),
@@ -422,7 +419,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                     TrainingLevelCardWidget(
                       countIcon: 1,
                       icon: Assets.images.image1807.path,
-                      title: 'Beginner',
+                      title: 'Principiante',
                       onTap: () {
                         NavigationService.navigateToWithArgs(
                           Routes.dynamicWorkoutScreen,
@@ -434,7 +431,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                     TrainingLevelCardWidget(
                       countIcon: 2,
                       icon: Assets.images.image1807.path,
-                      title: 'Intermediate',
+                      title: 'Intermedio',
                       onTap: () {
                         NavigationService.navigateToWithArgs(
                           Routes.dynamicWorkoutScreen,
@@ -449,7 +446,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                     TrainingLevelCardWidget(
                       countIcon: 3,
                       icon: Assets.images.image1807.path,
-                      title: 'Advance',
+                      title: 'Avanzato',
                       onTap: () {
                         NavigationService.navigateToWithArgs(
                           Routes.dynamicWorkoutScreen,
@@ -466,7 +463,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "My Active Workout",
+                  "I Miei Allenamenti",
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: const Color(0xFF27272A),
                     fontSize: 16.sp,
@@ -519,7 +516,7 @@ class _ExceriseScreenState extends State<ExceriseScreen> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 20.h),
                         child: Text(
-                          "No active workouts yet",
+                          "Nessun allenamento attivo",
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 14.sp,

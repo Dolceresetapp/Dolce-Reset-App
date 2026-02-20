@@ -17,6 +17,8 @@ class CaroselWidget extends StatelessWidget {
 
   final String image;
 
+  final VoidCallback? onTap;
+
   const CaroselWidget({
     super.key,
     required this.title,
@@ -27,23 +29,54 @@ class CaroselWidget extends StatelessWidget {
     required this.protein,
 
     required this.image,
+
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 370.h,
-      width: 1.sw,
-      child: Stack(
-        children: [
-          // Image
-          ClipRRect(
-            borderRadius: BorderRadius.circular(24.r),
-            child: CustomCachedNetworkImage(
-              imageUrl: image,
-              height: 370.h,
-              width: 1.sw,
-              fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+        height: 370.h,
+        width: 1.sw,
+        child: Stack(
+          children: [
+            // Image
+            ClipRRect(
+              borderRadius: BorderRadius.circular(24.r),
+              child: CustomCachedNetworkImage(
+                imageUrl: image,
+                height: 370.h,
+                width: 1.sw,
+                fit: BoxFit.cover,
+              ),
+            ),
+
+          // Gradient overlay at bottom for text readability
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 180.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(24.r),
+                  bottomRight: Radius.circular(24.r),
+                ),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withOpacity(0.3),
+                    Colors.black.withOpacity(0.7),
+                    Colors.black.withOpacity(0.85),
+                  ],
+                  stops: const [0.0, 0.3, 0.7, 1.0],
+                ),
+              ),
             ),
           ),
 
@@ -84,18 +117,19 @@ class CaroselWidget extends StatelessWidget {
                 FoodCaloriesWidget(
                   icon: Assets.icons.vectorww,
                   foodCalories: minute,
-                  title: 'minutes',
+                  title: 'minuti',
                 ),
 
                 FoodCaloriesWidget(
                   icon: Assets.icons.protine,
                   foodCalories: protein,
-                  title: 'Protein',
+                  title: 'Proteine',
                 ),
               ],
             ),
           ),
         ],
+        ),
       ),
     );
   }

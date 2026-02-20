@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,8 +9,8 @@ import '../../helpers/navigation_service.dart';
 import '../../networks/api_acess.dart';
 import '../../services/preload_service.dart';
 
-/// Screen that preloads all data before showing the main app
-/// This ensures instant UX with no loading spinners
+/// Screen that shows briefly while data loads in background
+/// KEY: Navigate FAST, don't wait for everything
 class DataLoadingScreen extends StatefulWidget {
   const DataLoadingScreen({super.key});
 
@@ -19,7 +20,6 @@ class DataLoadingScreen extends StatefulWidget {
 
 class _DataLoadingScreenState extends State<DataLoadingScreen>
     with SingleTickerProviderStateMixin {
-  String _status = 'Preparazione del tuo spazio...';
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _opacityAnimation;
@@ -41,7 +41,7 @@ class _DataLoadingScreenState extends State<DataLoadingScreen>
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
-    _loadAllData();
+    _loadAndNavigate();
   }
 
   @override
@@ -50,40 +50,29 @@ class _DataLoadingScreenState extends State<DataLoadingScreen>
     super.dispose();
   }
 
-  Future<void> _loadAllData() async {
-    try {
-      // Load RxDart streams AND preload all images in parallel
-      await Future.wait([
-        _loadWithStatus(() => categoryRxObj.categoryRx(), 'Categories'),
-        _loadWithStatus(() => themeRxObj.themeRx(), 'Themes'),
-        _loadWithStatus(() => myWorkoutRxObj.myWorkoutRx(), 'Workouts'),
-        _loadWithStatus(() => preloadService.preloadAfterLogin(), 'Profile'),
-      ]);
+  Future<void> _loadAndNavigate() async {
+    // Start ALL data loading in background (fire and forget)
+    _startBackgroundLoading();
 
-      setState(() => _status = 'Pronto!');
+    // Wait maximum 1.5 seconds then navigate NO MATTER WHAT
+    await Future.delayed(const Duration(milliseconds: 1500));
 
-      // Small delay to show "Ready!" message
-      await Future.delayed(const Duration(milliseconds: 300));
-
-      // Navigate to main screen
-      if (mounted) {
-        NavigationService.navigateToReplacement(Routes.navigationScreen);
-      }
-    } catch (e) {
-      // Even on error, proceed to main screen (data will load there)
-      if (mounted) {
-        NavigationService.navigateToReplacement(Routes.navigationScreen);
-      }
+    if (mounted) {
+      NavigationService.navigateToReplacement(Routes.navigationScreen);
     }
   }
 
-  Future<void> _loadWithStatus(Future<void> Function() loader, String name) async {
-    try {
-      await loader();
-    } catch (e) {
-      // Ignore individual errors, continue loading
-      debugPrint('Failed to load $name: $e');
-    }
+  void _startBackgroundLoading() {
+    // Fire and forget - don't await, don't block
+    // These will complete in background and be cached
+
+    // Essential data (run in parallel)
+    unawaited(categoryRxObj.categoryRx().catchError((_) => false));
+    unawaited(themeRxObj.themeRx().catchError((_) => false));
+    unawaited(myWorkoutRxObj.myWorkoutRx().catchError((_) => false));
+
+    // Images and deep content (lower priority)
+    unawaited(preloadService.preloadAfterLogin().catchError((_) {}));
   }
 
   @override
@@ -112,11 +101,10 @@ class _DataLoadingScreenState extends State<DataLoadingScreen>
               },
             ),
             SizedBox(height: 32.h),
-            // Pulsing dots
             _PulsingDots(),
             SizedBox(height: 24.h),
             Text(
-              _status,
+              'Benvenuto!',
               style: TextStyle(
                 fontSize: 16.sp,
                 color: Colors.grey[600],
@@ -184,7 +172,7 @@ class _PulsingDotsState extends State<_PulsingDots>
                   height: 10.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: const Color(0xFFF566A9).withOpacity(opacity),
+                    color: const Color(0xFFF566A9).withValues(alpha: opacity),
                   ),
                 ),
               ),

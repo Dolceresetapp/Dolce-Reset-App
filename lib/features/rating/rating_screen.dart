@@ -35,7 +35,7 @@ class _RatingScreenState extends State<RatingScreen> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          "Give us a rating",
+          "Lascia una valutazione",
           style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
             color: const Color(0xFF000000),
             fontSize: 20.sp,
@@ -62,7 +62,7 @@ class _RatingScreenState extends State<RatingScreen> {
             UIHelper.verticalSpace(16.h),
 
             Text(
-              "This app was designed for people like you.",
+              "Questa app è stata progettata per persone come te.",
               style: TextFontStyle.headLine16cFFFFFFWorkSansThinW600.copyWith(
                 color: const Color(0xFF000000),
                 fontSize: 16.sp,
@@ -81,7 +81,7 @@ class _RatingScreenState extends State<RatingScreen> {
                     height: 0.3.sh,
                     child: Center(
                       child: Text(
-                        "something went wrong",
+                        "Qualcosa è andato storto",
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                             .copyWith(
                               color: const Color(0xFF000000),
@@ -96,7 +96,7 @@ class _RatingScreenState extends State<RatingScreen> {
                     height: 0.3.sh,
                     child: Center(
                       child: Text(
-                        "Data is not available",
+                        "Dati non disponibili",
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                             .copyWith(
                               color: const Color(0xFF000000),
@@ -198,7 +198,7 @@ class _RatingScreenState extends State<RatingScreen> {
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: Color(0xFFFFFFFF),
               ),
-              text: "Next",
+              text: "Avanti",
             ),
 
             UIHelper.verticalSpaceSemiLarge,

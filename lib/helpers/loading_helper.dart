@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../common_widget/loading_indicators.dart';
 import '../gen/assets.gen.dart';
-import '../gen/colors.gen.dart';
 import '../networks/exception_handler/data_source.dart';
 import 'default_response_model.dart';
 import 'navigation_service.dart';
@@ -15,7 +14,7 @@ extension Loader on Future {
     showDialog(
       context: NavigationService.context!,
       barrierDismissible: false,
-      barrierColor: Colors.black.withOpacity(0.3),
+      barrierColor: const Color(0xFF000000).withValues(alpha: 0.3),
       builder: (context) => const _ElegantLoadingDialog(),
     );
 
@@ -80,7 +79,7 @@ extension Loader on Future {
     showDialog(
       context: NavigationService.context!,
       barrierDismissible: false,
-      barrierColor: Colors.black.withOpacity(0.3),
+      barrierColor: const Color(0xFF000000).withValues(alpha: 0.3),
       builder: (context) => const _ElegantLoadingDialog(),
     );
 
@@ -98,7 +97,7 @@ extension Loader on Future {
     try {
       showDialog(
         context: NavigationService.context!,
-        barrierColor: Colors.black.withOpacity(0.3),
+        barrierColor: const Color(0xFF000000).withValues(alpha: 0.3),
         builder: (context) => const _ElegantLoadingDialog(),
       );
       bool result = await this;
@@ -224,7 +223,7 @@ class _ElegantLoadingDialogState extends State<_ElegantLoadingDialog>
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: const Color(0xFF000000).withValues(alpha: 0.1),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),
@@ -250,7 +249,7 @@ class _ElegantLoadingDialogState extends State<_ElegantLoadingDialog>
                       height: 12.w,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: const Color(0xFFF566A9).withOpacity(opacity),
+                        color: const Color(0xFFF566A9).withValues(alpha: opacity),
                       ),
                     ),
                   ),

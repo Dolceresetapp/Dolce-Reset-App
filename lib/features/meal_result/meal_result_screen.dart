@@ -67,7 +67,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Meal Result",
+              "Risultato Pasto",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 16.sp,
@@ -115,7 +115,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
                   UIHelper.verticalSpace(30.h),
 
                   Text(
-                    "Product name : ${model?.data?.productName ?? ""}",
+                    "Nome prodotto : ${model?.data?.productName ?? ""}",
                     textAlign: TextAlign.start,
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
@@ -127,7 +127,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
                   UIHelper.verticalSpace(8.h),
 
                   Text(
-                    "Brand name : ${model?.data?.brand ?? ""}",
+                    "Marca : ${model?.data?.brand ?? ""}",
                     textAlign: TextAlign.start,
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
@@ -139,7 +139,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
                   UIHelper.verticalSpace(8.h),
 
                   Text(
-                    "Score : ${model?.data?.score ?? 0 / 100}",
+                    "Punteggio : ${model?.data?.score ?? 0 / 100}",
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
                       fontSize: 16.sp,
@@ -161,7 +161,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
 
                   UIHelper.verticalSpace(8.h),
                   Text(
-                    "Reason:${model?.data?.reason ?? ""}",
+                    "Motivo: ${model?.data?.reason ?? ""}",
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
                       fontSize: 16.sp,
@@ -173,7 +173,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
 
                   UIHelper.verticalSpace(8.h),
                   Text(
-                    "Details: ${model?.data?.details ?? ""}",
+                    "Dettagli: ${model?.data?.details ?? ""}",
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFF27272A),
                       fontSize: 16.sp,
@@ -259,7 +259,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
                                       borderRadius: BorderRadius.circular(8.r),
                                     ),
                                     child: Text(
-                                      "Category : ${data?.category ?? ""}",
+                                      "Categoria : ${data?.category ?? ""}",
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextFontStyle
@@ -336,7 +336,7 @@ class _MealResultScreenState extends State<MealResultScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Continue",
+                          "Continua",
                           style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                         ),
 

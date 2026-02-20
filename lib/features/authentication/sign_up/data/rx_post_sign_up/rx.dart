@@ -1,6 +1,9 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:gritti_app/constants/app_constants.dart';
+import 'package:gritti_app/helpers/di.dart';
+import 'package:gritti_app/networks/dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../../helpers/toast.dart';
@@ -40,6 +43,21 @@ final class SignupRx extends RxResponseInt<SignupResponseModel> {
 
   @override
   handleSuccessWithReturn(SignupResponseModel data) {
+    // Save user data
+    appData.write(kKeyID, data.data?.id);
+    appData.write(kKeyAvatar, data.data?.avatar ?? "");
+    appData.write(kKeyName, data.data?.name ?? "");
+    appData.write(kKeyEmail, data.data?.email ?? "");
+
+    appData.write(kKeyUsrInfo, data.data?.userInfo ?? 0);
+    appData.write(kKeyPaymentMethod, data.data?.paymentMethod ?? 0);
+    appData.write(kKeyIsNutration, data.data?.isNutration ?? 0);
+
+    // Save token and login state
+    appData.write(kKeyAccessToken, data.token);
+    appData.write(kKeyIsLoggedIn, true);
+    DioSingleton.instance.update(appData.read(kKeyAccessToken));
+
     dataFetcher.sink.add(data);
     return true;
   }
@@ -47,20 +65,33 @@ final class SignupRx extends RxResponseInt<SignupResponseModel> {
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
-      if (error.response!.statusCode == 400) {
-        ToastUtil.showShortToast(error.response!.data["message"]);
-      } else {
-        if (error.response!.statusCode == 401) {
-          ToastUtil.showShortToast(error.response!.data["message"]);
+      if (error.response != null) {
+        final statusCode = error.response!.statusCode;
+        final message = error.response!.data["message"] ?? "Errore di registrazione";
+
+        if (statusCode == 409) {
+          // Email already registered - show error in red
+          ToastUtil.showErrorShortToast(message);
+        } else if (statusCode == 400) {
+          ToastUtil.showErrorShortToast(message);
+        } else if (statusCode == 401) {
+          ToastUtil.showErrorShortToast(message);
           totalDataClean();
           NavigationService.navigateToReplacement(Routes.signInScreen);
+        } else if (statusCode == 422) {
+          ToastUtil.showErrorShortToast(message);
         } else {
-          ToastUtil.showShortToast(error.response!.data["message"]);
+          ToastUtil.showErrorShortToast(message);
         }
+      } else {
+        ToastUtil.showErrorShortToast("Errore di connessione");
       }
       log(error.toString());
       dataFetcher.sink.addError(error);
-      return false;
+    } else {
+      log(error.toString());
+      ToastUtil.showErrorShortToast("Si è verificato un errore");
     }
+    return false;
   }
 }

@@ -27,29 +27,29 @@ class _WellnessGoalsScreenState extends State<WellnessGoalsScreen> {
   double? _targetWeight;
 
   final List<String> _bodyPartOptions = [
-    'Abdomen and face',
-    'Legs',
-    'Back / Posture',
-    'Whole body',
+    'Addome e viso',
+    'Gambe',
+    'Schiena / Postura',
+    'Corpo intero',
   ];
 
   final List<String> _dreamBodyOptions = [
-    'Healthy and fit',
-    'Curvy and confident',
-    'Strong and healthy',
+    'Sano e in forma',
+    'Formoso e sicuro',
+    'Forte e sano',
   ];
 
   final List<String> _urgentImprovementOptions = [
-    'Lose Weight',
-    'Get back into shape',
-    'Improve sleep/energy',
-    'Reduce pain/stiffness',
+    'Perdere peso',
+    'Rimettersi in forma',
+    'Migliorare sonno/energia',
+    'Ridurre dolori/rigidità',
   ];
 
   final List<String> _tryingDurationOptions = [
-    'I have Never tried',
-    'A few months ago',
-    'A few years ago',
+    'Non ho mai provato',
+    'Qualche mese fa',
+    'Qualche anno fa',
   ];
 
   @override
@@ -164,7 +164,7 @@ class _WellnessGoalsScreenState extends State<WellnessGoalsScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Wellness Goals',
+          'Obiettivi Benessere',
           style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
             color: const Color(0xFF27272A),
             fontSize: 18.sp,

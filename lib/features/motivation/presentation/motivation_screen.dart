@@ -12,6 +12,7 @@ import 'package:gritti_app/helpers/ui_helpers.dart';
 import 'package:gritti_app/provider/motivation_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../common_widget/custom_button.dart';
 import '../../../constants/app_constants.dart';
@@ -98,7 +99,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
                         ),
 
                         Text(
-                          "Motivation",
+                          "Motivazione",
                           style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                               .copyWith(fontSize: 16.sp),
                         ),
@@ -115,7 +116,6 @@ class _MotivationScreenState extends State<MotivationScreen> {
                               context: context,
                               builder: (_) {
                                 return Container(
-                                  height: 120.h,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20.r),
                                   ),
@@ -123,6 +123,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
                                     horizontal: 20.w,
                                   ),
                                   child: Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
                                       GestureDetector(
                                         onTap: () {
@@ -132,7 +133,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
                                           NavigationService.goBack;
                                         },
                                         child: ListTile(
-                                          title: Text("Camera"),
+                                          title: Text("Fotocamera"),
                                           leading: Icon(Icons.camera),
                                         ),
                                       ),
@@ -146,7 +147,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
                                           NavigationService.goBack;
                                         },
                                         child: ListTile(
-                                          title: Text("Gallery"),
+                                          title: Text("Galleria"),
                                           leading: Icon(Icons.photo),
                                         ),
                                       ),
@@ -200,7 +201,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
                                 );
                               },
                               child: Text(
-                                "Talk to Your AI Coach",
+                                "Parla con il tuo Coach AI",
                                 style: TextFontStyle
                                     .headLine16cFFFFFFWorkSansW600
                                     .copyWith(fontSize: 16.sp),
@@ -210,9 +211,14 @@ class _MotivationScreenState extends State<MotivationScreen> {
                             UIHelper.verticalSpace(10.h),
                             CustomButton(
                               color: Color(0xFF5d6474),
-                              onPressed: () {},
+                              onPressed: () async {
+                                final url = Uri.parse('https://t.me/+0zmcF9PugxdiZWY0');
+                                if (await canLaunchUrl(url)) {
+                                  await launchUrl(url, mode: LaunchMode.externalApplication);
+                                }
+                              },
                               child: Text(
-                                "Join Community Now",
+                                "Entra nella Community",
                                 style: TextFontStyle
                                     .headLine16cFFFFFFWorkSansW600
                                     .copyWith(fontSize: 16.sp),

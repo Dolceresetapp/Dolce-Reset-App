@@ -30,18 +30,18 @@ class ChefBoardingScreen4 extends StatefulWidget {
 
 class _ChefBoardingScreen4State extends State<ChefBoardingScreen4> {
   List<Map<String, dynamic>> dataList = [
-    {"image": Assets.images.sen.path, "title": "Sedentary"},
+    {"image": Assets.images.sen.path, "title": "Sedentario"},
 
-    {"image": Assets.images.lightWalk.path, "title": "Light (e.g., walking)"},
+    {"image": Assets.images.lightWalk.path, "title": "Leggero (es. camminata)"},
 
     {
       "image": Assets.images.moderate.path,
-      "title": "Moderate (e.g., workouts 2-3 times a week)",
+      "title": "Moderato (es. allenamenti 2-3 volte a settimana)",
     },
 
     {
       "image": Assets.images.intense.path,
-      "title": "Intense (e.g., daily workouts)",
+      "title": "Intenso (es. allenamenti quotidiani)",
     },
   ];
 
@@ -64,7 +64,7 @@ class _ChefBoardingScreen4State extends State<ChefBoardingScreen4> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "What’s your activity level ",
+              "Qual è il tuo livello di attività?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -110,7 +110,7 @@ class _ChefBoardingScreen4State extends State<ChefBoardingScreen4> {
         child: CustomButton(
           onPressed: () {
             if (selectedIndex == null) {
-              ToastUtil.showErrorShortToast("Please select an item.");
+              ToastUtil.showErrorShortToast("Seleziona un'opzione.");
             } else {
               NavigationService.navigateToWithArgs(Routes.chefBoardingScreen5, {
                 "chefBoarding1": widget.chefBoarding1,
@@ -125,7 +125,7 @@ class _ChefBoardingScreen4State extends State<ChefBoardingScreen4> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

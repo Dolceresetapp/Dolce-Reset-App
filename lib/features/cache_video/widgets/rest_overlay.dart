@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../constants/text_font_style.dart';
@@ -12,16 +13,28 @@ class RestOverlay extends StatefulWidget {
   final int restDuration;
   final String nextExerciseTitle;
   final String? nextVideoUrl;
+  final String? nextVoiceoverText;
   final VoidCallback onComplete;
   final VoidCallback onSkip;
+  final VoidCallback? onVoiceoverPlayed;
+  final bool voiceoverEnabled;
+  final VoidCallback? onVoiceoverToggle;
+  final Future<void> Function()? onDuckMusic;
+  final Future<void> Function()? onRestoreMusic;
 
   const RestOverlay({
     super.key,
     required this.restDuration,
     required this.nextExerciseTitle,
     this.nextVideoUrl,
+    this.nextVoiceoverText,
     required this.onComplete,
     required this.onSkip,
+    this.onVoiceoverPlayed,
+    this.voiceoverEnabled = true,
+    this.onVoiceoverToggle,
+    this.onDuckMusic,
+    this.onRestoreMusic,
   });
 
   @override
@@ -35,6 +48,9 @@ class _RestOverlayState extends State<RestOverlay>
   VideoPlayerController? _previewController;
   bool _videoReady = false;
   bool _isDisposed = false;
+
+  // TTS for voiceover
+  FlutterTts? _tts;
 
   late AnimationController _progressController;
   late Animation<double> _progressAnimation;
@@ -58,6 +74,70 @@ class _RestOverlayState extends State<RestOverlay>
     _progressController.forward();
     _startTimer();
     _loadPreviewVideo();
+    _playVoiceover();
+  }
+
+  Future<void> _initTts() async {
+    if (_tts != null) return;
+
+    try {
+      _tts = FlutterTts();
+
+      await _tts!.setSharedInstance(true);
+      await _tts!.setIosAudioCategory(
+        IosTextToSpeechAudioCategory.playback,
+        [
+          IosTextToSpeechAudioCategoryOptions.allowBluetooth,
+          IosTextToSpeechAudioCategoryOptions.allowBluetoothA2DP,
+          IosTextToSpeechAudioCategoryOptions.mixWithOthers,
+          IosTextToSpeechAudioCategoryOptions.duckOthers,
+        ],
+        IosTextToSpeechAudioMode.voicePrompt,
+      );
+
+      await _tts!.setLanguage("it-IT");
+      await _tts!.setSpeechRate(0.42);
+      await _tts!.setVolume(0.85);
+      await _tts!.setPitch(1.15);
+    } catch (e) {
+      debugPrint('TTS init error: $e');
+    }
+  }
+
+  Future<void> _playVoiceover() async {
+    if (!widget.voiceoverEnabled) return;
+    if (widget.nextVoiceoverText == null || widget.nextVoiceoverText!.isEmpty) return;
+    if (_isDisposed) return;
+
+    try {
+      await _initTts();
+      if (_tts == null || _isDisposed) return;
+
+      // Stop any existing speech before starting new one
+      await _tts!.stop();
+
+      // Wait 1 second before speaking
+      await Future.delayed(const Duration(seconds: 1));
+
+      if (_isDisposed || !widget.voiceoverEnabled) return;
+
+      // Duck music before speaking
+      await widget.onDuckMusic?.call();
+
+      // Set completion handler to restore music
+      _tts!.setCompletionHandler(() {
+        widget.onRestoreMusic?.call();
+      });
+
+      await _tts!.speak(widget.nextVoiceoverText!);
+
+      // Notify that voiceover was played during rest
+      widget.onVoiceoverPlayed?.call();
+
+    } catch (e) {
+      debugPrint('Rest overlay TTS error: $e');
+      await widget.onRestoreMusic?.call();
+    }
   }
 
   Future<void> _loadPreviewVideo() async {
@@ -96,21 +176,60 @@ class _RestOverlayState extends State<RestOverlay>
 
       if (_remainingSeconds <= 1) {
         timer.cancel();
+        // Say "Via!" when timer ends
+        _speakCountdown('Via!');
         if (mounted && !_isDisposed) {
-          widget.onComplete();
+          Future.delayed(const Duration(milliseconds: 400), () {
+            if (mounted && !_isDisposed) {
+              widget.onComplete();
+            }
+          });
         }
       } else {
         if (mounted && !_isDisposed) {
           setState(() => _remainingSeconds--);
+          // Say 3, 2, 1 when timer reaches those values
+          if (_remainingSeconds == 3) {
+            _speakCountdown('3');
+          } else if (_remainingSeconds == 2) {
+            _speakCountdown('2');
+          } else if (_remainingSeconds == 1) {
+            _speakCountdown('1');
+          }
         }
       }
     });
+  }
+
+  Future<void> _speakCountdown(String text) async {
+    if (_isDisposed || !widget.voiceoverEnabled) return;
+
+    try {
+      await _initTts();
+      if (_tts == null) return;
+
+      // Duck music before speaking
+      await widget.onDuckMusic?.call();
+
+      // Set completion handler to restore music
+      _tts!.setCompletionHandler(() {
+        widget.onRestoreMusic?.call();
+      });
+
+      // Stop any existing speech to avoid overlap
+      await _tts!.stop();
+      await _tts!.speak(text);
+    } catch (e) {
+      debugPrint('Countdown speak error: $e');
+      await widget.onRestoreMusic?.call();
+    }
   }
 
   @override
   void dispose() {
     _isDisposed = true;
     _timer?.cancel();
+    _tts?.stop();
     _progressController.dispose();
     _previewController?.dispose();
     super.dispose();
@@ -123,23 +242,56 @@ class _RestOverlayState extends State<RestOverlay>
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
         child: SafeArea(
-          child: Column(
+          child: Stack(
             children: [
-              SizedBox(height: 30.h),
-              _buildTitle(),
-              SizedBox(height: 20.h),
-              _buildCountdown(),
-              SizedBox(height: 30.h),
-              _buildNextExerciseLabel(),
-              SizedBox(height: 12.h),
-              _buildNextExerciseTitle(),
-              SizedBox(height: 20.h),
-              Expanded(child: _buildVideoPreview()),
-              SizedBox(height: 20.h),
-              _buildSkipButton(),
-              SizedBox(height: 30.h),
+              Column(
+                children: [
+                  SizedBox(height: 30.h),
+                  _buildTitle(),
+                  SizedBox(height: 20.h),
+                  _buildCountdown(),
+                  SizedBox(height: 30.h),
+                  _buildNextExerciseLabel(),
+                  SizedBox(height: 12.h),
+                  _buildNextExerciseTitle(),
+                  SizedBox(height: 20.h),
+                  Expanded(child: _buildVideoPreview()),
+                  SizedBox(height: 20.h),
+                  _buildSkipButton(),
+                  SizedBox(height: 30.h),
+                ],
+              ),
+              // Volume toggle button (top left)
+              Positioned(
+                top: 8.h,
+                left: 16.w,
+                child: _buildVolumeButton(),
+              ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildVolumeButton() {
+    return GestureDetector(
+      onTap: widget.onVoiceoverToggle,
+      child: Container(
+        width: 44.w,
+        height: 44.w,
+        decoration: BoxDecoration(
+          color: widget.voiceoverEnabled
+              ? _accentColor.withOpacity(0.2)
+              : Colors.white.withOpacity(0.15),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          widget.voiceoverEnabled
+              ? Icons.volume_up_rounded
+              : Icons.volume_off_rounded,
+          size: 24.sp,
+          color: widget.voiceoverEnabled ? _accentColor : Colors.white.withOpacity(0.6),
         ),
       ),
     );

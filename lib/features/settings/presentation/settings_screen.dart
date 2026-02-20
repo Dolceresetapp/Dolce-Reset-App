@@ -54,7 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text(
-          'Coming soon!',
+          'Prossimamente!',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFFF566A9),
@@ -69,28 +69,53 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _handleSubscriptionBilling() async {
     try {
-      final subscriptionInfo = await subscriptionManagementRxObj.getSubscriptionInfo();
-      log('Subscription info: $subscriptionInfo');
+      log('========== SUBSCRIPTION BILLING ==========');
 
-      if (!mounted) return;
+      // Web2Wave users: open Web2Wave manage page (works on all platforms)
+      final paymentSource = appData.read('payment_source');
+      if (paymentSource == 'web2wave') {
+        log('>>> Web2Wave user: Opening Web2Wave manage page...');
+        final userEmail = appData.read(kKeyEmail)?.toString() ?? '';
+        final url = Uri.parse('https://dolce-reset-ltd.web2wave.com/manage-subscription?email=${Uri.encodeComponent(userEmail)}');
+        if (await canLaunchUrl(url)) {
+          await launchUrl(url, mode: LaunchMode.externalApplication);
+        }
+        log('==========================================');
+        return;
+      }
 
-      final paymentMethod = subscriptionInfo?['payment_method'];
-
-      if (paymentMethod == 'apple' || (paymentMethod == null && Platform.isIOS)) {
-        // iOS - Open App Store subscription management
+      // On iOS, redirect to Apple subscription management (Guideline 3.1.1)
+      if (Platform.isIOS) {
+        log('>>> iOS: Opening App Store subscriptions...');
         final url = Uri.parse('https://apps.apple.com/account/subscriptions');
         if (await canLaunchUrl(url)) {
           await launchUrl(url, mode: LaunchMode.externalApplication);
         }
-      } else if (paymentMethod == 'google' || (paymentMethod == null && Platform.isAndroid)) {
-        // Android - Open Google Play subscription management
-        final url = Uri.parse('https://play.google.com/store/account/subscriptions');
-        if (await canLaunchUrl(url)) {
-          await launchUrl(url, mode: LaunchMode.externalApplication);
-        }
-      } else if (paymentMethod == 'stripe' || paymentMethod == 'web') {
-        // Web/Stripe - Get billing portal URL
+        log('==========================================');
+        return;
+      }
+
+      final subscriptionInfo = await subscriptionManagementRxObj.getSubscriptionInfo();
+      log('Subscription info received: $subscriptionInfo');
+
+      if (!mounted) return;
+
+      if (subscriptionInfo == null) {
+        log('subscriptionInfo is NULL - API may have failed');
+        _showError('Impossibile recuperare info abbonamento');
+        return;
+      }
+
+      final paymentMethod = subscriptionInfo['payment_method'];
+      final hasStripeCustomer = subscriptionInfo['has_stripe_customer'] == true;
+
+      log('payment_method: $paymentMethod');
+      log('has_stripe_customer: $hasStripeCustomer');
+
+      if (paymentMethod == 'stripe' || paymentMethod == 'web' || hasStripeCustomer) {
+        log('>>> Opening Stripe billing portal...');
         final portalUrl = await subscriptionManagementRxObj.getBillingPortalUrl();
+        log('Portal URL: $portalUrl');
         if (!mounted) return;
 
         if (portalUrl != null) {
@@ -101,15 +126,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
         } else {
           _showError('Impossibile aprire il portale di fatturazione');
         }
+      } else if (paymentMethod == 'google') {
+        log('>>> Opening Google Play subscriptions...');
+        final url = Uri.parse('https://play.google.com/store/account/subscriptions');
+        if (await canLaunchUrl(url)) {
+          await launchUrl(url, mode: LaunchMode.externalApplication);
+        }
       } else {
-        // No subscription or unknown - Navigate to trial/subscription screen
-        NavigationService.navigateTo(Routes.trialContinueScreen);
+        log('>>> No payment method, using platform default...');
+        final url = Uri.parse('https://play.google.com/store/account/subscriptions');
+        if (await canLaunchUrl(url)) {
+          await launchUrl(url, mode: LaunchMode.externalApplication);
+        }
       }
+      log('==========================================');
     } catch (e) {
       log('Subscription error: $e');
       if (mounted) {
-        // Fallback to subscription screen
-        NavigationService.navigateTo(Routes.trialContinueScreen);
+        _showError('Errore: $e');
       }
     }
   }
@@ -320,7 +354,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: Center(
                     child: SafeArea(
                       child: Text(
-                        "Profile",
+                        "Profilo",
                         style: TextFontStyle.headline30c27272AtyleWorkSansW700
                             .copyWith(
                               color: Colors.white,
@@ -482,7 +516,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Expanded(
                   child: UserInfoWidget(
                     icon: Assets.icons.cake,
-                    subtitle: "years",
+                    subtitle: "anni",
                     title: "18",
                   ),
                 ),
@@ -496,7 +530,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Expanded(
                   child: UserInfoWidget(
                     icon: Assets.icons.cake,
-                    subtitle: "kilograms",
+                    subtitle: "chilogrammi",
                     title: "65",
                   ),
                 ),
@@ -510,7 +544,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Expanded(
                   child: UserInfoWidget(
                     icon: Assets.icons.cake,
-                    subtitle: "Height",
+                    subtitle: "Altezza",
                     title: "5'5 ",
                   ),
                 ),
@@ -748,7 +782,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Text(
-                "General Settings",
+                "Impostazioni Generali",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   color: const Color(0xFF27272A),
                   fontSize: 16.sp,
@@ -759,7 +793,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             UIHelper.verticalSpace(16.h),
             SettingsTitleWidget(
               icon: Assets.icons.userSingle,
-              title: "Profile Settings",
+              title: "Impostazioni Profilo",
               onTap: () async {
                 final result = await Navigator.pushNamed(context, Routes.profileSettingsScreen);
                 if (result == true && mounted) {
@@ -770,26 +804,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
             UIHelper.verticalSpace(12.h),
             SettingsTitleWidget(
               icon: Assets.icons.vector,
-              title: "Subscription & Billing",
+              title: "Abbonamento e Fatturazione",
               onTap: _handleSubscriptionBilling,
             ),
             UIHelper.verticalSpace(12.h),
             SettingsTitleWidget(
               icon: Assets.icons.activityRunningJogging,
-              title: "Wellness Goals",
+              title: "Obiettivi Benessere",
               onTap: () => NavigationService.navigateTo(Routes.wellnessGoalsScreen),
             ),
             UIHelper.verticalSpace(12.h),
             SettingsTitleWidget(
               icon: Assets.icons.ruler,
-              title: "Units & Metrics",
+              title: "Unità e Metriche",
               onTap: () => NavigationService.navigateTo(Routes.unitsMetricsScreen),
             ),
             UIHelper.verticalSpace(32.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Text(
-                "Notifications",
+                "Notifiche",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   color: const Color(0xFF27272A),
                   fontSize: 16.sp,
@@ -800,7 +834,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             UIHelper.verticalSpace(12.h),
             SettingsToggleWidget(
               icon: Assets.icons.vector1,
-              title: "General Notifications",
+              title: "Notifiche Generali",
               value: _generalNotifications,
               onChanged: (value) {
                 setState(() => _generalNotifications = value);
@@ -810,7 +844,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             UIHelper.verticalSpace(12.h),
             SettingsToggleWidget(
               icon: Assets.icons.envelopeEmail,
-              title: "Email Notifications",
+              title: "Notifiche Email",
               value: _emailNotifications,
               onChanged: (value) {
                 setState(() => _emailNotifications = value);
@@ -820,7 +854,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             UIHelper.verticalSpace(12.h),
             SettingsToggleWidget(
               icon: Assets.icons.soundOn,
-              title: "Sound Notifications",
+              title: "Suoni Notifiche",
               value: _soundNotifications,
               onChanged: (value) {
                 setState(() => _soundNotifications = value);
@@ -833,7 +867,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Text(
-                "Security & Privacy",
+                "Sicurezza e Privacy",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   color: const Color(0xFF27272A),
                   fontSize: 16.sp,
@@ -844,20 +878,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
             UIHelper.verticalSpace(12.h),
             SettingsTitleWidget(
               icon: Assets.icons.lockLocked,
-              title: "Change password",
+              title: "Cambia Password",
               onTap: () => NavigationService.navigateTo(Routes.changePasswordScreen),
             ),
             UIHelper.verticalSpace(12.h),
             SettingsTitleWidget(
               icon: Assets.icons.arrowRepeat,
-              title: "Clear & Reset Data",
+              title: "Cancella e Ripristina Dati",
               onTap: () => _showClearDataDialog(context),
             ),
             UIHelper.verticalSpace(32.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Text(
-                "Help & Support",
+                "Aiuto e Supporto",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   color: const Color(0xFF27272A),
                   fontSize: 16.sp,
@@ -868,7 +902,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             UIHelper.verticalSpace(12.h),
             SettingsTitleWidget(
               icon: Assets.icons.questionMarkCircle,
-              title: "FAQs",
+              title: "Domande Frequenti",
               onTap: () => NavigationService.navigateTo(Routes.faqsScreen),
             ),
 
@@ -878,7 +912,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Text(
-                "Danger Zone",
+                "Zona Pericolosa",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   color: const Color(0xFF27272A),
                   fontSize: 16.sp,
@@ -889,7 +923,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             UIHelper.verticalSpace(12.h),
             SettingsTitleWidget(
               icon: Assets.icons.trash,
-              title: "Delete Account",
+              title: "Elimina Account",
               onTap: () => _showDeleteAccountDialog(context),
             ),
 
@@ -931,7 +965,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         color: const Color(0xFFDC2626),
                       ),
                       Text(
-                        "Logout",
+                        "Esci",
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                           color: const Color(0xFFDC2626),
                           fontSize: 14.sp,

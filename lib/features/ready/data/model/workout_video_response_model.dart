@@ -6,6 +6,7 @@ class WorkoutWiseVideoResponseModel {
   int? totalCal;
   int? minutes;
   int? listId;
+  bool? musicEnabled;
   List<Datum>? data;
 
   WorkoutWiseVideoResponseModel({
@@ -14,6 +15,7 @@ class WorkoutWiseVideoResponseModel {
     this.totalCal,
     this.minutes,
     this.listId,
+    this.musicEnabled,
     this.data,
   });
 
@@ -23,6 +25,7 @@ class WorkoutWiseVideoResponseModel {
     int? totalCal,
     int? minutes,
     int? listId,
+    bool? musicEnabled,
     List<Datum>? data,
   }) => WorkoutWiseVideoResponseModel(
     success: success ?? this.success,
@@ -30,6 +33,7 @@ class WorkoutWiseVideoResponseModel {
     totalCal: totalCal ?? this.totalCal,
     minutes: minutes ?? this.minutes,
     listId: listId ?? this.listId,
+    musicEnabled: musicEnabled ?? this.musicEnabled,
     data: data ?? this.data,
   );
 
@@ -45,6 +49,7 @@ class WorkoutWiseVideoResponseModel {
         totalCal: json["total_cal"],
         minutes: json["minutes"],
         listId: json["list_id"],
+        musicEnabled: json["music_enabled"] ?? true,
         data:
             json["data"] == null
                 ? []
@@ -57,6 +62,7 @@ class WorkoutWiseVideoResponseModel {
     "total_cal": totalCal,
     "minutes": minutes,
     "list_id": listId,
+    "music_enabled": musicEnabled,
     "data":
         data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
   };

@@ -13,6 +13,9 @@ import '../features/authentication/signin/sign_in_screen.dart';
 import '../features/data_loading/data_loading_screen.dart';
 import '../features/authentication/signup_otp/signup_otp_screen.dart';
 import '../features/barcode/barcode_scanner_screen.dart';
+import '../features/chef/presentation/recipe_detail_screen.dart';
+import '../features/chef/data/model/ai_receipe_response_model.dart';
+import '../features/cache_loading/cache_loading_screen.dart';
 import '../features/cache_video/cache_video_screen.dart';
 import '../features/cusom_plan_ready/custom_plan_ready_screen.dart';
 import '../features/download_countdown/download_countdown_screen.dart';
@@ -59,6 +62,7 @@ import '../features/settings/presentation/faqs_screen.dart';
 import '../features/settings/presentation/units_metrics_screen.dart';
 import '../features/settings/presentation/notifications_screen.dart';
 import '../features/settings/presentation/wellness_goals_screen.dart';
+import '../features/welcome/welcome_screen.dart';
 import '../loading.dart';
 import '../navigation_screen.dart';
 
@@ -68,6 +72,8 @@ final class Routes {
   static Routes get instance => _routes;
 
   static const String loadingScreen = '/Loading';
+
+  static const String welcomeScreen = '/welcomeScreen';
 
   static const String signUpScreen = '/signUpScreen';
 
@@ -150,6 +156,7 @@ final class Routes {
   static const String trialContinueScreen = '/trialContinueScreen';
   static const String dynamicWorkoutScreen = '/dynamicWorkoutScreen';
   static const String readyScreen = '/readyScreen';
+  static const String cacheLoadingScreen = '/cacheLoadingScreen';
 
   static const String videoSnapScreen = '/videoSnapScreen';
 
@@ -160,6 +167,8 @@ final class Routes {
   static const String barcodeScannerScreen = '/barcodeScannerScreen';
 
   static const String cacheVideoScreen = '/cacheVideoScreen';
+
+  static const String recipeDetailScreen = '/recipeDetailScreen';
 
   // Settings
   static const String profileSettingsScreen = '/profileSettingsScreen';
@@ -188,6 +197,17 @@ final class RouteGenerator {
             )
             : CupertinoPageRoute(
               builder: (context) => CacheVideoScreen(id: args["id"]),
+            );
+
+      case Routes.recipeDetailScreen:
+        final args = settings.arguments as Map;
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: RecipeDetailScreen(recipe: args["recipe"] as AiReceipeResponseData),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => RecipeDetailScreen(recipe: args["recipe"] as AiReceipeResponseData),
             );
 
       // Settings screens
@@ -331,6 +351,13 @@ final class RouteGenerator {
         return Platform.isAndroid
             ? _FadedTransitionRoute(widget: RatingScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => RatingScreen());
+      case Routes.cacheLoadingScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: CacheLoadingScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(builder: (context) => CacheLoadingScreen());
       case Routes.rewiringBenefitScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
@@ -588,63 +615,13 @@ final class RouteGenerator {
             );
 
       case Routes.onboardingScreen17:
-        final args = settings.arguments as Map;
-
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: OnboardingScreen17(
-                onboard1: args["onboard1"],
-                onboard2: args["onboard2"],
-                onboard4: args["onboard4"],
-                onboard5: args["onboard5"],
-                onboard7HeightUnit: args["onboard7HeightUnit"],
-                onboard7HeightValue: args["onboard7HeightValue"],
-
-                onboard8WeightUnit: args["onboard8WeightUnit"],
-                onboard8WeightValue: args["onboard8WeightValue"],
-
-                onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
-                onboard9TargetWeightValue: args["onboard9TargetWeightValue"],
-
-                selectedDate: args["selectedDate"],
-
-                bmi: args["bmi"],
-
-                onboard12: args["onboard12"],
-
-                onboard13: args["onboard13"],
-
-                onboard15: args["onboard15"],
-              ),
+              widget: const OnboardingScreen17(),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder:
-                  (context) => OnboardingScreen17(
-                    onboard1: args["onboard1"],
-                    onboard2: args["onboard2"],
-                    onboard4: args["onboard4"],
-                    onboard5: args["onboard5"],
-                    onboard7HeightUnit: args["onboard7HeightUnit"],
-                    onboard7HeightValue: args["onboard7HeightValue"],
-
-                    onboard8WeightUnit: args["onboard8WeightUnit"],
-                    onboard8WeightValue: args["onboard8WeightValue"],
-
-                    onboard9TargetWeightUnit: args["onboard9TargetWeightUnit"],
-                    onboard9TargetWeightValue:
-                        args["onboard9TargetWeightValue"],
-
-                    selectedDate: args["selectedDate"],
-
-                    bmi: args["bmi"],
-
-                    onboard12: args["onboard12"],
-
-                    onboard13: args["onboard13"],
-
-                    onboard15: args["onboard15"],
-                  ),
+              builder: (context) => const OnboardingScreen17(),
             );
 
       case Routes.onboardingScreen16:
@@ -1221,6 +1198,14 @@ final class RouteGenerator {
               settings: settings,
             )
             : CupertinoPageRoute(builder: (context) => const SignInScreen());
+
+      case Routes.welcomeScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const WelcomeScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(builder: (context) => const WelcomeScreen());
 
       case Routes.loadingScreen:
         return Platform.isAndroid

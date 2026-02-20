@@ -66,13 +66,13 @@ class OnboardingScreen15 extends StatefulWidget {
 
 class _OnboardingScreen15State extends State<OnboardingScreen15> {
   List<Map<String, dynamic>> dataList = [
-    {"image": Assets.images.onboard151.path, "title": "Very satisfied"},
+    {"image": Assets.images.onboard151.path, "title": "Molto soddisfatta"},
 
-    {"image": Assets.images.onboard152.path, "title": "Quite satisfied"},
+    {"image": Assets.images.onboard152.path, "title": "Abbastanza soddisfatta"},
 
-    {"image": Assets.images.onboard153.path, "title": "Not very satisfied"},
+    {"image": Assets.images.onboard153.path, "title": "Poco soddisfatta"},
 
-    {"image": Assets.images.onboard154.path, "title": "Not at all satisfied"},
+    {"image": Assets.images.onboard154.path, "title": "Per niente soddisfatta"},
   ];
 
   int? selectedIndex;
@@ -95,7 +95,7 @@ class _OnboardingScreen15State extends State<OnboardingScreen15> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "In the last 6 months, how satisfied have you been with your body?",
+              "Negli ultimi 6 mesi, quanto sei stata soddisfatta del tuo corpo?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -141,7 +141,7 @@ class _OnboardingScreen15State extends State<OnboardingScreen15> {
         child: CustomButton(
           onPressed: () {
             if (selectedIndex == null) {
-              ToastUtil.showErrorShortToast("Please select an item.");
+              ToastUtil.showErrorShortToast("Seleziona un'opzione.");
             } else {
               NavigationService.navigateToWithArgs(Routes.onboardingScreen16, {
                 "onboard1": widget.onboard1,
@@ -174,7 +174,7 @@ class _OnboardingScreen15State extends State<OnboardingScreen15> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

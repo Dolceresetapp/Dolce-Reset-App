@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gritti_app/common_widget/waiting_widget.dart';
 import 'package:gritti_app/features/exercise_video/full_screen_video.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
@@ -35,6 +34,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
   // Add variables for list & index
   VideoPlayerController? _controller;
   VideoPlayerController? _nextController; // Preload next video
+  StreamSubscription? _workoutVideoSubscription;
 
   int currentIndex = 0;
   List videoList = [];
@@ -86,7 +86,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
     // Don't start countdown yet - wait for video to load
     workoutVideoRxObj.workoutVideoRx(id: widget.id);
 
-    workoutVideoRxObj.workoutVideoRxStream.listen((apiResult) {
+    _workoutVideoSubscription = workoutVideoRxObj.workoutVideoRxStream.listen((apiResult) {
       if (apiResult.data != null && mounted) {
         videoList = apiResult.data!;
 
@@ -217,6 +217,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
     _audioPlayer?.stop();
     _audioPlayer?.dispose();
     _countdownTimer?.cancel();
+    _workoutVideoSubscription?.cancel();
     super.dispose();
   }
 
@@ -319,12 +320,12 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
                   padding: EdgeInsets.all(20.sp),
                   decoration: BoxDecoration(
                     // ignore: deprecated_member_use
-                    color: Colors.white.withOpacity(0.25), // Glass effect
+                    color: const Color(0xFFFFFFFF).withValues(alpha: 0.25), // Glass effect
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(25.r),
                     ),
                     // ignore: deprecated_member_use
-                    border: Border.all(color: Colors.white.withOpacity(0.3)),
+                    border: Border.all(color: const Color(0xFFFFFFFF).withValues(alpha: 0.3)),
                   ),
                   child: Column(
                     children: [
@@ -335,7 +336,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
                         margin: EdgeInsets.only(bottom: 20),
                         decoration: BoxDecoration(
                           // ignore: deprecated_member_use
-                          color: Colors.white.withOpacity(0.6),
+                          color: const Color(0xFFFFFFFF).withValues(alpha: 0.6),
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
@@ -346,7 +347,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
                           children: [
                             UIHelper.verticalSpace(30.h),
                             Text(
-                              'Hand in there! \n You got this!',
+                              'Resisti! \n Ce la puoi fare!',
                               style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                                   .copyWith(
                                     fontWeight: FontWeight.w900,
@@ -365,7 +366,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Keep Exercising",
+                                    "Continua l'Allenamento",
                                     style:
                                         TextFontStyle
                                             .headLine16cFFFFFFWorkSansW600,
@@ -400,7 +401,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
                                   },
                                 );
                               },
-                              text: "Finish Workout",
+                              text: "Termina Allenamento",
                             ),
                           ],
                         ),
@@ -493,7 +494,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
                       if (_isVideoLoading)
                         Positioned.fill(
                           child: Container(
-                            color: Colors.black.withOpacity(.7),
+                            color: const Color(0xFF000000).withValues(alpha: 0.7),
                             alignment: Alignment.center,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -515,7 +516,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
                       if (_showCountdown && !_isVideoLoading)
                         Positioned.fill(
                           child: Container(
-                            color: Colors.black.withOpacity(.6),
+                            color: const Color(0xFF000000).withValues(alpha: 0.6),
                             alignment: Alignment.center,
                             child: AnimatedSwitcher(
                               duration: const Duration(milliseconds: 300),
@@ -620,7 +621,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
 
                                           if (data == null) {
                                             return Text(
-                                              "Music not available here",
+                                              "Musica non disponibile",
                                               style: TextFontStyle
                                                   .headLine16cFFFFFFWorkSansW600
                                                   .copyWith(
@@ -633,9 +634,9 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
                                                 bottom: 10.h,
                                               ),
                                               decoration: BoxDecoration(
-                                                color: Color(
+                                                color: const Color(
                                                   0xFFF566A9,
-                                                ).withOpacity(0.4),
+                                                ).withValues(alpha: 0.4),
                                                 borderRadius:
                                                     BorderRadius.circular(10.r),
                                               ),
@@ -822,7 +823,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
 
                 // STEP INDICATOR
                 Text(
-                  "STEP ${currentIndex + 1}/${videoList.length}",
+                  "PASSO ${currentIndex + 1}/${videoList.length}",
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: const Color(0xFF9CA3AF),
                     fontWeight: FontWeight.w500,
@@ -932,7 +933,7 @@ class _LoadingDotsState extends State<_LoadingDots>
                   height: 14.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: const Color(0xFFF566A9).withOpacity(opacity),
+                    color: const Color(0xFFF566A9).withValues(alpha: opacity),
                   ),
                 ),
               ),

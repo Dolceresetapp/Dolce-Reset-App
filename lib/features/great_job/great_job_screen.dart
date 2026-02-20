@@ -32,7 +32,7 @@ class GreatJobScreen extends StatelessWidget {
 
                 UIHelper.verticalSpace(24.h),
                 Text(
-                  "Great Job!",
+                  "Ottimo Lavoro!",
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: const Color(0xFF27272A),
                     fontSize: 36.sp,
@@ -41,7 +41,7 @@ class GreatJobScreen extends StatelessWidget {
                 ),
                 UIHelper.verticalSpace(16.h),
                 Text(
-                  "Now you are ready for have custom recepe \n base on your goal and preferences",
+                  "Ora sei pronta per avere ricette personalizzate \n in base ai tuoi obiettivi e preferenze",
                   textAlign: TextAlign.center,
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: const Color(0xFF52525B),
@@ -67,7 +67,7 @@ class GreatJobScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

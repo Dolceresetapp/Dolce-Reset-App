@@ -185,8 +185,8 @@ class _OneTimeOnboardingScreenState extends State<OneTimeOnboardingScreen> {
                 },
                 text:
                     currentIndex == dataList.length - 1
-                        ? 'Get Started'
-                        : 'Next',
+                        ? 'Inizia'
+                        : 'Avanti',
                 //  text: "Next",
                 color: Color(0xff777EFF),
                 borderRadius: 50.r,

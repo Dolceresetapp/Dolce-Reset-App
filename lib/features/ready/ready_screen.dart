@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gritti_app/common_widget/custom_button.dart';
 import 'package:gritti_app/common_widget/custom_network_image.dart';
-import 'package:gritti_app/common_widget/waiting_widget.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
@@ -21,10 +21,34 @@ class ReadyScreen extends StatefulWidget {
 }
 
 class _ReadyScreenState extends State<ReadyScreen> {
+  bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
-    workoutVideoRxObj.workoutVideoRx(id: widget.id);
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    // Clear stale data before fetching new workout videos
+    workoutVideoRxObj.clean();
+    final response = await workoutVideoRxObj.workoutVideoRx(id: widget.id);
+    if (mounted) {
+      setState(() => _isLoading = false);
+      // Preload first 3 video files while user reads the exercise list
+      _preloadVideos(response.data);
+    }
+  }
+
+  void _preloadVideos(List<Datum>? exercises) {
+    if (exercises == null || exercises.isEmpty) return;
+    final cacheManager = DefaultCacheManager();
+    for (int i = 0; i < exercises.length && i < 3; i++) {
+      final url = exercises[i].videos;
+      if (url != null && url.isNotEmpty) {
+        cacheManager.getSingleFile(url).ignore();
+      }
+    }
   }
 
   @override
@@ -73,18 +97,17 @@ class _ReadyScreenState extends State<ReadyScreen> {
                 child: StreamBuilder<WorkoutWiseVideoResponseModel>(
                   stream: workoutVideoRxObj.workoutVideoRxStream,
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
+                    // Show loading while fetching data
+                    if (_isLoading) {
                       return Center(
-                        child: Text(
-                          "Caricamento...",
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: Colors.grey[600],
-                            fontWeight: FontWeight.w500,
-                          ),
+                        child: CircularProgressIndicator(
+                          color: const Color(0xFFF566A9),
+                          strokeWidth: 3,
                         ),
                       );
-                    } else if (snapshot.hasError) {
+                    }
+
+                    if (snapshot.hasError) {
                       return Center(
                         child: Text(
                           "Errore di connessione",
@@ -95,7 +118,9 @@ class _ReadyScreenState extends State<ReadyScreen> {
                           ),
                         ),
                       );
-                    } else if (snapshot.data == null ||
+                    }
+
+                    if (snapshot.data == null ||
                         snapshot.data!.data == null ||
                         snapshot.data!.data!.isEmpty) {
                       return Center(
@@ -109,7 +134,9 @@ class _ReadyScreenState extends State<ReadyScreen> {
                           ),
                         ),
                       );
-                    } else if (snapshot.hasData) {
+                    }
+
+                    if (snapshot.hasData) {
                       return Column(
                         children: [
                           // Scrollable content
@@ -121,7 +148,7 @@ class _ReadyScreenState extends State<ReadyScreen> {
                               children: [
                                 Center(
                                   child: Text(
-                                    "Ready?",
+                                    "Pronta?",
                                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600
                                         .copyWith(
                                           color: const Color(0xFF27272A),
@@ -207,32 +234,36 @@ class _ReadyScreenState extends State<ReadyScreen> {
                                               fit: BoxFit.cover,
                                             ),
                                           ),
-                                          Column(
-                                            spacing: 8.h,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                data?.title ?? "",
-                                                style: TextFontStyle
-                                                    .headLine16cFFFFFFWorkSansW600
-                                                    .copyWith(
-                                                      color: const Color(0xFF27272A),
-                                                      fontSize: 18.sp,
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                              ),
-                                              Text(
-                                                "${data?.seconds ?? ""} seconds",
-                                                style: TextFontStyle
-                                                    .headLine16cFFFFFFWorkSansW600
-                                                    .copyWith(
-                                                      color: const Color(0xFF27272A),
-                                                      fontSize: 13.sp,
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                              ),
-                                            ],
+                                          Expanded(
+                                            child: Column(
+                                              spacing: 8.h,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  data?.title ?? "",
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextFontStyle
+                                                      .headLine16cFFFFFFWorkSansW600
+                                                      .copyWith(
+                                                        color: const Color(0xFF27272A),
+                                                        fontSize: 18.sp,
+                                                        fontWeight: FontWeight.w600,
+                                                      ),
+                                                ),
+                                                Text(
+                                                  "${data?.seconds ?? ""} secondi",
+                                                  style: TextFontStyle
+                                                      .headLine16cFFFFFFWorkSansW600
+                                                      .copyWith(
+                                                        color: const Color(0xFF27272A),
+                                                        fontSize: 13.sp,
+                                                        fontWeight: FontWeight.w600,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -270,7 +301,7 @@ class _ReadyScreenState extends State<ReadyScreen> {
                   child: StreamBuilder<WorkoutWiseVideoResponseModel>(
                     stream: workoutVideoRxObj.workoutVideoRxStream,
                     builder: (context, snapshot) {
-                      if (!snapshot.hasData || snapshot.data?.data == null) {
+                      if (_isLoading || !snapshot.hasData || snapshot.data?.data == null || snapshot.data!.data!.isEmpty) {
                         return const SizedBox.shrink();
                       }
                       return CustomButton(
@@ -280,7 +311,7 @@ class _ReadyScreenState extends State<ReadyScreen> {
                             {"id": widget.id},
                           );
                         },
-                        text: "Start",
+                        text: "Inizia",
                       );
                     },
                   ),

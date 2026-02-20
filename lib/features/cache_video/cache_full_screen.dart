@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -30,6 +31,9 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
   AnimationController? _restProgressController;
   VideoPlayerController? _previewController;
   bool _previewReady = false;
+
+  // TTS for rest overlay voiceover and countdown
+  FlutterTts? _restTts;
 
   static const Color _accentColor = Color(0xFFF566A9);
 
@@ -167,15 +171,103 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
     _restProgressController!.forward();
 
     _loadPreviewVideo();
+    _playRestVoiceover();
 
     _restTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_isDisposed) {
+        timer.cancel();
+        return;
+      }
+
       if (_restSecondsRemaining <= 1) {
         timer.cancel();
-        _onRestComplete();
+        // Say "Via!" when timer ends
+        _speakCountdown('Via!');
+        if (mounted && !_isDisposed) {
+          Future.delayed(const Duration(milliseconds: 400), () {
+            if (mounted && !_isDisposed) {
+              _onRestComplete();
+            }
+          });
+        }
       } else {
-        setState(() => _restSecondsRemaining--);
+        if (mounted && !_isDisposed) {
+          setState(() => _restSecondsRemaining--);
+          // Say 3, 2, 1 when timer reaches those values
+          if (_restSecondsRemaining == 3) {
+            _speakCountdown('3');
+          } else if (_restSecondsRemaining == 2) {
+            _speakCountdown('2');
+          } else if (_restSecondsRemaining == 1) {
+            _speakCountdown('1');
+          }
+        }
       }
     });
+  }
+
+  Future<void> _initRestTts() async {
+    if (_restTts != null) return;
+
+    try {
+      _restTts = FlutterTts();
+      await _restTts!.setSharedInstance(true);
+      await _restTts!.setIosAudioCategory(
+        IosTextToSpeechAudioCategory.playback,
+        [
+          IosTextToSpeechAudioCategoryOptions.allowBluetooth,
+          IosTextToSpeechAudioCategoryOptions.allowBluetoothA2DP,
+          IosTextToSpeechAudioCategoryOptions.mixWithOthers,
+          IosTextToSpeechAudioCategoryOptions.duckOthers,
+        ],
+        IosTextToSpeechAudioMode.voicePrompt,
+      );
+
+      await _restTts!.setLanguage("it-IT");
+      await _restTts!.setSpeechRate(0.42);
+      await _restTts!.setVolume(0.85);
+      await _restTts!.setPitch(1.15);
+    } catch (e) {
+      debugPrint('TTS init error: $e');
+    }
+  }
+
+  Future<void> _playRestVoiceover() async {
+    final provider = _provider;
+    if (!provider.voiceoverEnabled) return;
+    if (provider.currentIndex >= provider.data.length - 1) return;
+
+    final voiceoverText = provider.data[provider.currentIndex + 1].voiceoverText;
+    if (voiceoverText == null || voiceoverText.isEmpty) return;
+
+    try {
+      await _initRestTts();
+      if (_restTts == null || _isDisposed) return;
+
+      // Stop any existing speech to avoid overlap
+      await _restTts!.stop();
+
+      // Wait 1 second before speaking
+      await Future.delayed(const Duration(seconds: 1));
+
+      if (_isDisposed || !_showRestOverlay || !provider.voiceoverEnabled) return;
+
+      // Duck music before speaking
+      await provider.duckMusic();
+
+      // Set completion handler to restore music
+      _restTts!.setCompletionHandler(() {
+        provider.restoreMusic();
+      });
+
+      await _restTts!.speak(voiceoverText);
+
+      // Mark voiceover as played so it doesn't repeat during exercise
+      provider.markVoiceoverPlayedDuringRest();
+    } catch (e) {
+      debugPrint('Fullscreen rest TTS error: $e');
+      await provider.restoreMusic();
+    }
   }
 
   Future<void> _loadPreviewVideo() async {
@@ -199,6 +291,31 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
     }
   }
 
+  Future<void> _speakCountdown(String text) async {
+    if (_isDisposed || !_provider.voiceoverEnabled) return;
+
+    try {
+      // Use rest TTS instance to avoid multiple TTS instances
+      await _initRestTts();
+      if (_restTts == null) return;
+
+      // Duck music before speaking
+      await _provider.duckMusic();
+
+      // Set completion handler to restore music
+      _restTts!.setCompletionHandler(() {
+        _provider.restoreMusic();
+      });
+
+      // Stop any existing speech to avoid overlap
+      await _restTts!.stop();
+      await _restTts!.speak(text);
+    } catch (e) {
+      debugPrint('Countdown speak error: $e');
+      await _provider.restoreMusic();
+    }
+  }
+
   void _onRestComplete() {
     _cleanupRestOverlay();
     setState(() => _showRestOverlay = false);
@@ -214,6 +331,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
 
   void _cleanupRestOverlay() {
     _restTimer?.cancel();
+    _restTts?.stop();
     _restProgressController?.dispose();
     _restProgressController = null;
     _previewController?.dispose();
@@ -555,25 +673,27 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
     return Container(
       color: Colors.black.withOpacity(0.9),
       child: SafeArea(
-        child: Row(
+        child: Stack(
           children: [
-            Expanded(
-              flex: 4,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "RIPOSO",
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.5),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 4,
-                      ),
-                    ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "RIPOSO",
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.5),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 4,
+                          ),
+                        ),
                     const SizedBox(height: 20),
 
                     SizedBox(
@@ -725,6 +845,36 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
                             child: CircularProgressIndicator(color: _accentColor, strokeWidth: 3),
                           ),
                         ),
+                ),
+              ),
+            ),
+              ],
+            ),
+            // Volume toggle button (top left)
+            Positioned(
+              top: 8,
+              left: 16,
+              child: GestureDetector(
+                onTap: () {
+                  provider.voiceoverEnabled = !provider.voiceoverEnabled;
+                  setState(() {});
+                },
+                child: Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: provider.voiceoverEnabled
+                        ? _accentColor.withOpacity(0.2)
+                        : Colors.white.withOpacity(0.15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    provider.voiceoverEnabled
+                        ? Icons.volume_up_rounded
+                        : Icons.volume_off_rounded,
+                    size: 24,
+                    color: provider.voiceoverEnabled ? _accentColor : Colors.white.withOpacity(0.6),
+                  ),
                 ),
               ),
             ),

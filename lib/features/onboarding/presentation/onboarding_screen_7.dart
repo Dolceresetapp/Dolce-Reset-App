@@ -67,7 +67,7 @@ class _OnboardingScreen7State extends State<OnboardingScreen7>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "What is your height?",
+                  "Qual è la tua altezza?",
                   style: TextFontStyle.headline30c27272AtyleWorkSansW700
                       .copyWith(
                         color: const Color(0xFF27272A),
@@ -171,7 +171,7 @@ class _OnboardingScreen7State extends State<OnboardingScreen7>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

@@ -49,6 +49,8 @@ class AiReceipeResponseData {
   int? timeMin;
   int? calories;
   String? imageUrl;
+  List<String>? ingredients;
+  List<String>? steps;
 
   AiReceipeResponseData({
     this.meal,
@@ -57,6 +59,8 @@ class AiReceipeResponseData {
     this.timeMin,
     this.calories,
     this.imageUrl,
+    this.ingredients,
+    this.steps,
   });
 
   AiReceipeResponseData copyWith({
@@ -66,6 +70,8 @@ class AiReceipeResponseData {
     int? timeMin,
     int? calories,
     String? imageUrl,
+    List<String>? ingredients,
+    List<String>? steps,
   }) => AiReceipeResponseData(
     meal: meal ?? this.meal,
     description: description ?? this.description,
@@ -73,6 +79,8 @@ class AiReceipeResponseData {
     timeMin: timeMin ?? this.timeMin,
     calories: calories ?? this.calories,
     imageUrl: imageUrl ?? this.imageUrl,
+    ingredients: ingredients ?? this.ingredients,
+    steps: steps ?? this.steps,
   );
 
   factory AiReceipeResponseData.fromRawJson(String str) =>
@@ -88,6 +96,12 @@ class AiReceipeResponseData {
         timeMin: json["time_min"],
         calories: json["calories"],
         imageUrl: json["image_url"],
+        ingredients: json["ingredients"] != null
+            ? List<String>.from(json["ingredients"].map((x) => x.toString()))
+            : [],
+        steps: json["steps"] != null
+            ? List<String>.from(json["steps"].map((x) => x.toString()))
+            : [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -97,5 +111,7 @@ class AiReceipeResponseData {
     "time_min": timeMin,
     "calories": calories,
     "image_url": imageUrl,
+    "ingredients": ingredients,
+    "steps": steps,
   };
 }

@@ -22,15 +22,15 @@ class ChefBoardingScreen1 extends StatefulWidget {
 
 class _ChefBoardingScreen1State extends State<ChefBoardingScreen1> {
   List<Map<String, dynamic>> dataList = [
-    {"image": Assets.images.losttWeight.path, "title": "Lose Weight"},
+    {"image": Assets.images.losttWeight.path, "title": "Perdere peso"},
 
-    {"image": Assets.images.intoShape.path, "title": "Get back into shape"},
+    {"image": Assets.images.intoShape.path, "title": "Tornare in forma"},
 
-    {"image": Assets.images.slep.path, "title": "Maintaince"},
+    {"image": Assets.images.slep.path, "title": "Mantenimento"},
 
     {
       "image": Assets.images.reducePain.path,
-      "title": "Eat as clean and healthy posssible",
+      "title": "Mangiare sano e pulito",
     },
   ];
 
@@ -53,7 +53,7 @@ class _ChefBoardingScreen1State extends State<ChefBoardingScreen1> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "What is your goal for the \n next 4 months ? ",
+              "Qual è il tuo obiettivo per \n i prossimi 4 mesi?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -99,7 +99,7 @@ class _ChefBoardingScreen1State extends State<ChefBoardingScreen1> {
         child: CustomButton(
           onPressed: () {
             if (selectedIndex == null) {
-              ToastUtil.showErrorShortToast("Please select an item.");
+              ToastUtil.showErrorShortToast("Seleziona un'opzione.");
             } else {
               NavigationService.navigateToWithArgs(Routes.chefBoardingScreen2, {
                 "chefBoarding1": selectedText,
@@ -111,7 +111,7 @@ class _ChefBoardingScreen1State extends State<ChefBoardingScreen1> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

@@ -68,7 +68,7 @@ class _OnboardingScreen10State extends State<OnboardingScreen10> {
 
             Align(
               child: Text(
-                "How old are you?",
+                "Quanti anni hai?",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   color: const Color(0xFF27272A),
                   fontSize: 27.sp,
@@ -159,7 +159,7 @@ class _OnboardingScreen10State extends State<OnboardingScreen10> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

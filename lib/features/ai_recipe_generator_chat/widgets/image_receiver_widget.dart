@@ -150,7 +150,7 @@ class ImageReceiverWidget extends StatelessWidget {
             UIHelper.verticalSpace(20.h),
 
             Text(
-              "Ingredients",
+              "Ingredienti",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 16.sp,
@@ -172,7 +172,7 @@ class ImageReceiverWidget extends StatelessWidget {
             UIHelper.verticalSpace(20.h),
 
             Text(
-              "Steps",
+              "Passaggi",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 16.sp,

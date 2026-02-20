@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gritti_app/common_widget/custom_network_image.dart';
-import 'package:gritti_app/common_widget/waiting_widget.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
@@ -57,6 +56,9 @@ class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
   Future<void> _loadData() async {
     setState(() => _isLoading = true);
 
+    // Clear stale data from previous workout before fetching new data
+    dynamicWorkoutRxObj.clean();
+
     if (widget.type == "body_part_exercise" && widget.id != null) {
       await dynamicWorkoutRxObj.dynamicWorkoutRx(
         type: "body_part_exercise",
@@ -91,13 +93,9 @@ class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
               // Show loading while fetching
               if (_isLoading) {
                 return Center(
-                  child: Text(
-                    "Caricamento...",
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.w500,
-                    ),
+                  child: CircularProgressIndicator(
+                    color: const Color(0xFFF566A9),
+                    strokeWidth: 3,
                   ),
                 );
               }
@@ -120,11 +118,11 @@ class _DynamicWorkoutScreenState extends State<DynamicWorkoutScreen> {
                   snapshot.data!.data!.isEmpty) {
                 return Center(
                   child: Text(
-                    "Caricamento...",
-                    style: TextStyle(
+                    "Nessun dato disponibile",
+                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                      color: const Color(0xFFF97316),
                       fontSize: 16.sp,
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                 );

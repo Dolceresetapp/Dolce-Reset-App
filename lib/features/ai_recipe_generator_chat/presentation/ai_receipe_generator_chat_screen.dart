@@ -6,17 +6,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/common_widget/custom_button.dart';
 import 'package:gritti_app/common_widget/waiting_widget.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
-import 'package:gritti_app/features/ai_recipe_generator_chat/widgets/sender_widget.dart';
-import 'package:gritti_app/features/ai_recipe_generator_chat/widgets/text_receiver_widget.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
-import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
-import 'package:gritti_app/networks/api_acess.dart';
 
 import '../../../common_widget/custom_text_field.dart';
+import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
-import '../../ai_recipe_generator/data/model/ai_generate_response_model.dart';
-import '../widgets/image_receiver_widget.dart';
+import '../../ai_recipe_generator/data/rx_post_generate/api.dart';
+import '../../chef/data/model/ai_receipe_response_model.dart';
 
 class AiReceipeGeneratorChatScreen extends StatefulWidget {
   const AiReceipeGeneratorChatScreen({super.key});
@@ -29,20 +26,99 @@ class AiReceipeGeneratorChatScreen extends StatefulWidget {
 class _AiReceipeGeneratorChatScreenState
     extends State<AiReceipeGeneratorChatScreen> {
   final inputController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  bool _isGenerating = false;
+  String? _error;
+
   @override
   void dispose() {
     inputController.dispose();
     super.dispose();
   }
 
-  final _formKey = GlobalKey<FormState>();
+  Future<void> _generateRecipe() async {
+    final prompt = inputController.text.trim();
+    if (prompt.isEmpty) return;
+
+    setState(() {
+      _isGenerating = true;
+      _error = null;
+    });
+
+    try {
+      log("========== Generating Recipe ==========");
+      log("Prompt: $prompt");
+
+      // Call API
+      final response = await AiGenerateApi.instance.aiGenerateApi(prompt: prompt);
+
+      log("Response received!");
+      log("Success: ${response.success}");
+      log("Response type: ${response.responseType}");
+      log("Data length: ${response.data?.length}");
+
+      if (mounted) {
+        setState(() {
+          _isGenerating = false;
+        });
+
+        // Navigate to recipe detail if we have data
+        if (response.success == true &&
+            response.responseType == "json" &&
+            response.data != null &&
+            response.data!.isNotEmpty) {
+          final recipeData = response.data!.first;
+
+          // Convert to AiReceipeResponseData
+          final recipe = AiReceipeResponseData(
+            meal: recipeData.meal,
+            description: recipeData.description,
+            proteinG: recipeData.proteinG,
+            timeMin: recipeData.timeMin,
+            calories: recipeData.calories,
+            imageUrl: recipeData.imageUrl,
+            ingredients: recipeData.ingredients,
+            steps: recipeData.steps,
+          );
+
+          // Navigate to recipe detail screen
+          log("========== NAVIGATING TO RECIPE DETAIL ==========");
+          log("Recipe meal: ${recipe.meal}");
+          log("Recipe imageUrl: ${recipe.imageUrl}");
+
+          NavigationService.navigateToWithArgs(
+            Routes.recipeDetailScreen,
+            {"recipe": recipe},
+          );
+        } else {
+          // Show error for text response or failed response
+          setState(() {
+            _error = response.message ?? "Impossibile generare la ricetta";
+          });
+        }
+      }
+    } catch (e) {
+      log("Error generating recipe: $e");
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isGenerating = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            NavigationService.goBack;
+            NavigationService.navigateToReplacementWithObject(
+              Routes.navigationScreen,
+              {"index": 1}, // Chef screen
+            );
           },
           child: Padding(
             padding: EdgeInsets.all(14.sp),
@@ -56,108 +132,19 @@ class _AiReceipeGeneratorChatScreenState
         centerTitle: false,
         elevation: 0,
         backgroundColor: Colors.white,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-          children: [
-            Text(
-              "Ai Receipe Generator",
-              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                color: const Color(0xFF27272A),
-                fontSize: 16.sp,
-
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Spacer(),
-            SvgPicture.asset(Assets.icons.frame5, width: 20.w, height: 20),
-          ],
+        title: Text(
+          "Generatore Ricette AI",
+          style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+            color: const Color(0xFF27272A),
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder<AiGenerateResponseModel>(
-              stream: aiGenerateRxStreamObj.aiGenerateRxStream,
-              builder: (context, asyncSnapshot) {
-                if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-                  return WaitingWidget();
-                } else if (asyncSnapshot.data?.responseType == "text") {
-                  log(
-                    "Response text 1 =============================>     ${asyncSnapshot.data?.responseType == "text"}",
-                  );
-                  //text
-                  final message = asyncSnapshot.data?.message ?? "No message";
-                  final prompt = asyncSnapshot.data?.prompt ?? "";
-                  return SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
-                      spacing: 16.h,
-                      children: [
-                        SenderWidget(title: prompt), // user message
-                        TextReceiverWidget(message: message), // AI response
-                      ],
-                    ),
-                  );
-                } else if (asyncSnapshot.data?.responseType == "json") {
-                  log(
-                    "Response json 2  =========================>     ${asyncSnapshot.data?.responseType == "json"}",
-                  );
-
-                  // image
-                  return ListView.builder(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20.w,
-                      vertical: 10.h,
-                    ),
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: asyncSnapshot.data?.data?.length,
-                    itemBuilder: (_, index) {
-                      log(
-                        "index ====================================== $index",
-                      );
-                      var data = asyncSnapshot.data?.data?[index];
-
-                      // Convert to List
-                      final ingredientsData =
-                          data?.ingredients
-                              ?.map((e) => e.toString())
-                              .toList() ??
-                          [];
-                      final stepsData =
-                          data?.steps?.map((e) => e.toString()).toList() ?? [];
-
-                      final prompt = asyncSnapshot.data?.prompt ?? "";
-
-                      return SingleChildScrollView(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                        physics: BouncingScrollPhysics(),
-                        child: Column(
-                          spacing: 16.h,
-                          children: [
-                            SenderWidget(title: prompt), // user message
-                            ImageReceiverWidget(
-                              ingredientsData: ingredientsData,
-                              stepData: stepsData,
-                              image: data?.imageUrl ?? "",
-
-                              title: data?.description ?? "",
-
-                              kcal: '${data?.calories.toString()} kcal',
-                              protine: '${data?.proteinG.toString()} g',
-                              time: '${data?.timeMin.toString()} min',
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                } else {
-                  return SizedBox.shrink();
-                }
-              },
-            ),
+            child: _buildContent(),
           ),
 
           // Fixed bottom input field
@@ -167,7 +154,7 @@ class _AiReceipeGeneratorChatScreenState
               children: [
                 UIHelper.horizontalSpace(10.w),
 
-                // Input field (takes remaining space)
+                // Input field
                 Expanded(
                   child: Form(
                     key: _formKey,
@@ -180,20 +167,17 @@ class _AiReceipeGeneratorChatScreenState
                           .copyWith(
                             color: const Color(0xFFCCCCCC),
                             fontSize: 14.sp,
-
                             fontWeight: FontWeight.w400,
                           ),
-                      hintText: "Type ingredients you have...",
+                      hintText: "Scrivi gli ingredienti che hai...",
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 12.w,
                         vertical: 12.h,
                       ),
-
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "required filled";
+                          return "Campo obbligatorio";
                         }
-
                         return null;
                       },
                     ),
@@ -204,18 +188,9 @@ class _AiReceipeGeneratorChatScreenState
 
                 // Send button
                 CustomButton(
-                  onPressed: () async {
+                  onPressed: _isGenerating ? () {} : () {
                     if (_formKey.currentState!.validate()) {
-                      bool isSuccess =
-                          await aiGenerateRxStreamObj
-                              .aiGenerateRx(
-                                prompt: inputController.text.toString(),
-                              )
-                              .waitingForFuture();
-
-                      if (isSuccess) {
-                        inputController.clear();
-                      }
+                      _generateRecipe();
                     }
                   },
                   minWidth: 0,
@@ -223,15 +198,12 @@ class _AiReceipeGeneratorChatScreenState
                     horizontal: 16.w,
                     vertical: 10.h,
                   ),
-
                   borderRadius: 12.r,
-
                   child: Text(
-                    "Send",
+                    "Invia",
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                       color: const Color(0xFFFFFFFF),
                       fontSize: 16.sp,
-
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -242,6 +214,114 @@ class _AiReceipeGeneratorChatScreenState
 
           UIHelper.verticalSpaceSmall,
         ],
+      ),
+    );
+  }
+
+  Widget _buildContent() {
+    // Loading state
+    if (_isGenerating) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            WaitingWidget(),
+            UIHelper.verticalSpace(16.h),
+            Text(
+              "Generazione ricetta in corso...",
+              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                color: const Color(0xFF52525B),
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            UIHelper.verticalSpace(8.h),
+            Text(
+              "Potrebbe richiedere fino a 60 secondi",
+              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                color: const Color(0xFF9CA3AF),
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Error state
+    if (_error != null) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.all(32.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 64.sp,
+                color: const Color(0xFFF566A9),
+              ),
+              UIHelper.verticalSpace(16.h),
+              Text(
+                "Si è verificato un errore",
+                style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                  color: const Color(0xFF52525B),
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              UIHelper.verticalSpace(8.h),
+              Text(
+                _error!,
+                style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                  color: const Color(0xFF9CA3AF),
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // Empty state (initial)
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(32.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.restaurant_menu,
+              size: 64.sp,
+              color: const Color(0xFFE5E5E5),
+            ),
+            UIHelper.verticalSpace(16.h),
+            Text(
+              "Scrivi gli ingredienti che hai",
+              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                color: const Color(0xFF52525B),
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            UIHelper.verticalSpace(8.h),
+            Text(
+              "L'IA genererà una ricetta personalizzata per te",
+              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                color: const Color(0xFF9CA3AF),
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

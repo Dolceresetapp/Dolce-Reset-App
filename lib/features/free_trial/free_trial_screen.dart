@@ -59,7 +59,7 @@ class _FreeTrialScreenState extends State<FreeTrialScreen> {
               Align(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  "We'll send you a reminder before your free trial ends",
+                  "Ti invieremo un promemoria prima della fine della tua prova gratuita",
                   textAlign: TextAlign.center,
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: const Color(0xFF000000),
@@ -118,7 +118,7 @@ class _FreeTrialScreenState extends State<FreeTrialScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Continue for FREE",
+                      "Continua GRATIS",
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                     ),
 

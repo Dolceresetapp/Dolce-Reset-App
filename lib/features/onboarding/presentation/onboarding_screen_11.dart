@@ -76,13 +76,13 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
 
     String category = '';
     if (result < 18.5) {
-      category = 'Underweight';
+      category = 'Sottopeso';
     } else if (result < 25) {
-      category = 'Normal';
+      category = 'Normale';
     } else if (result < 30) {
-      category = 'Overweight';
+      category = 'Sovrappeso';
     } else {
-      category = 'Obesity';
+      category = 'Obesità';
     }
 
     setState(() {
@@ -125,7 +125,7 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
               ),
               UIHelper.verticalSpace(40.h),
               Text(
-                'Here is Your \n BODY MASS INDEX',
+                'Ecco il Tuo \n INDICE DI MASSA CORPOREA',
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                   fontSize: 20.sp,
                   color: Color(0xFF000000),
@@ -182,7 +182,7 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

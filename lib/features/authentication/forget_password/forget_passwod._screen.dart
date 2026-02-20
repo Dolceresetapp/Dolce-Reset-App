@@ -63,12 +63,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
                 UIHelper.verticalSpace(40.h),
 
-                LogoWidget(title: "Forget your account Password"),
+                LogoWidget(title: "Hai dimenticato la password?"),
 
                 UIHelper.verticalSpace(50.h),
 
                 Text(
-                  "Email Address",
+                  "Indirizzo Email",
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                     color: const Color(0xFF27272A),
                     fontSize: 14.sp,
@@ -81,7 +81,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 CustomTextField(
                   controller: _emailController,
                   validator: emailValidation,
-                  hintText: "Enter your email address..",
+                  hintText: "Inserisci la tua email...",
                   keyboardType: TextInputType.emailAddress,
                   prefixIcon: Assets.icons.vector2,
                 ),
@@ -97,7 +97,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           .waitingForFuture()
                           .then((success) {
                             if (success) {
-                            
+
                               NavigationService.navigateToWithArgs(
                                 Routes.forgetOtpScreen,{"email" : _emailController.text.trim().toString()}
                               );
@@ -110,7 +110,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Continue",
+                        "Continua",
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                       ),
 

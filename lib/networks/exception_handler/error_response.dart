@@ -3,23 +3,23 @@
 final class ResponseMessage {
   ResponseMessage._();
   // API response messages
-  static const String SUCCESS = "Success"; // Success with data
-  static const String NO_CONTENT = "Success with no content"; // Success with no data (no content)
-  static const String BAD_REQUEST = "Bad request. Try again later"; // Failure, API rejected request
-  static const String UNAUTORISED = "User unauthorized. Try again later"; // Failure, user is not authorized
-  static const String FORBIDDEN = "Forbidden request. Try again later"; // Failure, API rejected request
+  static const String SUCCESS = "Operazione riuscita";
+  static const String NO_CONTENT = "Operazione riuscita senza contenuto";
+  static const String BAD_REQUEST = "Richiesta non valida. Riprova più tardi";
+  static const String UNAUTORISED = "Utente non autorizzato. Riprova più tardi";
+  static const String FORBIDDEN = "Richiesta vietata. Riprova più tardi";
   static const String INTERNAL_SERVER_ERROR =
-      "Something went wrong. Try again later"; // Failure, crash on the server side
-  static const String NOT_FOUND = "URL not found. Try again later"; // Failure, resource not found
+      "Qualcosa è andato storto. Riprova più tardi";
+  static const String NOT_FOUND = "URL non trovato. Riprova più tardi";
 
   // Local status codes
-  static const String CONNECT_TIMEOUT = "Timeout. Try again later";
-  static const String CANCEL = "Request canceled";
-  static const String RECIEVE_TIMEOUT = "Timeout. Try again later";
-  static const String SEND_TIMEOUT = "Timeout. Try again later";
-  static const String CACHE_ERROR = "Cache error. Try again later";
-  static const String NO_INTERNET_CONNECTION = "Please check your internet connection";
-  static const String DEFAULT = "Something went wrong";
+  static const String CONNECT_TIMEOUT = "Tempo scaduto. Riprova più tardi";
+  static const String CANCEL = "Richiesta annullata";
+  static const String RECIEVE_TIMEOUT = "Tempo scaduto. Riprova più tardi";
+  static const String SEND_TIMEOUT = "Tempo scaduto. Riprova più tardi";
+  static const String CACHE_ERROR = "Errore di cache. Riprova più tardi";
+  static const String NO_INTERNET_CONNECTION = "Controlla la tua connessione internet";
+  static const String DEFAULT = "Qualcosa è andato storto";
 
   // Add more descriptive comments or documentation as needed
 }

@@ -1,16 +1,19 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/common_widget/custom_button.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
-import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
 import '../../../common_widget/custom_text_field.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
-import '../../../networks/api_acess.dart';
+import '../../../networks/dio/cache_interceptor.dart';
+import '../../chef/data/model/ai_receipe_response_model.dart';
+import '../data/rx_post_generate/api.dart';
 
 class AiReceipeGeneratorScreen extends StatefulWidget {
   const AiReceipeGeneratorScreen({super.key});
@@ -22,6 +25,7 @@ class AiReceipeGeneratorScreen extends StatefulWidget {
 
 class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
   final textController = TextEditingController();
+  bool _isGenerating = false;
 
   List<Map<String, dynamic>> dataList = [
     {
@@ -71,7 +75,10 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            NavigationService.navigateToReplacement(Routes.navigationScreen);
+            NavigationService.navigateToReplacementWithObject(
+              Routes.navigationScreen,
+              {"index": 1}, // Chef screen
+            );
           },
           child: Padding(
             padding: EdgeInsets.all(14.sp),
@@ -89,7 +96,7 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Ai Receipe Generator",
+              "Generatore Ricette AI",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 16.sp,
@@ -111,7 +118,7 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
             UIHelper.verticalSpace(60.h),
 
             Text(
-              "What ingredients do you have right now?",
+              "Quali ingredienti hai a disposizione?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 30.sp,
@@ -238,11 +245,11 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
                 maxLines: 10,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "please type your question??";
+                    return "Inserisci la tua domanda";
                   }
                   return null;
                 },
-                hintText: "Do you have any question about food?",
+                hintText: "Hai domande sul cibo?",
                 hintStyle: TextFontStyle.headline30c27272AtyleWorkSansW700
                     .copyWith(
                       color: const Color(0xFF52525B).withOpacity(0.6),
@@ -259,33 +266,121 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
       floatingActionButton: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
         child: CustomButton(
-          onPressed: () async {
-            if (_formKey.currentState!.validate()) {
-              bool isSuccess =
-                  await aiGenerateRxStreamObj
-                      .aiGenerateRx(prompt: textController.text.toString())
-                      .waitingForFuture();
-
-              if (isSuccess) {
-                NavigationService.navigateTo(
-                  Routes.aiReceipeGeneratorChatScreen,
-                );
-              }
-            }
-          },
-          child: Row(
-            spacing: 10.w,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Generate Recipes",
-                style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
-              ),
-              SvgPicture.asset(Assets.icons.arrowRight),
-            ],
-          ),
+          onPressed: _isGenerating ? () {} : () => _generateRecipe(),
+          child: _isGenerating
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 20.w,
+                      height: 20.h,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Text(
+                      "Generazione in corso...",
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                    ),
+                  ],
+                )
+              : Row(
+                  spacing: 10.w,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Genera Ricette",
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                    ),
+                    SvgPicture.asset(Assets.icons.arrowRight),
+                  ],
+                ),
         ),
       ),
     );
+  }
+
+  Future<void> _generateRecipe() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    final prompt = textController.text.trim();
+
+    setState(() {
+      _isGenerating = true;
+    });
+
+    try {
+      log("========== Generating Recipe ==========");
+      log("Prompt: $prompt");
+
+      final response = await AiGenerateApi.instance.aiGenerateApi(prompt: prompt);
+
+      log("Response received!");
+      log("Success: ${response.success}");
+      log("Response type: ${response.responseType}");
+      log("Data length: ${response.data?.length}");
+
+      if (mounted) {
+        setState(() {
+          _isGenerating = false;
+        });
+
+        if (response.success == true &&
+            response.responseType == "json" &&
+            response.data != null &&
+            response.data!.isNotEmpty) {
+          final recipeData = response.data!.first;
+
+          // Convert to AiReceipeResponseData
+          final recipe = AiReceipeResponseData(
+            meal: recipeData.meal,
+            description: recipeData.description,
+            proteinG: recipeData.proteinG,
+            timeMin: recipeData.timeMin,
+            calories: recipeData.calories,
+            imageUrl: recipeData.imageUrl,
+            ingredients: recipeData.ingredients,
+            steps: recipeData.steps,
+          );
+
+          // Invalidate recipes cache so ChefScreen fetches fresh data
+          CacheInterceptor.invalidate('/nutration/recipes');
+
+          log("========== NAVIGATING TO RECIPE DETAIL ==========");
+          log("Recipe: ${recipe.meal}");
+
+          // Navigate to recipe detail screen
+          NavigationService.navigateToWithArgs(
+            Routes.recipeDetailScreen,
+            {"recipe": recipe},
+          );
+        } else {
+          // Show error snackbar
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(response.message ?? "Impossibile generare la ricetta"),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        }
+      }
+    } catch (e) {
+      log("Error generating recipe: $e");
+      if (mounted) {
+        setState(() {
+          _isGenerating = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Errore: $e"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 }

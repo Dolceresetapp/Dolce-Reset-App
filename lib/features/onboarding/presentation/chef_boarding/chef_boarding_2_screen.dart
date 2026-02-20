@@ -25,16 +25,16 @@ class _ChefBoardingScreen2State extends State<ChefBoardingScreen2> {
   List<Map<String, dynamic>> dataList = [
     {
       "image": Assets.images.losttWeight.path,
-      "title": "Omnivore (you eat everything)",
+      "title": "Onnivoro (mangi tutto)",
     },
 
-    {"image": Assets.images.vegetian.path, "title": "Vegetarian"},
+    {"image": Assets.images.vegetian.path, "title": "Vegetariano"},
 
-    {"image": Assets.images.veg.path, "title": "Vegan"},
+    {"image": Assets.images.veg.path, "title": "Vegano"},
 
-    {"image": Assets.images.pes.path, "title": "Pescatarian"},
+    {"image": Assets.images.pes.path, "title": "Pescetariano"},
 
-    {"image": Assets.images.car.path, "title": "Carnivore"},
+    {"image": Assets.images.car.path, "title": "Carnivoro"},
   ];
 
   int? selectedIndex;
@@ -55,7 +55,7 @@ class _ChefBoardingScreen2State extends State<ChefBoardingScreen2> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "Did you feel it was \n necessary to immediately \n repair your body?",
+              "Qual è la tua \n preferenza alimentare?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -101,7 +101,7 @@ class _ChefBoardingScreen2State extends State<ChefBoardingScreen2> {
         child: CustomButton(
           onPressed: () {
             if (selectedIndex == null) {
-              ToastUtil.showErrorShortToast("Please select an item.");
+              ToastUtil.showErrorShortToast("Seleziona un'opzione.");
             } else {
               NavigationService.navigateToWithArgs(Routes.chefBoardingScreen3, {
                 "chefBoarding1": widget.chefBoarding1,
@@ -114,7 +114,7 @@ class _ChefBoardingScreen2State extends State<ChefBoardingScreen2> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

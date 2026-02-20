@@ -18,8 +18,8 @@ final class DioSingleton {
   void create() {
     BaseOptions options = BaseOptions(
         baseUrl: url,
-        connectTimeout: const Duration(milliseconds: 30000),
-        receiveTimeout: const Duration(milliseconds: 30000),
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 15),
         headers: {
           NetworkConstants.ACCEPT: NetworkConstants.ACCEPT_TYPE,
           NetworkConstants.ACCEPT_LANGUAGE: appData.read(kKeyCountryCode) ?? "pt",
@@ -43,8 +43,8 @@ final class DioSingleton {
         NetworkConstants.APP_KEY: NetworkConstants.APP_KEY_VALUE,
         NetworkConstants.AUTHORIZATION: "Bearer $auth",
       },
-      connectTimeout: const Duration(milliseconds: 30000),
-      receiveTimeout: const Duration(milliseconds: 30000),
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 15),
     );
     dio = Dio(options);
     dio.interceptors.add(CacheInterceptor());
@@ -64,8 +64,8 @@ final class DioSingleton {
         NetworkConstants.APP_KEY: NetworkConstants.APP_KEY_VALUE,
         NetworkConstants.AUTHORIZATION: "Bearer ${appData.read(kKeyAccessToken)} ",
       },
-      connectTimeout: const Duration(milliseconds: 30000),
-      receiveTimeout: const Duration(milliseconds: 30000),
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 15),
     );
     dio = Dio(options);
     dio.interceptors.add(CacheInterceptor());
@@ -75,6 +75,19 @@ final class DioSingleton {
 
 Future<Response> postHttp(String path, [dynamic data]) =>
     DioSingleton.instance.dio.post(path, data: data, cancelToken: DioSingleton.cancelToken);
+
+/// POST with extended timeout for AI/long-running requests (120 seconds)
+/// DALL-E image generation can take 60+ seconds, plus GPT call
+Future<Response> postHttpLongRunning(String path, [dynamic data]) =>
+    DioSingleton.instance.dio.post(
+      path,
+      data: data,
+      cancelToken: DioSingleton.cancelToken,
+      options: Options(
+        receiveTimeout: const Duration(seconds: 120),
+        sendTimeout: const Duration(seconds: 30),
+      ),
+    );
 
 Future<Response> putHttp(String path, [dynamic data]) =>
     DioSingleton.instance.dio.put(path, data: data, cancelToken: DioSingleton.cancelToken);

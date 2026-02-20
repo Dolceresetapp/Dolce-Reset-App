@@ -22,13 +22,13 @@ class OnboardingScreen2 extends StatefulWidget {
 
 class _OnboardingScreen2State extends State<OnboardingScreen2> {
   List<Map<String, dynamic>> dataList = [
-    {"image": Assets.images.abdomen.path, "title": "Abdomen and face"},
+    {"image": Assets.images.abdomen.path, "title": "Addome e viso"},
 
-    {"image": Assets.images.legs.path, "title": "Legs"},
+    {"image": Assets.images.legs.path, "title": "Gambe"},
 
-    {"image": Assets.images.backPosture.path, "title": "Back / Posture"},
+    {"image": Assets.images.backPosture.path, "title": "Schiena / Postura"},
 
-    {"image": Assets.images.wholeBody.path, "title": "Whole body"},
+    {"image": Assets.images.wholeBody.path, "title": "Tutto il corpo"},
   ];
 
   int? selectedIndex;
@@ -51,7 +51,7 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
           children: [
             UIHelper.verticalSpace(30.h),
             Text(
-              "Which body part would you like to improve in the next 30 days?",
+              "Quale parte del corpo vorresti migliorare nei prossimi 30 giorni?",
               style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                 color: const Color(0xFF27272A),
                 fontSize: 27.sp,
@@ -96,7 +96,7 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
         child: CustomButton(
           onPressed: () {
             if (selectedIndex == null) {
-              ToastUtil.showErrorShortToast("Please select an item.");
+              ToastUtil.showErrorShortToast("Seleziona un'opzione.");
             } else {
               NavigationService.navigateToWithArgs(Routes.onboardingScreen4, {
                 "onboard1": widget.onboard1,
@@ -109,7 +109,7 @@ class _OnboardingScreen2State extends State<OnboardingScreen2> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Continue",
+                "Continua",
                 style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
               ),
 

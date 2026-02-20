@@ -114,6 +114,26 @@ const Map countriesCode = <String, String>{
   kKeyRussian: "RU",
 };
 
+// Pending onboarding data (stored before signup in new flow)
+const String kKeyPendingOnboard1 = 'pending_onboard1';
+const String kKeyPendingOnboard2 = 'pending_onboard2';
+const String kKeyPendingOnboard4 = 'pending_onboard4';
+const String kKeyPendingOnboard5 = 'pending_onboard5';
+const String kKeyPendingOnboard7HeightValue = 'pending_onboard7_height_value';
+const String kKeyPendingOnboard7HeightUnit = 'pending_onboard7_height_unit';
+const String kKeyPendingOnboard8WeightValue = 'pending_onboard8_weight_value';
+const String kKeyPendingOnboard8WeightUnit = 'pending_onboard8_weight_unit';
+const String kKeyPendingOnboard9TargetWeightValue = 'pending_onboard9_target_weight_value';
+const String kKeyPendingOnboard9TargetWeightUnit = 'pending_onboard9_target_weight_unit';
+const String kKeyPendingSelectedDate = 'pending_selected_date';
+const String kKeyPendingBmi = 'pending_bmi';
+const String kKeyPendingOnboard12 = 'pending_onboard12';
+const String kKeyPendingOnboard13 = 'pending_onboard13';
+const String kKeyPendingOnboard15 = 'pending_onboard15';
+const String kKeyFromPaywall = 'from_paywall';
+const String kKeyPendingSignature = 'pending_signature_base64';
+const String kKeyCacheLoaded = 'cache_loaded';
+
 class DefaultValue {
   static const bool kDefaultBoolean = false;
   static const int kDefaultInt = 0;

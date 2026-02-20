@@ -11,7 +11,6 @@ import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
 import '../../../common_widget/custom_network_image.dart';
-import '../../../common_widget/waiting_widget.dart';
 import '../../../networks/api_acess.dart';
 import '../../common_widget/custom_svg_asset.dart';
 import '../../helpers/all_routes.dart';
@@ -89,7 +88,7 @@ class _ExceriseSeeScreenState extends State<ExceriseSeeScreen> {
               CustomTextField(
                 controller: searchControler,
                 prefixIcon: Assets.icons.icon1,
-                hintText: "Search for a workout...",
+                hintText: "Cerca un allenamento...",
 
                 onFieldSubmitted: (value) {
                   if (widget.categoryType == "body_part_exercise") {
