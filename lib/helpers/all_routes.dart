@@ -62,6 +62,7 @@ import '../features/settings/presentation/faqs_screen.dart';
 import '../features/settings/presentation/units_metrics_screen.dart';
 import '../features/settings/presentation/notifications_screen.dart';
 import '../features/settings/presentation/wellness_goals_screen.dart';
+import '../features/subscription_expired/subscription_expired_screen.dart';
 import '../features/welcome/welcome_screen.dart';
 import '../loading.dart';
 import '../navigation_screen.dart';
@@ -177,6 +178,7 @@ final class Routes {
   static const String unitsMetricsScreen = '/unitsMetricsScreen';
   static const String notificationsScreen = '/notificationsScreen';
   static const String wellnessGoalsScreen = '/wellnessGoalsScreen';
+  static const String subscriptionExpiredScreen = '/subscriptionExpiredScreen';
 }
 
 //
@@ -269,6 +271,16 @@ final class RouteGenerator {
             )
             : CupertinoPageRoute(
               builder: (context) => const WellnessGoalsScreen(),
+            );
+
+      case Routes.subscriptionExpiredScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+              widget: const SubscriptionExpiredScreen(),
+              settings: settings,
+            )
+            : CupertinoPageRoute(
+              builder: (context) => const SubscriptionExpiredScreen(),
             );
 
       case Routes.barcodeScannerScreen:

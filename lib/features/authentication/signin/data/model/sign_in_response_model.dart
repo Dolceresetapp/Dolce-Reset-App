@@ -59,6 +59,7 @@ class Data {
   String? email;
   int? userInfo;
   int? paymentMethod;
+  String? paymentSource;
   int? isNutration;
 
   Data({
@@ -68,6 +69,7 @@ class Data {
     this.email,
     this.userInfo,
     this.paymentMethod,
+    this.paymentSource,
     this.isNutration,
   });
 
@@ -100,6 +102,7 @@ class Data {
     email: json["email"],
     userInfo: json["user_info"],
     paymentMethod: json["Payment_method"],
+    paymentSource: json["payment_source"],
     isNutration: json["is_nutration"],
   );
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gritti_app/features/cache_loading/cache_loading_screen.dart';
 import 'package:gritti_app/features/onboarding/presentation/onboarding_screen_1.dart';
 import 'package:gritti_app/features/rewiring_benefits/rewiring_benefit_screen.dart';
+import 'package:gritti_app/features/subscription_expired/subscription_expired_screen.dart';
 import 'package:gritti_app/features/welcome/welcome_screen.dart';
 
 import 'constants/app_constants.dart';
@@ -184,9 +185,16 @@ class _LoadingState extends State<Loading> {
         return OnboardingScreen1();
       }
 
-      // User has completed onboarding but hasn't paid yet - go to payment screen
+      // User has completed onboarding but subscription is inactive
       if (paymentMethod == 0) {
-        log('[Loading] paymentMethod == 0 -> RewiringBenefitScreen');
+        // Check if user previously had a subscription (expired/cancelled)
+        final paymentSource = appData.read('payment_source');
+        if (paymentSource != null) {
+          log('[Loading] paymentMethod == 0, had payment_source=$paymentSource -> SubscriptionExpiredScreen');
+          return const SubscriptionExpiredScreen();
+        }
+        // New user who hasn't paid yet
+        log('[Loading] paymentMethod == 0, no payment_source -> RewiringBenefitScreen');
         return const RewiringBenefitScreen();
       }
 

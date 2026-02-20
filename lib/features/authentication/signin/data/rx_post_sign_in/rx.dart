@@ -62,6 +62,12 @@ final class SignInRx extends RxResponseInt<SignInResponseModel> {
       appData.write(kKeyPaymentMethod, backendPayment);
     }
 
+    // Save payment source so app knows if user is Web2Wave or IAP
+    final paymentSource = data.data?.paymentSource;
+    if (paymentSource != null && paymentSource.isNotEmpty) {
+      appData.write('payment_source', paymentSource);
+    }
+
     appData.write(kKeyIsLoggedIn, true);
     DioSingleton.instance.update(appData.read(kKeyAccessToken));
     dataFetcher.sink.add(data);
