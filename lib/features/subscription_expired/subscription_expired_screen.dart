@@ -1,19 +1,25 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/constants/app_constants.dart';
+import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/di.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
+import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
+import 'package:gritti_app/helpers/ui_helpers.dart';
 import 'package:gritti_app/networks/dio/dio.dart';
 import 'package:gritti_app/services/subscription_service.dart';
 import 'package:superwallkit_flutter/superwallkit_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../common_widget/custom_button.dart';
+import '../../constants/text_font_style.dart';
+import '../../helpers/toast.dart';
 import '../../networks/api_acess.dart';
+import '../authentication/widgets/logo_widget.dart';
 
 class SubscriptionExpiredScreen extends StatelessWidget {
   const SubscriptionExpiredScreen({super.key});
@@ -29,11 +35,10 @@ class SubscriptionExpiredScreen extends StatelessWidget {
     });
   }
 
-  void _resubscribe(BuildContext context) {
+  void _resubscribe(BuildContext context) async {
     final paymentSource = appData.read('payment_source');
 
     if (paymentSource == 'web2wave') {
-      // Web2Wave: open manage subscription page
       final email = appData.read(kKeyEmail)?.toString() ?? '';
       final url = Uri.parse(
         'https://dolce-reset-ltd.web2wave.com/manage-subscription?email=${Uri.encodeComponent(email)}',
@@ -41,14 +46,29 @@ class SubscriptionExpiredScreen extends StatelessWidget {
       launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
       // IAP: show Superwall paywall
-      Superwall.shared.register('resubscribe').then((_) {
-        // Check if subscription became active
-        subscriptionService.checkAndSaveSuperwallStatus().then((active) {
-          if (active) {
-            NavigationService.navigateToUntilReplacement(Routes.loadingScreen);
-          }
-        });
+      final handler = PaywallPresentationHandler();
+
+      handler.onDismiss((info, result) {
+        if (result is PurchasedPaywallResult || result is RestoredPaywallResult) {
+          appData.write(kKeyPaymentMethod, 1);
+          NavigationService.navigateToUntilReplacement(Routes.loadingScreen);
+        }
       });
+
+      handler.onSkip((reason) {
+        appData.write(kKeyPaymentMethod, 1);
+        NavigationService.navigateToUntilReplacement(Routes.loadingScreen);
+      });
+
+      handler.onError((error) {
+        log('[SubscriptionExpired] Paywall error: $error');
+        ToastUtil.showErrorShortToast("Errore durante il pagamento");
+      });
+
+      await Superwall.shared.registerPlacement(
+        'campaign_trigger',
+        handler: handler,
+      );
     }
   }
 
@@ -61,117 +81,104 @@ class SubscriptionExpiredScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(flex: 2),
 
-              // Icon
-              Container(
-                width: 80.w,
-                height: 80.w,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFEE2E2),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.credit_card_off_rounded,
-                  size: 40.sp,
-                  color: const Color(0xFFDC2626),
-                ),
-              ),
+              // Logo
+              LogoWidget(title: "Abbonamento Scaduto"),
 
-              SizedBox(height: 32.h),
-
-              // Title
-              Text(
-                'Abbonamento Scaduto',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.workSans(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF1A1A1A),
-                ),
-              ),
-
-              SizedBox(height: 16.h),
+              UIHelper.verticalSpace(24.h),
 
               // Description
-              Text(
-                isWeb2Wave
-                    ? 'Il tuo abbonamento è scaduto o è stato annullato. Rinnova il tuo abbonamento per continuare ad accedere a tutti i contenuti.'
-                    : 'Il tuo abbonamento è scaduto o è stato annullato. Riattiva il tuo abbonamento per continuare ad accedere a tutti i contenuti.',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.workSans(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF6B7280),
-                  height: 1.5,
-                ),
-              ),
-
-              const Spacer(flex: 2),
-
-              // Resubscribe button
-              SizedBox(
-                width: double.infinity,
-                height: 52.h,
-                child: ElevatedButton(
-                  onPressed: () => _resubscribe(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF4D3E39),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: Text(
-                    isWeb2Wave ? 'Gestisci Abbonamento' : 'Riattiva Abbonamento',
-                    style: GoogleFonts.workSans(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
+              Container(
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFF1F5),
+                  borderRadius: BorderRadius.circular(16.r),
+                  border: Border.all(
+                    color: const Color(0xFFF566A9).withValues(alpha: 0.3),
+                    width: 1,
                   ),
                 ),
-              ),
-
-              SizedBox(height: 12.h),
-
-              // Logout button
-              SizedBox(
-                width: double.infinity,
-                height: 52.h,
-                child: OutlinedButton(
-                  onPressed: () => _logout(context),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xFFDC2626),
-                    side: const BorderSide(color: Color(0xFFFECACA)),
-                    backgroundColor: const Color(0xFFFEE2E2),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.r),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.info_outline_rounded,
+                      size: 28.sp,
+                      color: const Color(0xFFF566A9),
                     ),
-                    elevation: 0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.logout, size: 20.sp),
-                      SizedBox(width: 8.w),
-                      Text(
-                        'Esci',
-                        style: GoogleFonts.workSans(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    UIHelper.verticalSpace(12.h),
+                    Text(
+                      isWeb2Wave
+                          ? "Il tuo abbonamento è scaduto o è stato annullato. Rinnova per continuare ad accedere a tutti i contenuti di Dolce Reset."
+                          : "Il tuo abbonamento è scaduto o è stato annullato. Riattiva per continuare ad accedere a tutti i contenuti di Dolce Reset.",
+                      textAlign: TextAlign.center,
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                        color: const Color(0xFF52525B),
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        height: 1.5,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
 
-              SizedBox(height: 40.h),
+              const Spacer(flex: 3),
+
+              // Resubscribe button (primary pink)
+              CustomButton(
+                onPressed: () => _resubscribe(context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 10.w,
+                  children: [
+                    Text(
+                      isWeb2Wave ? "Gestisci Abbonamento" : "Riattiva Abbonamento",
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                    ),
+                    SvgPicture.asset(
+                      Assets.icons.arrowRight,
+                      width: 20.w,
+                      height: 20.h,
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                ),
+              ),
+
+              UIHelper.verticalSpace(16.h),
+
+              // Logout button (outlined style)
+              CustomButton(
+                onPressed: () => _logout(context),
+                color: Colors.white,
+                borderSide: BorderSide(
+                  color: const Color(0xFFE4E4E7),
+                  width: 1.w,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 10.w,
+                  children: [
+                    Icon(
+                      Icons.logout_rounded,
+                      size: 20.sp,
+                      color: const Color(0xFF52525B),
+                    ),
+                    Text(
+                      "Esci",
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                        color: const Color(0xFF52525B),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const Spacer(flex: 1),
             ],
           ),
         ),

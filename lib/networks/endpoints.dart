@@ -30,6 +30,7 @@ final class Endpoints {
   static String resetPassword() => "/reset-password";
   static String logout() => "/logout";
   static String setPassword() => "/set-password";
+  static String checkEmail() => "/check-email";
   static String reviews() => "/reviews";
 
   // onboading

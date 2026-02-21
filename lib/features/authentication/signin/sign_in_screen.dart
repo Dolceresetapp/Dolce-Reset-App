@@ -42,6 +42,8 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isWeb2WaveMode = false;
+  bool _accountAlreadyExists = false;
+  bool _isCheckingEmail = false;
 
   @override
   void initState() {
@@ -56,6 +58,33 @@ class _SignInScreenState extends State<SignInScreen> {
       _isWeb2WaveMode = true;
       // Clear it so it doesn't persist on next visit
       appData.remove('web2wave_email');
+      // Check if account already exists
+      _checkEmailExists(web2waveEmail.toString());
+    }
+  }
+
+  /// Check if email already has an account — show "already exists" page if so
+  Future<void> _checkEmailExists(String email) async {
+    setState(() => _isCheckingEmail = true);
+    try {
+      final dio = Dio(BaseOptions(
+        baseUrl: url,
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10),
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+      ));
+      final response = await dio.post(
+        Endpoints.checkEmail(),
+        data: {'email': email.trim().toLowerCase()},
+      );
+      if (response.data is Map && response.data['exists'] == true) {
+        if (mounted) setState(() => _accountAlreadyExists = true);
+      }
+    } catch (e) {
+      log('[SignIn] check-email error: $e');
+      // If check fails, allow redeem form to show (409 will catch duplicates)
+    } finally {
+      if (mounted) setState(() => _isCheckingEmail = false);
     }
   }
 
@@ -158,6 +187,87 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Loading state while checking email
+    if (_isWeb2WaveMode && _isCheckingEmail) {
+      return const Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(child: CircularProgressIndicator(color: Color(0xFFF566A9))),
+      );
+    }
+
+    // Account already exists — show info page
+    if (_isWeb2WaveMode && _accountAlreadyExists) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Column(
+              children: [
+                const Spacer(flex: 2),
+                LogoWidget(title: "Account già esistente"),
+                UIHelper.verticalSpace(24.h),
+                Container(
+                  padding: EdgeInsets.all(16.w),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEEF0FF),
+                    borderRadius: BorderRadius.circular(16.r),
+                    border: Border.all(
+                      color: const Color(0xFF767EFF).withValues(alpha: 0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.info_outline_rounded,
+                        size: 28.sp,
+                        color: const Color(0xFF767EFF),
+                      ),
+                      UIHelper.verticalSpace(12.h),
+                      Text(
+                        "Un account esiste già con l'email ${_emailController.text}.\n\nAccedi con le tue credenziali dalla pagina di login.",
+                        textAlign: TextAlign.center,
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                          color: const Color(0xFF52525B),
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          height: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Spacer(flex: 3),
+                CustomButton(
+                  onPressed: () {
+                    NavigationService.navigateToUntilReplacement(Routes.welcomeScreen);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 10.w,
+                    children: [
+                      Text(
+                        "Torna alla pagina iniziale",
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                      ),
+                      SvgPicture.asset(
+                        Assets.icons.arrowRight,
+                        width: 20.w,
+                        height: 20.h,
+                        fit: BoxFit.cover,
+                      ),
+                    ],
+                  ),
+                ),
+                const Spacer(flex: 1),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),

@@ -129,21 +129,15 @@ class _UtillScreenMobileState extends State<UtillScreenMobile> {
     if (userId != null || email != null) {
       log('[DeepLink] Web2Wave link detected - user_id: $userId, email: $email');
 
-      // Only ignore deep link if user is fully set up (logged in + payment active)
+      // If user is already logged in, ignore Web2Wave deep link entirely
+      // (even if subscription expired — the app handles that via SubscriptionExpiredScreen)
       bool isLoggedIn = appData.read(kKeyIsLoggedIn) ?? false;
-      int paymentMethod = appData.read(kKeyPaymentMethod) ?? 0;
-      if (isLoggedIn && paymentMethod == 1) {
-        log('[DeepLink] User already logged in with active payment, ignoring Web2Wave link');
+      if (isLoggedIn) {
+        log('[DeepLink] User already logged in, ignoring Web2Wave link');
         return;
       }
 
-      // Clear any stale state from a previous failed attempt
-      if (isLoggedIn && paymentMethod != 1) {
-        log('[DeepLink] Stale login state detected, clearing...');
-        appData.write(kKeyIsLoggedIn, false);
-      }
-
-      // Store for use in sign-in screen
+      // Store for use in sign-in screen (Web2Wave redeem mode)
       if (email != null) {
         appData.write('web2wave_email', email);
       }
@@ -151,10 +145,7 @@ class _UtillScreenMobileState extends State<UtillScreenMobile> {
         appData.write('web2wave_user_id', userId);
       }
 
-      // Also pass to Superwall in case the link contains subscription info
-      Superwall.shared.handleDeepLink(uri);
-
-      // Navigate to sign-in with email pre-filled (Web2Wave redeem mode)
+      // Navigate to sign-in with email pre-filled
       NavigationService.navigateToReplacement(Routes.signInScreen);
       return;
     }
