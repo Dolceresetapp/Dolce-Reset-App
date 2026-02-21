@@ -13,7 +13,6 @@ import 'package:gritti_app/helpers/ui_helpers.dart';
 import 'package:gritti_app/networks/dio/dio.dart';
 import 'package:gritti_app/services/subscription_service.dart';
 import 'package:superwallkit_flutter/superwallkit_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../common_widget/custom_button.dart';
 import '../../constants/text_font_style.dart';
@@ -36,47 +35,35 @@ class SubscriptionExpiredScreen extends StatelessWidget {
   }
 
   void _resubscribe(BuildContext context) async {
-    final paymentSource = appData.read('payment_source');
+    final handler = PaywallPresentationHandler();
 
-    if (paymentSource == 'web2wave') {
-      final email = appData.read(kKeyEmail)?.toString() ?? '';
-      final url = Uri.parse(
-        'https://dolce-reset-ltd.web2wave.com/manage-subscription?email=${Uri.encodeComponent(email)}',
-      );
-      launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
-      // IAP: show Superwall paywall
-      final handler = PaywallPresentationHandler();
-
-      handler.onDismiss((info, result) {
-        if (result is PurchasedPaywallResult || result is RestoredPaywallResult) {
-          appData.write(kKeyPaymentMethod, 1);
-          NavigationService.navigateToUntilReplacement(Routes.loadingScreen);
-        }
-      });
-
-      handler.onSkip((reason) {
+    handler.onDismiss((info, result) {
+      if (result is PurchasedPaywallResult || result is RestoredPaywallResult) {
         appData.write(kKeyPaymentMethod, 1);
         NavigationService.navigateToUntilReplacement(Routes.loadingScreen);
-      });
+      }
+      // If dismissed without purchase, user stays on this screen
+    });
 
-      handler.onError((error) {
-        log('[SubscriptionExpired] Paywall error: $error');
-        ToastUtil.showErrorShortToast("Errore durante il pagamento");
-      });
+    handler.onSkip((reason) {
+      // User already has access (Superwall knows)
+      appData.write(kKeyPaymentMethod, 1);
+      NavigationService.navigateToUntilReplacement(Routes.loadingScreen);
+    });
 
-      await Superwall.shared.registerPlacement(
-        'campaign_trigger',
-        handler: handler,
-      );
-    }
+    handler.onError((error) {
+      log('[SubscriptionExpired] Paywall error: $error');
+      ToastUtil.showErrorShortToast("Errore durante il pagamento");
+    });
+
+    await Superwall.shared.registerPlacement(
+      'campaign_trigger',
+      handler: handler,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final paymentSource = appData.read('payment_source');
-    final isWeb2Wave = paymentSource == 'web2wave';
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -111,9 +98,7 @@ class SubscriptionExpiredScreen extends StatelessWidget {
                     ),
                     UIHelper.verticalSpace(12.h),
                     Text(
-                      isWeb2Wave
-                          ? "Il tuo abbonamento è scaduto o è stato annullato. Rinnova per continuare ad accedere a tutti i contenuti di Dolce Reset."
-                          : "Il tuo abbonamento è scaduto o è stato annullato. Riattiva per continuare ad accedere a tutti i contenuti di Dolce Reset.",
+                      "Il tuo abbonamento è scaduto o è stato annullato. Riattiva per continuare ad accedere a tutti i contenuti di Dolce Reset.",
                       textAlign: TextAlign.center,
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                         color: const Color(0xFF52525B),
@@ -136,7 +121,7 @@ class SubscriptionExpiredScreen extends StatelessWidget {
                   spacing: 10.w,
                   children: [
                     Text(
-                      isWeb2Wave ? "Gestisci Abbonamento" : "Riattiva Abbonamento",
+                      "Riprendi il mio abbonamento",
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
                     ),
                     SvgPicture.asset(
