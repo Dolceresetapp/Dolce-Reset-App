@@ -9,6 +9,7 @@ import 'package:gritti_app/helpers/all_routes.dart';
 import 'package:gritti_app/helpers/di.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
+import 'package:gritti_app/common_widget/custom_network_image.dart';
 import 'package:gritti_app/provider/motivation_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -64,38 +65,37 @@ class _MotivationScreenState extends State<MotivationScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Profile Image
-                        GestureDetector(
-                          onTap: () {
-                            NavigationService.navigateToWithArgs(Routes.navigationScreen, {"index": 3});
-                          },
-                          child: Container(
-                            width: 36.w,
-                            height: 36.w,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xFFE5E5E5),
-                            ),
-                            clipBehavior: Clip.antiAlias,
-                            child: getUserAvatar().isEmpty
-                                ? Icon(
-                                    Icons.person,
-                                    size: 22.sp,
-                                    color: const Color(0xFF9CA3AF),
-                                  )
-                                : Image.network(
-                                    getUserAvatar(),
-                                    width: 36.w,
-                                    height: 36.w,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Icon(
+                        ValueListenableBuilder<String>(
+                          valueListenable: avatarNotifier,
+                          builder: (_, avatarUrl, __) {
+                            final url = avatarUrl.isEmpty ? getUserAvatar() : avatarUrl;
+                            return GestureDetector(
+                              onTap: () {
+                                NavigationService.navigateToWithArgs(Routes.navigationScreen, {"index": 3});
+                              },
+                              child: Container(
+                                width: 36.w,
+                                height: 36.w,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xFFE5E5E5),
+                                ),
+                                clipBehavior: Clip.antiAlias,
+                                child: url.isEmpty
+                                    ? Icon(
                                         Icons.person,
                                         size: 22.sp,
                                         color: const Color(0xFF9CA3AF),
-                                      );
-                                    },
-                                  ),
-                          ),
+                                      )
+                                    : CustomCachedNetworkImage(
+                                        imageUrl: url,
+                                        width: 36.w,
+                                        height: 36.w,
+                                        fit: BoxFit.cover,
+                                      ),
+                              ),
+                            );
+                          },
                         ),
 
                         Text(

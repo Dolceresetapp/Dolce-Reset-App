@@ -13,7 +13,6 @@ import 'helpers/di.dart';
 import 'helpers/navigation_service.dart';
 import 'helpers/helper_methods.dart';
 import 'navigation_screen.dart';
-import 'features/dynamic_workout/data/rx_get/api.dart';
 import 'networks/api_acess.dart';
 import 'networks/dio/dio.dart';
 import 'splash_screen.dart';
@@ -48,6 +47,7 @@ class _LoadingState extends State<Loading> {
       String? token = appData.read(kKeyAccessToken);
       if (token != null && token.isNotEmpty) {
         DioSingleton.instance.update(token);
+        initAvatarNotifier();
 
         // Step 1: Identify user with Superwall (needed for IAP users)
         await subscriptionService.identifyUser();
@@ -102,60 +102,16 @@ class _LoadingState extends State<Loading> {
     }
   }
 
-  /// Preload categories, themes, and other frequently used data
-  void _preloadApiData() {
-    // Fire and forget - don't block UI
-    // Phase 1: Load main data
-    Future.wait([
-      categoryRxObj.categoryRx().catchError((_) => false),
-      themeRxObj.themeRx().catchError((_) => false),
-      myWorkoutRxObj.myWorkoutRx().catchError((_) => false),
-    ]).then((_) {
-      // Phase 2: After main data loaded, preload dynamic workouts for each
-      _preloadDynamicWorkouts();
-    });
-  }
+  /// Preload categories, themes, and other frequently used data — gently
+  void _preloadApiData() async {
+    // Sequential loading with delays to avoid lag
+    await categoryRxObj.categoryRx().catchError((_) => false);
+    await Future.delayed(const Duration(milliseconds: 300));
+    await themeRxObj.themeRx().catchError((_) => false);
+    await Future.delayed(const Duration(milliseconds: 300));
+    await myWorkoutRxObj.myWorkoutRx().catchError((_) => false);
 
-  /// Preload dynamic workouts for all categories and themes
-  /// Uses API directly to warm the cache WITHOUT polluting the shared BehaviorSubject
-  void _preloadDynamicWorkouts() {
-    final api = DynamicWorkoutApi.instance;
-
-    // Preload body part exercises (categories)
-    categoryRxObj.categoryRxStream.first.then((categories) {
-      if (categories.data != null) {
-        for (final category in categories.data!) {
-          if (category.id != null) {
-            api.dynamicWorkoutApi(
-              type: "body_part_exercise",
-              id: category.id,
-            ).ignore();
-          }
-        }
-      }
-    }).ignore();
-
-    // Preload theme workouts
-    themeRxObj.themeRxStream.first.then((themes) {
-      if (themes.data != null) {
-        for (final theme in themes.data!) {
-          if (theme.id != null) {
-            api.dynamicWorkoutApi(
-              type: "theme_workout",
-              id: theme.id,
-            ).ignore();
-          }
-        }
-      }
-    }).ignore();
-
-    // Preload training levels
-    for (final level in ["beginner", "intermediate", "advanced"]) {
-      api.dynamicWorkoutApi(
-        type: "training_level",
-        levelType: level,
-      ).ignore();
-    }
+    // Dynamic workouts load later in NavigationScreen via preloadService
   }
 
   @override

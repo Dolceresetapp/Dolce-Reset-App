@@ -12,6 +12,7 @@ import 'package:gritti_app/helpers/di.dart';
 import 'package:gritti_app/helpers/loading_helper.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
+import 'package:gritti_app/common_widget/custom_network_image.dart';
 import 'package:gritti_app/networks/dio/dio.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -291,35 +292,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildAvatarImage() {
     final avatarUrl = _getAvatarUrl();
 
-    return Image.network(
-      avatarUrl,
+    return CustomCachedNetworkImage(
+      imageUrl: avatarUrl,
       fit: BoxFit.cover,
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
-        return Center(
-          child: SizedBox(
-            width: 20.w,
-            height: 20.w,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              color: const Color(0xFFF566A9),
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                  : null,
-            ),
-          ),
-        );
-      },
-      errorBuilder: (context, error, stackTrace) {
-        log('Avatar load error: $error');
-        return Center(
-          child: Icon(
-            Icons.person,
-            size: 40.sp,
-            color: const Color(0xFF9CA3AF),
-          ),
-        );
-      },
     );
   }
 
@@ -371,22 +346,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   right: 0,
                   bottom: -40,
                   child: Center(
-                    child: Container(
-                      width: 86.w,
-                      height: 86.w,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      padding: EdgeInsets.all(3.w),
-                      child: ClipOval(
-                        child: Container(
-                          width: 80.w,
-                          height: 80.w,
-                          color: const Color(0xFFE5E5E5),
-                          child: _buildAvatarImage(),
-                        ),
-                      ),
+                    child: ValueListenableBuilder<String>(
+                      valueListenable: avatarNotifier,
+                      builder: (_, avatarUrl, __) {
+                        final url = avatarUrl.isEmpty ? getUserAvatar() : avatarUrl;
+                        return Container(
+                          width: 86.w,
+                          height: 86.w,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                          ),
+                          padding: EdgeInsets.all(3.w),
+                          child: ClipOval(
+                            child: Container(
+                              width: 80.w,
+                              height: 80.w,
+                              color: const Color(0xFFE5E5E5),
+                              child: CustomCachedNetworkImage(
+                                imageUrl: url,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),

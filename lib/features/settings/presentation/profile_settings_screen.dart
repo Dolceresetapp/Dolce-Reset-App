@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gritti_app/common_widget/custom_button.dart';
+import 'package:gritti_app/common_widget/custom_network_image.dart';
 import 'package:gritti_app/common_widget/custom_text_field.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/helpers/di.dart';
@@ -187,7 +188,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
           avatarFile: _selectedImage!,
         );
         if (newAvatarUrl != null) {
-          appData.write(kKeyAvatar, newAvatarUrl);
+          updateAvatarNotifier(newAvatarUrl);
         }
       }
 
@@ -211,6 +212,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
       if (mounted) {
         if (success) {
           appData.write(kKeyName, _nameController.text.trim());
+          // Refresh avatar across all screens (name change affects fallback avatar)
+          updateAvatarNotifier(null);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: const Text('Profilo aggiornato con successo!'),
@@ -309,18 +312,11 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                           width: 90.w,
                                           height: 90.w,
                                         )
-                                      : Image.network(
-                                          getUserAvatar(),
+                                      : CustomCachedNetworkImage(
+                                          imageUrl: getUserAvatar(),
                                           fit: BoxFit.cover,
                                           width: 90.w,
                                           height: 90.w,
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Icon(
-                                              Icons.person,
-                                              size: 45.sp,
-                                              color: const Color(0xFF9CA3AF),
-                                            );
-                                          },
                                         ),
                                 ),
                               ),
@@ -478,33 +474,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
       );
     } else if (_currentAvatarUrl != null && _currentAvatarUrl!.isNotEmpty) {
       return SizedBox.expand(
-        child: Image.network(
-          _currentAvatarUrl!,
+        child: CustomCachedNetworkImage(
+          imageUrl: _currentAvatarUrl!,
           fit: BoxFit.cover,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return Center(
-              child: SizedBox(
-                width: 20.w,
-                height: 20.h,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: const Color(0xFFF566A9),
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
-                      : null,
-                ),
-              ),
-            );
-          },
-          errorBuilder: (context, error, stackTrace) {
-            return Icon(
-              Icons.person,
-              size: 45.sp,
-              color: const Color(0xFF9CA3AF),
-            );
-          },
         ),
       );
     } else {

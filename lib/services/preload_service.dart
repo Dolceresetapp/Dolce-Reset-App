@@ -128,15 +128,15 @@ class PreloadService {
       final categoryData = await _preloadEndpointWithData('/category').timeout(_timeout, onTimeout: () => null);
       final themeData = await _preloadEndpointWithData('/themes').timeout(_timeout, onTimeout: () => null);
 
-      // Fire all dynamic workout requests in parallel (don't wait for each)
-      final futures = <Future>[];
+      // Fire dynamic workout requests one at a time with delays
+      final endpoints = <String>[];
 
       if (categoryData != null && categoryData['data'] != null) {
         final categories = categoryData['data'] as List;
         for (int i = 0; i < categories.length && i < 3; i++) {
           final id = categories[i]['id'];
           if (id != null) {
-            futures.add(_preloadEndpoint('/dynamic_work_out?type=body_part_exercise&id=$id'));
+            endpoints.add('/dynamic_work_out?type=body_part_exercise&id=$id');
           }
         }
       }
@@ -146,21 +146,24 @@ class PreloadService {
         for (int i = 0; i < themes.length && i < 3; i++) {
           final id = themes[i]['id'];
           if (id != null) {
-            futures.add(_preloadEndpoint('/dynamic_work_out?type=theme_workout&id=$id'));
+            endpoints.add('/dynamic_work_out?type=theme_workout&id=$id');
           }
         }
       }
 
-      // Training levels
-      futures.add(_preloadEndpoint('/dynamic_work_out?type=training_level&level_type=beginner'));
-      futures.add(_preloadEndpoint('/dynamic_work_out?type=training_level&level_type=intermediate'));
-      futures.add(_preloadEndpoint('/dynamic_work_out?type=training_level&level_type=advance'));
+      endpoints.add('/dynamic_work_out?type=training_level&level_type=beginner');
+      endpoints.add('/dynamic_work_out?type=training_level&level_type=intermediate');
+      endpoints.add('/dynamic_work_out?type=training_level&level_type=advance');
 
-      // Run all in parallel, don't wait
-      unawaited(Future.wait(futures).timeout(const Duration(seconds: 10), onTimeout: () => []));
+      // Sequential with delays to keep app responsive
+      for (final endpoint in endpoints) {
+        await _waitIfPaused();
+        await _preloadEndpoint(endpoint);
+        await Future.delayed(const Duration(milliseconds: 300));
+      }
 
-      // Also preload music files if not already cached
-      unawaited(_preloadMusicFiles());
+      // Preload music files after dynamic workouts (with its own delays)
+      await _preloadMusicFiles();
 
       if (kDebugMode) print('[Preload] Phase 3 complete');
     } catch (e) {
@@ -208,7 +211,7 @@ class PreloadService {
 
       if (kDebugMode) print('[Preload] Downloading ${tracks.length} music files...');
 
-      // Download one at a time to avoid saturating bandwidth
+      // Download one at a time with long delays — music files are large
       for (final track in tracks) {
         await _waitIfPaused();
         final url = track['music_file'];
@@ -218,8 +221,8 @@ class PreloadService {
                 .timeout(const Duration(seconds: 30));
             if (kDebugMode) print('[Preload] Music cached: ${track['title']}');
           } catch (_) {}
-          // Breathe between music files
-          await Future.delayed(const Duration(milliseconds: 200));
+          // Long delay between music files to keep app responsive
+          await Future.delayed(const Duration(milliseconds: 1000));
         }
       }
     } catch (e) {
@@ -227,15 +230,18 @@ class PreloadService {
     }
   }
 
-  /// Background image preloading
+  /// Background image preloading — gentle, one at a time with delays
   Future<void> _preloadImages(List<String> urls) async {
     final cacheManager = DefaultCacheManager();
 
-    // Load all in parallel (faster)
-    await Future.wait(
-      urls.take(20).map((url) => _preloadSingleImage(cacheManager, url)),
-      eagerError: false,
-    );
+    // Download 2 at a time with delays to stay lightweight
+    final urlList = urls.take(20).toList();
+    for (int i = 0; i < urlList.length; i += 2) {
+      await _waitIfPaused();
+      final batch = urlList.skip(i).take(2).map((url) => _preloadSingleImage(cacheManager, url));
+      await Future.wait(batch.toList(), eagerError: false);
+      await Future.delayed(const Duration(milliseconds: 200));
+    }
   }
 
   Future<void> _preloadSingleImage(BaseCacheManager cacheManager, String url) async {
@@ -246,9 +252,8 @@ class PreloadService {
   }
 
   /// Full cache preload for CacheLoadingScreen — awaitable with progress callback
-  /// Phase 1: API data (categories, themes) + dynamic workouts in parallel
-  /// Phase 2: Download all images (categories + themes + courses)
-  /// Exercise thumbnails + music load in background on home screen
+  /// Only loads what's needed for the home screen (categories + themes + their images)
+  /// Dynamic workout data + course images load in background on NavigationScreen
   Future<void> preloadFullCache({void Function(double)? onProgress}) async {
     if (kDebugMode) print('[Preload] Full cache: Starting...');
     final cacheManager = DefaultCacheManager();
@@ -256,78 +261,50 @@ class PreloadService {
     void progress(double v) => onProgress?.call(v.clamp(0.0, 1.0));
 
     try {
-      // Phase 1: Fetch core API data in parallel (0% → 20%)
+      // Phase 1: Fetch core API data in parallel (0% → 30%)
       progress(0.02);
       if (kDebugMode) print('[Preload] Phase 1: Fetching API data...');
       final results = await Future.wait([
         _preloadEndpointWithData('/category').timeout(const Duration(seconds: 8), onTimeout: () => null),
         _preloadEndpointWithData('/themes').timeout(const Duration(seconds: 8), onTimeout: () => null),
         _preloadEndpointWithData('/me').timeout(const Duration(seconds: 8), onTimeout: () => null),
+        _preloadEndpointWithData('/music/list').timeout(const Duration(seconds: 8), onTimeout: () => null),
+        _preloadEndpointWithData('/work_out_list').timeout(const Duration(seconds: 8), onTimeout: () => null),
       ]);
-      progress(0.20);
+      progress(0.30);
 
-      // Phase 2: Fetch dynamic workouts + collect images simultaneously (20% → 40%)
-      if (kDebugMode) print('[Preload] Phase 2: Fetching courses...');
-      final dynamicFutures = <Future<Map<String, dynamic>?>>[];
+      // Phase 2: Collect only home screen images (categories + themes) (30% → 40%)
+      if (kDebugMode) print('[Preload] Phase 2: Collecting home screen images...');
       final imageUrls = <String>{};
 
-      // Collect category/theme images immediately (don't wait for dynamic workouts)
       if (results[0] != null && results[0]!['data'] != null) {
         for (var item in results[0]!['data']) {
           _addUrl(imageUrls, item['image']);
-          final id = item['id'];
-          if (id != null) {
-            dynamicFutures.add(
-              _preloadEndpointWithData('/categoryWiseWorkouts/$id')
-                  .timeout(const Duration(seconds: 8), onTimeout: () => null),
-            );
-          }
         }
       }
       if (results[1] != null && results[1]!['data'] != null) {
         for (var item in results[1]!['data']) {
           _addUrl(imageUrls, item['image']);
-          final id = item['id'];
-          if (id != null) {
-            dynamicFutures.add(
-              _preloadEndpointWithData('/themeWiseWorkouts/$id')
-                  .timeout(const Duration(seconds: 8), onTimeout: () => null),
-            );
-          }
         }
       }
-      for (final level in ['beginner', 'intermediate', 'advance']) {
-        dynamicFutures.add(
-          _preloadEndpointWithData('/trainingLevelWiseWorkouts?type=$level')
-              .timeout(const Duration(seconds: 8), onTimeout: () => null),
-        );
+      // Active workout images
+      if (results[4] != null && results[4]!['active_workouts'] != null) {
+        for (var item in results[4]!['active_workouts']) {
+          _addUrl(imageUrls, item['image']);
+        }
       }
-
-      final dynamicResults = await Future.wait(dynamicFutures);
       progress(0.40);
 
-      // Collect course images from dynamic workout results
-      for (final dynResult in dynamicResults) {
-        if (dynResult == null) continue;
-        _addUrl(imageUrls, dynResult['cover_image']);
-        _addUrl(imageUrls, dynResult['coverImage']);
-        if (dynResult['data'] != null && dynResult['data'] is List) {
-          for (var item in dynResult['data']) {
-            _addUrl(imageUrls, item['image']);
-          }
-        }
-      }
-
-      // Phase 3: Download all images concurrently (40% → 95%)
+      // Phase 3: Download home screen images (40% → 95%)
       final urlList = imageUrls.toList();
       if (kDebugMode) print('[Preload] Phase 3: Downloading ${urlList.length} images...');
 
       int downloaded = 0;
       final total = urlList.length;
 
-      // Download in larger batches of 25 with shorter timeout
-      for (int i = 0; i < urlList.length; i += 25) {
-        final batch = urlList.skip(i).take(25).map((url) async {
+      // Download in batches of 10 — this is a blocking screen so speed matters
+      for (int i = 0; i < urlList.length; i += 10) {
+        final batch = urlList.skip(i).take(10).map((url) async {
           try {
             await cacheManager.downloadFile(url).timeout(const Duration(seconds: 6));
           } catch (_) {}
@@ -337,6 +314,7 @@ class PreloadService {
           }
         }).toList();
         await Future.wait(batch, eagerError: false);
+        await Future.delayed(const Duration(milliseconds: 30));
       }
 
       progress(0.95);
@@ -404,39 +382,33 @@ class PreloadService {
       final workoutIdList = workoutIds.toList();
       if (kDebugMode) print('[Preload] Fetching thumbnails for ${workoutIdList.length} workouts...');
 
-      for (int i = 0; i < workoutIdList.length; i += 5) {
+      // Fetch one at a time with delays to avoid saturating the network
+      for (int i = 0; i < workoutIdList.length; i++) {
         await _waitIfPaused();
-        final batch = workoutIdList.skip(i).take(5).map((id) =>
-          _preloadEndpointWithData('/workoutWiseVideos/$id')
-              .timeout(const Duration(seconds: 8), onTimeout: () => null),
-        ).toList();
-        final videoResults = await Future.wait(batch);
-        for (final videoResult in videoResults) {
-          if (videoResult == null || videoResult['data'] == null) continue;
-          if (videoResult['data'] is List) {
+        try {
+          final videoResult = await _preloadEndpointWithData('/workoutWiseVideos/${workoutIdList[i]}')
+              .timeout(const Duration(seconds: 8), onTimeout: () => null);
+          if (videoResult != null && videoResult['data'] is List) {
             for (var exercise in videoResult['data']) {
               _addUrl(imageUrls, exercise['thumbnail']);
             }
           }
-        }
-        // Small delay between API batches
-        await Future.delayed(const Duration(milliseconds: 100));
+        } catch (_) {}
+        // Generous delay between API calls
+        await Future.delayed(const Duration(milliseconds: 300));
       }
 
-      // Download thumbnails in tiny batches (3 at a time) with delays
+      // Download thumbnails one at a time with generous delays
       final urlList = imageUrls.toList();
       if (kDebugMode) print('[Preload] Downloading ${urlList.length} exercise thumbnails...');
 
-      for (int i = 0; i < urlList.length; i += 3) {
+      for (int i = 0; i < urlList.length; i++) {
         await _waitIfPaused();
-        final batch = urlList.skip(i).take(3).map((url) async {
-          try {
-            await cacheManager.downloadFile(url).timeout(const Duration(seconds: 5));
-          } catch (_) {}
-        }).toList();
-        await Future.wait(batch, eagerError: false);
-        // Breathe between batches so UI stays smooth
-        await Future.delayed(const Duration(milliseconds: 150));
+        try {
+          await cacheManager.downloadFile(urlList[i]).timeout(const Duration(seconds: 8));
+        } catch (_) {}
+        // Long delay between each download to keep app fluid
+        await Future.delayed(const Duration(milliseconds: 500));
       }
 
       if (kDebugMode) print('[Preload] Exercise thumbnails: Complete (${urlList.length} images)');

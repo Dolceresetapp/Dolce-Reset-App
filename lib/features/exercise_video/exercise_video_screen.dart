@@ -35,6 +35,7 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
   VideoPlayerController? _controller;
   VideoPlayerController? _nextController; // Preload next video
   StreamSubscription? _workoutVideoSubscription;
+  VoidCallback? _videoEndListener; // Named listener to avoid accumulation
 
   int currentIndex = 0;
   List videoList = [];
@@ -122,16 +123,26 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
         // Start countdown NOW that video is ready
         _startCountdown();
 
-        // auto next
-        _controller!.addListener(() {
-          if (_controller!.value.isInitialized &&
-              _controller!.value.position >=
-                  _controller!.value.duration -
-                      const Duration(milliseconds: 200)) {
-            _playNext();
-          }
-        });
+        // auto next — use named listener to avoid accumulation
+        _attachVideoEndListener();
       });
+  }
+
+  void _attachVideoEndListener() {
+    // Remove old listener first to prevent accumulation
+    if (_videoEndListener != null) {
+      _controller?.removeListener(_videoEndListener!);
+    }
+    _videoEndListener = () {
+      if (_controller != null &&
+          _controller!.value.isInitialized &&
+          _controller!.value.position >=
+              _controller!.value.duration -
+                  const Duration(milliseconds: 200)) {
+        _playNext();
+      }
+    };
+    _controller?.addListener(_videoEndListener!);
   }
 
   // Preload next video in background
@@ -176,15 +187,8 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
         setState(() {});
         _controller!.pause();
 
-        // Add listener for auto next
-        _controller!.addListener(() {
-          if (_controller!.value.isInitialized &&
-              _controller!.value.position >=
-                  _controller!.value.duration -
-                      const Duration(milliseconds: 200)) {
-            _playNext();
-          }
-        });
+        // Attach named listener for auto next (replaces old one)
+        _attachVideoEndListener();
 
         // Preload the next one
         _preloadNextVideo();
@@ -211,6 +215,9 @@ class _ExerciseVideoScreenState extends State<ExerciseVideoScreen>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    if (_videoEndListener != null) {
+      _controller?.removeListener(_videoEndListener!);
+    }
     _controller?.pause();
     _controller?.dispose();
     _nextController?.dispose();

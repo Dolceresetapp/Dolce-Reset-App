@@ -23,27 +23,10 @@ class NavigationScreen extends StatefulWidget {
 
 class _NavigationScreenState extends State<NavigationScreen> {
   late int currentIndex;
+  bool _backgroundLoadingDone = false;
 
-  @override
-  void initState() {
-    super.initState();
-    currentIndex = widget.initialIndex;
-
-    // Sync subscription status with Superwall (fire and forget)
-    subscriptionService.syncSubscriptionStatus();
-
-    // Load all data immediately in background (fire and forget)
-    categoryRxObj.categoryRx();
-    themeRxObj.themeRx();
-    myWorkoutRxObj.myWorkoutRx();
-
-    // Deep preload in background (exercise thumbnails, music)
-    preloadService.preloadExerciseThumbnails();
-    preloadService.preloadAfterLogin();
-    motivationCoachRxObj.motivationCoachRx(prompt: "Hello");
-  }
-
-  final List<Widget> widgetList = [
+  // Keep screens alive across tab switches with IndexedStack
+  final List<Widget> _screens = const [
     ExceriseScreen(),
     ChefScreen(),
     MotivationScreen(),
@@ -51,17 +34,61 @@ class _NavigationScreenState extends State<NavigationScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.initialIndex;
+
+    if (!_backgroundLoadingDone) {
+      _backgroundLoadingDone = true;
+      _startBackgroundLoading();
+    }
+  }
+
+  Future<void> _startBackgroundLoading() async {
+    // Step 1: Sync subscription (lightweight API call)
+    subscriptionService.syncSubscriptionStatus();
+
+    // Wait for UI to fully render before loading data
+    await Future.delayed(const Duration(milliseconds: 800));
+
+    // Step 2: Load essential data in parallel (already cached from CacheLoadingScreen)
+    await Future.wait([
+      categoryRxObj.categoryRx().catchError((_) => false),
+      themeRxObj.themeRx().catchError((_) => false),
+      myWorkoutRxObj.myWorkoutRx().catchError((_) => false),
+    ]);
+
+    // Step 3: Wait before starting heavy background work
+    await Future.delayed(const Duration(seconds: 1));
+
+    // Step 4: Preload dynamic workout data + course images (deferred from CacheLoadingScreen)
+    preloadService.preloadDeepContent();
+
+    // Step 5: Deep preload (thumbnails, music) — runs gently in background
+    await Future.delayed(const Duration(seconds: 2));
+    preloadService.preloadExerciseThumbnails();
+
+    // Step 6: After another delay, preload remaining content
+    await Future.delayed(const Duration(seconds: 2));
+    preloadService.preloadAfterLogin();
+    motivationCoachRxObj.motivationCoachRx(prompt: "Hello");
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFAFAFA),
-      body: widgetList[currentIndex],
+      backgroundColor: const Color(0xFFFAFAFA),
+      body: IndexedStack(
+        index: currentIndex,
+        children: _screens,
+      ),
       bottomNavigationBar: StylishBottomBar(
         elevation: 5,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.r),
           topRight: Radius.circular(16.r),
         ),
-        backgroundColor: Color(0xFFFAFAFA),
+        backgroundColor: const Color(0xFFFAFAFA),
         option: AnimatedBarOptions(
           iconStyle: IconStyle.Default,
           inkEffect: true,
@@ -73,31 +100,29 @@ class _NavigationScreenState extends State<NavigationScreen> {
             label: "Esercizi",
             isSelected: currentIndex == 0,
           ),
-
           _bottomBarItem(
             assetName: Assets.icons.monotoneAdd2,
             label: "Chef",
             isSelected: currentIndex == 1,
           ),
-
           _bottomBarItem(
             assetName: Assets.icons.transportRocketDiagonal,
             label: "Motivazione",
             isSelected: currentIndex == 2,
           ),
-
           _bottomBarItem(
             assetName: Assets.icons.monotoneAdd1,
             label: "Impostazioni",
             isSelected: currentIndex == 3,
           ),
         ],
-
         currentIndex: currentIndex,
         onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
+          if (index != currentIndex) {
+            setState(() {
+              currentIndex = index;
+            });
+          }
         },
       ),
     );

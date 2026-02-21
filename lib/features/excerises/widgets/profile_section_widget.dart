@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
+import 'package:gritti_app/common_widget/custom_network_image.dart';
 
 class ProfileSectionWidget extends StatelessWidget {
   final String avatar;
@@ -48,18 +49,11 @@ class ProfileSectionWidget extends StatelessWidget {
                     size: 26.sp,
                     color: const Color(0xFF9CA3AF),
                   )
-                : Image.network(
-                    avatar,
+                : CustomCachedNetworkImage(
+                    imageUrl: avatar,
                     width: 42.w,
                     height: 42.w,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Icon(
-                        Icons.person,
-                        size: 26.sp,
-                        color: const Color(0xFF9CA3AF),
-                      );
-                    },
                   ),
           ),
         ),

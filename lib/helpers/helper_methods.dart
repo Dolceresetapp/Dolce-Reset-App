@@ -726,13 +726,33 @@ double calculateCompletionPercentage({
   return percentage;
 }
 
-/// Returns the user's avatar URL with a fallback to a default avatar
-/// if the stored avatar is empty or null
-String getUserAvatar() {
+/// Global reactive avatar notifier — all screens listen to this
+final ValueNotifier<String> avatarNotifier = ValueNotifier<String>('');
+
+/// Initialize avatar notifier from stored data (call on app start / login)
+void initAvatarNotifier() {
+  avatarNotifier.value = _resolveAvatarUrl();
+}
+
+/// Update avatar everywhere in the app
+void updateAvatarNotifier(String? newUrl) {
+  if (newUrl != null && newUrl.isNotEmpty) {
+    appData.write(kKeyAvatar, newUrl);
+  }
+  avatarNotifier.value = _resolveAvatarUrl();
+}
+
+String _resolveAvatarUrl() {
   final avatar = appData.read(kKeyAvatar);
   if (avatar == null || avatar.toString().isEmpty) {
     final name = appData.read(kKeyName) ?? 'User';
     return 'https://ui-avatars.com/api/?name=${Uri.encodeComponent(name)}&background=767EFF&color=fff&size=200';
   }
   return avatar.toString();
+}
+
+/// Returns the user's avatar URL with a fallback to a default avatar
+/// if the stored avatar is empty or null
+String getUserAvatar() {
+  return _resolveAvatarUrl();
 }

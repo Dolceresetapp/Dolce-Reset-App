@@ -16,68 +16,42 @@ final class DioSingleton {
   late Dio dio;
 
   void create() {
-    BaseOptions options = BaseOptions(
-        baseUrl: url,
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 15),
-        headers: {
-          NetworkConstants.ACCEPT: NetworkConstants.ACCEPT_TYPE,
-          NetworkConstants.ACCEPT_LANGUAGE: appData.read(kKeyCountryCode) ?? "pt",
-          NetworkConstants.APP_KEY: NetworkConstants.APP_KEY_VALUE,
-        });
-    dio = Dio(options);
+    dio = Dio(BaseOptions(
+      baseUrl: url,
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 15),
+      headers: {
+        NetworkConstants.ACCEPT: NetworkConstants.ACCEPT_TYPE,
+        NetworkConstants.ACCEPT_LANGUAGE: appData.read(kKeyCountryCode) ?? "pt",
+        NetworkConstants.APP_KEY: NetworkConstants.APP_KEY_VALUE,
+      },
+    ));
     dio.interceptors.add(CacheInterceptor());
     dio.interceptors.add(Logger());
   }
 
   void update(String auth) {
-    if (kDebugMode) {
-      print("Dio update");
+    if (kDebugMode) print("Dio update");
+    // Update headers on existing instance — preserves connection pool & interceptors
+    dio.options.headers[NetworkConstants.ACCEPT_LANGUAGE] =
+        appData.read(kKeyLanguage) ?? "pt";
+    if (auth.isNotEmpty) {
+      dio.options.headers[NetworkConstants.AUTHORIZATION] = "Bearer $auth";
+    } else {
+      dio.options.headers.remove(NetworkConstants.AUTHORIZATION);
     }
-    BaseOptions options = BaseOptions(
-      baseUrl: url,
-      responseType: ResponseType.json,
-      headers: {
-        NetworkConstants.ACCEPT: NetworkConstants.ACCEPT_TYPE,
-        NetworkConstants.ACCEPT_LANGUAGE: appData.read(kKeyLanguage) ?? "pt",
-        NetworkConstants.APP_KEY: NetworkConstants.APP_KEY_VALUE,
-        NetworkConstants.AUTHORIZATION: "Bearer $auth",
-      },
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 15),
-    );
-    dio = Dio(options);
-    dio.interceptors.add(CacheInterceptor());
-    dio.interceptors.add(Logger());
   }
 
   void updateLanguage(String countryCode) {
-    if (kDebugMode) {
-      print("Dio update $countryCode");
-    }
-    BaseOptions options = BaseOptions(
-      baseUrl: url,
-      responseType: ResponseType.json,
-      headers: {
-        NetworkConstants.ACCEPT: NetworkConstants.ACCEPT_TYPE,
-        NetworkConstants.ACCEPT_LANGUAGE: countryCode,
-        NetworkConstants.APP_KEY: NetworkConstants.APP_KEY_VALUE,
-        NetworkConstants.AUTHORIZATION: "Bearer ${appData.read(kKeyAccessToken)} ",
-      },
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 15),
-    );
-    dio = Dio(options);
-    dio.interceptors.add(CacheInterceptor());
-    dio.interceptors.add(Logger());
+    if (kDebugMode) print("Dio update $countryCode");
+    dio.options.headers[NetworkConstants.ACCEPT_LANGUAGE] = countryCode;
   }
 }
 
 Future<Response> postHttp(String path, [dynamic data]) =>
     DioSingleton.instance.dio.post(path, data: data, cancelToken: DioSingleton.cancelToken);
 
-/// POST with extended timeout for AI/long-running requests (120 seconds)
-/// DALL-E image generation can take 60+ seconds, plus GPT call
+/// POST with extended timeout for AI/long-running requests
 Future<Response> postHttpLongRunning(String path, [dynamic data]) =>
     DioSingleton.instance.dio.post(
       path,

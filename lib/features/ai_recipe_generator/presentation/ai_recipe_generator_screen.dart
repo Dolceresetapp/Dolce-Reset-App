@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -26,6 +27,38 @@ class AiReceipeGeneratorScreen extends StatefulWidget {
 class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
   final textController = TextEditingController();
   bool _isGenerating = false;
+  String _progressMessage = "";
+  Timer? _progressTimer;
+  int _progressStep = 0;
+
+  static const _progressMessages = [
+    "Analisi degli ingredienti...",
+    "Creazione della ricetta...",
+    "Calcolo dei valori nutrizionali...",
+    "Preparazione finale...",
+  ];
+
+  void _startProgressMessages() {
+    _progressStep = 0;
+    _progressMessage = _progressMessages[0];
+    _progressTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+      _progressStep++;
+      if (_progressStep < _progressMessages.length) {
+        setState(() {
+          _progressMessage = _progressMessages[_progressStep];
+        });
+      }
+    });
+  }
+
+  void _stopProgressMessages() {
+    _progressTimer?.cancel();
+    _progressTimer = null;
+  }
 
   List<Map<String, dynamic>> dataList = [
     {
@@ -63,7 +96,7 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
   @override
   void dispose() {
     textController.dispose();
-
+    _stopProgressMessages();
     super.dispose();
   }
 
@@ -280,9 +313,16 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
                       ),
                     ),
                     SizedBox(width: 10.w),
-                    Text(
-                      "Generazione in corso...",
-                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                    Flexible(
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        child: Text(
+                          _progressMessage,
+                          key: ValueKey(_progressMessage),
+                          style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ),
                   ],
                 )
@@ -310,6 +350,7 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
     setState(() {
       _isGenerating = true;
     });
+    _startProgressMessages();
 
     try {
       log("========== Generating Recipe ==========");
@@ -321,6 +362,8 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
       log("Success: ${response.success}");
       log("Response type: ${response.responseType}");
       log("Data length: ${response.data?.length}");
+
+      _stopProgressMessages();
 
       if (mounted) {
         setState(() {
@@ -370,6 +413,7 @@ class _AiReceipeGeneratorScreenState extends State<AiReceipeGeneratorScreen> {
       }
     } catch (e) {
       log("Error generating recipe: $e");
+      _stopProgressMessages();
       if (mounted) {
         setState(() {
           _isGenerating = false;
