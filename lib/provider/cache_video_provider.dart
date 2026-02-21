@@ -127,18 +127,32 @@ class CacheVideoProvider extends ChangeNotifier {
     return _cachedMusic;
   }
 
-  // Voiceover settings
+  // Voiceover + video sound settings (mute button controls both, but NOT music)
   bool get voiceoverEnabled => _voiceoverEnabled;
 
   set voiceoverEnabled(bool value) {
     _voiceoverEnabled = value;
 
+    // Also control video volume (mute button affects video sound + voiceover, NOT music)
+    _applyVideoVolume();
+
     if (!value) {
-      // Turning OFF - stop immediately
+      // Turning OFF - stop voiceover immediately
       _stopVoiceover();
     }
     // Turning ON - just enable for future exercises, don't replay current
     _safeNotify();
+  }
+
+  /// Apply mute state to the current video controller
+  void _applyVideoVolume() {
+    if (_controller != null && !_isControllerDisposed) {
+      try {
+        _controller!.setVolume(_voiceoverEnabled ? 1.0 : 0.0);
+      } catch (e) {
+        debugPrint('Error setting video volume: $e');
+      }
+    }
   }
 
   /// Mark that voiceover was already played during rest preview
@@ -860,6 +874,8 @@ class CacheVideoProvider extends ChangeNotifier {
     _isTransitioning = false;
     _isLoadingVideo = false;
     _lastTransitionTime = DateTime.now();
+    // Apply mute state to new video controller
+    _applyVideoVolume();
     // Play voiceover for the new exercise (skip for first load, will play on startPlaying)
     if (playVoiceover && _workoutStartTime != null) {
       _playVoiceover();
@@ -1016,6 +1032,7 @@ class CacheVideoProvider extends ChangeNotifier {
       if (!_controller!.value.isInitialized) return;
       if (!_controller!.value.isPlaying) {
         _workoutStartTime ??= DateTime.now();
+        _applyVideoVolume();
         _controller!.play();
         // Initialize background music (only if course allows it)
         if (model.musicEnabled != false) {
