@@ -52,28 +52,34 @@ class _LoadingState extends State<Loading> {
         // Step 1: Identify user with Superwall (needed for IAP users)
         await subscriptionService.identifyUser();
 
-        // Step 2: Check subscription based on payment source
-        final paymentSource = appData.read('payment_source');
-        log('[Loading] payment_source: $paymentSource');
+        // Step 2: Always check Superwall first (IAP has priority)
+        // This handles the case where a Web2Wave user resubscribed via IAP
+        log('[Loading] Checking Superwall (IAP)...');
+        bool superwallActive = await subscriptionService.checkAndSaveSuperwallStatus();
+        log('[Loading] Superwall active: $superwallActive');
 
-        if (paymentSource == 'web2wave') {
-          // Web2Wave: check backend (which calls Web2Wave API)
-          log('[Loading] Web2Wave user — checking backend...');
-          appData.write(kKeyUsrInfo, 1); // Onboarding done on web
-          await subscriptionService.syncSubscriptionStatus();
-          log('[Loading] After sync: kKeyPaymentMethod = ${appData.read(kKeyPaymentMethod)}');
-        } else {
-          // IAP users: check Superwall (StoreKit / Google Play)
-          log('[Loading] IAP user — checking Superwall...');
-          bool superwallActive = await subscriptionService.checkAndSaveSuperwallStatus();
-          log('[Loading] Superwall active: $superwallActive');
-
-          if (superwallActive) {
-            appData.write(kKeyPaymentMethod, 1);
-            appData.write(kKeyUsrInfo, 1);
+        if (superwallActive) {
+          // User has active IAP subscription — this takes priority
+          appData.write(kKeyPaymentMethod, 1);
+          appData.write(kKeyUsrInfo, 1);
+          // If user was previously Web2Wave, switch them to IAP
+          final paymentSource = appData.read('payment_source');
+          if (paymentSource == 'web2wave') {
+            appData.remove('payment_source');
+            log('[Loading] Switched from Web2Wave to IAP');
           }
-          // If Superwall inactive AND no payment source → user hasn't paid
-          // kKeyPaymentMethod stays at whatever was set during login
+        } else {
+          // Superwall says inactive — check Web2Wave if applicable
+          final paymentSource = appData.read('payment_source');
+          log('[Loading] payment_source: $paymentSource');
+
+          if (paymentSource == 'web2wave') {
+            log('[Loading] Web2Wave user — checking backend...');
+            appData.write(kKeyUsrInfo, 1); // Onboarding done on web
+            await subscriptionService.syncSubscriptionStatus();
+            log('[Loading] After sync: kKeyPaymentMethod = ${appData.read(kKeyPaymentMethod)}');
+          }
+          // If no payment source and Superwall inactive → user hasn't paid
         }
 
         // Only preload API data if user has completed onboarding and payment

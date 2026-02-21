@@ -40,6 +40,8 @@ class SubscriptionExpiredScreen extends StatelessWidget {
     handler.onDismiss((info, result) {
       if (result is PurchasedPaywallResult || result is RestoredPaywallResult) {
         appData.write(kKeyPaymentMethod, 1);
+        // Switch to IAP — no longer a Web2Wave user
+        appData.remove('payment_source');
         NavigationService.navigateToUntilReplacement(Routes.loadingScreen);
       }
       // If dismissed without purchase, user stays on this screen
@@ -48,6 +50,7 @@ class SubscriptionExpiredScreen extends StatelessWidget {
     handler.onSkip((reason) {
       // User already has access (Superwall knows)
       appData.write(kKeyPaymentMethod, 1);
+      appData.remove('payment_source');
       NavigationService.navigateToUntilReplacement(Routes.loadingScreen);
     });
 

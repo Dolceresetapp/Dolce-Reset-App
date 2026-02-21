@@ -20,6 +20,14 @@ class AppSuperwallDelegate extends SuperwallDelegate {
       subscriptionService._status = 'active';
       // Save payment status to local storage
       GetStorage().write(kKeyPaymentMethod, 1);
+      // User is now IAP — clear Web2Wave source if present
+      final currentSource = GetStorage().read('payment_source');
+      if (currentSource == 'web2wave') {
+        GetStorage().remove('payment_source');
+        if (kDebugMode) {
+          log('[Superwall] Cleared payment_source (was web2wave → now IAP)');
+        }
+      }
       if (kDebugMode) {
         log('[Superwall] Saved kKeyPaymentMethod = 1');
       }
