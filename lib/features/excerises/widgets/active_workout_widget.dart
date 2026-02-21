@@ -20,7 +20,7 @@ class ActiveWorkoutWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(12.sp),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
       clipBehavior: Clip.antiAlias,
       decoration: ShapeDecoration(
         color: const Color(0xFFFAFAFA),
@@ -39,8 +39,8 @@ class ActiveWorkoutWidget extends StatelessWidget {
             flex: 1,
             child: CustomCachedNetworkImage(
               imageUrl: image,
-              width: 88.w,
-              height: 88.h,
+              width: 80.w,
+              height: 72.h,
               fit: BoxFit.contain,
             ),
           ),
@@ -50,7 +50,7 @@ class ActiveWorkoutWidget extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 8.h,
+              spacing: 4.h,
               children: [
                 Text(
                   title,
