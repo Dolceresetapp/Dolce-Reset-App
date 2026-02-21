@@ -314,7 +314,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         SizedBox(width: 8.w),
                         Expanded(
                           child: Text(
-                            "Abbonamento acquistato dal sito! Imposta la tua password per accedere.",
+                            "Completa la registrazione per accedere all'app. Inserisci il tuo nome e una password.",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                               color: const Color(0xFF3F3F46),
                               fontSize: 13.sp,
