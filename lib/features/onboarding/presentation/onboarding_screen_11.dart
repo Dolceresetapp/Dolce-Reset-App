@@ -92,6 +92,31 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
     });
   }
 
+  Widget _scaleLabel(String label, String range) {
+    return Column(
+      children: [
+        Text(
+          label,
+          textAlign: TextAlign.center,
+          style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+            color: const Color(0xFF52525B),
+            fontSize: 11.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Text(
+          range,
+          textAlign: TextAlign.center,
+          style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+            color: const Color(0xFF71717A),
+            fontSize: 10.sp,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     log("onboard7HeightValue : ${widget.onboard7HeightValue}");
@@ -148,11 +173,69 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
                   )
                   : const SizedBox(),
 
-              Image.asset(Assets.images.onboard11.path),
+              UIHelper.verticalSpace(24.h),
+
+              // BMI Scale Bar (replaces English image)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.r),
+                child: Row(
+                  children: [
+                    Expanded(flex: 185, child: Container(height: 14.h, color: const Color(0xFF7CB5EC))),
+                    Expanded(flex: 65, child: Container(height: 14.h, color: const Color(0xFF66BB6A))),
+                    Expanded(flex: 50, child: Container(height: 14.h, color: const Color(0xFFFFA726))),
+                    Expanded(flex: 200, child: Container(height: 14.h, color: const Color(0xFFEF9A9A))),
+                  ],
+                ),
+              ),
+              SizedBox(height: 6.h),
+              Row(
+                children: [
+                  Expanded(flex: 185, child: _scaleLabel('Sottopeso', '<18.5')),
+                  Expanded(flex: 65, child: _scaleLabel('Normale', '18.5-24.9')),
+                  Expanded(flex: 50, child: _scaleLabel('Sovrappeso', '25-29.9')),
+                  Expanded(flex: 200, child: _scaleLabel('Obesità', '30+')),
+                ],
+              ),
+
+              UIHelper.verticalSpace(20.h),
+
+              // Info box (replaces English text from image)
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF9F9F9),
+                  borderRadius: BorderRadius.circular(16.r),
+                  border: Border.all(color: const Color(0xFFE4E4E7)),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      'L\'IMC (Indice di Massa Corporea) ti aiuta a capire se il tuo peso è equilibrato rispetto alla tua altezza.',
+                      textAlign: TextAlign.center,
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                        color: const Color(0xFF27272A),
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+                    Text(
+                      '👉 È semplicemente un numero che fornisce un\'idea generale della tua forma fisica. Ti aiuta a capire da dove iniziare per migliorare il tuo benessere e monitorare i tuoi progressi nel tempo.',
+                      textAlign: TextAlign.center,
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                        color: const Color(0xFFF566A9),
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
               UIHelper.verticalSpace(16.h),
 
-              // BMI Citations — visible directly on screen
+              // Citations
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(14.w),
