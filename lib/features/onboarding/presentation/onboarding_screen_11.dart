@@ -166,7 +166,7 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Fonti e classificazioni BMI:',
+                      'Fonti e classificazioni IMC:',
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                         color: const Color(0xFF52525B),
                         fontSize: 12.sp,
@@ -177,10 +177,10 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
                     GestureDetector(
                       onTap: () => launchUrl(
                         Uri.parse('https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/body-mass-index'),
-                        mode: LaunchMode.externalApplication,
+                        mode: LaunchMode.inAppBrowserView,
                       ),
                       child: Text(
-                        '• World Health Organization (WHO)',
+                        '• Organizzazione Mondiale della Sanità (OMS)',
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                           color: const Color(0xFFF566A9),
                           fontSize: 12.sp,
@@ -193,10 +193,10 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
                     GestureDetector(
                       onTap: () => launchUrl(
                         Uri.parse('https://www.cdc.gov/bmi/about/index.html'),
-                        mode: LaunchMode.externalApplication,
+                        mode: LaunchMode.inAppBrowserView,
                       ),
                       child: Text(
-                        '• Centers for Disease Control and Prevention (CDC)',
+                        '• Centro per il Controllo e la Prevenzione delle Malattie (CDC)',
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                           color: const Color(0xFFF566A9),
                           fontSize: 12.sp,
@@ -207,7 +207,7 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
                     ),
                     SizedBox(height: 6.h),
                     Text(
-                      'Il BMI è uno strumento di screening generale e va interpretato con un professionista sanitario.',
+                      'L\'IMC è uno strumento di screening generale e va interpretato con un professionista sanitario.',
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                         color: const Color(0xFF71717A),
                         fontSize: 11.sp,

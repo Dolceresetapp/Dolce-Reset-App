@@ -239,7 +239,7 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Fonti BMI: classificazioni basate su linee guida ufficiali',
+                      'Fonti IMC: classificazioni basate su linee guida ufficiali',
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                         color: const Color(0xFF52525B),
                         fontSize: 11.sp,
@@ -252,10 +252,10 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                         GestureDetector(
                           onTap: () => launchUrl(
                             Uri.parse('https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/body-mass-index'),
-                            mode: LaunchMode.externalApplication,
+                            mode: LaunchMode.inAppBrowserView,
                           ),
                           child: Text(
-                            'WHO',
+                            'OMS',
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                               color: const Color(0xFFF566A9),
                               fontSize: 11.sp,
@@ -274,7 +274,7 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                         GestureDetector(
                           onTap: () => launchUrl(
                             Uri.parse('https://www.cdc.gov/bmi/about/index.html'),
-                            mode: LaunchMode.externalApplication,
+                            mode: LaunchMode.inAppBrowserView,
                           ),
                           child: Text(
                             'CDC',
@@ -287,7 +287,7 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                           ),
                         ),
                         Text(
-                          '  —  strumento di screening generale',
+                          '  —  screening generale',
                           style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                             color: const Color(0xFF71717A),
                             fontSize: 10.sp,
