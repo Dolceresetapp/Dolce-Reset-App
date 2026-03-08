@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../common_widget/custom_button.dart';
 import '../../../common_widget/custom_svg_asset.dart';
@@ -148,6 +149,75 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
                   : const SizedBox(),
 
               Image.asset(Assets.images.onboard11.path),
+
+              UIHelper.verticalSpace(16.h),
+
+              // BMI Citations — visible directly on screen
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(14.w),
+                margin: EdgeInsets.only(bottom: 100.h),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF5F5F5),
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(color: const Color(0xFFE4E4E7)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Fonti e classificazioni BMI:',
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                        color: const Color(0xFF52525B),
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 6.h),
+                    GestureDetector(
+                      onTap: () => launchUrl(
+                        Uri.parse('https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/body-mass-index'),
+                        mode: LaunchMode.externalApplication,
+                      ),
+                      child: Text(
+                        '• World Health Organization (WHO)',
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                          color: const Color(0xFFF566A9),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+                    GestureDetector(
+                      onTap: () => launchUrl(
+                        Uri.parse('https://www.cdc.gov/bmi/about/index.html'),
+                        mode: LaunchMode.externalApplication,
+                      ),
+                      child: Text(
+                        '• Centers for Disease Control and Prevention (CDC)',
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                          color: const Color(0xFFF566A9),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w500,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 6.h),
+                    Text(
+                      'Il BMI è uno strumento di screening generale e va interpretato con un professionista sanitario.',
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                        color: const Color(0xFF71717A),
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

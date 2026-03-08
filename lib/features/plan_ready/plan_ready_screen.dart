@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/di.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../common_widget/custom_button.dart';
 import '../../constants/app_constants.dart';
@@ -223,7 +224,84 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                 ),
               ),
 
-              UIHelper.verticalSpace(30.h),
+              UIHelper.verticalSpace(12.h),
+
+              // BMI Citations — visible directly on screen
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF5F5F5),
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(color: const Color(0xFFE4E4E7)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Fonti BMI: classificazioni basate su linee guida ufficiali',
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                        color: const Color(0xFF52525B),
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 4.h),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => launchUrl(
+                            Uri.parse('https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/body-mass-index'),
+                            mode: LaunchMode.externalApplication,
+                          ),
+                          child: Text(
+                            'WHO',
+                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                              color: const Color(0xFFF566A9),
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w600,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '  •  ',
+                          style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                            color: const Color(0xFF71717A),
+                            fontSize: 11.sp,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => launchUrl(
+                            Uri.parse('https://www.cdc.gov/bmi/about/index.html'),
+                            mode: LaunchMode.externalApplication,
+                          ),
+                          child: Text(
+                            'CDC',
+                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                              color: const Color(0xFFF566A9),
+                              fontSize: 11.sp,
+                              fontWeight: FontWeight.w600,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '  —  strumento di screening generale',
+                          style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                            color: const Color(0xFF71717A),
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              UIHelper.verticalSpace(20.h),
 
               Row(
                 spacing: 16.w,
@@ -250,23 +328,24 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                 onPressed: () {
                   NavigationService.navigateTo(Routes.customPlanReadyScreen);
                 },
-                child: Row(
-                  spacing: 10.w,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Inizia il piano con 3 giorni gratis",
-                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
-                    ),
-
-                    SvgPicture.asset(
-                      Assets.icons.rightArrows,
-                      width: 20.w,
-                      height: 20.h,
-                      fit: BoxFit.cover,
-                    ),
-                    UIHelper.verticalSpace(20.h),
-                  ],
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Row(
+                    spacing: 10.w,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Inizia il piano con 3 giorni gratis",
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                      ),
+                      SvgPicture.asset(
+                        Assets.icons.rightArrows,
+                        width: 20.w,
+                        height: 20.h,
+                        fit: BoxFit.cover,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
