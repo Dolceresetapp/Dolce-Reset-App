@@ -162,14 +162,28 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
 
               UIHelper.verticalSpace(20.h),
               bmi != null
-                  ? Text(
-                    '${bmi!.toStringAsFixed(2)} - $bmiCategory',
-                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                      fontSize: 30.sp,
-                      color: Color(0xFFF97316),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
+                  ? Column(
+                    children: [
+                      Text(
+                        '${bmi!.toStringAsFixed(2)} - $bmiCategory',
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                          fontSize: 30.sp,
+                          color: Color(0xFFF97316),
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        'Secondo le classificazioni OMS/CDC',
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                          fontSize: 11.sp,
+                          color: const Color(0xFF71717A),
+                          fontWeight: FontWeight.w400,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   )
                   : const SizedBox(),
 

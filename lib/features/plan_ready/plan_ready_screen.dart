@@ -219,6 +219,18 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                           ),
                         ],
                       ),
+                      SizedBox(height: 4.h),
+                      Center(
+                        child: Text(
+                          'Classificazione OMS/CDC',
+                          style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                              .copyWith(
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white.withValues(alpha: 0.7),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
