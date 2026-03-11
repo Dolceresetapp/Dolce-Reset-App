@@ -189,88 +189,80 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
 
               UIHelper.verticalSpace(24.h),
 
-              // BMI Scale Bar (replaces English image)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8.r),
-                child: Row(
-                  children: [
-                    Expanded(flex: 185, child: Container(height: 14.h, color: const Color(0xFF7CB5EC))),
-                    Expanded(flex: 65, child: Container(height: 14.h, color: const Color(0xFF66BB6A))),
-                    Expanded(flex: 50, child: Container(height: 14.h, color: const Color(0xFFFFA726))),
-                    Expanded(flex: 200, child: Container(height: 14.h, color: const Color(0xFFEF9A9A))),
-                  ],
-                ),
-              ),
-              SizedBox(height: 6.h),
-              Row(
-                children: [
-                  Expanded(flex: 185, child: _scaleLabel('Sottopeso', '<18.5')),
-                  Expanded(flex: 65, child: _scaleLabel('Normale', '18.5-24.9')),
-                  Expanded(flex: 50, child: _scaleLabel('Sovrappeso', '25-29.9')),
-                  Expanded(flex: 200, child: _scaleLabel('Obesità', '30+')),
-                ],
-              ),
-
-              UIHelper.verticalSpace(20.h),
-
-              // Info box (replaces English text from image)
+              // Single unified container: scale + explanation + citations
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.w),
+                margin: EdgeInsets.only(bottom: 100.h),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF9F9F9),
                   borderRadius: BorderRadius.circular(16.r),
                   border: Border.all(color: const Color(0xFFE4E4E7)),
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Scale bar
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.r),
+                      child: Row(
+                        children: [
+                          Expanded(flex: 3, child: Container(height: 14.h, color: const Color(0xFF7CB5EC))),
+                          Expanded(flex: 2, child: Container(height: 14.h, color: const Color(0xFF66BB6A))),
+                          Expanded(flex: 2, child: Container(height: 14.h, color: const Color(0xFFFFA726))),
+                          Expanded(flex: 3, child: Container(height: 14.h, color: const Color(0xFFEF9A9A))),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 6.h),
+                    Row(
+                      children: [
+                        Expanded(flex: 3, child: _scaleLabel('Sottopeso', '<18.5')),
+                        Expanded(flex: 2, child: _scaleLabel('Normale', '18.5-24.9')),
+                        Expanded(flex: 2, child: _scaleLabel('Sovrappeso', '25-29.9')),
+                        Expanded(flex: 3, child: _scaleLabel('Obesità', '30+')),
+                      ],
+                    ),
+
+                    SizedBox(height: 16.h),
+                    Divider(color: const Color(0xFFE4E4E7), height: 1),
+                    SizedBox(height: 16.h),
+
+                    // Explanation
                     Text(
                       'L\'IMC (Indice di Massa Corporea) ti aiuta a capire se il tuo peso è equilibrato rispetto alla tua altezza.',
                       textAlign: TextAlign.center,
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                         color: const Color(0xFF27272A),
-                        fontSize: 15.sp,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 12.h),
+                    SizedBox(height: 10.h),
                     Text(
                       '👉 È semplicemente un numero che fornisce un\'idea generale della tua forma fisica. Ti aiuta a capire da dove iniziare per migliorare il tuo benessere e monitorare i tuoi progressi nel tempo.',
                       textAlign: TextAlign.center,
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                         color: const Color(0xFFF566A9),
-                        fontSize: 14.sp,
+                        fontSize: 13.sp,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ],
-                ),
-              ),
 
-              UIHelper.verticalSpace(16.h),
+                    SizedBox(height: 16.h),
+                    Divider(color: const Color(0xFFE4E4E7), height: 1),
+                    SizedBox(height: 12.h),
 
-              // Citations
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(14.w),
-                margin: EdgeInsets.only(bottom: 100.h),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF5F5F5),
-                  borderRadius: BorderRadius.circular(12.r),
-                  border: Border.all(color: const Color(0xFFE4E4E7)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                    // Citations integrated directly
                     Text(
-                      'Fonti e classificazioni IMC:',
+                      'Fonti e classificazioni:',
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                        color: const Color(0xFF52525B),
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF27272A),
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(height: 6.h),
+                    SizedBox(height: 8.h),
                     GestureDetector(
                       onTap: () => launchUrl(
                         Uri.parse('https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/body-mass-index'),
@@ -280,13 +272,13 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
                         '• Organizzazione Mondiale della Sanità (OMS)',
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                           color: const Color(0xFFF566A9),
-                          fontSize: 12.sp,
+                          fontSize: 13.sp,
                           fontWeight: FontWeight.w500,
                           decoration: TextDecoration.underline,
                         ),
                       ),
                     ),
-                    SizedBox(height: 4.h),
+                    SizedBox(height: 6.h),
                     GestureDetector(
                       onTap: () => launchUrl(
                         Uri.parse('https://www.cdc.gov/bmi/about/index.html'),
@@ -296,18 +288,18 @@ class _OnboardingScreen11State extends State<OnboardingScreen11> {
                         '• Centro per il Controllo e la Prevenzione delle Malattie (CDC)',
                         style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                           color: const Color(0xFFF566A9),
-                          fontSize: 12.sp,
+                          fontSize: 13.sp,
                           fontWeight: FontWeight.w500,
                           decoration: TextDecoration.underline,
                         ),
                       ),
                     ),
-                    SizedBox(height: 6.h),
+                    SizedBox(height: 10.h),
                     Text(
                       'L\'IMC è uno strumento di screening generale e va interpretato con un professionista sanitario.',
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                         color: const Color(0xFF71717A),
-                        fontSize: 11.sp,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.italic,
                       ),

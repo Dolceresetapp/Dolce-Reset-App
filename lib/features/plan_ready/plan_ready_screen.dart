@@ -238,10 +238,10 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
 
               UIHelper.verticalSpace(12.h),
 
-              // BMI Citations — visible directly on screen
+              // Citations integrated with explanation
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+                padding: EdgeInsets.all(14.w),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF5F5F5),
                   borderRadius: BorderRadius.circular(12.r),
@@ -251,63 +251,54 @@ class _PlanReadyScreenState extends State<PlanReadyScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Fonti IMC: classificazioni basate su linee guida ufficiali',
+                      'I valori IMC sono calcolati secondo la formula standard peso (kg) / [altezza (m)]² e classificati in base alle seguenti fonti:',
                       style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                         color: const Color(0xFF52525B),
                         fontSize: 11.sp,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    GestureDetector(
+                      onTap: () => launchUrl(
+                        Uri.parse('https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/body-mass-index'),
+                        mode: LaunchMode.inAppBrowserView,
+                      ),
+                      child: Text(
+                        '• Organizzazione Mondiale della Sanità (OMS)',
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                          color: const Color(0xFFF566A9),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
                     SizedBox(height: 4.h),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () => launchUrl(
-                            Uri.parse('https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/body-mass-index'),
-                            mode: LaunchMode.inAppBrowserView,
-                          ),
-                          child: Text(
-                            'OMS',
-                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                              color: const Color(0xFFF566A9),
-                              fontSize: 11.sp,
-                              fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
+                    GestureDetector(
+                      onTap: () => launchUrl(
+                        Uri.parse('https://www.cdc.gov/bmi/about/index.html'),
+                        mode: LaunchMode.inAppBrowserView,
+                      ),
+                      child: Text(
+                        '• Centro per il Controllo e la Prevenzione delle Malattie (CDC)',
+                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                          color: const Color(0xFFF566A9),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          decoration: TextDecoration.underline,
                         ),
-                        Text(
-                          '  •  ',
-                          style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                            color: const Color(0xFF71717A),
-                            fontSize: 11.sp,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => launchUrl(
-                            Uri.parse('https://www.cdc.gov/bmi/about/index.html'),
-                            mode: LaunchMode.inAppBrowserView,
-                          ),
-                          child: Text(
-                            'CDC',
-                            style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                              color: const Color(0xFFF566A9),
-                              fontSize: 11.sp,
-                              fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          '  —  screening generale',
-                          style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                            color: const Color(0xFF71717A),
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                      ],
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      'L\'IMC è uno strumento di screening generale e va interpretato con un professionista sanitario.',
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                        color: const Color(0xFF71717A),
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                   ],
                 ),
