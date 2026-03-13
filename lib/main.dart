@@ -2,6 +2,7 @@
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,7 +37,11 @@ void main() async {
   ]);
 
   // Configure Superwall - handles StoreKit (iOS) & Google Play (Android) natively
-  Superwall.configure('pk_-kUayHzDoFfqEBP6qAHws');
+  // iOS and Android use separate Superwall API keys
+  final superwallApiKey = defaultTargetPlatform == TargetPlatform.android
+      ? 'pk_4RfD08h21bhEZYBeFL6ny'
+      : 'pk_-kUayHzDoFfqEBP6qAHws';
+  Superwall.configure(superwallApiKey);
 
   diSetup();
 
