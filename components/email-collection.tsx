@@ -49,18 +49,12 @@ export function EmailCollection({ onSubmit }: EmailCollectionProps) {
         localStorage.setItem("superwall_email", normalizedEmail)
       }
 
-      // Send email to backend for MailerLite (Checkout Abandon group)
+      // Sync email to ActiveCampaign Leads list via server-side API route
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://admin.dolcereset.com'}/api/leads/store`, {
+        await fetch("/api/leads", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-          },
-          body: JSON.stringify({
-            email: normalizedEmail,
-            source: "web_quiz",
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: normalizedEmail }),
         })
       } catch (error) {
         // Don't block the flow if the API call fails
