@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gritti_app/constants/app_constants.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/device_helper.dart';
 import 'package:gritti_app/helpers/di.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
 import 'package:gritti_app/helpers/loading_helper.dart';
@@ -16,12 +18,46 @@ import 'package:superwallkit_flutter/superwallkit_flutter.dart';
 
 import '../../common_widget/custom_button.dart';
 import '../../constants/text_font_style.dart';
-import '../../helpers/toast.dart';
 import '../../networks/api_acess.dart';
 import '../authentication/widgets/logo_widget.dart';
 
-class SubscriptionExpiredScreen extends StatelessWidget {
+class SubscriptionExpiredScreen extends StatefulWidget {
   const SubscriptionExpiredScreen({super.key});
+
+  @override
+  State<SubscriptionExpiredScreen> createState() =>
+      _SubscriptionExpiredScreenState();
+}
+
+class _SubscriptionExpiredScreenState extends State<SubscriptionExpiredScreen> {
+  bool _isLoadingPaywall = false;
+  Timer? _paywallTimeout;
+
+  @override
+  void dispose() {
+    _paywallTimeout?.cancel();
+    super.dispose();
+  }
+
+  void _stopLoading() {
+    _paywallTimeout?.cancel();
+    if (mounted) {
+      setState(() => _isLoadingPaywall = false);
+    }
+  }
+
+  void _navigateAfterPayment() {
+    appData.write(kKeyPaymentMethod, 1);
+    // Switch to IAP — no longer a Web2Wave user
+    appData.remove('payment_source');
+
+    bool cacheLoaded = appData.read(kKeyCacheLoaded) ?? false;
+    if (!cacheLoaded) {
+      NavigationService.navigateToUntilReplacement(Routes.cacheLoadingScreen);
+    } else {
+      NavigationService.navigateToUntilReplacement(Routes.navigationScreen);
+    }
+  }
 
   void _logout(BuildContext context) {
     logoutRxObj.logoutRx().waitingForFuture().then((success) {
@@ -35,34 +71,75 @@ class SubscriptionExpiredScreen extends StatelessWidget {
   }
 
   void _resubscribe(BuildContext context) async {
+    setState(() => _isLoadingPaywall = true);
+
+    // iPad: Superwall can't complete purchases in compatibility mode
+    if (await isIPad()) {
+      log('[SubscriptionExpired] iPad detected — opening native paywall');
+      _stopLoading();
+      NavigationService.navigateTo(Routes.nativePaywallScreen);
+      return;
+    }
+
+    // Reset Superwall state completely so it shows the same fresh paywall
+    // as for a new user (not a cached/broken "returning user" variant)
+    try {
+      await Superwall.shared.reset();
+      // Re-identify user after reset so Superwall knows who this is
+      await subscriptionService.identifyUser();
+      // Ensure Superwall knows user is inactive
+      Superwall.shared.setSubscriptionStatus(SubscriptionStatusInactive());
+      log('[SubscriptionExpired] Superwall reset + re-identified + set inactive');
+    } catch (e) {
+      log('[SubscriptionExpired] Superwall reset error: $e');
+    }
+
+    // Timeout: if paywall doesn't present within 15s, fallback to native
+    _paywallTimeout = Timer(const Duration(seconds: 15), () {
+      log('[SubscriptionExpired] Paywall timeout — opening native fallback');
+      _stopLoading();
+      NavigationService.navigateTo(Routes.nativePaywallScreen);
+    });
+
     final handler = PaywallPresentationHandler();
 
+    handler.onPresent((info) {
+      log('[SubscriptionExpired] Paywall presented: ${info.identifier}');
+      _stopLoading();
+    });
+
     handler.onDismiss((info, result) {
+      log('[SubscriptionExpired] Paywall dismissed with result: $result');
+      _stopLoading();
       if (result is PurchasedPaywallResult || result is RestoredPaywallResult) {
-        appData.write(kKeyPaymentMethod, 1);
-        // Switch to IAP — no longer a Web2Wave user
-        appData.remove('payment_source');
-        NavigationService.navigateToUntilReplacement(Routes.loadingScreen);
+        _navigateAfterPayment();
       }
       // If dismissed without purchase, user stays on this screen
     });
 
     handler.onSkip((reason) {
+      log('[SubscriptionExpired] Paywall skipped: $reason');
+      _stopLoading();
       // User already has access (Superwall knows)
-      appData.write(kKeyPaymentMethod, 1);
-      appData.remove('payment_source');
-      NavigationService.navigateToUntilReplacement(Routes.loadingScreen);
+      _navigateAfterPayment();
     });
 
     handler.onError((error) {
-      log('[SubscriptionExpired] Paywall error: $error');
-      ToastUtil.showErrorShortToast("Errore durante il pagamento");
+      log('[SubscriptionExpired] Paywall error: $error — opening native fallback');
+      _stopLoading();
+      NavigationService.navigateTo(Routes.nativePaywallScreen);
     });
 
-    await Superwall.shared.registerPlacement(
-      'campaign_trigger',
-      handler: handler,
-    );
+    try {
+      await Superwall.shared.registerPlacement(
+        'campaign_trigger',
+        handler: handler,
+      );
+    } catch (e) {
+      log('[SubscriptionExpired] registerPlacement error: $e — opening native fallback');
+      _stopLoading();
+      NavigationService.navigateTo(Routes.nativePaywallScreen);
+    }
   }
 
   @override
@@ -103,7 +180,8 @@ class SubscriptionExpiredScreen extends StatelessWidget {
                     Text(
                       "Il tuo abbonamento è scaduto o è stato annullato. Riattiva per continuare ad accedere a tutti i contenuti di Dolce Reset.",
                       textAlign: TextAlign.center,
-                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600
+                          .copyWith(
                         color: const Color(0xFF52525B),
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
@@ -118,23 +196,37 @@ class SubscriptionExpiredScreen extends StatelessWidget {
 
               // Resubscribe button (primary pink)
               CustomButton(
-                onPressed: () => _resubscribe(context),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 10.w,
-                  children: [
-                    Text(
-                      "Riprendi il mio abbonamento",
-                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
-                    ),
-                    SvgPicture.asset(
-                      Assets.icons.arrowRight,
-                      width: 20.w,
-                      height: 20.h,
-                      fit: BoxFit.cover,
-                    ),
-                  ],
-                ),
+                color: _isLoadingPaywall
+                    ? const Color(0xFFF566A9).withValues(alpha: 0.6)
+                    : null,
+                onPressed:
+                    _isLoadingPaywall ? () {} : () => _resubscribe(context),
+                child: _isLoadingPaywall
+                    ? SizedBox(
+                        width: 24.w,
+                        height: 24.h,
+                        child: const CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        spacing: 10.w,
+                        children: [
+                          Text(
+                            "Riprendi il mio abbonamento",
+                            style:
+                                TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                          ),
+                          SvgPicture.asset(
+                            Assets.icons.arrowRight,
+                            width: 20.w,
+                            height: 20.h,
+                            fit: BoxFit.cover,
+                          ),
+                        ],
+                      ),
               ),
 
               UIHelper.verticalSpace(16.h),
@@ -158,7 +250,9 @@ class SubscriptionExpiredScreen extends StatelessWidget {
                     ),
                     Text(
                       "Esci",
-                      style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                      style: TextFontStyle
+                          .headLine16cFFFFFFWorkSansW600
+                          .copyWith(
                         color: const Color(0xFF52525B),
                       ),
                     ),

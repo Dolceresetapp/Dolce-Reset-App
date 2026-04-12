@@ -6,6 +6,7 @@ import 'package:gritti_app/features/onboarding/presentation/onboarding_screen_1.
 import 'package:gritti_app/features/rewiring_benefits/rewiring_benefit_screen.dart';
 import 'package:gritti_app/features/subscription_expired/subscription_expired_screen.dart';
 import 'package:gritti_app/features/welcome/welcome_screen.dart';
+import 'package:superwallkit_flutter/superwallkit_flutter.dart';
 
 import 'constants/app_constants.dart';
 import 'helpers/all_routes.dart';
@@ -78,8 +79,19 @@ class _LoadingState extends State<Loading> {
             appData.write(kKeyUsrInfo, 1); // Onboarding done on web
             await subscriptionService.syncSubscriptionStatus();
             log('[Loading] After sync: kKeyPaymentMethod = ${appData.read(kKeyPaymentMethod)}');
+          } else {
+            // IAP user (no web2wave source) — Superwall says inactive
+            // If they previously had payment, their IAP subscription expired
+            int currentPayment = appData.read(kKeyPaymentMethod) ?? 0;
+            if (currentPayment == 1) {
+              log('[Loading] IAP subscription expired — resetting kKeyPaymentMethod to 0');
+              appData.write(kKeyPaymentMethod, 0);
+              // Explicitly tell Superwall the user is inactive so it shows
+              // the correct purchase paywall (not a broken "already subscribed" variant)
+              Superwall.shared.setSubscriptionStatus(SubscriptionStatusInactive());
+              log('[Loading] Set Superwall status to inactive');
+            }
           }
-          // If no payment source and Superwall inactive → user hasn't paid
         }
 
         // Only preload API data if user has completed onboarding and payment
@@ -122,6 +134,13 @@ class _LoadingState extends State<Loading> {
       bool isLoggedIn = appData.read(kKeyIsLoggedIn) ?? false;
 
       if (!isLoggedIn) {
+        // Check if user is in guest mode (Apple Guideline 5.1.1)
+        bool isGuest = appData.read(kKeyIsGuest) ?? false;
+        if (isGuest) {
+          log('[Loading] Guest mode -> NavigationScreen');
+          return NavigationScreen();
+        }
+
         // Check if arriving from Web2Wave deep link
         final web2waveEmail = appData.read('web2wave_email');
         if (web2waveEmail != null && web2waveEmail.toString().isNotEmpty) {
@@ -150,13 +169,16 @@ class _LoadingState extends State<Loading> {
       // User has completed onboarding but subscription is inactive
       if (paymentMethod == 0) {
         // Check if user previously had a subscription (expired/cancelled)
+        // Two signals: Web2Wave users have payment_source set,
+        // IAP users have completed cache loading (went through the full app flow)
         final paymentSource = appData.read('payment_source');
-        if (paymentSource != null) {
-          log('[Loading] paymentMethod == 0, had payment_source=$paymentSource -> SubscriptionExpiredScreen');
+        bool hadPreviousSub = appData.read(kKeyCacheLoaded) ?? false;
+        if (paymentSource != null || hadPreviousSub) {
+          log('[Loading] paymentMethod == 0, payment_source=$paymentSource, cacheLoaded=$hadPreviousSub -> SubscriptionExpiredScreen');
           return const SubscriptionExpiredScreen();
         }
         // New user who hasn't paid yet
-        log('[Loading] paymentMethod == 0, no payment_source -> RewiringBenefitScreen');
+        log('[Loading] paymentMethod == 0, no payment_source, no cache -> RewiringBenefitScreen');
         return const RewiringBenefitScreen();
       }
 

@@ -41,50 +41,23 @@ class _SignInScreenState extends State<SignInScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  bool _isWeb2WaveMode = false;
-  bool _accountAlreadyExists = false;
-  bool _isCheckingEmail = false;
+  // Steps: 'email' → 'password' → login | 'set_password' → redeem
+  String _step = 'email';
+  bool _isLoading = false;
+  bool ischecked = false;
 
   @override
   void initState() {
     super.initState();
-    // Start preloading in background as soon as user sees login screen
     preloadService.preloadOnLoginScreen();
 
     // Pre-fill email if coming from Web2Wave deep link
     final web2waveEmail = appData.read('web2wave_email');
     if (web2waveEmail != null && web2waveEmail.toString().isNotEmpty) {
       _emailController.text = web2waveEmail;
-      _isWeb2WaveMode = true;
-      // Clear it so it doesn't persist on next visit
       appData.remove('web2wave_email');
-      // Check if account already exists
-      _checkEmailExists(web2waveEmail.toString());
-    }
-  }
-
-  /// Check if email already has an account — show "already exists" page if so
-  Future<void> _checkEmailExists(String email) async {
-    setState(() => _isCheckingEmail = true);
-    try {
-      final dio = Dio(BaseOptions(
-        baseUrl: url,
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 10),
-        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-      ));
-      final response = await dio.post(
-        Endpoints.checkEmail(),
-        data: {'email': email.trim().toLowerCase()},
-      );
-      if (response.data is Map && response.data['exists'] == true) {
-        if (mounted) setState(() => _accountAlreadyExists = true);
-      }
-    } catch (e) {
-      log('[SignIn] check-email error: $e');
-      // If check fails, allow redeem form to show (409 will catch duplicates)
-    } finally {
-      if (mounted) setState(() => _isCheckingEmail = false);
+      // Go straight to checking this email
+      _checkEmail();
     }
   }
 
@@ -97,11 +70,127 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
   }
 
-  /// Handle Web2Wave set-password + auto-login
+  /// Step 1: Check email — determines next step
+  Future<void> _checkEmail() async {
+    final email = _emailController.text.trim().toLowerCase();
+    if (email.isEmpty || !email.contains('@') || !email.contains('.')) {
+      ToastUtil.showShortToast('Inserisci un indirizzo email valido');
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      final dio = Dio(BaseOptions(
+        baseUrl: url,
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10),
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+      ));
+
+      final response = await dio.post(
+        Endpoints.checkEmail(),
+        data: {'email': email},
+      );
+
+      if (response.data is Map) {
+        final exists = response.data['exists'] == true;
+        final needsPassword = response.data['needs_password'] == true;
+
+        if (!exists) {
+          ToastUtil.showShortToast('Nessun account trovato con questa email');
+        } else if (needsPassword) {
+          // Web2Wave user who never set password
+          log('[SignIn] Web2Wave user needs password → set_password step');
+          setState(() => _step = 'set_password');
+        } else {
+          // Normal user with password
+          log('[SignIn] User exists → password step');
+          setState(() => _step = 'password');
+        }
+      }
+    } catch (e) {
+      log('[SignIn] check-email error: $e');
+      // On error, default to password step (worst case they get "invalid password")
+      setState(() => _step = 'password');
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  /// Step 2a: Normal login
+  Future<void> _handleLogin() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      final dio = Dio(BaseOptions(
+        baseUrl: url,
+        connectTimeout: const Duration(seconds: 15),
+        receiveTimeout: const Duration(seconds: 15),
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+        validateStatus: (status) => status != null && status < 500,
+      ));
+
+      final response = await dio.post(
+        Endpoints.signIn(),
+        data: {
+          'email': _emailController.text.trim(),
+          'password': _passwordController.text.trim(),
+        },
+      );
+
+      if (response.statusCode == 200 &&
+          response.data is Map &&
+          response.data['status'] == true) {
+        final token = response.data['token'];
+        final data = response.data['data'];
+
+        appData.write(kKeyAccessToken, token);
+        appData.write(kKeyID, data['id']);
+        appData.write(kKeyName, data['name'] ?? '');
+        appData.write(kKeyEmail, data['email'] ?? '');
+        appData.write(kKeyAvatar, data['avatar'] ?? '');
+        appData.write(kKeyIsNutration, data['is_nutration'] ?? 0);
+
+        // Handle user_info and payment_method
+        int backendUserInfo = data['user_info'] ?? 0;
+        appData.write(kKeyUsrInfo, backendUserInfo);
+
+        int backendPayment = data['Payment_method'] ?? data['payment_method'] ?? 0;
+        appData.write(kKeyPaymentMethod, backendPayment);
+
+        // Save payment source
+        final paymentSource = data['payment_source'];
+        if (paymentSource != null && paymentSource.toString().isNotEmpty) {
+          appData.write('payment_source', paymentSource);
+        }
+
+        appData.write(kKeyIsLoggedIn, true);
+        appData.remove(kKeyIsGuest);
+        DioSingleton.instance.update(token);
+
+        log('[SignIn] Login success, navigating to loading...');
+        NavigationService.navigateToUntilReplacement(Routes.loadingScreen);
+      } else {
+        final msg = response.data is Map
+            ? response.data['message']
+            : 'Errore di accesso';
+        ToastUtil.showShortToast(msg ?? 'Errore di accesso');
+      }
+    } catch (e) {
+      log('[SignIn] Login error: $e');
+      ToastUtil.showShortToast('Errore di connessione. Riprova.');
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  /// Step 2b: Web2Wave set-password + auto-login
   Future<void> _redeemWeb2Wave() async {
     if (!_formKey.currentState!.validate()) return;
 
-    // Show loading
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -110,20 +199,15 @@ class _SignInScreenState extends State<SignInScreen> {
     );
 
     try {
-      // Use dedicated Dio instance to avoid shared interceptor/redirect issues
       final dio = Dio(BaseOptions(
         baseUrl: url,
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 30),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
         followRedirects: false,
         validateStatus: (status) => status != null && status < 500,
       ));
 
-      log('[SignIn] Calling POST $url${Endpoints.setPassword()}');
       final response = await dio.post(
         Endpoints.setPassword(),
         data: {
@@ -134,138 +218,64 @@ class _SignInScreenState extends State<SignInScreen> {
         },
       );
 
-      log('[SignIn] Response: ${response.statusCode} - ${response.data}');
-
       if (response.statusCode == 200 &&
           response.data is Map &&
           response.data['status'] == true) {
         final token = response.data['token'];
         final data = response.data['data'];
 
-        // Save auth data (same as sign-in RX handler)
         appData.write(kKeyAccessToken, token);
         appData.write(kKeyID, data['id']);
         appData.write(kKeyName, data['name'] ?? '');
         appData.write(kKeyEmail, data['email'] ?? '');
         appData.write(kKeyAvatar, data['avatar'] ?? '');
-        // Web2Wave users have already completed onboarding + payment on the web
         appData.write(kKeyUsrInfo, 1);
         appData.write(kKeyPaymentMethod, 1);
         appData.write('payment_source', 'web2wave');
         appData.write(kKeyIsNutration, data['is_nutration'] ?? 0);
         appData.write(kKeyIsLoggedIn, true);
-
-        // Clean up deep link data so it doesn't trigger redeem again
+        appData.remove(kKeyIsGuest);
         appData.remove('web2wave_email');
         appData.remove('web2wave_user_id');
 
         DioSingleton.instance.update(token);
-
-        log('[SignIn] Web2Wave redeem success, navigating to loading...');
         NavigationService.navigateToUntilReplacement(Routes.loadingScreen);
+      } else if (response.statusCode == 409) {
+        // User already set their password — switch to normal login
+        if (mounted) Navigator.of(context).pop();
+        log('[SignIn] Web2Wave user already has password, switching to login');
+        setState(() => _step = 'password');
+        ToastUtil.showShortToast('Hai già una password. Accedi con le tue credenziali.');
       } else {
-        if (mounted) Navigator.of(context).pop(); // Close loading
+        if (mounted) Navigator.of(context).pop();
         final msg = response.data is Map
             ? response.data['message']
             : 'Errore durante la registrazione';
         ToastUtil.showShortToast(msg ?? 'Errore durante la registrazione');
       }
     } on DioException catch (e) {
-      if (mounted) Navigator.of(context).pop(); // Close loading
+      if (mounted) Navigator.of(context).pop();
       final data = e.response?.data;
       final serverMessage = data is Map ? data['message'] : null;
-      log('[SignIn] Web2Wave redeem error: ${e.response?.statusCode} - $serverMessage');
       ToastUtil.showShortToast(serverMessage ?? 'Errore di connessione. Riprova.');
     } catch (e) {
-      if (mounted) Navigator.of(context).pop(); // Close loading
-      log('[SignIn] Web2Wave redeem error: $e');
+      if (mounted) Navigator.of(context).pop();
       ToastUtil.showShortToast('Errore di connessione. Riprova.');
     }
   }
 
-  bool ischecked = false;
-
   @override
   Widget build(BuildContext context) {
-    // Loading state while checking email
-    if (_isWeb2WaveMode && _isCheckingEmail) {
-      return const Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(child: CircularProgressIndicator(color: Color(0xFFF566A9))),
-      );
-    }
+    final isSetPassword = _step == 'set_password';
+    final showPasswordFields = _step == 'password' || _step == 'set_password';
 
-    // Account already exists — show info page
-    if (_isWeb2WaveMode && _accountAlreadyExists) {
-      return Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Column(
-              children: [
-                const Spacer(flex: 2),
-                LogoWidget(title: "Account già esistente"),
-                UIHelper.verticalSpace(24.h),
-                Container(
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFEEF0FF),
-                    borderRadius: BorderRadius.circular(16.r),
-                    border: Border.all(
-                      color: const Color(0xFF767EFF).withValues(alpha: 0.3),
-                      width: 1,
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.info_outline_rounded,
-                        size: 28.sp,
-                        color: const Color(0xFF767EFF),
-                      ),
-                      UIHelper.verticalSpace(12.h),
-                      Text(
-                        "Un account esiste già con l'email ${_emailController.text}.\n\nAccedi con le tue credenziali dalla pagina di login.",
-                        textAlign: TextAlign.center,
-                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                          color: const Color(0xFF52525B),
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          height: 1.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(flex: 3),
-                CustomButton(
-                  onPressed: () {
-                    NavigationService.navigateToUntilReplacement(Routes.welcomeScreen);
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 10.w,
-                    children: [
-                      Text(
-                        "Torna alla pagina iniziale",
-                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
-                      ),
-                      SvgPicture.asset(
-                        Assets.icons.arrowRight,
-                        width: 20.w,
-                        height: 20.h,
-                        fit: BoxFit.cover,
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(flex: 1),
-              ],
-            ),
-          ),
-        ),
-      );
+    String title;
+    if (_step == 'email') {
+      title = "Accedi al tuo account";
+    } else if (isSetPassword) {
+      title = "Completa la registrazione";
+    } else {
+      title = "Accedi al tuo account";
     }
 
     return Scaffold(
@@ -280,26 +290,34 @@ class _SignInScreenState extends State<SignInScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 UIHelper.verticalSpace(16.h),
-                if (!_isWeb2WaveMode)
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: Icon(
-                        Icons.arrow_back_ios_new,
-                        size: 22.w,
-                        color: const Color(0xFF27272A),
-                      ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    onPressed: () {
+                      if (_step != 'email') {
+                        // Go back to email step
+                        setState(() {
+                          _step = 'email';
+                          _passwordController.clear();
+                          _confirmPasswordController.clear();
+                          _nameController.clear();
+                        });
+                      } else {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios_new,
+                      size: 22.w,
+                      color: const Color(0xFF27272A),
                     ),
                   ),
-                UIHelper.verticalSpace(16.h),
-                LogoWidget(
-                  title: _isWeb2WaveMode
-                      ? "Completa la registrazione"
-                      : "Accedi al tuo account",
                 ),
+                UIHelper.verticalSpace(16.h),
+                LogoWidget(title: title),
 
-                if (_isWeb2WaveMode) ...[
+                // Info banner for Web2Wave users
+                if (isSetPassword) ...[
                   UIHelper.verticalSpace(16.h),
                   Container(
                     padding: EdgeInsets.all(12.w),
@@ -314,7 +332,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         SizedBox(width: 8.w),
                         Expanded(
                           child: Text(
-                            "Completa la registrazione per accedere all'app. Inserisci il tuo nome e una password.",
+                            "Crea una password per accedere all'app.",
                             style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
                               color: const Color(0xFF3F3F46),
                               fontSize: 13.sp,
@@ -327,9 +345,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ],
 
-                UIHelper.verticalSpace(_isWeb2WaveMode ? 24.h : 56.h),
+                UIHelper.verticalSpace(isSetPassword ? 24.h : 56.h),
 
-                if (_isWeb2WaveMode) ...[
+                // Name field (only for set_password)
+                if (isSetPassword) ...[
                   Text(
                     "Nome",
                     style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
@@ -349,6 +368,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   UIHelper.verticalSpace(16.h),
                 ],
 
+                // Email field (always visible)
                 Text(
                   "Indirizzo Email",
                   style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
@@ -357,62 +377,62 @@ class _SignInScreenState extends State<SignInScreen> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-
                 UIHelper.verticalSpace(8.h),
-
                 CustomTextField(
                   controller: _emailController,
                   validator: emailValidation,
                   hintText: "Inserisci la tua email...",
                   keyboardType: TextInputType.emailAddress,
                   prefixIcon: Assets.icons.vector2,
-                  readOnly: _isWeb2WaveMode,
-                  filled: _isWeb2WaveMode,
-                  fillColor: _isWeb2WaveMode ? const Color(0xFFE4E4E7) : null,
+                  readOnly: showPasswordFields,
+                  filled: showPasswordFields,
+                  fillColor: showPasswordFields ? const Color(0xFFE4E4E7) : null,
                 ),
 
-                UIHelper.verticalSpace(16.h),
-
-                Text(
-                  "Password",
-                  style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                    color: const Color(0xFF27272A),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
+                // Password field (only after email check)
+                if (showPasswordFields) ...[
+                  UIHelper.verticalSpace(16.h),
+                  Text(
+                    "Password",
+                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                      color: const Color(0xFF27272A),
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-
-                UIHelper.verticalSpace(8.h),
-
-                Consumer<SignupProvider>(
-                  builder: (context, provider, child) {
-                    return CustomTextField(
-                      prefixIcon: Assets.icons.vector3,
-                      obscureText: !provider.passwordVisible,
-                      keyboardType: TextInputType.visiblePassword,
-                      suffixIcon: IconButton(
-                        onPressed: provider.togglePasswordVisibility,
-                        icon: SvgPicture.asset(
-                          provider.passwordVisible
-                              ? Assets.icons.eyeOn
-                              : Assets.icons.eyeOff,
-                          width: 20.w,
-                          height: 20.h,
-                          fit: BoxFit.none,
-                          colorFilter: ColorFilter.mode(
-                            Color(0xFFA1A1AA),
-                            BlendMode.srcIn,
+                  UIHelper.verticalSpace(8.h),
+                  Consumer<SignupProvider>(
+                    builder: (context, provider, child) {
+                      return CustomTextField(
+                        prefixIcon: Assets.icons.vector3,
+                        obscureText: !provider.passwordVisible,
+                        keyboardType: TextInputType.visiblePassword,
+                        suffixIcon: IconButton(
+                          onPressed: provider.togglePasswordVisibility,
+                          icon: SvgPicture.asset(
+                            provider.passwordVisible
+                                ? Assets.icons.eyeOn
+                                : Assets.icons.eyeOff,
+                            width: 20.w,
+                            height: 20.h,
+                            fit: BoxFit.none,
+                            colorFilter: ColorFilter.mode(
+                              Color(0xFFA1A1AA),
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ),
-                      ),
-                      textInputAction: TextInputAction.done,
-                      controller: _passwordController,
-                      hintText: "Password",
-                      validator: passwordValidation,
-                    );
-                  },
-                ),
-                if (_isWeb2WaveMode) ...[
+                        textInputAction: TextInputAction.done,
+                        controller: _passwordController,
+                        hintText: "Password",
+                        validator: passwordValidation,
+                      );
+                    },
+                  ),
+                ],
+
+                // Confirm password (only for set_password)
+                if (isSetPassword) ...[
                   UIHelper.verticalSpace(12.h),
                   Text(
                     "Conferma Password",
@@ -455,7 +475,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ],
 
-                if (!_isWeb2WaveMode) ...[
+                // Remember me + Forgot password (only for normal login)
+                if (_step == 'password') ...[
                   UIHelper.verticalSpace(16.h),
                   Row(
                     spacing: 8.w,
@@ -489,8 +510,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       Spacer(),
                       InkWell(
                         onTap: () {
-                          NavigationService.navigateTo(
+                          NavigationService.navigateToWithArgs(
                             Routes.forgetPasswordScreen,
+                            {'email': _emailController.text.trim()},
                           );
                         },
                         child: Text(
@@ -510,97 +532,53 @@ class _SignInScreenState extends State<SignInScreen> {
                 ],
 
                 UIHelper.verticalSpace(30.h),
+
+                // Main action button
                 CustomButton(
                   onPressed: () {
-                    if (_isWeb2WaveMode) {
+                    if (_isLoading) return;
+                    if (_step == 'email') {
+                      _checkEmail();
+                    } else if (_step == 'set_password') {
                       _redeemWeb2Wave();
                     } else {
-                      if (!_formKey.currentState!.validate()) return;
-                      signInRxObj
-                          .signInRx(
-                            email: _emailController.text.trim().toString(),
-                            password: _passwordController.text.trim().toString(),
-                          )
-                          .waitingForFuture()
-                          .then((success) {
-                            if (success) {
-                              NavigationService.navigateToReplacement(
-                                Routes.loadingScreen,
-                              );
-                            }
-                          });
+                      _handleLogin();
                     }
                   },
-                  child: Row(
-                    spacing: 10.w,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        _isWeb2WaveMode ? "Completa e accedi" : "Accedi",
-                        style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
-                      ),
-                      SvgPicture.asset(
-                        Assets.icons.arrowRight,
-                        width: 20.w,
-                        height: 20.h,
-                        fit: BoxFit.cover,
-                      ),
-                    ],
-                  ),
+                  child: _isLoading
+                      ? SizedBox(
+                          width: 24.w,
+                          height: 24.h,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: Colors.white,
+                          ),
+                        )
+                      : Row(
+                          spacing: 10.w,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              _step == 'email'
+                                  ? "Continua"
+                                  : isSetPassword
+                                      ? "Completa e accedi"
+                                      : "Accedi",
+                              style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                            ),
+                            SvgPicture.asset(
+                              Assets.icons.arrowRight,
+                              width: 20.w,
+                              height: 20.h,
+                              fit: BoxFit.cover,
+                            ),
+                          ],
+                        ),
                 ),
 
-                // TODO: Réactiver le séparateur "ou" avec Google/Apple sign-in
-                // UIHelper.verticalSpace(16.h),
-                // SvgPicture.asset(Assets.icons.or, width: 1.sw),
-                // UIHelper.verticalSpace(16.h),
-
-                // TODO: Réactiver Google sign-in
-                // CustomButton(
-                //   color: Color(0xFF000000),
-                //   onPressed: () {},
-                //   child: Row(
-                //     spacing: 10.w,
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-                //       SvgPicture.asset(
-                //         Assets.icons.vector4,
-                //         width: 20.w,
-                //         height: 20.h,
-                //         fit: BoxFit.cover,
-                //       ),
-                //       Text(
-                //         "Accedi con Google",
-                //         style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
-                //       ),
-                //     ],
-                //   ),
-                // ),
-
-                // TODO: Réactiver Apple sign-in
-                // CustomButton(
-                //   color: Color(0xFF000000),
-                //   onPressed: () {},
-                //   child: Row(
-                //     spacing: 10.w,
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-                //       SvgPicture.asset(
-                //         Assets.icons.appleIcon,
-                //         width: 20.w,
-                //         height: 20.h,
-                //         fit: BoxFit.cover,
-                //       ),
-                //       Text(
-                //         "Accedi con Apple",
-                //         style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
-                //       ),
-                //     ],
-                //   ),
-                // ),
-
-                if (!_isWeb2WaveMode) ...[
+                // "Non hai un account? Registrati" (only on email step)
+                if (_step == 'email') ...[
                   UIHelper.verticalSpace(50.h),
-
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Text.rich(

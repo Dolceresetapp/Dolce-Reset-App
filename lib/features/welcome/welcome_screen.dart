@@ -6,8 +6,10 @@ import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/services/preload_service.dart';
 
 import '../../common_widget/custom_button.dart';
+import '../../constants/app_constants.dart';
 import '../../constants/text_font_style.dart';
 import '../../helpers/all_routes.dart';
+import '../../helpers/di.dart';
 import '../../helpers/navigation_service.dart';
 import '../../helpers/ui_helpers.dart';
 import '../authentication/widgets/logo_widget.dart';
@@ -104,6 +106,25 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ],
                   ),
                   textAlign: TextAlign.center,
+                ),
+              ),
+              UIHelper.verticalSpace(16.h),
+              GestureDetector(
+                onTap: () {
+                  appData.write(kKeyIsGuest, true);
+                  NavigationService.navigateToUntilReplacement(
+                    Routes.navigationScreen,
+                  );
+                },
+                child: Text(
+                  'Esplora i contenuti',
+                  style: TextFontStyle.headline30c27272AtyleWorkSansW700
+                      .copyWith(
+                        decoration: TextDecoration.underline,
+                        fontSize: 14.sp,
+                        color: const Color(0xFF71717A),
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
               ),
               const Spacer(flex: 1),

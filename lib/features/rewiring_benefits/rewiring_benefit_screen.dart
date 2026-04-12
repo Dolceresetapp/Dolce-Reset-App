@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -6,13 +7,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:superwallkit_flutter/superwallkit_flutter.dart';
 import 'package:gritti_app/constants/app_constants.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
+import 'package:gritti_app/helpers/device_helper.dart';
 import 'package:gritti_app/helpers/di.dart';
 
 import '../../common_widget/custom_button.dart';
 import '../../constants/text_font_style.dart';
 import '../../helpers/all_routes.dart';
 import '../../helpers/navigation_service.dart';
-import '../../helpers/toast.dart';
 import '../../helpers/ui_helpers.dart';
 
 class RewiringBenefitScreen extends StatefulWidget {
@@ -23,12 +24,28 @@ class RewiringBenefitScreen extends StatefulWidget {
 }
 
 class _RewiringBenefitScreenState extends State<RewiringBenefitScreen> {
+  bool _isLoadingPaywall = false;
+  Timer? _paywallTimeout;
+
+  @override
+  void dispose() {
+    _paywallTimeout?.cancel();
+    super.dispose();
+  }
+
   void _navigateAfterPayment() {
     bool cacheLoaded = appData.read(kKeyCacheLoaded) ?? false;
     if (!cacheLoaded) {
       NavigationService.navigateToUntilReplacement(Routes.cacheLoadingScreen);
     } else {
       NavigationService.navigateToUntilReplacement(Routes.navigationScreen);
+    }
+  }
+
+  void _stopLoading() {
+    _paywallTimeout?.cancel();
+    if (mounted) {
+      setState(() => _isLoadingPaywall = false);
     }
   }
 
@@ -76,78 +93,127 @@ class _RewiringBenefitScreenState extends State<RewiringBenefitScreen> {
             ),
 
             CustomButton(
-              onPressed: () async {
-                // Present Superwall paywall
-                final handler = PaywallPresentationHandler();
+              color: _isLoadingPaywall
+                  ? const Color(0xFFF566A9).withOpacity(0.6)
+                  : null,
+              onPressed: _isLoadingPaywall
+                  ? () {}
+                  : () async {
+                      setState(() => _isLoadingPaywall = true);
 
-                handler.onPresent((info) {
-                  log("Paywall presented: ${info.identifier}");
-                });
+                      // iPad: Superwall can't complete purchases in
+                      // iPhone compatibility mode — use native StoreKit.
+                      if (await isIPad()) {
+                        log("iPad detected — opening native paywall");
+                        _stopLoading();
+                        NavigationService.navigateTo(
+                          Routes.nativePaywallScreen,
+                        );
+                        return;
+                      }
 
-                handler.onDismiss((info, result) {
-                  log("Paywall dismissed with result: $result");
-                  // Navigate after purchase or restore
-                  if (result is PurchasedPaywallResult ||
-                      result is RestoredPaywallResult) {
-                    appData.write(kKeyPaymentMethod, 1);
-                    bool isLoggedIn = appData.read(kKeyIsLoggedIn) ?? false;
-                    if (isLoggedIn) {
-                      // User is logged in → check cache then go to app
-                      _navigateAfterPayment();
-                    } else {
-                      // User is NOT logged in → go to signup with paywall flag
-                      appData.write(kKeyFromPaywall, true);
-                      NavigationService.navigateToReplacement(
-                        Routes.signUpScreen,
-                      );
-                    }
-                  }
-                  // If declined or closed, user stays on current screen
-                });
+                      // Timeout: if paywall doesn't present within 15s, fallback to native
+                      _paywallTimeout = Timer(const Duration(seconds: 15), () {
+                        log("Paywall timeout — opening native fallback");
+                        _stopLoading();
+                        NavigationService.navigateTo(
+                          Routes.nativePaywallScreen,
+                        );
+                      });
 
-                handler.onError((error) {
-                  log("Paywall error: $error");
-                  ToastUtil.showErrorShortToast("Errore durante il pagamento");
-                });
+                      // Present Superwall paywall
+                      final handler = PaywallPresentationHandler();
 
-                handler.onSkip((reason) {
-                  log("Paywall skipped: $reason");
-                  // User already has access
-                  appData.write(kKeyPaymentMethod, 1);
-                  bool isLoggedIn = appData.read(kKeyIsLoggedIn) ?? false;
-                  if (isLoggedIn) {
-                    _navigateAfterPayment();
-                  } else {
-                    appData.write(kKeyFromPaywall, true);
-                    NavigationService.navigateToReplacement(
-                      Routes.signUpScreen,
-                    );
-                  }
-                });
+                      handler.onPresent((info) {
+                        log("Paywall presented: ${info.identifier}");
+                        // Paywall appeared — cancel timeout, stop local loading
+                        _stopLoading();
+                      });
 
-                await Superwall.shared.registerPlacement(
-                  'campaign_trigger',
-                  handler: handler,
-                );
-              },
-              child: Row(
-                spacing: 10.w,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Avanti",
-                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600,
-                  ),
+                      handler.onDismiss((info, result) {
+                        log("Paywall dismissed with result: $result");
+                        _stopLoading();
+                        // Navigate after purchase or restore
+                        if (result is PurchasedPaywallResult ||
+                            result is RestoredPaywallResult) {
+                          appData.write(kKeyPaymentMethod, 1);
+                          bool isLoggedIn =
+                              appData.read(kKeyIsLoggedIn) ?? false;
+                          if (isLoggedIn) {
+                            _navigateAfterPayment();
+                          } else {
+                            appData.write(kKeyFromPaywall, true);
+                            NavigationService.navigateToReplacement(
+                              Routes.signUpScreen,
+                            );
+                          }
+                        }
+                      });
 
-                  SvgPicture.asset(
-                    Assets.icons.rightArrows,
-                    width: 20.w,
-                    height: 20.h,
-                    fit: BoxFit.cover,
-                  ),
-                  UIHelper.verticalSpace(20.h),
-                ],
-              ),
+                      handler.onError((error) {
+                        log("Paywall error: $error — opening native fallback");
+                        _stopLoading();
+                        NavigationService.navigateTo(
+                          Routes.nativePaywallScreen,
+                        );
+                      });
+
+                      handler.onSkip((reason) {
+                        log("Paywall skipped: $reason");
+                        _stopLoading();
+                        appData.write(kKeyPaymentMethod, 1);
+                        bool isLoggedIn =
+                            appData.read(kKeyIsLoggedIn) ?? false;
+                        if (isLoggedIn) {
+                          _navigateAfterPayment();
+                        } else {
+                          appData.write(kKeyFromPaywall, true);
+                          NavigationService.navigateToReplacement(
+                            Routes.signUpScreen,
+                          );
+                        }
+                      });
+
+                      try {
+                        await Superwall.shared.registerPlacement(
+                          'campaign_trigger',
+                          handler: handler,
+                        );
+                      } catch (e) {
+                        log("Superwall registerPlacement error: $e — opening native fallback");
+                        _stopLoading();
+                        NavigationService.navigateTo(
+                          Routes.nativePaywallScreen,
+                        );
+                      }
+                    },
+              child: _isLoadingPaywall
+                  ? SizedBox(
+                      width: 24.w,
+                      height: 24.h,
+                      child: const CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2.5,
+                      ),
+                    )
+                  : Row(
+                      spacing: 10.w,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Avanti",
+                          style:
+                              TextFontStyle.headLine16cFFFFFFWorkSansW600,
+                        ),
+                        SvgPicture.asset(
+                          Assets.icons.rightArrows,
+                          width: 20.w,
+                          height: 20.h,
+                          fit: BoxFit.cover,
+                        ),
+                        UIHelper.verticalSpace(20.h),
+                      ],
+                    ),
             ),
 
             UIHelper.verticalSpaceLarge,

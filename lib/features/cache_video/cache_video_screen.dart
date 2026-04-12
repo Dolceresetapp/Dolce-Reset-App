@@ -310,6 +310,8 @@ class _CacheVideoScreenState extends State<CacheVideoScreen>
                   nextExerciseTitle: provider.data[provider.currentIndex + 1].title ?? "Prossimo esercizio",
                   nextVideoUrl: provider.data[provider.currentIndex + 1].videos,
                   nextVoiceoverText: provider.data[provider.currentIndex + 1].voiceoverText,
+                  nextVoiceoverType: provider.data[provider.currentIndex + 1].voiceoverType,
+                  nextVoiceoverAudio: provider.data[provider.currentIndex + 1].voiceoverAudio,
                   onComplete: _onRestComplete,
                   onSkip: _onRestSkip,
                   voiceoverEnabled: provider.voiceoverEnabled,

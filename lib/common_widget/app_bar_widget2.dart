@@ -55,7 +55,7 @@ class AppBarWidget2 extends StatelessWidget {
           child: LinearProgressBar(
             minHeight: 10.h,
             maxSteps: 5,
-            progressType: LinearProgressBar.progressTypeLinear,
+            progressType: ProgressType.linear,
             currentStep: currentStep,
             progressColor: Color(0xFFF566A9),
             backgroundColor: Color(0xFFE4E4E7),

@@ -8,6 +8,7 @@ import 'package:gritti_app/common_widget/waiting_widget.dart';
 import 'package:gritti_app/features/trial_continue/widgets/timeline_stepper_widget.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
+import 'package:gritti_app/helpers/device_helper.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:intl/intl.dart';
 
@@ -598,6 +599,15 @@ class _TrialContinueScreenState extends State<TrialContinueScreen> {
                           );
                         } else {
                           log("Selected plan ID: $selectedIndex");
+
+                          // iPad: Superwall can't complete purchases in compatibility mode
+                          if (await isIPad()) {
+                            log('[TrialContinue] iPad detected — opening native paywall');
+                            NavigationService.navigateTo(
+                              Routes.nativePaywallScreen,
+                            );
+                            return;
+                          }
 
                           // Present Superwall paywall with handler
                           final handler = PaywallPresentationHandler();

@@ -76,6 +76,8 @@ class Datum {
   String? descriptions;
   String? videos;
   String? voiceoverText; // Text for TTS voiceover instructions
+  String? voiceoverType; // 'tts' or 'audio'
+  String? voiceoverAudio; // URL to MP3 file (when voiceoverType == 'audio')
   List<Music>? music;
 
   Datum({
@@ -86,6 +88,8 @@ class Datum {
     this.descriptions,
     this.videos,
     this.voiceoverText,
+    this.voiceoverType,
+    this.voiceoverAudio,
     this.music,
   });
 
@@ -97,6 +101,8 @@ class Datum {
     String? descriptions,
     String? videos,
     String? voiceoverText,
+    String? voiceoverType,
+    String? voiceoverAudio,
     List<Music>? music,
   }) => Datum(
     id: id ?? this.id,
@@ -106,6 +112,8 @@ class Datum {
     descriptions: descriptions ?? this.descriptions,
     videos: videos ?? this.videos,
     voiceoverText: voiceoverText ?? this.voiceoverText,
+    voiceoverType: voiceoverType ?? this.voiceoverType,
+    voiceoverAudio: voiceoverAudio ?? this.voiceoverAudio,
     music: music ?? this.music,
   );
 
@@ -121,6 +129,8 @@ class Datum {
     descriptions: json["descriptions"],
     videos: json["videos"],
     voiceoverText: json["voiceover_text"],
+    voiceoverType: json["voiceover_type"] ?? 'tts',
+    voiceoverAudio: json["voiceover_audio"],
     music:
         json["music"] == null
             ? []
@@ -135,6 +145,8 @@ class Datum {
     "descriptions": descriptions,
     "videos": videos,
     "voiceover_text": voiceoverText,
+    "voiceover_type": voiceoverType,
+    "voiceover_audio": voiceoverAudio,
     "music":
         music == null ? [] : List<dynamic>.from(music!.map((x) => x.toJson())),
   };

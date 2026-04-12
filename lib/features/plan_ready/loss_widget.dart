@@ -13,29 +13,36 @@ class LossWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 80.h,
-        padding: EdgeInsets.all(16.sp),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
         decoration: BoxDecoration(
           color: Color(0xFFFF0073),
           borderRadius: BorderRadius.circular(25.r),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           spacing: 4.h,
           children: [
-            Text(
-              title,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                fontSize: 24.sp,
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                title,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                  fontSize: 24.sp,
+                ),
               ),
             ),
-            Text(
-              subtitle,
-              textAlign: TextAlign.center,
-              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                fontSize: 10.sp,
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                subtitle,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                  fontSize: 10.sp,
+                ),
               ),
             ),
           ],

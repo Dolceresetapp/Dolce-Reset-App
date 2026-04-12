@@ -63,6 +63,7 @@ import '../features/settings/presentation/units_metrics_screen.dart';
 import '../features/settings/presentation/notifications_screen.dart';
 import '../features/settings/presentation/wellness_goals_screen.dart';
 import '../features/subscription_expired/subscription_expired_screen.dart';
+import '../features/native_paywall/native_paywall_screen.dart';
 import '../features/welcome/welcome_screen.dart';
 import '../loading.dart';
 import '../navigation_screen.dart';
@@ -179,6 +180,7 @@ final class Routes {
   static const String notificationsScreen = '/notificationsScreen';
   static const String wellnessGoalsScreen = '/wellnessGoalsScreen';
   static const String subscriptionExpiredScreen = '/subscriptionExpiredScreen';
+  static const String nativePaywallScreen = '/nativePaywallScreen';
 }
 
 //
@@ -282,6 +284,11 @@ final class RouteGenerator {
             : CupertinoPageRoute(
               builder: (context) => const SubscriptionExpiredScreen(),
             );
+
+      case Routes.nativePaywallScreen:
+        return CupertinoPageRoute(
+          builder: (context) => const NativePaywallScreen(),
+        );
 
       case Routes.barcodeScannerScreen:
         return Platform.isAndroid
@@ -991,13 +998,15 @@ final class RouteGenerator {
             );
 
       case Routes.forgetPasswordScreen:
+        final fpArgs = settings.arguments as Map<String, dynamic>? ?? {};
+        final fpEmail = fpArgs['email'] as String? ?? '';
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-              widget: const ForgetPasswordScreen(),
+              widget: ForgetPasswordScreen(initialEmail: fpEmail),
               settings: settings,
             )
             : CupertinoPageRoute(
-              builder: (context) => const ForgetPasswordScreen(),
+              builder: (context) => ForgetPasswordScreen(initialEmail: fpEmail),
             );
 
       case Routes.onboardingScreen1:

@@ -45,20 +45,14 @@ final class LogoutRx
   @override
   handleErrorWithReturn(dynamic error) {
     if (error is DioException) {
-      if (error.response!.statusCode == 400) {
-        ToastUtil.showShortToast(error.response!.data["message"]);
-      } else {
-        if (error.response!.statusCode == 401) {
-          ToastUtil.showShortToast(error.response!.data["message"]);
-          totalDataClean();
-          NavigationService.navigateToReplacement(Routes.signInScreen);
-        } else {
-          ToastUtil.showShortToast(error.response!.data["message"]);
-        }
-      }
-      log(error.toString());
+      // Even if logout API fails (401, network error, etc.),
+      // still clean up local state — user wants to log out
+      appData.write(kKeyIsLoggedIn, false);
+      DioSingleton.instance.update('');
       dataFetcher.sink.addError(error);
-      return false;
+      // Return true so the caller proceeds with navigation to welcome screen
+      return true;
     }
+    return false;
   }
 }

@@ -252,8 +252,7 @@ class PreloadService {
   }
 
   /// Full cache preload for CacheLoadingScreen — awaitable with progress callback
-  /// Only loads what's needed for the home screen (categories + themes + their images)
-  /// Dynamic workout data + course images load in background on NavigationScreen
+  /// Loads in order of appearance: workout images first, then exercise thumbnails
   Future<void> preloadFullCache({void Function(double)? onProgress}) async {
     if (kDebugMode) print('[Preload] Full cache: Starting...');
     final cacheManager = DefaultCacheManager();
@@ -261,7 +260,7 @@ class PreloadService {
     void progress(double v) => onProgress?.call(v.clamp(0.0, 1.0));
 
     try {
-      // Phase 1: Fetch core API data in parallel (0% → 30%)
+      // ── Phase 1: Fetch core API data in parallel (0% → 15%) ──
       progress(0.02);
       if (kDebugMode) print('[Preload] Phase 1: Fetching API data...');
       final results = await Future.wait([
@@ -271,59 +270,138 @@ class PreloadService {
         _preloadEndpointWithData('/music/list').timeout(const Duration(seconds: 8), onTimeout: () => null),
         _preloadEndpointWithData('/work_out_list').timeout(const Duration(seconds: 8), onTimeout: () => null),
       ]);
-      progress(0.30);
+      progress(0.15);
 
-      // Phase 2: Collect only home screen images (categories + themes) (30% → 40%)
-      if (kDebugMode) print('[Preload] Phase 2: Collecting home screen images...');
-      final imageUrls = <String>{};
+      // ── Phase 2: Collect & download WORKOUT images in app order (15% → 60%) ──
+      if (kDebugMode) print('[Preload] Phase 2: Workout images (in order)...');
+      final workoutImageUrls = <String>[];
 
+      // 1. Category images (appear first on home screen)
       if (results[0] != null && results[0]!['data'] != null) {
         for (var item in results[0]!['data']) {
-          _addUrl(imageUrls, item['image']);
+          _addUrlToList(workoutImageUrls, item['image']);
+        }
+      }
+      // 2. Theme images (appear after categories)
+      if (results[1] != null && results[1]!['data'] != null) {
+        for (var item in results[1]!['data']) {
+          _addUrlToList(workoutImageUrls, item['image']);
+        }
+      }
+      // 3. Active workout images
+      if (results[4] != null && results[4]!['active_workouts'] != null) {
+        for (var item in results[4]!['active_workouts']) {
+          _addUrlToList(workoutImageUrls, item['image']);
+        }
+      }
+
+      // 4. Fetch dynamic workout lists and collect their images (in category/theme order)
+      final dynamicEndpoints = <String>[];
+      if (results[0] != null && results[0]!['data'] != null) {
+        for (var item in results[0]!['data']) {
+          if (item['id'] != null) {
+            dynamicEndpoints.add('/dynamic_work_out?type=body_part_exercise&id=${item['id']}');
+          }
         }
       }
       if (results[1] != null && results[1]!['data'] != null) {
         for (var item in results[1]!['data']) {
-          _addUrl(imageUrls, item['image']);
-        }
-      }
-      // Active workout images
-      if (results[4] != null && results[4]!['active_workouts'] != null) {
-        for (var item in results[4]!['active_workouts']) {
-          _addUrl(imageUrls, item['image']);
-        }
-      }
-      progress(0.40);
-
-      // Phase 3: Download home screen images (40% → 95%)
-      final urlList = imageUrls.toList();
-      if (kDebugMode) print('[Preload] Phase 3: Downloading ${urlList.length} images...');
-
-      int downloaded = 0;
-      final total = urlList.length;
-
-      // Download in batches of 10 — this is a blocking screen so speed matters
-      for (int i = 0; i < urlList.length; i += 10) {
-        final batch = urlList.skip(i).take(10).map((url) async {
-          try {
-            await cacheManager.downloadFile(url).timeout(const Duration(seconds: 6));
-          } catch (_) {}
-          downloaded++;
-          if (total > 0) {
-            progress(0.40 + (downloaded / total) * 0.55);
+          if (item['id'] != null) {
+            dynamicEndpoints.add('/dynamic_work_out?type=theme_workout&id=${item['id']}');
           }
-        }).toList();
-        await Future.wait(batch, eagerError: false);
-        await Future.delayed(const Duration(milliseconds: 30));
+        }
       }
+      dynamicEndpoints.addAll([
+        '/dynamic_work_out?type=training_level&level_type=beginner',
+        '/dynamic_work_out?type=training_level&level_type=intermediate',
+        '/dynamic_work_out?type=training_level&level_type=advance',
+      ]);
+
+      // Fetch dynamic workout data in parallel (fast, just API calls)
+      final dynamicResults = await Future.wait(
+        dynamicEndpoints.map((e) =>
+          _preloadEndpointWithData(e).timeout(const Duration(seconds: 8), onTimeout: () => null),
+        ),
+      );
+      // Collect workout images in order + gather workout IDs for exercise phase
+      final workoutIds = <int>[];
+      for (final dynResult in dynamicResults) {
+        if (dynResult == null || dynResult['data'] == null) continue;
+        if (dynResult['data'] is List) {
+          for (var item in dynResult['data']) {
+            _addUrlToList(workoutImageUrls, item['image']);
+            if (item['id'] != null) workoutIds.add(item['id']);
+          }
+        }
+      }
+      progress(0.25);
+
+      // Download all workout images in order, batches of 8
+      if (kDebugMode) print('[Preload] Downloading ${workoutImageUrls.length} workout images...');
+      await _downloadImagesInOrder(cacheManager, workoutImageUrls, 0.25, 0.60, progress);
+      progress(0.60);
+
+      // ── Phase 3: Collect & download EXERCISE thumbnails in order (60% → 95%) ──
+      if (kDebugMode) print('[Preload] Phase 3: Exercise thumbnails (in order)...');
+      final exerciseImageUrls = <String>[];
+
+      // Deduplicate workout IDs while preserving order
+      final seenIds = <int>{};
+      final uniqueWorkoutIds = <int>[];
+      for (final id in workoutIds) {
+        if (seenIds.add(id)) uniqueWorkoutIds.add(id);
+      }
+
+      // Fetch exercise data for each workout (in order of appearance)
+      for (final id in uniqueWorkoutIds) {
+        try {
+          final videoResult = await _preloadEndpointWithData('/workoutWiseVideos/$id')
+              .timeout(const Duration(seconds: 6), onTimeout: () => null);
+          if (videoResult != null && videoResult['data'] is List) {
+            for (var exercise in videoResult['data']) {
+              _addUrlToList(exerciseImageUrls, exercise['thumbnail']);
+            }
+          }
+        } catch (_) {}
+      }
+      progress(0.65);
+
+      // Download exercise thumbnails in order, batches of 8
+      if (kDebugMode) print('[Preload] Downloading ${exerciseImageUrls.length} exercise thumbnails...');
+      await _downloadImagesInOrder(cacheManager, exerciseImageUrls, 0.65, 0.95, progress);
 
       progress(0.95);
-      if (kDebugMode) print('[Preload] ${urlList.length} images downloaded');
+      if (kDebugMode) print('[Preload] ${workoutImageUrls.length} workout + ${exerciseImageUrls.length} exercise images downloaded');
 
       progress(1.0);
       if (kDebugMode) print('[Preload] Full cache: Complete');
     } catch (e) {
       if (kDebugMode) print('[Preload] Full cache error: $e');
+    }
+  }
+
+  /// Download a list of image URLs in order, reporting progress between [startP] and [endP]
+  Future<void> _downloadImagesInOrder(
+    BaseCacheManager cacheManager,
+    List<String> urls,
+    double startP,
+    double endP,
+    void Function(double) progress,
+  ) async {
+    if (urls.isEmpty) return;
+    int downloaded = 0;
+    final total = urls.length;
+
+    for (int i = 0; i < urls.length; i += 8) {
+      final batch = urls.skip(i).take(8).map((url) async {
+        try {
+          await cacheManager.downloadFile(url).timeout(const Duration(seconds: 6));
+        } catch (_) {}
+        downloaded++;
+        progress(startP + (downloaded / total) * (endP - startP));
+      }).toList();
+      await Future.wait(batch, eagerError: false);
+      await Future.delayed(const Duration(milliseconds: 30));
     }
   }
 
@@ -420,6 +498,14 @@ class PreloadService {
   void _addUrl(Set<String> urls, dynamic url) {
     if (url != null && url.toString().isNotEmpty && url.toString().startsWith('http')) {
       urls.add(url.toString());
+    }
+  }
+
+  /// Add URL to ordered list (avoids duplicates while preserving order)
+  void _addUrlToList(List<String> urls, dynamic url) {
+    if (url != null && url.toString().isNotEmpty && url.toString().startsWith('http')) {
+      final s = url.toString();
+      if (!urls.contains(s)) urls.add(s);
     }
   }
 

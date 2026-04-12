@@ -3,8 +3,10 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gritti_app/common_widget/custom_button.dart';
 import 'package:gritti_app/common_widget/custom_network_image.dart';
+import 'package:gritti_app/constants/app_constants.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
+import 'package:gritti_app/helpers/di.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
@@ -49,6 +51,61 @@ class _ReadyScreenState extends State<ReadyScreen> {
         cacheManager.getSingleFile(url).ignore();
       }
     }
+  }
+
+  void _showGuestRegisterDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        title: Text(
+          'Registrati per iniziare',
+          style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+            color: const Color(0xFF27272A),
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        content: Text(
+          'Registrati per accedere a tutti gli allenamenti.',
+          style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+            color: const Color(0xFF52525B),
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(
+              'Dopo',
+              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                color: const Color(0xFF71717A),
+                fontSize: 14.sp,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              NavigationService.navigateTo(
+                Routes.onboardingScreen1,
+              );
+            },
+            child: Text(
+              'Registrati',
+              style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                color: const Color(0xFFF566A9),
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -303,6 +360,13 @@ class _ReadyScreenState extends State<ReadyScreen> {
                     builder: (context, snapshot) {
                       if (_isLoading || !snapshot.hasData || snapshot.data?.data == null || snapshot.data!.data!.isEmpty) {
                         return const SizedBox.shrink();
+                      }
+                      final isGuest = appData.read(kKeyIsGuest) ?? false;
+                      if (isGuest) {
+                        return CustomButton(
+                          onPressed: () => _showGuestRegisterDialog(context),
+                          text: "Registrati per iniziare",
+                        );
                       }
                       return CustomButton(
                         onPressed: () {

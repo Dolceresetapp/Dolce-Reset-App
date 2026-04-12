@@ -6,16 +6,16 @@ PODS:
     - FlutterMacOS
   - connectivity_plus (0.0.1):
     - Flutter
-  - Firebase/CoreOnly (12.8.0):
-    - FirebaseCore (~> 12.8.0)
-  - firebase_core (4.4.0):
-    - Firebase/CoreOnly (= 12.8.0)
+  - Firebase/CoreOnly (12.9.0):
+    - FirebaseCore (~> 12.9.0)
+  - firebase_core (4.6.0):
+    - Firebase/CoreOnly (= 12.9.0)
     - Flutter
-  - FirebaseCore (12.8.0):
-    - FirebaseCoreInternal (~> 12.8.0)
+  - FirebaseCore (12.9.0):
+    - FirebaseCoreInternal (~> 12.9.0)
     - GoogleUtilities/Environment (~> 8.1)
     - GoogleUtilities/Logger (~> 8.1)
-  - FirebaseCoreInternal (12.8.0):
+  - FirebaseCoreInternal (12.9.0):
     - "GoogleUtilities/NSData+zlib (~> 8.1)"
   - Flutter (1.0.0)
   - flutter_tts (0.0.1):
@@ -32,6 +32,9 @@ PODS:
   - GoogleUtilities/Privacy (8.1.0)
   - image_picker_ios (0.0.1):
     - Flutter
+  - in_app_purchase_storekit (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - mobile_scanner (7.0.0):
     - Flutter
     - FlutterMacOS
@@ -43,12 +46,12 @@ PODS:
   - sqflite_darwin (0.0.4):
     - Flutter
     - FlutterMacOS
-  - Superscript (1.0.12)
-  - SuperwallKit (4.12.7):
-    - Superscript (= 1.0.12)
+  - Superscript (1.0.13)
+  - SuperwallKit (4.14.1):
+    - Superscript (= 1.0.13)
   - superwallkit_flutter (0.0.1):
     - Flutter
-    - SuperwallKit (= 4.12.7)
+    - SuperwallKit (= 4.14.1)
   - url_launcher_ios (0.0.1):
     - Flutter
   - video_player_avfoundation (0.0.1):
@@ -64,6 +67,7 @@ DEPENDENCIES:
   - flutter_tts (from `.symlinks/plugins/flutter_tts/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - in_app_purchase_storekit (from `.symlinks/plugins/in_app_purchase_storekit/darwin`)
   - mobile_scanner (from `.symlinks/plugins/mobile_scanner/darwin`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
@@ -98,6 +102,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  in_app_purchase_storekit:
+    :path: ".symlinks/plugins/in_app_purchase_storekit/darwin"
   mobile_scanner:
     :path: ".symlinks/plugins/mobile_scanner/darwin"
   path_provider_foundation:
@@ -115,24 +121,25 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   app_links: a754cbec3c255bd4bbb4d236ecc06f28cd9a7ce8
-  audioplayers_darwin: 4f9ca89d92d3d21cec7ec580e78ca888e5fb68bd
+  audioplayers_darwin: 835ced6edd4c9fc8ebb0a7cc9e294a91d99917d5
   connectivity_plus: cb623214f4e1f6ef8fe7403d580fdad517d2f7dd
-  Firebase: 9a58fdbc9d8655ed7b79a19cf9690bb007d3d46d
-  firebase_core: ee30637e6744af8e0c12a6a1e8a9718506ec2398
-  FirebaseCore: 0dbad74bda10b8fb9ca34ad8f375fb9dd3ebef7c
-  FirebaseCoreInternal: fe5fa466aeb314787093a7dce9f0beeaad5a2a21
+  Firebase: 065f2bb395062046623036d8e6dc857bc2521d56
+  firebase_core: 8e6f58412ca227827c366b92e7cee047a2148c60
+  FirebaseCore: 428912f751178b06bef0a1793effeb4a5e09a9b8
+  FirebaseCoreInternal: b321eafae5362113bc182956fafc9922cfc77b72
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   flutter_tts: 35ac3c7d42412733e795ea96ad2d7e05d0a75113
   fluttertoast: 2c67e14dce98bbdb200df9e1acf610d7a6264ea1
   GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
   image_picker_ios: e0ece4aa2a75771a7de3fa735d26d90817041326
+  in_app_purchase_storekit: 22cca7d08eebca9babdf4d07d0baccb73325d3c8
   mobile_scanner: 9157936403f5a0644ca3779a38ff8404c5434a93
   path_provider_foundation: bb55f6dbba17d0dccd6737fe6f7f34fbd0376880
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
-  Superscript: 00e98fcd78a2cefa33b658d4a16756b535eabd2c
-  SuperwallKit: 33955981901609c33a2773b94756a26db7b21fbb
-  superwallkit_flutter: d7362c9428bf5b162c8886ae92925d658ce9c7be
+  Superscript: bcb4099b41bed108ab7e88cfc56af0ed1170b582
+  SuperwallKit: 841ee108a1a152d83e4c4db8497208dfe1bc61ed
+  superwallkit_flutter: a3585d5f11a8bad748e25affecad1aa6734818af
   url_launcher_ios: 7a95fa5b60cc718a708b8f2966718e93db0cef1b
   video_player_avfoundation: dd410b52df6d2466a42d28550e33e4146928280a
 

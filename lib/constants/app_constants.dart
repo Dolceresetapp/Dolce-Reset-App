@@ -133,6 +133,7 @@ const String kKeyPendingOnboard15 = 'pending_onboard15';
 const String kKeyFromPaywall = 'from_paywall';
 const String kKeyPendingSignature = 'pending_signature_base64';
 const String kKeyCacheLoaded = 'cache_loaded';
+const String kKeyIsGuest = 'is_guest_mode';
 
 class DefaultValue {
   static const bool kDefaultBoolean = false;

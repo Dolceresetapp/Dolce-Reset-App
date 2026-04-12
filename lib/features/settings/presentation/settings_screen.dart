@@ -889,6 +889,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: "Domande Frequenti",
               onTap: () => NavigationService.navigateTo(Routes.faqsScreen),
             ),
+            UIHelper.verticalSpace(12.h),
+            SettingsTitleWidget(
+              icon: Assets.icons.lockLocked,
+              title: "Privacy Policy",
+              onTap: () => launchUrl(
+                Uri.parse('https://www.dolcereset.com/privacy-policy'),
+                mode: LaunchMode.externalApplication,
+              ),
+            ),
+            UIHelper.verticalSpace(12.h),
+            SettingsTitleWidget(
+              icon: Assets.icons.lockLocked,
+              title: "Termini di Utilizzo",
+              onTap: () => launchUrl(
+                Uri.parse('https://www.dolcereset.com/terms-and-conditions'),
+                mode: LaunchMode.externalApplication,
+              ),
+            ),
 
             UIHelper.verticalSpace(32.h),
 
@@ -918,14 +936,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: InkWell(
                 onTap: () {
-                  logoutRxObj.logoutRx().waitingForFuture().then((success) {
-                    if (success) {
-                      appData.write(kKeyIsLoggedIn, false);
-                      DioSingleton.instance.update('');
-                      NavigationService.navigateToReplacement(
-                        Routes.signInScreen,
-                      );
-                    }
+                  // Suppress 401 redirects during logout
+                  NavigationService.setLoggingOut(true);
+                  appData.write(kKeyIsLoggedIn, false);
+                  DioSingleton.instance.update('');
+                  // Navigate immediately
+                  NavigationService.navigateToUntilReplacement(
+                    Routes.welcomeScreen,
+                  );
+                  // Fire-and-forget: tell backend to invalidate token
+                  logoutRxObj.logoutRx();
+                  // Re-enable after a delay (in case of lingering 401s)
+                  Future.delayed(const Duration(seconds: 3), () {
+                    NavigationService.setLoggingOut(false);
                   });
                 },
                 borderRadius: BorderRadius.circular(16.r),

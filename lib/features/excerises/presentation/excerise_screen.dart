@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gritti_app/constants/app_constants.dart';
 import 'package:gritti_app/constants/text_font_style.dart';
 import 'package:gritti_app/features/excerises/data/rx_get_category/model/category_response_model.dart';
 import 'package:gritti_app/features/excerises/data/rx_get_theme/model/theme_response_model.dart';
 import 'package:gritti_app/gen/assets.gen.dart';
 import 'package:gritti_app/helpers/all_routes.dart';
+import 'package:gritti_app/helpers/di.dart';
 import 'package:gritti_app/helpers/navigation_service.dart';
 import 'package:gritti_app/helpers/ui_helpers.dart';
 
 import '../../../common_widget/custom_network_image.dart';
+import '../../../common_widget/guest_prompt_widget.dart';
 import '../../../networks/api_acess.dart';
 import '../data/rx_get_my_workout/model/my_workout_response_model.dart';
 import '../widgets/active_workout_widget.dart';
@@ -28,13 +31,19 @@ class _ExceriseScreenState extends State<ExceriseScreen>
   @override
   bool get wantKeepAlive => true;
 
+  late final bool _isGuest;
+
   @override
   void initState() {
     super.initState();
-    // Trigger data fetch — cache interceptor returns instantly if data exists
+    _isGuest = appData.read(kKeyIsGuest) ?? false;
+    // Content APIs are now public (Apple Guideline 5.1.1) — fetch for everyone
     categoryRxObj.categoryRx();
     themeRxObj.themeRx();
-    myWorkoutRxObj.myWorkoutRx();
+    // My Workouts is account-specific — only fetch for logged-in users
+    if (!_isGuest) {
+      myWorkoutRxObj.myWorkoutRx();
+    }
   }
 
   @override
@@ -47,13 +56,21 @@ class _ExceriseScreenState extends State<ExceriseScreen>
         child: SafeArea(
           child: Column(
             children: [
-              ValueListenableBuilder<String>(
-                valueListenable: avatarNotifier,
-                builder: (_, avatar, __) => ProfileSectionWidget(avatar: avatar.isEmpty ? getUserAvatar() : avatar),
-              ),
+              // Guest banner
+              if (_isGuest) ...[
+                UIHelper.verticalSpace(16.h),
+                const GuestBanner(),
+                UIHelper.verticalSpace(16.h),
+              ],
+              // Profile section (hidden for guests)
+              if (!_isGuest)
+                ValueListenableBuilder<String>(
+                  valueListenable: avatarNotifier,
+                  builder: (_, avatar, __) => ProfileSectionWidget(avatar: avatar.isEmpty ? getUserAvatar() : avatar),
+                ),
               UIHelper.verticalSpace(30.h),
 
-              // Esercizi per Zona
+              // === CATEGORIES (Esercizi per Zona) — public content ===
               _SectionHeader(
                 title: "Esercizi per Zona",
                 onSeeAll: () => NavigationService.navigateToWithArgs(
@@ -62,8 +79,6 @@ class _ExceriseScreenState extends State<ExceriseScreen>
                 ),
               ),
               UIHelper.verticalSpace(20.h),
-
-              // Category List
               Align(
                 alignment: Alignment.centerLeft,
                 child: SizedBox(
@@ -95,8 +110,9 @@ class _ExceriseScreenState extends State<ExceriseScreen>
                   ),
                 ),
               ),
-
               UIHelper.verticalSpace(20.h),
+
+              // === THEMES (Allenamenti a Tema) — public content ===
               _SectionHeader(
                 title: "Allenamenti a Tema",
                 onSeeAll: () => NavigationService.navigateToWithArgs(
@@ -105,8 +121,6 @@ class _ExceriseScreenState extends State<ExceriseScreen>
                 ),
               ),
               UIHelper.verticalSpace(20.h),
-
-              // Theme grid
               StreamBuilder<ThemeResponseModel>(
                 stream: themeRxObj.themeRxStream,
                 builder: (context, snapshot) {
@@ -137,8 +151,9 @@ class _ExceriseScreenState extends State<ExceriseScreen>
                   return const SizedBox.shrink();
                 },
               ),
-
               UIHelper.verticalSpace(20.h),
+
+              // === TRAINING LEVELS (always visible — static content) ===
               Align(
                 alignment: Alignment.topLeft,
                 child: Text(
@@ -188,66 +203,69 @@ class _ExceriseScreenState extends State<ExceriseScreen>
                 ),
               ),
 
-              UIHelper.verticalSpace(16.h),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  "I Miei Allenamenti",
-                  style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
-                    color: const Color(0xFF27272A),
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w800,
+              // "I Miei Allenamenti" — account-based, hidden for guests
+              if (!_isGuest) ...[
+                UIHelper.verticalSpace(16.h),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    "I Miei Allenamenti",
+                    style: TextFontStyle.headLine16cFFFFFFWorkSansW600.copyWith(
+                      color: const Color(0xFF27272A),
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
-              ),
-              UIHelper.verticalSpace(16.h),
+                UIHelper.verticalSpace(16.h),
 
-              StreamBuilder<MyWorkoutResponseModel>(
-                stream: myWorkoutRxObj.myWorkoutRxStream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData &&
-                      snapshot.data!.activeWorkouts != null &&
-                      snapshot.data!.activeWorkouts!.isNotEmpty) {
-                    final workouts = snapshot.data!.activeWorkouts!;
-                    return ListView.builder(
-                      itemCount: workouts.length,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      itemBuilder: (_, index) {
-                        final data = workouts[index];
-                        return InkWell(
-                          onTap: () => NavigationService.navigateToWithArgs(
-                            Routes.readyScreen,
-                            {"id": data.id},
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 12.h),
-                            child: ActiveWorkoutWidget(
-                              image: data.image ?? "",
-                              title: data.title ?? "",
-                              kcal: data.calories.toString(),
-                              time: data.minutes.toString(),
+                StreamBuilder<MyWorkoutResponseModel>(
+                  stream: myWorkoutRxObj.myWorkoutRxStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData &&
+                        snapshot.data!.activeWorkouts != null &&
+                        snapshot.data!.activeWorkouts!.isNotEmpty) {
+                      final workouts = snapshot.data!.activeWorkouts!;
+                      return ListView.builder(
+                        itemCount: workouts.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (_, index) {
+                          final data = workouts[index];
+                          return InkWell(
+                            onTap: () => NavigationService.navigateToWithArgs(
+                              Routes.readyScreen,
+                              {"id": data.id},
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return SizedBox(height: 100.h);
-                  }
-                  return Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.h),
-                      child: Text(
-                        "Nessun allenamento attivo",
-                        style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 12.h),
+                              child: ActiveWorkoutWidget(
+                                image: data.image ?? "",
+                                title: data.title ?? "",
+                                kcal: data.calories.toString(),
+                                time: data.minutes.toString(),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return SizedBox(height: 100.h);
+                    }
+                    return Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.h),
+                        child: Text(
+                          "Nessun allenamento attivo",
+                          style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                ),
+              ],
 
               UIHelper.verticalSpaceSemiLarge,
             ],

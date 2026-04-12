@@ -6,13 +6,22 @@ final class NavigationService {
   NavigationService._internal();
   static NavigationService get instance => _navigationService;
 
+  // Flag to suppress 401 redirects during logout
+  static bool _isLoggingOut = false;
+  static void setLoggingOut(bool value) => _isLoggingOut = value;
+
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   static Future<dynamic> navigateTo(String routeName) =>
       navigatorKey.currentState!.pushNamed(routeName);
 
-  static Future<dynamic> navigateToReplacement(String routeName) =>
-      navigatorKey.currentState!.pushReplacementNamed(routeName);
+  static Future<dynamic> navigateToReplacement(String routeName) {
+    // During logout, suppress 401 handlers trying to navigate to signIn
+    if (_isLoggingOut && routeName == '/signInScreen') {
+      return Future.value(null);
+    }
+    return navigatorKey.currentState!.pushReplacementNamed(routeName);
+  }
 
   static Future<dynamic> navigateToUntilReplacement(String routeName) =>
       navigatorKey.currentState!

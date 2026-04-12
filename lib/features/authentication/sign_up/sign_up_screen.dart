@@ -214,6 +214,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           .waitingForFuture()
                           .then((success) {
                             if (success) {
+                              // Clear guest mode on successful registration
+                              appData.remove(kKeyIsGuest);
                               bool fromPaywall = appData.read(kKeyFromPaywall) ?? false;
                               if (fromPaywall) {
                                 // Coming from paywall flow → submit data & cache
@@ -256,41 +258,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Hai già ',
-                          style: TextFontStyle.headline30c27272AtyleWorkSansW700
-                              .copyWith(
-                                color: const Color(0xFF52525B),
-                                fontSize: 14.sp,
-
-                                fontWeight: FontWeight.w400,
+                  child: (appData.read(kKeyFromPaywall) ?? false)
+                      ? const SizedBox.shrink()
+                      : Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Hai già ',
+                                style: TextFontStyle.headline30c27272AtyleWorkSansW700
+                                    .copyWith(
+                                      color: const Color(0xFF52525B),
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                               ),
-                        ),
-                        TextSpan(
-                          recognizer:
-                              TapGestureRecognizer()
-                                ..onTap = () {
-                                  NavigationService.navigateToReplacement(
-                                    Routes.signInScreen,
-                                  );
-                                },
-                          text: 'un account?',
-
-                          style: TextFontStyle.headline30c27272AtyleWorkSansW700
-                              .copyWith(
-                                decoration: TextDecoration.underline,
-                                fontSize: 14.sp,
-                                color: const Color(0xFF767EFF),
-                                fontWeight: FontWeight.w700,
+                              TextSpan(
+                                recognizer:
+                                    TapGestureRecognizer()
+                                      ..onTap = () {
+                                        NavigationService.navigateToReplacement(
+                                          Routes.signInScreen,
+                                        );
+                                      },
+                                text: 'un account?',
+                                style: TextFontStyle.headline30c27272AtyleWorkSansW700
+                                    .copyWith(
+                                      decoration: TextDecoration.underline,
+                                      fontSize: 14.sp,
+                                      color: const Color(0xFF767EFF),
+                                      fontWeight: FontWeight.w700,
+                                    ),
                               ),
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
                 ),
 
                 UIHelper.verticalSpaceMediumLarge,

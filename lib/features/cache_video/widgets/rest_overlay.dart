@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +15,8 @@ class RestOverlay extends StatefulWidget {
   final String nextExerciseTitle;
   final String? nextVideoUrl;
   final String? nextVoiceoverText;
+  final String? nextVoiceoverType;
+  final String? nextVoiceoverAudio;
   final VoidCallback onComplete;
   final VoidCallback onSkip;
   final VoidCallback? onVoiceoverPlayed;
@@ -28,6 +31,8 @@ class RestOverlay extends StatefulWidget {
     required this.nextExerciseTitle,
     this.nextVideoUrl,
     this.nextVoiceoverText,
+    this.nextVoiceoverType,
+    this.nextVoiceoverAudio,
     required this.onComplete,
     required this.onSkip,
     this.onVoiceoverPlayed,
@@ -51,6 +56,7 @@ class _RestOverlayState extends State<RestOverlay>
 
   // TTS for voiceover
   FlutterTts? _tts;
+  AudioPlayer? _voiceoverPlayer;
 
   late AnimationController _progressController;
   late Animation<double> _progressAnimation;
@@ -106,36 +112,73 @@ class _RestOverlayState extends State<RestOverlay>
 
   Future<void> _playVoiceover() async {
     if (!widget.voiceoverEnabled) return;
-    if (widget.nextVoiceoverText == null || widget.nextVoiceoverText!.isEmpty) return;
     if (_isDisposed) return;
+
+    // Choose between audio file or TTS
+    if (widget.nextVoiceoverType == 'audio' &&
+        widget.nextVoiceoverAudio != null &&
+        widget.nextVoiceoverAudio!.isNotEmpty) {
+      await _playVoiceoverAudioFile();
+    } else {
+      await _playVoiceoverTts();
+    }
+  }
+
+  Future<void> _playVoiceoverTts() async {
+    if (widget.nextVoiceoverText == null || widget.nextVoiceoverText!.isEmpty) return;
 
     try {
       await _initTts();
       if (_tts == null || _isDisposed) return;
 
-      // Stop any existing speech before starting new one
       await _tts!.stop();
-
-      // Wait 1 second before speaking
       await Future.delayed(const Duration(seconds: 1));
-
       if (_isDisposed || !widget.voiceoverEnabled) return;
 
-      // Duck music before speaking
       await widget.onDuckMusic?.call();
-
-      // Set completion handler to restore music
       _tts!.setCompletionHandler(() {
         widget.onRestoreMusic?.call();
       });
 
       await _tts!.speak(widget.nextVoiceoverText!);
-
-      // Notify that voiceover was played during rest
       widget.onVoiceoverPlayed?.call();
-
     } catch (e) {
       debugPrint('Rest overlay TTS error: $e');
+      await widget.onRestoreMusic?.call();
+    }
+  }
+
+  Future<void> _playVoiceoverAudioFile() async {
+    try {
+      await Future.delayed(const Duration(seconds: 1));
+      if (_isDisposed || !widget.voiceoverEnabled) return;
+
+      await widget.onDuckMusic?.call();
+
+      _voiceoverPlayer ??= AudioPlayer();
+      _voiceoverPlayer!.setReleaseMode(ReleaseMode.stop);
+
+      final file = await DefaultCacheManager().getSingleFile(widget.nextVoiceoverAudio!);
+      if (_isDisposed) {
+        await widget.onRestoreMusic?.call();
+        return;
+      }
+
+      final completer = Completer<void>();
+      StreamSubscription<void>? sub;
+      sub = _voiceoverPlayer!.onPlayerComplete.listen((_) {
+        if (!completer.isCompleted) completer.complete();
+        sub?.cancel();
+      });
+
+      await _voiceoverPlayer!.setVolume(0.85);
+      await _voiceoverPlayer!.play(DeviceFileSource(file.path));
+      await completer.future;
+
+      await widget.onRestoreMusic?.call();
+      widget.onVoiceoverPlayed?.call();
+    } catch (e) {
+      debugPrint('Rest overlay audio file error: $e');
       await widget.onRestoreMusic?.call();
     }
   }
@@ -230,6 +273,8 @@ class _RestOverlayState extends State<RestOverlay>
     _isDisposed = true;
     _timer?.cancel();
     _tts?.stop();
+    _voiceoverPlayer?.stop();
+    _voiceoverPlayer?.dispose();
     _progressController.dispose();
     _previewController?.dispose();
     super.dispose();

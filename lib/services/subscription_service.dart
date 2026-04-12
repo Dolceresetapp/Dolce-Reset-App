@@ -39,9 +39,8 @@ class AppSuperwallDelegate extends SuperwallDelegate {
 
   @override
   void handleSuperwallEvent(SuperwallEventInfo eventInfo) {
-    if (kDebugMode) {
-      log('[Superwall] Event: ${eventInfo.event}');
-    }
+    // Always log Superwall events for debugging purchase issues
+    log('[Superwall] Event: ${eventInfo.event}');
   }
 
   @override
@@ -54,7 +53,11 @@ class AppSuperwallDelegate extends SuperwallDelegate {
   void handleCustomPaywallAction(String name) {}
 
   @override
-  void handleLog(String level, String scope, String? message, Map? info, String? error) {}
+  void handleLog(String level, String scope, String? message, Map? info, String? error) {
+    if (level == 'error' || level == 'warn') {
+      log('[Superwall][$level] $scope: $message ${error ?? ''}');
+    }
+  }
 
   @override
   void paywallWillOpenDeepLink(Uri url) {}

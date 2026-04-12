@@ -89,7 +89,7 @@ class _DownloadProgressScreenState extends State<DownloadProgressScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 0.2.sw),
                 child: LinearProgressBar(
                   maxSteps: maxSteps,
-                  progressType: LinearProgressBar.progressTypeLinear,
+                  progressType: ProgressType.linear,
                   currentStep: currentStep,
                   progressColor: const Color(0xFFF566A9),
                   backgroundColor: const Color(0xFFE4E4E7),

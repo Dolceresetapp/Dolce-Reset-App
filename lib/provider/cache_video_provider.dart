@@ -60,6 +60,9 @@ class CacheVideoProvider extends ChangeNotifier {
   bool _isSpeaking = false;
   bool _voiceoverPlayedDuringRest = false;
 
+  // Audio file voiceover player (when voiceover_type == 'audio')
+  AudioPlayer? _voiceoverPlayer;
+
   // Background music
   AudioPlayer? _musicPlayer;
   List<Music> _availableMusic = [];
@@ -549,9 +552,7 @@ class CacheVideoProvider extends ChangeNotifier {
 
     // Store the exercise index when voiceover started
     final startedForIndex = currentIndex;
-
-    await _initTts();
-    if (_tts == null) return;
+    final exercise = data[currentIndex];
 
     // Wait 2 seconds before voiceover
     await Future.delayed(const Duration(seconds: 2));
@@ -561,12 +562,17 @@ class CacheVideoProvider extends ChangeNotifier {
     if (currentIndex != startedForIndex) return; // Exercise changed
     if (!isPlaying) return;
 
-    // Get current exercise text
-    final currentText = data[currentIndex].voiceoverText;
-    if (currentText == null || currentText.isEmpty) return;
-
-    // Speak once only
-    await _speakText(currentText);
+    // Choose between TTS or audio file based on voiceover_type
+    if (exercise.voiceoverType == 'audio' && exercise.voiceoverAudio != null && exercise.voiceoverAudio!.isNotEmpty) {
+      await _playVoiceoverAudioFile(exercise.voiceoverAudio!);
+    } else {
+      // Default to TTS
+      final currentText = exercise.voiceoverText;
+      if (currentText == null || currentText.isEmpty) return;
+      await _initTts();
+      if (_tts == null) return;
+      await _speakText(currentText);
+    }
   }
 
   Future<void> _speakText(String text) async {
@@ -588,16 +594,63 @@ class CacheVideoProvider extends ChangeNotifier {
     }
   }
 
+  /// Play voiceover from an audio file (MP3) instead of TTS
+  Future<void> _playVoiceoverAudioFile(String audioUrl) async {
+    if (_isDisposed) return;
+
+    try {
+      _isSpeaking = true;
+      await _duckMusic();
+
+      // Initialize voiceover player if needed
+      _voiceoverPlayer ??= AudioPlayer();
+      _voiceoverPlayer!.setReleaseMode(ReleaseMode.stop);
+
+      // Download and play from cache
+      final file = await DefaultCacheManager().getSingleFile(audioUrl);
+      if (_isDisposed || !_voiceoverEnabled) {
+        _isSpeaking = false;
+        await _restoreMusic();
+        return;
+      }
+
+      // Listen for completion to restore music
+      final completer = Completer<void>();
+      StreamSubscription<void>? sub;
+      sub = _voiceoverPlayer!.onPlayerComplete.listen((_) {
+        if (!completer.isCompleted) completer.complete();
+        sub?.cancel();
+      });
+
+      await _voiceoverPlayer!.setVolume(0.85);
+      await _voiceoverPlayer!.play(DeviceFileSource(file.path));
+
+      // Wait for playback to finish
+      await completer.future;
+
+      _isSpeaking = false;
+      await _restoreMusic();
+      debugPrint('Voiceover audio file finished playing');
+    } catch (e) {
+      debugPrint('Error playing voiceover audio: $e');
+      _isSpeaking = false;
+      await _restoreMusic();
+    }
+  }
+
   /// Stop any ongoing voiceover and cancel repeat timer
   Future<void> _stopVoiceover() async {
     _voiceoverRepeatTimer?.cancel();
     _voiceoverRepeatTimer = null;
     _isSpeaking = false;
 
-    if (_tts == null) return;
-
     try {
-      await _tts!.stop();
+      await _tts?.stop();
+    } catch (e) {
+      // Ignore stop errors
+    }
+    try {
+      await _voiceoverPlayer?.stop();
     } catch (e) {
       // Ignore stop errors
     }
@@ -606,6 +659,8 @@ class CacheVideoProvider extends ChangeNotifier {
   void reset() {
     // Stop voiceover
     _stopVoiceover();
+    _voiceoverPlayer?.dispose();
+    _voiceoverPlayer = null;
 
     // Stop music and cleanup subscriptions
     _musicStateSubscription?.cancel();
@@ -702,6 +757,8 @@ class CacheVideoProvider extends ChangeNotifier {
     if (data.isNotEmpty) {
       // Preload all videos in background (fire and forget)
       unawaited(_preloadAllVideos());
+      // Preload voiceover audio files in background
+      unawaited(_preloadVoiceoverAudioFiles());
       // Load first video but don't auto-play (countdown will start it)
       await _loadVideo(0, autoPlay: false);
     }
@@ -739,6 +796,23 @@ class CacheVideoProvider extends ChangeNotifier {
         }
       } catch (e) {
         // Ignore preload errors - video will load on demand
+      }
+    }
+  }
+
+  /// Preload voiceover audio files for exercises that use audio type
+  Future<void> _preloadVoiceoverAudioFiles() async {
+    for (final exercise in data) {
+      if (_isDisposed) return;
+      if (exercise.voiceoverType == 'audio' &&
+          exercise.voiceoverAudio != null &&
+          exercise.voiceoverAudio!.isNotEmpty) {
+        try {
+          await DefaultCacheManager().getSingleFile(exercise.voiceoverAudio!);
+          debugPrint('Preloaded voiceover audio for: ${exercise.title}');
+        } catch (e) {
+          // Ignore preload errors
+        }
       }
     }
   }
@@ -1097,6 +1171,9 @@ class CacheVideoProvider extends ChangeNotifier {
     _stopVoiceover();
     // Properly shutdown TTS to free resources
     _tts?.stop();
+    // Dispose voiceover audio player
+    _voiceoverPlayer?.stop();
+    _voiceoverPlayer?.dispose();
     // Stop and dispose music player with subscriptions
     _musicStateSubscription?.cancel();
     _musicCompleteSubscription?.cancel();

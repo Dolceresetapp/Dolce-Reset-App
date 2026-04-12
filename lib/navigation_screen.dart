@@ -3,12 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
 import 'common_widget/custom_svg_asset.dart';
+import 'common_widget/guest_prompt_widget.dart';
+import 'constants/app_constants.dart';
 import 'constants/text_font_style.dart';
 import 'features/chef/presentation/chef_screen.dart';
 import 'features/excerises/presentation/excerise_screen.dart';
 import 'features/motivation/presentation/motivation_screen.dart';
 import 'features/settings/presentation/settings_screen.dart';
 import 'gen/assets.gen.dart';
+import 'helpers/di.dart';
 import 'networks/api_acess.dart';
 import 'services/preload_service.dart';
 import 'services/subscription_service.dart';
@@ -24,21 +27,43 @@ class NavigationScreen extends StatefulWidget {
 class _NavigationScreenState extends State<NavigationScreen> {
   late int currentIndex;
   bool _backgroundLoadingDone = false;
+  late final bool _isGuest;
 
-  // Keep screens alive across tab switches with IndexedStack
-  final List<Widget> _screens = const [
-    ExceriseScreen(),
-    ChefScreen(),
-    MotivationScreen(),
-    SettingsScreen(),
-  ];
+  late final List<Widget> _screens;
 
   @override
   void initState() {
     super.initState();
     currentIndex = widget.initialIndex;
+    _isGuest = appData.read(kKeyIsGuest) ?? false;
 
-    if (!_backgroundLoadingDone) {
+    // Build screens based on guest mode
+    _screens = [
+      const ExceriseScreen(),
+      _isGuest
+          ? const GuestPromptWidget(
+              title: 'Chef AI',
+              subtitle: 'Registrati per accedere al generatore di ricette AI e all\'analizzatore di cibo.',
+              icon: Icons.restaurant_outlined,
+            )
+          : const ChefScreen(),
+      _isGuest
+          ? const GuestPromptWidget(
+              title: 'Motivazione',
+              subtitle: 'Registrati per parlare con il tuo Coach AI e unirti alla community.',
+              icon: Icons.psychology_outlined,
+            )
+          : const MotivationScreen(),
+      _isGuest
+          ? const GuestPromptWidget(
+              title: 'Impostazioni',
+              subtitle: 'Registrati per personalizzare il tuo profilo e le impostazioni.',
+              icon: Icons.settings_outlined,
+            )
+          : const SettingsScreen(),
+    ];
+
+    if (!_backgroundLoadingDone && !_isGuest) {
       _backgroundLoadingDone = true;
       _startBackgroundLoading();
     }

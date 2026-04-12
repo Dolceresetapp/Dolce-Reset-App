@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -34,6 +35,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
 
   // TTS for rest overlay voiceover and countdown
   FlutterTts? _restTts;
+  AudioPlayer? _voiceoverPlayer;
 
   static const Color _accentColor = Color(0xFFF566A9);
 
@@ -237,35 +239,69 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
     if (!provider.voiceoverEnabled) return;
     if (provider.currentIndex >= provider.data.length - 1) return;
 
-    final voiceoverText = provider.data[provider.currentIndex + 1].voiceoverText;
+    final nextDatum = provider.data[provider.currentIndex + 1];
+    final voiceoverType = nextDatum.voiceoverType ?? 'tts';
+
+    if (voiceoverType == 'audio') {
+      await _playVoiceoverAudioFile(nextDatum.voiceoverAudio, provider);
+    } else {
+      await _playVoiceoverTts(nextDatum.voiceoverText, provider);
+    }
+  }
+
+  Future<void> _playVoiceoverTts(String? voiceoverText, CacheVideoProvider provider) async {
     if (voiceoverText == null || voiceoverText.isEmpty) return;
 
     try {
       await _initRestTts();
       if (_restTts == null || _isDisposed) return;
 
-      // Stop any existing speech to avoid overlap
       await _restTts!.stop();
-
-      // Wait 1 second before speaking
       await Future.delayed(const Duration(seconds: 1));
-
       if (_isDisposed || !_showRestOverlay || !provider.voiceoverEnabled) return;
 
-      // Duck music before speaking
       await provider.duckMusic();
 
-      // Set completion handler to restore music
       _restTts!.setCompletionHandler(() {
         provider.restoreMusic();
       });
 
       await _restTts!.speak(voiceoverText);
-
-      // Mark voiceover as played so it doesn't repeat during exercise
       provider.markVoiceoverPlayedDuringRest();
     } catch (e) {
       debugPrint('Fullscreen rest TTS error: $e');
+      await provider.restoreMusic();
+    }
+  }
+
+  Future<void> _playVoiceoverAudioFile(String? audioUrl, CacheVideoProvider provider) async {
+    if (audioUrl == null || audioUrl.isEmpty) return;
+
+    try {
+      await Future.delayed(const Duration(seconds: 1));
+      if (_isDisposed || !_showRestOverlay || !provider.voiceoverEnabled) return;
+
+      final file = await DefaultCacheManager().getSingleFile(audioUrl);
+
+      if (_isDisposed || !_showRestOverlay || !provider.voiceoverEnabled) return;
+
+      await provider.duckMusic();
+
+      _voiceoverPlayer?.dispose();
+      _voiceoverPlayer = AudioPlayer();
+
+      final completer = Completer<void>();
+      _voiceoverPlayer!.onPlayerComplete.listen((_) {
+        provider.restoreMusic();
+        if (!completer.isCompleted) completer.complete();
+      });
+
+      await _voiceoverPlayer!.play(DeviceFileSource(file.path));
+      provider.markVoiceoverPlayedDuringRest();
+
+      await completer.future;
+    } catch (e) {
+      debugPrint('Fullscreen rest audio voiceover error: $e');
       await provider.restoreMusic();
     }
   }
@@ -332,6 +368,9 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
   void _cleanupRestOverlay() {
     _restTimer?.cancel();
     _restTts?.stop();
+    _voiceoverPlayer?.stop();
+    _voiceoverPlayer?.dispose();
+    _voiceoverPlayer = null;
     _restProgressController?.dispose();
     _restProgressController = null;
     _previewController?.dispose();
@@ -378,6 +417,7 @@ class _CacheFullScreenPlayerState extends State<CacheFullScreenPlayer>
     _restTimer?.cancel();
     _restProgressController?.dispose();
     _previewController?.dispose();
+    _voiceoverPlayer?.dispose();
     // Only set portrait if not already exiting (closeFullscreen handles it)
     if (!_isExiting) {
       _setPortrait();
